@@ -3,7 +3,7 @@ ProteoSeeker is a feature-rich metagenomic analysis tool which allows for the id
 
 ![ProteoSeeker Overview](images/Figure_1.png)
 
-1. Specific characteristics for the environment of sample collection are documented.
+1. 1. Specific characteristics of the sample's environmental source are documented.
 2. The sample is collected by the environment.
 3. The DNA of the sample is isolated and prepared for sequencing.
 4. The DNA is sequenced through Next-Generation Sequencing (NGS).
