@@ -2,7 +2,16 @@
 ProteoSeeker is feature-rich metagenomic analysis tool which allows for the identification of novel proteins originating from metagenomes. These proteins may be part of specified protein families or/and may be subjected to a taxonomy analysis.
 
 ![ProteoSeeker Overview](images/Figure_1.png)
-*1. Specific characteristics for the environment of sample collection are documented. 2. The sample is collected by the environment. 3. The DNA of the sample is isolated and prepared for sequencing. 4. The DNA is sequenced through Next-Generation Sequencing (NGS). 5. Files containing reads are the result of NGS. 6. Such files can be provided directly to ProteoSeeker for analysis. Alternatively, these files may be uploaded in an open-access database alongside their metadata. The data of such databases form the exploration ground for ProteoSeeker in discovering novel enzymes functioning in predefined conditions enriching the scientific community's capacity to explore microbial ecosystems. A user may download such data and provide it to ProteoSeeker or in the case of SRA of NCBI use the code (SRA accession) of the sample from the online database directly to ProteoSeeker. 7. ProteoSeeker identifies proteins originating from the input reads. 8. ProteoSeeker offers two main functionalities. The first one is the “seek” functionality. Certain proteins are grouped in protein families, initially selected by the user, based on profiles from the Pfam database. This functionality is used to discover novel enzymes with specific functionality able to perform under predefined conditions, as documented for the sample analyzed. 9. The second one is the “taxonomy” functionality. One or more organisms are assigned to certain proteins.*
+
+1. Specific characteristics for the environment of sample collection are documented.
+2. The sample is collected by the environment.
+3. The DNA of the sample is isolated and prepared for sequencing.
+4. The DNA is sequenced through Next-Generation Sequencing (NGS).
+5. Files containing reads are the result of NGS.
+6. Such files can be provided directly to ProteoSeeker for analysis. Alternatively, these files may be uploaded in an open-access database alongside their metadata. The data of such databases form the exploration ground for ProteoSeeker in discovering novel enzymes functioning in predefined conditions enriching the scientific community's capacity to explore microbial ecosystems. A user may download such data and provide it to ProteoSeeker or in the case of SRA of NCBI use the code (SRA accession) of the sample from the online database directly to ProteoSeeker.
+7. ProteoSeeker identifies proteins originating from the input reads.
+8. ProteoSeeker offers two main functionalities. The first one is the “seek” functionality. Certain proteins are grouped in protein families, initially selected by the user, based on profiles from the Pfam database. This functionality is used to discover novel enzymes with specific functionality able to perform under predefined conditions, as documented for the sample analyzed.
+9. The second one is the “taxonomy” functionality. One or more organisms are assigned to certain proteins.*
 
 # 2. Installation
 ## 2.1 Source code
