@@ -3,15 +3,17 @@ ProteoSeeker is a feature-rich metagenomic analysis tool which allows for the id
 
 ![ProteoSeeker Overview](images/Figure_1.png)
 
-1. 1. Specific characteristics of the sample's environmental source are documented.
-2. The sample is collected by the environment.
-3. The DNA of the sample is isolated and prepared for sequencing.
-4. The DNA is sequenced through Next-Generation Sequencing (NGS).
-5. Files containing reads are the result of NGS.
-6. Such files can be provided directly to ProteoSeeker for analysis. Alternatively, these files may be uploaded in an open-access database alongside their metadata. The data of such databases form the exploration ground for ProteoSeeker in discovering novel enzymes functioning in predefined conditions enriching the scientific community's capacity to explore microbial ecosystems. A user may download such data and provide it to ProteoSeeker or in the case of SRA of NCBI use the code (SRA accession) of the sample from the online database directly to ProteoSeeker.
-7. ProteoSeeker identifies proteins originating from the input reads.
-8. ProteoSeeker offers two main functionalities. The first one is the “seek” functionality. Certain proteins are grouped in protein families, initially selected by the user, based on profiles from the Pfam database. This functionality is used to discover novel enzymes with specific functionality able to perform under predefined conditions, as documented for the sample analyzed.
-9. The second one is the “taxonomy” functionality. One or more organisms are assigned to certain proteins.*
+1. Sample Documentation: Specific characteristics of the sample's environmental source, including factors such as location, habitat, sampling conditions and collection method are documented.
+2. Sample Collection: The metagenomic material is collected from the enviromnental nieche of interest
+3. DNA Isolation and Preparation: Following DNA isolation, DNA extraction of the collected sample is performed and preped for sequencing.
+4. Next-Generation Sequencing (NGS):  NGS technology is performed to collect the metagenomic dataset of the sample
+5. NGS Data Processing: The sequence files (reads) resulting from NGS are generated and  quality control is applied to the data.
+6. Data Sharing and Accessibility: Datasets and metadata are shared in open-access databases, facilitating collaborative research and data reuse. Such files can be provided directly to ProteoSeeker for analysis, forming the exploration ground for the tool. Proteoseeker aspires to provide a coprehensive, user-friendly platform for the discovery of novel proteins/enzymes originating from envoronmetns of interest, enriching the scientific community's capacity to explore microbial ecosystems. A user may download such data and provide it to ProteoSeeker or in the case of SRA of NCBI use the code (SRA accession) of the sample from the online database directly to ProteoSeeker.
+7. ProteoSeeker Analysis: The tool identifies putative proteins derived from the input reads.
+8. Functional Analysis with ProteoSeeker: Detailed functionalities offered by ProteoSeeker, includes "seek" and "taxonomy" functionalities, and their respective purposes in protein/enzyme discovery and taxonomic assignment.
+9. Protein Family Profiling: Protein family profiles from databases like Pfam groups proteins and facilitate the discovery of novel proteins/enzymes with specific functionalities.
+10. Taxonomic Assignment: The tool expands on the process of assigning one or more organisms to identified proteins, aiding in the understanding of microbial community composition.
+
 
 # 2. Installation
 ## 2.1 Source code
