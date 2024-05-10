@@ -22,13 +22,13 @@
 
 # 2. Installation
 ## 2.1 Source code
-<p align="justify">To install ProteoSeeker from source code, conda (from Anaconda or Miniconda) must be installed and activated in your system. Instructions for installing Anaconda and Miniconda in Linux are provided in the following links:
+<p align="justify">To install ProteoSeeker from source code, conda (from Anaconda or Miniconda) must be installed and activated in your system. Instructions for installing Anaconda and Miniconda in Linux are provided in the following links:</p>
 
 Anaconda for Linux: https://docs.anaconda.com/free/anaconda/install/linux/
 
 Miniconda for Linux: https://docs.anaconda.com/free/miniconda/miniconda-install/
 
-Then download the repository, extract it, move to the installation folder and run the installation script. Follow the steps below:</p>
+<p align="justify">Then download the repository, extract it, move to the installation folder and run the installation script. Follow the steps below:</p>
 
 ~~~bash
 git clone https://github.com/SkretasLab/ProteoSeeker.git
