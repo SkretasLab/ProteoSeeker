@@ -86,11 +86,11 @@ Options:
    -pi/--protein-input            True/False -Opt: False- Indicates whether the input folder
                                   contains a file with protein sequences in FASTA format.
 
-   -as/--adapters-status          Str -Opt: 'pre'- The following options are available: ide:
+   -as/--adapters-status          Str -Opt: "pre"- The following options are available: ide:
                                   Adds the overrepresented sequences identified by FastQC in
-                                  the file with the adapters. 'fas': The file with the
+                                  the file with the adapters. "fas": The file with the
                                   adapters will include only the overrepresented sequences
-                                  identified by FastQC. 'pre': The  file with the adapters is
+                                  identified by FastQC. "pre": The  file with the adapters is
                                   used without any modification.
 
    -a/--adapters                  Str -Req: adapters.fa- Path to the file with the adapters.
@@ -163,13 +163,13 @@ Options:
 ---------General options: Pipeline---------
    -am/--analysis-mode            Int -Opt: 3- There are three analysis modes. The analysis
                                   mode determines the type of analysis by the seek
-                                  functionality. '1': The seek functionality will only search
+                                  functionality. "1": The seek functionality will only search
                                   for proteins to be annotated which include at least one of
-                                  the profiles of the spd. '2': The seek functionality will
+                                  the profiles of the spd. "2": The seek functionality will
                                   only search for proteins to be annotated that have at least
-                                  one hit against the sfpd with a low enough e-value. '3': The
-                                  seek functionality includes both types of analysis '1' and
-                                  '2'.
+                                  one hit against the sfpd with a low enough e-value. "3": The
+                                  seek functionality includes both types of analysis "1" and
+                                  "2".
 
    -p/--paired-end                True/False -Opt: True- Indicates whether the files in the
                                   input folder are paired-end (True) or single-end (False)
@@ -218,7 +218,7 @@ Options:
 ---------General options: Binning---------
    -bt/--binning-tool             Int -Opt: 1- Determines the binning tool to be used by the
                                   functionality of taxonomy, when kraken2 is set not to be
-                                  used (-km False). '1': MetaBinner. '2': COMEBin.
+                                  used (-km False). "1": MetaBinner. "2": COMEBin.
 
    -bmr/--binning-max-ram         Int -Opt: 4- The maximum number of GBs of RAM that may be
                                   utilized by binning.
@@ -252,9 +252,9 @@ Options:
                                   action has been selected (-ge 2).
 
 ---------General options: HMMER---------
-   -st/--score-type               Str -Opt cut_ga- The scoring method used by HMMER. 'cut_ga':
+   -st/--score-type               Str -Opt cut_ga- The scoring method used by HMMER. "cut_ga":
                                   HMMER will use the profile's GA gathering cutoffs to set all
-                                  thresholding. 'default': HMMER will use its default scoring
+                                  thresholding. "default": HMMER will use its default scoring
                                   method.
 
    -sds/--second-domain-search    True/False -Opt: True- Determines whether the screening of
@@ -331,46 +331,46 @@ Options:
 
 ---------Tool enviroments---------
    -sen/--sra-env                 Str -Opt: ps_sra_tools- The conda enviroment for sra tools.
-                                  'None/none': To not use an enviroment at all.
+                                  "None/none": To not use an enviroment at all.
 
    -fen/--fastqc-env              Str -Opt: ps_fastqc- The conda enviroment for FastQC.
-                                  'None/none': To not use an enviroment at all.
+                                  "None/none": To not use an enviroment at all.
 
    -uen/--bbtools-env             Str -Opt: ps_bbtools- The conda enviroment for bbtools.
-                                  'None/none': To not use an enviroment at all.
+                                  "None/none": To not use an enviroment at all.
 
    -men/--megahit-env             Str -Opt: ps_megahit- The conda enviroment for megahit.
-                                  'None/none': To not use an enviroment at all.
+                                  "None/none": To not use an enviroment at all.
 
    -ken/--kraken-env              Str -Opt: ps_kraken- The conda enviroment for kraken2.
-                                  'None/none': To not use an enviroment at all.
+                                  "None/none": To not use an enviroment at all.
 
    -nen/--metabinner-env          Str -Opt: ps_metabinner- The conda enviroment for
-                                  MetaBinner. 'None/none': To not use an enviroment at all.
+                                  MetaBinner. "None/none": To not use an enviroment at all.
 
    -sen/--comebin-env             Str -Opt: ps_comebin- The conda enviroment for sra tools.
-                                  'None/none': To not use an enviroment at all.
+                                  "None/none": To not use an enviroment at all.
 
    -ien/--cdhit-env               Str -Opt: ps_cd_hit- The conda enviroment for CD-HIT.
-                                  'None/none': To not use an enviroment at all.
+                                  "None/none": To not use an enviroment at all.
 
    -gen/--genepred-env            Str -Opt- The conda enviroment for FragGeneScanRs.
-                                  'None/none': To not use an enviroment at all.
+                                  "None/none": To not use an enviroment at all.
 
    -hen/--hmmer-env               Str -Opt: ps_hmmer- The conda enviroment for HMMER.
-                                  'None/none': To not use an enviroment at all.
+                                  "None/none": To not use an enviroment at all.
 
    -den/--dimaond-env             Str -Opt: ps_diamond- The conda enviroment for DIMAOND
-                                  BLASTP. 'None/none': To not use an enviroment at all.
+                                  BLASTP. "None/none": To not use an enviroment at all.
 
    -ten/--taxonkit-env            Str -Opt: ps_taxonkit- The conda enviroment for taxonkit.
-                                  'None/none': To not use an enviroment at all.
+                                  "None/none": To not use an enviroment at all.
 
    -pen/--phobius-env             Str -Opt: ps_phobius- The conda enviroment for Phobius.
-                                  'None/none': To not use an enviroment at all.
+                                  "None/none": To not use an enviroment at all.
 
    -ben/--bowtie-env              Str -Opt: ps_bowtie- The conda enviroment for Bowtie2.
-                                  'None/none': To not use an enviroment at all.
+                                  "None/none": To not use an enviroment at all.
 
 ---------Tool paths---------
    -abp/--anaconda-bin-path       Str -Opt- The path to the anaconda bin folder.
