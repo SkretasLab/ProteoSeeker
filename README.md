@@ -47,7 +47,7 @@ pull proteoseeker
 For either case of installation process followed in order to use the topology and signal peptide predictions provided by Phobius you must download Phobius from .... If not downloaded ProteoSeeker will run normaly without including topology and signal peptide predictions in its seek functionality.
 
 # 3. Use
-## 2.1 Command-line tool
+## 3.1 Command-line tool
 The usage of ProteoSeeker as a command-line tool, its options and default parameters are described below.
 
 ~~~bash
@@ -417,3 +417,5 @@ Options:
                                   values.
 ~~~
 
+## 3.2 Docker image
+ProteoSeeker is already installed, alongside with all its databases in its proteoseeker image. For someone to run ProteoSeeker in its image he should at first start the image in interactive mode. To inform ProteoSeeker to use a local installation of Phobius, the folder to the Phobius should be mounted at first to the docker image and then the path to the phobius folder be provided as a parameter to ProteoSeeker. In the docker image ProteoSeeker can be used as a command-line tool.
