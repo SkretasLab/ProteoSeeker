@@ -1,4 +1,5 @@
 # 1. Overiview
+## 1.1 Scope of usage
 ProteoSeeker is a feature-rich metagenomic analysis tool which allows for the identification of novel proteins originating from metagenomes. These proteins may be part of specified protein families or/and may be subjected to a taxonomy analysis.
 
 ![ProteoSeeker Overview](images/Figure_1a.png)
@@ -15,6 +16,8 @@ ProteoSeeker is a feature-rich metagenomic analysis tool which allows for the id
 7. **Functional Analysis:** Functionalities offered by ProteoSeeker include "seek" and "taxonomy" functionalities, and their respective purposes in protein/enzyme discovery and taxonomic assignment.
 8. **Protein Family Profiling:** Protein family profiles from databases like Pfam, groups proteins and facilitates the discovery of novel proteins/enzymes with specific functionalities.
 9. **Taxonomic Assignment:** The tool expands on the process of assigning one or more organisms to identified proteins, aiding in the understanding of microbial community composition.
+
+## 1.2 Pipeline
 
 
 # 2. Installation
