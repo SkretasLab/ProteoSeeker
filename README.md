@@ -1,7 +1,7 @@
 # 1. Overiview
 ProteoSeeker is a feature-rich metagenomic analysis tool which allows for the identification of novel proteins originating from metagenomes. These proteins may be part of specified protein families or/and may be subjected to a taxonomy analysis.
 
-![ProteoSeeker Overview](images/Figure_1.png)
+![ProteoSeeker Overview](images/Figure_1a.png)
 
 1. **Sampling Site Documentation:** Specific characteristics of the sample's environmental source, including factors such as location, habitat, sampling conditions and collection method are documented.
 2. **Sample Collection:** The metagenomic material is collected from the enviromnental nieche of interest.
