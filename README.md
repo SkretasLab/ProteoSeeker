@@ -1,7 +1,6 @@
-<p align="justify">
 # 1. Overiview
 ## 1.1 Scope of usage
-ProteoSeeker is a feature-rich metagenomic analysis tool which allows for the identification of novel proteins originating from metagenomes. These proteins may be part of specified protein families or/and may be subjected to a taxonomy analysis.
+<p align="justify">ProteoSeeker is a feature-rich metagenomic analysis tool which allows for the identification of novel proteins originating from metagenomes. These proteins may be part of specified protein families or/and may be subjected to a taxonomy analysis.</p>
 
 ![ProteoSeeker Overview](images/Figure_1a.png)
 
@@ -422,5 +421,5 @@ Options:
 ~~~
 
 ## 3.2 Docker image
-ProteoSeeker is already installed, alongside with all its databases in its proteoseeker image. For someone to run ProteoSeeker in its image he should at first start the image in interactive mode. To inform ProteoSeeker to use a local installation of Phobius, the folder to the Phobius should be mounted at first to the docker image and then the path to the phobius folder be provided as a parameter to ProteoSeeker. In the docker image ProteoSeeker can be used as a command-line tool.
+<p align="justify">ProteoSeeker is already installed, alongside with all its databases in its proteoseeker image. For someone to run ProteoSeeker in its image he should at first start the image in interactive mode. To inform ProteoSeeker to use a local installation of Phobius, the folder to the Phobius should be mounted at first to the docker image and then the path to the phobius folder be provided as a parameter to ProteoSeeker. In the docker image ProteoSeeker can be used as a command-line tool.
 </p>
