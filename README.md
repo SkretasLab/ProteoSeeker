@@ -48,11 +48,14 @@ pull proteoseeker
 ~~~
 
 ### Phobius
-For either case of installation process followed in order to use the topology and signal peptide predictions provided by Phobius you must download Phobius from .... If not downloaded ProteoSeeker will run normaly without including topology and signal peptide predictions in its seek functionality.
+For either case of installation process followed in order to use the topology and signal peptide predictions provided by Phobius you must download Phobius from https://phobius.sbc.su.se/data.html. Otherwise, ProteoSeeker will run without performing topology and signal peptide predictions in its seek functionality.
 
 # 3. Use
-## 3.1 Command-line tool
-The usage of ProteoSeeker as a command-line tool, its options and default parameters are described below.
+## 3.1 Parameter file
+<p align="justify">In general the easiest way to run ProteoSeeker is to use a parameter file. A parameter file should at the very least contain the parameters for the options of ProteoSeeker which are to be modified from their default values. Paramteter files for differect case-scenarios may be downloaded from *here*. These files are also generated when running the "install.sh" in the installation folder and more specifically one can generate them at any time when running the "parameter_files.sh" in the installation folder. The latter files contains all options and have parameters specificilly for those that are to be modified. A parameter file is the proposed way of using ProteoSeeker eitehr when installing from source or when installing it as a Docker image.</p>
+
+## 3.2 Options
+<p align="justify">The options of ProteoSeeker as a command-line tool, their default parameters and descriptions are described below.</p>
 
 ~~~bash
 ProteoSeeker Version 1.0.0
@@ -421,6 +424,8 @@ Options:
                                   values.
 ~~~
 
-## 3.2 Docker image
-<p align="justify">ProteoSeeker is already installed, alongside with all its databases in its proteoseeker image. For someone to run ProteoSeeker in its image he should at first start the image in interactive mode. To inform ProteoSeeker to use a local installation of Phobius, the folder to the Phobius should be mounted at first to the docker image and then the path to the phobius folder be provided as a parameter to ProteoSeeker. In the docker image ProteoSeeker can be used as a command-line tool.
-</p>
+## 3.3 Docker Hub
+<p align="justify">ProteoSeeker is already installed, alongside with all its databases in its proteoseeker image. For someone to run ProteoSeeker in its image he should at first start the image in interactive mode. To inform ProteoSeeker to use a local installation of Phobius, the folder to the Phobius should be mounted at first to the docker image and then the path to the phobius folder be provided as a parameter to ProteoSeeker. In the docker image ProteoSeeker can be used as a command-line tool. To use ProteoSeeker in the image one must run a container in interactive mode. Then the user can proceed to run ProteoSeeker as a command-line tool in the image. To provide input to ProteoSeeker in the image and retain the output of an analysis, a volume or a bind-mount must be used. A volume or a bind-mount may be used to provide a parameter file to ProteoSeeker, to provide a directory to output the results and retain them after stopping the container, to provide the directory that contains the Phobius installation or to provide the path to any tool or database that is installed in the local host and not in the image. The instructions below describe how to create and use a volume or a bind-mount to provide a parameter file, an output directory and the directory with the Phobius installation to ProteoSeeker in the container. Simiarly, one can use a volue or bind-mount to provide that path for another tool or database.</p>
+
+### 3.3.1 Volume
+<p align="justify">A volume is a Docker </p>
