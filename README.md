@@ -22,7 +22,13 @@
 
 ![ProteoSeeker Seek Functionality](images/Figure_2_mod.png)
 
+1. **...** Specific characteristics of the sample's environmental source, including factors such as location, habitat, sampling conditions and collection method are documented.
+2. **...** The metagenomic material is collected from the enviromnental nieche of interest.
+
 ![ProteoSeeker Taxonomy Functionality](images/Figure_3_mod.png)
+
+1. **...** Specific characteristics of the sample's environmental source, including factors such as location, habitat, sampling conditions and collection method are documented.
+2. **...** The metagenomic material is collected from the enviromnental nieche of interest.
 
 # 2. Installation
 ## 2.1 Source code
