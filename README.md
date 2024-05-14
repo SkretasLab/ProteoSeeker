@@ -428,4 +428,24 @@ Options:
 <p align="justify">ProteoSeeker is already installed, alongside with all its databases in its proteoseeker image. For someone to run ProteoSeeker in its image he should at first start the image in interactive mode. To inform ProteoSeeker to use a local installation of Phobius, the folder to the Phobius should be mounted at first to the docker image and then the path to the phobius folder be provided as a parameter to ProteoSeeker. In the docker image ProteoSeeker can be used as a command-line tool. To use ProteoSeeker in the image one must run a container in interactive mode. Then the user can proceed to run ProteoSeeker as a command-line tool in the image. To provide input to ProteoSeeker in the image and retain the output of an analysis, a volume or a bind-mount must be used. A volume or a bind-mount may be used to provide a parameter file to ProteoSeeker, to provide a directory to output the results and retain them after stopping the container, to provide the directory that contains the Phobius installation or to provide the path to any tool or database that is installed in the local host and not in the image. The instructions below describe how to create and use a volume or a bind-mount to provide a parameter file, an output directory and the directory with the Phobius installation to ProteoSeeker in the container. Simiarly, one can use a volue or bind-mount to provide that path for another tool or database.</p>
 
 ### 3.3.1 Volume
-<p align="justify">A volume is a Docker </p>
+<p align="justify">A volume is a directory inside Docker. Volumes can be found in the "volumes" directory of your Docker installation (e.g., /var/lib/docker/volumes). The data (direcotries and files) retained in the volume which may be used by different containers an are also accessible by the local host, is stored in the "_data" directory of the volume. Any directory or file placed in the "_data" directory will be accessible from the local host and the container to which is has been added.</p>
+
+<p align="justify">Creating a volume:</p>
+~~~bash
+sudo docker volume create vol_test
+~~~
+
+<p align="justify">To make the volume accessible to a container of the proteoseeker image:</p>
+~~~bash
+sudo docker run --name ps_test -d --mount source=vol_test,target=/home/lhc_data proteoseeker
+~~~
+
+<p align="justify">Then we must find the ID of the container we created. We list the containers:</p>
+~~~bash
+sudo docker ps
+~~~
+
+<p align="justify">At last we run the container based on its ID in interactive mode:</p>
+~~~bash
+sudo docker exec -it container_ID /bin/bash
+~~~
