@@ -431,21 +431,35 @@ Options:
 <p align="justify">A volume is a directory inside Docker. Volumes can be found in the "volumes" directory of your Docker installation (e.g., /var/lib/docker/volumes). The data (direcotries and files) retained in the volume which may be used by different containers an are also accessible by the local host, is stored in the "_data" directory of the volume. Any directory or file placed in the "_data" directory will be accessible from the local host and the container to which is has been added.</p>
 
 <p align="justify">Creating a volume:</p>
+
 ~~~bash
 sudo docker volume create vol_test
 ~~~
 
+<p align="justify">To check that the volume was created:</p>
+
+~~~bash
+sudo docker volume ls
+~~~
+
 <p align="justify">To make the volume accessible to a container of the proteoseeker image:</p>
+
 ~~~bash
 sudo docker run --name ps_test -d --mount source=vol_test,target=/home/lhc_data proteoseeker
 ~~~
 
 <p align="justify">Then we must find the ID of the container we created. We list the containers:</p>
+
+~~~bash
+sudo docker ps -l
+~~~
+OR
 ~~~bash
 sudo docker ps
 ~~~
 
 <p align="justify">At last we run the container based on its ID in interactive mode:</p>
+
 ~~~bash
 sudo docker exec -it container_ID /bin/bash
 ~~~
