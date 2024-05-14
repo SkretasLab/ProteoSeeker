@@ -463,3 +463,5 @@ sudo docker ps
 ~~~bash
 sudo docker exec -it container_ID /bin/bash
 ~~~
+
+<p align="justify">By moving to "/home/ProteoSeeker" one can use ProteoSeeker as a command-line tool in the container while at the same time have access to the data in the "/home/lhc_data" directory (e.g., a Pbohius installation, a parameter file) whie at the same time set an output path in the "/home/lhc_data" directory so that the results remain accessible to the local host or another container after stopping the container currently running.</p>
