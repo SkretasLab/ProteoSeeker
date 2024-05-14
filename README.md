@@ -44,7 +44,7 @@ Docker engine for Linux: https://docs.docker.com/engine/install/ubuntu/
 
 Then simply download the image from dockerhub:</p>
 ~~~bash
-pull proteoseeker
+sudo docker image pull proteoseeker
 ~~~
 
 ### Phobius
