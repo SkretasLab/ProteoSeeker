@@ -2,7 +2,7 @@
 ## 1.1 Scope of usage
 <p align="justify">ProteoSeeker is a feature-rich metagenomic analysis tool which allows for the identification of novel proteins originating from metagenomes. These proteins may be part of specified protein families or/and may be subjected to a taxonomy analysis.</p>
 
-![ProteoSeeker Overview](images/Figure_1a.png)
+![ProteoSeeker Overview](images/Figure_1.png)
 
 1. **Sampling Site Documentation:** Specific characteristics of the sample's environmental source, including factors such as location, habitat, sampling conditions and collection method are documented.
 2. **Sample Collection:** The metagenomic material is collected from the enviromnental nieche of interest.
@@ -19,6 +19,10 @@
 
 ## 1.2 Pipeline
 <p align="justify">The overall pipeline implemented by ProteoSeeker can be seen in the image below. ProteoSeeker offers two main functionalities with a multitude of options for users not accustomed to metagenomic analysis tools and more advanced users that may want to modify the behaviour of certain tools included in ProteoSeeker's pipeline. The first functionality is to **seek** proteins that may be part of selected protein families and the second funcitonality is to find the **taxonomy** of the proteins discovered from the analysis of a sample. The second functionality is based either on the taxonomy of the reads (kraken2 route) or on binning the contigs and searching for the taxonomy of the proteins through the "taxonomy filtered protein database" (MetaBinner / COMEBin route).</p>
+
+![ProteoSeeker Seek Functionality](images/Figure_2.png)
+
+![ProteoSeeker Taxonomy Functionality](images/Figure_3.png)
 
 # 2. Installation
 ## 2.1 Source code
