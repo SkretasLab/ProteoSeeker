@@ -1,0 +1,15 @@
+# hmmfetch :: retrieve profile HMM(s) from a file
+# Easel 0.49 (Aug 2023)
+# Copyright (C) 2023 Howard Hughes Medical Institute.
+# Freely distributed under the BSD open source license.
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Usage: hmmfetch [options] <hmmfile> <key>         (retrieves HMM named <key>)
+Usage: hmmfetch [options] -f <hmmfile> <keyfile>  (retrieves all HMMs in <keyfile>)
+Usage: hmmfetch [options] --index <hmmfile>       (indexes <hmmfile>)
+
+Options:
+  -h      : help; show brief info on version and usage
+  -f      : second cmdline arg is a file of names to retrieve
+  -o <f>  : output HMM to file <f> instead of stdout
+  -O      : output HMM to file named <key>
+  --index : index the <hmmfile>, creating <hmmfile>.ssi

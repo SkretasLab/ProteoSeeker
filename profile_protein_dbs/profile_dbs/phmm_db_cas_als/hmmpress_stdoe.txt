@@ -1,0 +1,6 @@
+Working...    done.
+Pressed and indexed 3 HMMs (3 names and 3 accessions).
+Models pressed into binary file:   profile_nr_families/phmms_databases/phmm_db_cas_als/profiles.h3m
+SSI index for binary model file:   profile_nr_families/phmms_databases/phmm_db_cas_als/profiles.h3i
+Profiles (MSV part) pressed into:  profile_nr_families/phmms_databases/phmm_db_cas_als/profiles.h3f
+Profiles (remainder) pressed into: profile_nr_families/phmms_databases/phmm_db_cas_als/profiles.h3p
