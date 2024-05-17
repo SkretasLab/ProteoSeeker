@@ -519,3 +519,6 @@ sudo docker attach container_id
 
 ### 3.3.3 Using ProteoSeeker and the volume or bind mount
 <p align="justify">By moving to "/home/ProteoSeeker" one can use ProteoSeeker as a command-line tool in the container, have access to the data in the "/home/lhc_data" directory and also set an output path in the "/home/lhc_data" directory so that the results remain accessible to the local host or another container after stopping the container currently running. Some importnat files that may be accessible in the shared volume or bint mound are parameter files, an output directory to be used as the base path for the output of ProteoSeeker and possibly the Phobius installation directory.</p>
+
+# 4. Test cases
+<p align="justify">Some test cases reagarding the usage of ProteoSeeker as a command-line tool installed from source or through Docker. +++</p>
