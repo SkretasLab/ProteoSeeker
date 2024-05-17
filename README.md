@@ -438,12 +438,12 @@ Options:
 <p align="justify">ProteoSeeker is already installed, alongside with all its databases in its proteoseeker image. For someone to run ProteoSeeker in its image he should at first start the image in interactive mode. To inform ProteoSeeker to use a local installation of Phobius, the folder to the Phobius should be mounted at first to the docker image and then the path to the phobius folder be provided as a parameter to ProteoSeeker. In the docker image ProteoSeeker can be used as a command-line tool. To use ProteoSeeker in the image one must run a container in interactive mode. Then the user can proceed to run ProteoSeeker as a command-line tool in the image. To provide input to ProteoSeeker in the image and retain the output of an analysis, a volume or a bind-mount must be used. A volume or a bind-mount may be used to provide a parameter file to ProteoSeeker, to provide a directory to output the results and retain them after stopping the container, to provide the directory that contains the Phobius installation or to provide the path to any tool or database that is installed in the local host and not in the image. The instructions below describe how to create and use a volume or a bind-mount to provide a parameter file, an output directory and the directory with the Phobius installation to ProteoSeeker in the container. Simiarly, one can use a volue or bind-mount to provide that path for another tool or database.</p>
 
 ### 3.3.1 Volume
-<p align="justify">A volume is a directory inside Docker. Volumes can be found in the "volumes" directory of your Docker installation (e.g., /var/lib/docker/volumes). The data (direcotries and files) retained in the volume which may be used by different containers an are also accessible by the local host, is stored in the "_data" directory of the volume. Any directory or file placed in the "_data" directory will be accessible from the local host and the container to which is has been added.</p>
+<p align="justify">A volume is a directory inside Docker. Volumes can be found in the "volumes" directory of your Docker installation (e.g., /var/lib/docker/volumes). The data of the volume is stored in the "_data" directory of the volume. This data are retained in the volume after the container is stopped or exits, may be used by different containers and are also accessible by the local host. Any directory or file placed in the "_data" directory will be accessible from the local host and the container to which is has been added.</p>
 
 <p align="justify">Creating a volume:</p>
 
 ~~~bash
-sudo docker volume create vol_test
+sudo docker volume create ps_vol
 ~~~
 
 <p align="justify">To check that the volume was created:</p>
@@ -452,26 +452,70 @@ sudo docker volume create vol_test
 sudo docker volume ls
 ~~~
 
-<p align="justify">To make the volume accessible to a container of the proteoseeker image:</p>
+<p align="justify">Create a container of the proteoseeker image, run the container and make the volume accessible to the container:</p>
 
 ~~~bash
-sudo docker run --name ps_test -d --mount source=vol_test,target=/home/lhc_data proteoseeker
+sudo docker run --name ps_vol -dit --mount source=my-vol,target=/home/lhc_data proteoseeker
 ~~~
 
 <p align="justify">Then we must find the ID of the container we created. We list the containers:</p>
 
 ~~~bash
-sudo docker ps -l
-~~~
-OR
-~~~bash
-sudo docker ps
+sudo docker container ls
 ~~~
 
-<p align="justify">At last we run the container based on its ID in interactive mode:</p>
+<p align="justify">We attach to the container based on its ID:</p>
 
 ~~~bash
-sudo docker exec -it container_ID /bin/bash
+sudo docker attach container_id
 ~~~
 
-<p align="justify">By moving to "/home/ProteoSeeker" one can use ProteoSeeker as a command-line tool in the container, have access to the data in the "/home/lhc_data" directory (e.g., a Pbohius installation, a parameter file) and also set an output path in the "/home/lhc_data" directory so that the results remain accessible to the local host or another container after stopping the container currently running.</p>
+<p align="justify">At this point you should be able to access and use the volume from the container and the local host.</p>
+
+<p align="justify">If the container has stopped or exited. To list inactive containers, start the container again and attach to it use the following commands:</p>
+
+~~~bash
+sudo docker container ls -a
+sudo docker start container_id
+sudo docker attach container_id
+~~~
+
+### 3.3.2 Bind mount
+<p align="justify">A volume is a directory located in the local host and not run by Docker. As for the volume, the data stored in the mount are reatined after the container is stopped or exits, may be used by different containers and are also accessible by the local host.</p>
+
+<p align="justify">Creating a directory to use as the bind mount. Let's hypothesize that this directory wll have the following full path "/home/user/docker_files/ps_mnt".</p>
+
+~~~bash
+mkdir ps_mnt
+~~~
+
+<p align="justify">Create a container of the proteoseeker image, run the container and make the volume accessible to the container:</p>
+
+~~~bash
+sudo docker run --name ps_mnt -dit --mount type=bind,src="/home/user/docker_files/ps_mnt",target=/home/lhc_data proteoseeker
+~~~
+
+<p align="justify">Then we must find the ID of the container we created. We list the containers:</p>
+
+~~~bash
+sudo docker container ls
+~~~
+
+<p align="justify">We attach to the container based on its ID:</p>
+
+~~~bash
+sudo docker attach container_id
+~~~
+
+<p align="justify">At this point you should be able to access and use the bind mount from the container and the local host.</p>
+
+<p align="justify">If the container has stopped or exited. To list inactive containers, start the container again and attach to it use the following commands:</p>
+
+~~~bash
+sudo docker container ls -a
+sudo docker start container_id
+sudo docker attach container_id
+~~~
+
+### 3.3.3 Using ProteoSeeker and the volume or bind mount
+<p align="justify">By moving to "/home/ProteoSeeker" one can use ProteoSeeker as a command-line tool in the container, have access to the data in the "/home/lhc_data" directory and also set an output path in the "/home/lhc_data" directory so that the results remain accessible to the local host or another container after stopping the container currently running. Some importnat files that may be accessible in the shared volume or bint mound are parameter files, an output directory to be used as the base path for the output of ProteoSeeker and possibly the Phobius installation directory.</p>
