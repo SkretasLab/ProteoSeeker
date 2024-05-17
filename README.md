@@ -1,4 +1,4 @@
-# 1. Overiview
+# 1. Overview
 ## 1.1 Scope of usage
 <p align="justify">ProteoSeeker is a feature-rich metagenomic analysis tool which allows for the identification of novel proteins originating from metagenomes. These proteins may be part of specified protein families or/and may be subjected to a taxonomy analysis.</p>
 
