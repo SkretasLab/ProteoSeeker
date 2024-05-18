@@ -471,7 +471,7 @@ sudo docker run --name ps_con -dit --mount source=ps_vol,target=/home/ps_data pr
 #### B. Creating container and attaching to it in interactive mode. 
 <p align="justify">By moving to "/home/ProteoSeeker" one can use ProteoSeeker as a command-line tool in the container, have access to the data in the "/home/ps_data" directory and also set an output path in the "/home/lhc_data" directory so that the results remain accessible to the local host or another container after stopping the container currently running. Some importnat files that may be accessible in the shared volume or bint mound are parameter files, an output directory to be used as the base path for the output of ProteoSeeker and possibly the Phobius installation directory.</p>
 
-### B.1 Volume
+#### B.1 Volume
 <p align="justify">Create a container of the proteoseeker image, run the container and make the volume accessible to the container. Then attach to the container based on its name (its ID may be used alternatively).</p>
 
 ~~~bash
@@ -486,7 +486,7 @@ sudo docker start ps_con
 sudo docker attach ps_con
 ~~~
 
-### B.2 Bind-mount
+#### B.2 Bind-mount
 <p align="justify">Create a container of the proteoseeker image, run the container and make the volume accessible to the container. Then attach to the container based on its name (its ID may be used alternatively).</p>
 
 ~~~bash
