@@ -454,7 +454,7 @@ mkdir /home/user/docker_files/ps_mnt
 
 ### 3.3.4 Running ProteoSeeker in the docker image
 
-#### A. Creating container and running ProteoSeeker directly.
+#### A. Creating container and running ProteoSeeker directly
 <p align="justify">In the volume or bind-mount create four directories:</p>
 
 1. "docker_params": To store the parameter files.
@@ -468,7 +468,7 @@ mkdir /home/user/docker_files/ps_mnt
 sudo docker run --name ps_con -dit --mount source=ps_vol,target=/home/ps_data proteoseeker python /home/proteoseeker/proteoseeker.py -pfp /home/ps_data/docker_params/paramter_file.txt
 ~~~
 
-#### B. Creating container and attaching to it in interactive mode. 
+#### B. Creating container and attaching to it in interactive mode
 <p align="justify">By moving to "/home/ProteoSeeker" one can use ProteoSeeker as a command-line tool in the container, have access to the data in the "/home/ps_data" directory and also set an output path in the "/home/lhc_data" directory so that the results remain accessible to the local host or another container after stopping the container currently running. Some importnat files that may be accessible in the shared volume or bint mound are parameter files, an output directory to be used as the base path for the output of ProteoSeeker and possibly the Phobius installation directory.</p>
 
 #### B.1 Volume
