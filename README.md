@@ -462,10 +462,10 @@ mkdir /home/user/docker_files/ps_mnt
 3. "output": To store the output.
 4. "phobius": To store the files associated with the Phobius executable.
 
-<p align="justify">The following container is now created based on the proteoseeker image and the command to download an SRA file and analyze its corresponding FastQ files is passed directly after the creation of the container. The paramters_file has been stored in the docker_params folder.</p>
+<p align="justify">The following container is now created based on the proteoseeker image and the command to download an SRA file and analyze its corresponding FastQ files is passed directly after the creation of the container. The paramter file has been stored in the "docker_params" folder. You can modify the parameter file according to your needs.</p>
 
 ~~~bash
-sudo docker run --name ps_con -dit --mount source=ps_vol,target=/home/ps_data proteoseeker python /home/proteoseeker/proteoseeker.py -pfp /home/ps_data/docker_params/parameters_file.txt
+sudo docker run --name ps_con -dit --mount source=ps_vol,target=/home/ps_data proteoseeker python /home/proteoseeker/proteoseeker.py -pfp /home/ps_data/docker_params/paramter_file.txt
 ~~~
 
 ### B. Creating container and attaching to it in interactive mode. 
