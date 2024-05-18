@@ -504,10 +504,11 @@ sudo docker attach ps_con
 <p align="justify">ProteoSeeker is locate at "/home/proteoseeker/" and one can run it directly as a command-line tool. To retain the output the output path should be set in the volume or bind-mount.</p>
 
 # 4. Test cases
-<p align="justify">Below certain examples are provided on how to use ProteoSeeker.</p>
-
-## 4.1 From source
-<p align="justify">The use of ProteoSeeker installed based on its source is straightforward. Simply modify the parameters file according to your needs and run ProteoSeeker.</p>
+<p align="justify">Below certain examples are provided on how to use ProteoSeeker. Docker is the preferred way of running ProteoSeeker.</p>
 
 ## 4.2 Docker
 <p align="justify">As an example for usign ProteoSeeker through its Docker image...</p>
+
+## 4.1 Source
+<p align="justify">The use of ProteoSeeker installed based on its source is straightforward. Simply modify the parameters file according to your needs and run ProteoSeeker.</p>
+
