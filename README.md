@@ -454,7 +454,7 @@ mkdir /home/user/docker_files/ps_mnt
 
 ### 3.3.4 Running ProteoSeeker in the docker image
 
-### A. Creating container and running ProteoSeeker directly.
+#### A. Creating container and running ProteoSeeker directly.
 <p align="justify">In the volume or bind-mount create four directories:</p>
 
 1. "docker_params": To store the parameter files.
@@ -468,7 +468,7 @@ mkdir /home/user/docker_files/ps_mnt
 sudo docker run --name ps_con -dit --mount source=ps_vol,target=/home/ps_data proteoseeker python /home/proteoseeker/proteoseeker.py -pfp /home/ps_data/docker_params/paramter_file.txt
 ~~~
 
-### B. Creating container and attaching to it in interactive mode. 
+#### B. Creating container and attaching to it in interactive mode. 
 <p align="justify">By moving to "/home/ProteoSeeker" one can use ProteoSeeker as a command-line tool in the container, have access to the data in the "/home/ps_data" directory and also set an output path in the "/home/lhc_data" directory so that the results remain accessible to the local host or another container after stopping the container currently running. Some importnat files that may be accessible in the shared volume or bint mound are parameter files, an output directory to be used as the base path for the output of ProteoSeeker and possibly the Phobius installation directory.</p>
 
 ### B.1 Volume
@@ -507,4 +507,10 @@ sudo docker attach ps_con
 <p align="justify">ProteoSeeker is locate at "/home/proteoseeker/" and one can run it directly as a command-line tool. To retain the output the output path should be set in the volume or bind-mount.</p>
 
 # 4. Test cases
-<p align="justify">Some test cases reagarding the usage of ProteoSeeker as a command-line tool installed from source or through Docker. +++</p>
+<p align="justify">Below certain examples are provided on how to use ProteoSeeker.</p>
+
+## 4.1 From source
+<p align="justify">The use of ProteoSeeker installed based on its source is straightforward. Simply modify the parameters file according to your needs and run ProteoSeeker.</p>
+
+## 4.2 Docker
+<p align="justify">As an example for usign ProteoSeeker through its Docker image...</p>
