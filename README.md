@@ -438,24 +438,15 @@ Options:
 <p align="justify">ProteoSeeker is already installed, alongside with all its databases in its docker image "proteoseeker". We present two ways to run ProteoSeeker through its image. Both ways depend on creating a volume or bind-mount and attaching it to the container running based on the image. The first way is running ProteoSeeker directly with creating a container. The second way is to start a container in interactive mode and then run ProteoSeeker. In addition, in either case the volume or bind-mount can be used to provide a tool or database to ProteoSeeker in the container.</p>
 
 ### 3.3.1 Volume
-<p align="justify">A volume is a directory inside Docker. Volumes can be found in the "volumes" directory of your Docker installation (e.g., /var/lib/docker/volumes). The data of the volume is stored in the "_data" directory of the volume. This data are retained in the volume after the container is stopped or exits, may be used by different containers and are also accessible by the local host. Any directory or file placed in the "_data" directory will be accessible from the local host and the container to which is has been added.</p>
-
-<p align="justify">Creating a volume:</p>
+<p align="justify">A volume is a directory inside Docker. Volumes can be found in the "volumes" directory of your Docker installation (e.g., /var/lib/docker/volumes). The data of the volume is stored in the "_data" directory of the volume. This data are retained in the volume after the container is stopped or exits, may be used by different containers and are also accessible by the local host. Any directory or file placed in the "_data" directory will be accessible from the local host and the container to which is has been added. To create a volume and then check were it was successfully created or not:</p>
 
 ~~~bash
 sudo docker volume create ps_vol
-~~~
-
-<p align="justify">To check that the volume was created:</p>
-
-~~~bash
 sudo docker volume ls
 ~~~
 
 ### 3.3.2 Bind mount
-<p align="justify">A volume is a directory located in the local host and not run by Docker. As for the volume, the data stored in the mount are reatined after the container is stopped or exits, may be used by different containers and are also accessible by the local host.</p>
-
-<p align="justify">Creating a directory to use as the bind mount. Let's hypothesize that this directory wll have the following full path "/home/user/docker_files/ps_mnt".</p>
+<p align="justify">A volume is a directory located in the local host and not run by Docker. As for the volume, the data stored in the mount are reatined after the container is stopped or exits, may be used by different containers and are also accessible by the local host. Create a directory to use as the bind mount, for example "ps_mnt".</p>
 
 ~~~bash
 mkdir ps_mnt
