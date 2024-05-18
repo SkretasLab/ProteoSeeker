@@ -452,28 +452,6 @@ sudo docker volume create ps_vol
 sudo docker volume ls
 ~~~
 
-<p align="justify">Create a container of the proteoseeker image, run the container and make the volume accessible to the container:</p>
-
-~~~bash
-sudo docker run --name ps_con -dit --mount source=my-vol,target=/home/ps_data proteoseeker
-~~~
-
-<p align="justify">We attach to the container based on its name (its ID may be used alternatively):</p>
-
-~~~bash
-sudo docker attach ps_con
-~~~
-
-<p align="justify">At this point you should be able to access and use the volume from the container and the local host.</p>
-
-<p align="justify">If the container has stopped or exited. To list inactive containers, start the container again and attach to it use the following commands:</p>
-
-~~~bash
-sudo docker container ls -a
-sudo docker start ps_con
-sudo docker attach ps_con
-~~~
-
 ### 3.3.2 Bind mount
 <p align="justify">A volume is a directory located in the local host and not run by Docker. As for the volume, the data stored in the mount are reatined after the container is stopped or exits, may be used by different containers and are also accessible by the local host.</p>
 
@@ -483,15 +461,9 @@ sudo docker attach ps_con
 mkdir ps_mnt
 ~~~
 
-<p align="justify">Create a container of the proteoseeker image, run the container and make the volume accessible to the container:</p>
-
-~~~bash
-sudo docker run --name ps_con -dit --mount type=bind,src="/home/user/docker_files/ps_mnt",target=/home/ps_data proteoseeker
-~~~
-
 ### 3.3.4 Running ProteoSeeker in the docker image
 
-### A)
+### A. Creating container and running ProteoSeeker directly.
 <p align="justify">In the volume or bind-mount create four directories:</p>
 
 1. "docker_params": To store the parameter files.
@@ -505,16 +477,33 @@ sudo docker run --name ps_con -dit --mount type=bind,src="/home/user/docker_file
 sudo docker run --name ps_con -dit --mount source=ps_vol,target=/home/ps_data proteoseeker python /home/proteoseeker/proteoseeker.py -pfp /home/ps_data/docker_params/parameters_file.txt
 ~~~
 
-### B)
+### B. Creating container and attaching to it in interactive mode. 
 <p align="justify">By moving to "/home/ProteoSeeker" one can use ProteoSeeker as a command-line tool in the container, have access to the data in the "/home/ps_data" directory and also set an output path in the "/home/lhc_data" directory so that the results remain accessible to the local host or another container after stopping the container currently running. Some importnat files that may be accessible in the shared volume or bint mound are parameter files, an output directory to be used as the base path for the output of ProteoSeeker and possibly the Phobius installation directory.</p>
 
-<p align="justify">We attach to the container based on its name (its ID may be used alternatively):</p>
+### B.1 Volume
+<p align="justify">Create a container of the proteoseeker image, run the container and make the volume accessible to the container. Then attach to the container based on its name (its ID may be used alternatively).</p>
 
 ~~~bash
+sudo docker run --name ps_con -dit --mount source=my-vol,target=/home/ps_data proteoseeker
 sudo docker attach ps_con
 ~~~
 
-<p align="justify">At this point you should be able to access and use the bind mount from the container and the local host.</p>
+<p align="justify">If the container has stopped or exited. To list inactive containers, start the container again and attach to it use the following commands:</p>
+
+~~~bash
+sudo docker container ls -a
+sudo docker start ps_con
+sudo docker attach ps_con
+~~~
+
+### B.2 Bind-mount
+<p align="justify">Create a container of the proteoseeker image, run the container and make the volume accessible to the container. Then attach to the container based on its name (its ID may be used alternatively).</p>
+
+~~~bash
+sudo docker run --name ps_con -dit --mount type=bind,src="/home/user/docker_files/ps_mnt",target=/home/ps_data proteoseeker
+sudo docker attach ps_con
+~~~
+
 
 <p align="justify">If the container has stopped or exited. To list inactive containers, start the container again and attach to it use the following commands:</p>
 
