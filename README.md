@@ -435,7 +435,7 @@ Options:
 ~~~
 
 ## 3.3 Docker Hub
-<p align="justify">ProteoSeeker is already installed, alongside with all its databases in its proteoseeker image. For someone to run ProteoSeeker in its image he should at first start the image in interactive mode. To inform ProteoSeeker to use a local installation of Phobius, the folder to the Phobius should be mounted at first to the docker image and then the path to the phobius folder be provided as a parameter to ProteoSeeker. In the docker image ProteoSeeker can be used as a command-line tool. To use ProteoSeeker in the image one must run a container in interactive mode. Then the user can proceed to run ProteoSeeker as a command-line tool in the image. To provide input to ProteoSeeker in the image and retain the output of an analysis, a volume or a bind-mount must be used. A volume or a bind-mount may be used to provide a parameter file to ProteoSeeker, to provide a directory to output the results and retain them after stopping the container, to provide the directory that contains the Phobius installation or to provide the path to any tool or database that is installed in the local host and not in the image. The instructions below describe how to create and use a volume or a bind-mount to provide a parameter file, an output directory and the directory with the Phobius installation to ProteoSeeker in the container. Simiarly, one can use a volue or bind-mount to provide that path for another tool or database.</p>
+<p align="justify">ProteoSeeker is already installed, alongside with all its databases in its docker image "proteoseeker". We present two ways to run ProteoSeeker through its image. Both ways depend on creating a volume or bind-mount and attaching it to the container running based on the image. The first way is running ProteoSeeker directly with creating a container. The second way is to start a container in interactive mode and then run ProteoSeeker. In addition, in either case the volume or bind-mount can be used to provide a tool or database to ProteoSeeker in the container.</p>
 
 ### 3.3.1 Volume
 <p align="justify">A volume is a directory inside Docker. Volumes can be found in the "volumes" directory of your Docker installation (e.g., /var/lib/docker/volumes). The data of the volume is stored in the "_data" directory of the volume. This data are retained in the volume after the container is stopped or exits, may be used by different containers and are also accessible by the local host. Any directory or file placed in the "_data" directory will be accessible from the local host and the container to which is has been added.</p>
@@ -455,19 +455,13 @@ sudo docker volume ls
 <p align="justify">Create a container of the proteoseeker image, run the container and make the volume accessible to the container:</p>
 
 ~~~bash
-sudo docker run --name ps_vol -dit --mount source=my-vol,target=/home/lhc_data proteoseeker
+sudo docker run --name ps_con -dit --mount source=my-vol,target=/home/ps_data proteoseeker
 ~~~
 
-<p align="justify">Then we must find the ID of the container we created. We list the containers:</p>
+<p align="justify">We attach to the container based on its name (its ID may be used alternatively):</p>
 
 ~~~bash
-sudo docker container ls
-~~~
-
-<p align="justify">We attach to the container based on its ID:</p>
-
-~~~bash
-sudo docker attach container_id
+sudo docker attach ps_con
 ~~~
 
 <p align="justify">At this point you should be able to access and use the volume from the container and the local host.</p>
@@ -476,8 +470,8 @@ sudo docker attach container_id
 
 ~~~bash
 sudo docker container ls -a
-sudo docker start container_id
-sudo docker attach container_id
+sudo docker start ps_con
+sudo docker attach ps_con
 ~~~
 
 ### 3.3.2 Bind mount
@@ -492,19 +486,32 @@ mkdir ps_mnt
 <p align="justify">Create a container of the proteoseeker image, run the container and make the volume accessible to the container:</p>
 
 ~~~bash
-sudo docker run --name ps_mnt -dit --mount type=bind,src="/home/user/docker_files/ps_mnt",target=/home/lhc_data proteoseeker
+sudo docker run --name ps_con -dit --mount type=bind,src="/home/user/docker_files/ps_mnt",target=/home/ps_data proteoseeker
 ~~~
 
-<p align="justify">Then we must find the ID of the container we created. We list the containers:</p>
+### 3.3.4 Running ProteoSeeker in the docker image
+
+### A)
+<p align="justify">In the volume or bind-mount create four directories:</p>
+
+1. "docker_params": To store the parameter files.
+2. "input_files": To store input FastQ or FASTA files.
+3. "output": To store the output.
+4. "phobius": To store the files associated with the Phobius executable.
+
+<p align="justify">The following container is now created based on the proteoseeker image and the command to download an SRA file and analyze its corresponding FastQ files is passed directly after the creation of the container. The paramters_file has been stored in the docker_params folder.</p>
 
 ~~~bash
-sudo docker container ls
+sudo docker run --name ps_con -dit --mount source=ps_vol,target=/home/ps_data proteoseeker python /home/proteoseeker/proteoseeker.py -pfp /home/ps_data/docker_params/parameters_file.txt
 ~~~
 
-<p align="justify">We attach to the container based on its ID:</p>
+### B)
+<p align="justify">By moving to "/home/ProteoSeeker" one can use ProteoSeeker as a command-line tool in the container, have access to the data in the "/home/ps_data" directory and also set an output path in the "/home/lhc_data" directory so that the results remain accessible to the local host or another container after stopping the container currently running. Some importnat files that may be accessible in the shared volume or bint mound are parameter files, an output directory to be used as the base path for the output of ProteoSeeker and possibly the Phobius installation directory.</p>
+
+<p align="justify">We attach to the container based on its name (its ID may be used alternatively):</p>
 
 ~~~bash
-sudo docker attach container_id
+sudo docker attach ps_con
 ~~~
 
 <p align="justify">At this point you should be able to access and use the bind mount from the container and the local host.</p>
@@ -513,12 +520,11 @@ sudo docker attach container_id
 
 ~~~bash
 sudo docker container ls -a
-sudo docker start container_id
-sudo docker attach container_id
+sudo docker start ps_con
+sudo docker attach ps_con
 ~~~
 
-### 3.3.3 Using ProteoSeeker and the volume or bind mount
-<p align="justify">By moving to "/home/ProteoSeeker" one can use ProteoSeeker as a command-line tool in the container, have access to the data in the "/home/lhc_data" directory and also set an output path in the "/home/lhc_data" directory so that the results remain accessible to the local host or another container after stopping the container currently running. Some importnat files that may be accessible in the shared volume or bint mound are parameter files, an output directory to be used as the base path for the output of ProteoSeeker and possibly the Phobius installation directory.</p>
+<p align="justify">ProteoSeeker is locate at "/home/proteoseeker/" and one can run it directly as a command-line tool. To retain the output the output path should be set in the volume or bind-mount.</p>
 
 # 4. Test cases
 <p align="justify">Some test cases reagarding the usage of ProteoSeeker as a command-line tool installed from source or through Docker. +++</p>
