@@ -479,10 +479,9 @@ sudo docker run --name ps_con -dit --mount source=my-vol,target=/home/ps_data pr
 sudo docker attach ps_con
 ~~~
 
-<p align="justify">If the container has stopped or exited. To list inactive containers, start the container again and attach to it use the following commands:</p>
+<p align="justify">If the container has stopped or exited, start the container and attach to it using the following commands:</p>
 
 ~~~bash
-sudo docker container ls -a
 sudo docker start ps_con
 sudo docker attach ps_con
 ~~~
@@ -495,11 +494,9 @@ sudo docker run --name ps_con -dit --mount type=bind,src="/home/user/docker_file
 sudo docker attach ps_con
 ~~~
 
-
-<p align="justify">If the container has stopped or exited. To list inactive containers, start the container again and attach to it use the following commands:</p>
+<p align="justify">If the container has stopped or exited, start the container and attach to it using the following commands:</p>
 
 ~~~bash
-sudo docker container ls -a
 sudo docker start ps_con
 sudo docker attach ps_con
 ~~~
