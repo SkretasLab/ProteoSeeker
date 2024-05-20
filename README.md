@@ -435,7 +435,7 @@ Options:
 ~~~
 
 ## 3.3 Docker Hub
-<p align="justify">There are three images available for ProteoSeeker at "giorgosfilis/proteoseeker". Each image contains the necessary files and databases for ProteoSeeker to run by its seek mode. The three images differ at the databases they contain regarding the taxonomy mode of ProteoSeeker. These three images are described below</p>
+<p align="justify">There are three images available for ProteoSeeker at "giorgosfilis/proteoseeker". Each image contains the necessary files and databases for ProteoSeeker to run by its seek mode. The three images differ at the databases they contain regarding the taxonomy mode of ProteoSeeker. These three images are described below:</p>
 
 1. Tag: **"latest"** and **"light"**. Size: **31.6 GB**. Contains the "minikraken v.1" database and only the taxonomy Kraken2 route is available.
 2. Tag: **"full"**. Size: **49.9 GB**. Contains the "minikraken v.1" database and the "Uniref 50" protein database and the taxonomy Kraken2 and taxonomy MetaBinner/COMEBin routes are available.
