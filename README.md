@@ -435,11 +435,11 @@ Options:
 ~~~
 
 ## 3.3 Docker Hub
-<p align="justify">There are three images available for ProteoSeeker at "giorgosfilis/proteoseeker". Each image contains the necessary files and databases for ProteoSeeker to run by its seek mode. The three images differ at the databases they contain regarding the taxonomy mode of ProteoSeeker:</p>
+<p align="justify">There are three images available for ProteoSeeker at "giorgosfilis/proteoseeker". Each image contains the necessary files and databases for ProteoSeeker to run by its seek mode. The three images differ at the databases they contain regarding the taxonomy mode of ProteoSeeker. These three images are described below</p>
 
-1. The first one tagged as "latest" and "light", with the size of 31.6 GB, contains the "minikraken v.1" database and only taxonomy Kraken2 route is available.
-2. The second one tagged as "full", with the size of 49.9 GB, contains the "minikraken v.1" database and the "Uniref 50" protein database and the taxonomy Kraken2 and taxonomy MetaBinner/COMEBin routes are available.
-3. The third one, tagged as "plain", with the size of 23.6 GB, contains no database associated with the taxonome mode of ProteoSeeker. For the latter image, to run the taxonomy mode of ProteoSeeker you must download and provided through a volume or bind mount (described below) a Kraken2 index or protein database to ProteoSeeker.
+1. Tag: **"latest"** and **"light"**. Size: **31.6 GB**. Contains the "minikraken v.1" database and only taxonomy Kraken2 route is available.
+2. Tag: **"full"**. Size: **49.9 GB**. Contains the "minikraken v.1" database and the "Uniref 50" protein database and the taxonomy Kraken2 and taxonomy MetaBinner/COMEBin routes are available.
+3. Tag: **"plain"**. Size: **23.6 GB** Contains no database associated with the taxonome mode of ProteoSeeker. For the latter image, to run the taxonomy mode of ProteoSeeker you must download and provided through a volume or bind mount (described below) a Kraken2 index or protein database to ProteoSeeker.
 
 <p align="justify">These distinct docker images give the opportunity to you to choose between different sizes for the image to download and ommit the usage of the taxonomy mode if such is not needed or provide a database of your own that you find more suitable.</p>
    
