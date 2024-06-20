@@ -559,3 +559,5 @@ sudo docker attach ps_con
 ## 4.1 Source
 <p align="justify">The use of ProteoSeeker installed based on its source is straightforward. Simply modify the parameters file according to your needs and run ProteoSeeker.</p>
 
+## Note
+Add suggestions on the combination of tools depending on the input/analysis
