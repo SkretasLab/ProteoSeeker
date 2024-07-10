@@ -1,6 +1,0 @@
-glycosyl hydrolase 13 family
-glycosyl hydrolase 13
-4.2.1.1
-Carbonate dehydratase
-3.2.1.1
-1,4-alpha-D-glucan glucanohydrolase
