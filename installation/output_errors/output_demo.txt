@@ -1,0 +1,1 @@
+This directory "output_errors" is meant to catch any standard output and error from the installation scripts.
