@@ -73,7 +73,7 @@ Anaconda for Linux: https://docs.anaconda.com/free/anaconda/install/linux/
 
 Miniconda for Linux: https://docs.anaconda.com/free/miniconda/miniconda-install/
 
-<p align="justify">Then download the repository, extract it, move to the installation folder and run the installation script. Follow the steps below:</p>
+<p align="justify">Open a terminal, download the repository, extract it and move to the installation folder. The terminal should be in the "base" enviroment of your conda installation. Then run the installation script. Follow the steps below:</p>
 
 ~~~bash
 git clone https://github.com/SkretasLab/ProteoSeeker.git
