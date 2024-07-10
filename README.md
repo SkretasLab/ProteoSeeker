@@ -342,7 +342,7 @@ Options:
 
 ---------General options: HMMER---------
    -st/--score-type               Str -Opt cut_ga- The scoring method used by HMMER. 'cut_ga':
-                                  HMMER will use the profile's GA gathering cutoffs to set all
+                                  HMMER will use the GA gathering cutoffs of the profile to set all
                                   thresholding. 'default': HMMER will use its default scoring
                                   method.
 
