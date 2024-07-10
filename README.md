@@ -136,20 +136,13 @@ Options:
    -pi/--protein-input            True/False -Opt: False- Indicates whether the input folder
                                   contains a file with protein sequences in FASTA format.
 
-   -as/--adapters-status          Str -Opt: "pre"- The following options are available: ide:
-                                  Adds the overrepresented sequences identified by FastQC in
-                                  the file with the adapters. "fas": The file with the
-                                  adapters will include only the overrepresented sequences
-                                  identified by FastQC. "pre": The  file with the adapters is
-                                  used without any modification.
-
    -a/--adapters                  Str -Req: adapters.fa- Path to the file with the adapters.
 
    -pdp/--protein-database-path   Str -Opt- Path to the protein database file.
 
    -kdp/--kraken-database-path    Str -Opt- Path to the kraken database folder.
 
-   -ps/--profiles-seek-path       Str -Opt- Path to the seek profile database with the
+   -psp/--profiles-seek-path      Str -Opt- Path to the seek profile database with the
                                   profiles associated with one or more protein families.
 
    -pyp/--profiles-phylo-path     Str -Opt- Path to the phylo profile database with the
@@ -162,6 +155,9 @@ Options:
    -sp/--swissprot-path           Str -Opt- Path to the Swiss-Prot protein database.
 
    -mp/--motifs-path              Str -Opt- Path to the file with the motifs.
+
+   -pfp/--parameters-file-path    Str -Opt- The path to the file with the parameters and their
+                                  values.
 
    -o/--output                    Str -Opt- Path to the output folder.
 
@@ -211,15 +207,15 @@ Options:
                                   with a frequency below this threshold is omitted.
 
 ---------General options: Pipeline---------
-   -am/--analysis-mode            Int -Opt: 3- There are three analysis modes. The analysis
+   -sr/--seek-route               Int -Opt: 3- There are three analysis modes. The analysis
                                   mode determines the type of analysis by the seek
-                                  functionality. "1": The seek functionality will only search
+                                  functionality. '1': The seek functionality will only search
                                   for proteins to be annotated which include at least one of
-                                  the profiles of the spd. "2": The seek functionality will
+                                  the profiles of the spd. '2': The seek functionality will
                                   only search for proteins to be annotated that have at least
-                                  one hit against the sfpd with a low enough e-value. "3": The
-                                  seek functionality includes both types of analysis "1" and
-                                  "2".
+                                  one hit against the sfpd with a low enough e-value. '3': The
+                                  seek functionality includes both types of analysis '1' and
+                                  '2'.
 
    -p/--paired-end                True/False -Opt: True- Indicates whether the files in the
                                   input folder are paired-end (True) or single-end (False)
@@ -231,6 +227,31 @@ Options:
    -fpd/--filter-protein-database True/False -Opt: False- Determines whether the protein
                                   database will be filtered based on protein names to create
                                   the sfpd and tfpd.
+
+   -ps/--preftech-size            Int -Opt: 20- The maximum file size to download in KB (K for
+                                  kilobytes, M for megabytes, G gigabytes).
+
+   -as/--adapters-status          Str -Opt: 'pre'- The following options are available: ide:
+                                  Adds the overrepresented sequences identified by FastQC in
+                                  the file with the adapters. 'fas': The file with the
+                                  adapters will include only the overrepresented sequences
+                                  identified by FastQC. 'pre': The  file with the adapters is
+                                  used without any modification.
+
+   -asi/--add-seek-info           True/False -Opt: True- Determines whether the results in the
+                                  TXT and the EXCEL file will only contain information for the
+                                  proteins identified through the seek mode (True) or not
+                                  (False). In case only the taxonomy mode is applied, this
+                                  option has no effect on the results.
+
+   -ati/--add-taxonomy-info       True/False -Opt: True- Determines whether the results in the
+                                  TXT and the EXCEL file will only contain information for the
+                                  proteins characterized through the taxonomy mode (True) or
+                                  not (False). The latter proteins are the ones encoded by
+                                  genes which are part of contigs that are grouped in bins,
+                                  which bins have also been associated with at least one
+                                  species. In case only the seek mode is applied, this option
+                                  has no effect on the results.
 
    -h/--help                      None -- Displays the help message.
 
@@ -256,6 +277,24 @@ Options:
                                   functionality will be based on the taxonomy analysis applied
                                   by kraken2 (True) or not (False).
 
+   -kt/--kraken-threshold         Int/Float -Opt -1: False- A list with read-filtering
+                                  threshold for the species reported by kraken. The list
+                                  should include integers of floats seperated by commads. An
+                                  integer is used as an absolute read threshold and a float is
+                                  used as a percentage threshold applied to the percentagies
+                                  reported by kraken for each species (e.g., 100 to represent
+                                  a threshold of 100 reads, 1 to represent a threshold of 1
+                                  read, 1.0 to represent a threshold of 1%, 12.5 to represent
+                                  a threshold of 12.5%). In addition, the values of -1 or -2
+                                  can be provided, to automatically set the threshold. For the
+                                  value of -1 the threshold is set specifically for non-gut
+                                  metagenomes and for the value of -2 the threshold is set
+                                  specifically for gut metagenomes. When kraken is selected a
+                                  binning process takes place based on the filtered species
+                                  from the results of kraken. The latter binning process is
+                                  based on the filtering performed based on the first
+                                  threshold value of the list (if not only one).
+
    -kmm/--kraken-memory-mapping   True/False -Opt: True- Determines whether kraken2 will use
                                   memory mapping (True) or not (False). With memory mapping
                                   the analysis performed by kraken2 is slower but is not
@@ -268,7 +307,7 @@ Options:
 ---------General options: Binning---------
    -bt/--binning-tool             Int -Opt: 1- Determines the binning tool to be used by the
                                   functionality of taxonomy, when kraken2 is set not to be
-                                  used (-km False). "1": MetaBinner. "2": COMEBin.
+                                  used (-km False). '1': MetaBinner. '2': COMEBin.
 
    -bmr/--binning-max-ram         Int -Opt: 4- The maximum number of GBs of RAM that may be
                                   utilized by binning.
@@ -302,9 +341,9 @@ Options:
                                   action has been selected (-ge 2).
 
 ---------General options: HMMER---------
-   -st/--score-type               Str -Opt cut_ga- The scoring method used by HMMER. "cut_ga":
-                                  HMMER will use the GA gathering cutoffs of the profile to set all
-                                  thresholding. "default": HMMER will use its default scoring
+   -st/--score-type               Str -Opt cut_ga- The scoring method used by HMMER. 'cut_ga':
+                                  HMMER will use the profile's GA gathering cutoffs to set all
+                                  thresholding. 'default': HMMER will use its default scoring
                                   method.
 
    -sds/--second-domain-search    True/False -Opt: True- Determines whether the screening of
@@ -329,7 +368,13 @@ Options:
 
 ---------Threads---------
    -t/--threads                   Int -Opt: 4- The maximum number of threads to be used by any
-                                  of the processes run by ProteoSeeker.
+                                  of the processes used by ProteoSeeker.
+
+   -ft/--filtering-threads        Int -Opt: -t- The maximum number of threads to be used by
+                                  the filtering process of the protein database by
+                                  ProteoSeeker. If not modified, the default value is equal to
+                                  the value given at -t. Otherwise, it overwrites the value of
+                                  -t.
 
 ---------Processes performed after---------
    -afp/--after-peprocessing      True/False -Opt: False- The pipeline start after the
@@ -340,13 +385,13 @@ Options:
                                   steps should be present in the output folder provided by the
                                   user.
 
-   -afb/--after-binning           True/False -Opt: False- The pipeline starts after binning.
-                                  The files generated by the previous steps should be present
-                                  in the output folder provided by the user.
-
    -afg/--after-gene-pred         True/False -Opt: False- The pipeline starts after gene
                                   prediction. The files generated by the previous steps should
                                   be present in the output folder provided by the user.
+
+   -afb/--after-binning           True/False -Opt: False- The pipeline starts after binning.
+                                  The files generated by the previous steps should be present
+                                  in the output folder provided by the user.
 
    -adb/--after-after-db          True/False -Opt: False- The pipeline starts after screening
                                   against the filtered protein database in both cases of the
@@ -366,6 +411,9 @@ Options:
                                   should be present in the output folder provided by the user.
 
 ---------Processes performed up to---------
+   -uts/--up-to-sra               True/False -Opt: False- The pipeline ends after downloading
+                                  and processing the sample corresponding to the SRA code.
+
    -utd/--up-to-databases         True/False -Opt: False- The pipeline ends after creating the
                                   seek and taxonomy profile databases and the seek and
                                   taxonomy filtered protein databases are created.
@@ -381,49 +429,54 @@ Options:
 
 ---------Tool enviroments---------
    -sen/--sra-env                 Str -Opt: ps_sra_tools- The conda enviroment for sra tools.
-                                  "None/none": To not use an enviroment at all.
+                                  'None/none': To not use an enviroment at all.
 
    -fen/--fastqc-env              Str -Opt: ps_fastqc- The conda enviroment for FastQC.
-                                  "None/none": To not use an enviroment at all.
+                                  'None/none': To not use an enviroment at all.
 
    -uen/--bbtools-env             Str -Opt: ps_bbtools- The conda enviroment for bbtools.
-                                  "None/none": To not use an enviroment at all.
+                                  'None/none': To not use an enviroment at all.
 
    -men/--megahit-env             Str -Opt: ps_megahit- The conda enviroment for megahit.
-                                  "None/none": To not use an enviroment at all.
+                                  'None/none': To not use an enviroment at all.
 
    -ken/--kraken-env              Str -Opt: ps_kraken- The conda enviroment for kraken2.
-                                  "None/none": To not use an enviroment at all.
+                                  'None/none': To not use an enviroment at all.
 
    -nen/--metabinner-env          Str -Opt: ps_metabinner- The conda enviroment for
-                                  MetaBinner. "None/none": To not use an enviroment at all.
+                                  MetaBinner. 'None/none': To not use an enviroment at all.
 
    -sen/--comebin-env             Str -Opt: ps_comebin- The conda enviroment for sra tools.
-                                  "None/none": To not use an enviroment at all.
+                                  'None/none': To not use an enviroment at all.
 
    -ien/--cdhit-env               Str -Opt: ps_cd_hit- The conda enviroment for CD-HIT.
-                                  "None/none": To not use an enviroment at all.
+                                  'None/none': To not use an enviroment at all.
 
    -gen/--genepred-env            Str -Opt- The conda enviroment for FragGeneScanRs.
-                                  "None/none": To not use an enviroment at all.
+                                  'None/none': To not use an enviroment at all.
 
    -hen/--hmmer-env               Str -Opt: ps_hmmer- The conda enviroment for HMMER.
-                                  "None/none": To not use an enviroment at all.
+                                  'None/none': To not use an enviroment at all.
 
    -den/--dimaond-env             Str -Opt: ps_diamond- The conda enviroment for DIMAOND
-                                  BLASTP. "None/none": To not use an enviroment at all.
+                                  BLASTP. 'None/none': To not use an enviroment at all.
 
    -ten/--taxonkit-env            Str -Opt: ps_taxonkit- The conda enviroment for taxonkit.
-                                  "None/none": To not use an enviroment at all.
+                                  'None/none': To not use an enviroment at all.
 
    -pen/--phobius-env             Str -Opt: ps_phobius- The conda enviroment for Phobius.
-                                  "None/none": To not use an enviroment at all.
+                                  'None/none': To not use an enviroment at all.
 
    -ben/--bowtie-env              Str -Opt: ps_bowtie- The conda enviroment for Bowtie2.
-                                  "None/none": To not use an enviroment at all.
+                                  'None/none': To not use an enviroment at all.
 
 ---------Tool paths---------
-   -abp/--anaconda-bin-path       Str -Opt- The path to the anaconda bin folder.
+   -adp/--anaconda-dir-path       Str -Opt- The path to the anaconda installation directory.
+                                  This directory includes directories like "bin" and "etc".
+
+   -asp/--anaconda-sh-path        Str -Opt- The path to conda.sh. If provided the path to
+                                  conda.sh will not be automatically determined by the path to
+                                  the conda installation directory (-adp).
 
    -rfp/--prefetch-path           Str -Opt- The path to the prefetch executable.
 
@@ -464,11 +517,6 @@ Options:
    -php/--phobius-folder-path     Str -Opt- The path to the folder of phobius.
 
    -bbp/--bowtie-build-path       Str -Opt- The path to the bowtie build executable.
-
-   -hfp/--bowtie-path             Str -Opt- The path to the bowtie executable.
-
-   -pfp/--parameters-file-path    Str -Opt- The path to the file with the parameters and their
-                                  values.
 ~~~
 
 ## 3.3 Docker Hub
