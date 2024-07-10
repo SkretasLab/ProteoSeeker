@@ -79,7 +79,7 @@ Miniconda for Linux: https://docs.anaconda.com/free/miniconda/miniconda-install/
 git clone https://github.com/SkretasLab/ProteoSeeker.git
 unzip ProteoSeeker.zip
 cd ProteoSeeker/installation
-bash instal.sh
+./instal.sh
 ~~~
 
 ## 2.2 Docker
