@@ -30,10 +30,10 @@ The stages of the “seek” mode of ProteoSeeker. ProteoSeeker offers two main 
 4. The reads of the FASTQ files undergo several quality control checks by FastQC.
 5. The reads are preprocessed by BBDuk and then are analyzed by FastQC for a second time.
 6. The preprocessed reads are assembled into contigs by Megahit.
-7. Protein coding regions (pcrs) are predicted in the contigs by FragGeneScanRs.
-8. CD-HIT is used to reduce the redundancy of the pcrs.
-9. The pcrs are screened against the spd with HMMER. Any pcr with at least one hit based on the latter screening is retained (set 1).
-10. The rest of the pcrs are screened against the sfpd and only those with a hit of low enough e-value are retained (set 2). In addition, set 1 is screened against the Swiss-Prot protein database.
+7. Protein coding regions (pcdrs) are predicted in the contigs by FragGeneScanRs.
+8. CD-HIT is used to reduce the redundancy of the pcdrs.
+9. The pcdrs are screened against the spd with HMMER. Any pcdr with at least one hit based on the latter screening is retained (set 1).
+10. The rest of the pcdrs are screened against the sfpd and only those with a hit of low enough e-value are retained (set 2). In addition, set 1 is screened against the Swiss-Prot protein database.
 11. Both sets are screened against all the profiles of the Pfam database with HMMER.
 12. Topology prediction are performed by Phobius.
 13. Motifs provided by the user are screened against each protein.
@@ -49,12 +49,12 @@ The stages of the “taxonomy” mode of ProteoSeeker. ProteoSeeker offers two m
 4. The reads of the FASTQ files undergo several quality control checks by FastQC.
 5. The reads are preprocessed by BBDuk and then are analyzed by FastQC for a second time.
 6. The preprocessed reads are assembled into contigs by Megahit.
-7. Protein coding regions (pcrs) are predicted in the contigs by FragGeneScanRs.
-8. CD-HIT is used to reduce the redundancy of the pcrs.
+7. Protein coding regions (pcdrs) are predicted in the contigs by FragGeneScanRs.
+8. CD-HIT is used to reduce the redundancy of the pcdrs.
 9. Bowtie2 maps the reads to the contigs.
 10. The contigs are binned based on MetaBinner or COMEBin.
-11. The pcrs are screened against the tpd with HMMER.
-12. Any pcr with at least one hit against the tpd is screened against the tfpd.
+11. The pcdrs are screened against the tpd with HMMER.
+12. Any pcdr with at least one hit against the tpd is screened against the tfpd.
 13. Species are assigned to the proteins based on the species assignment to the bins.
 14. Each bin, along with any taxa assigned to it, is quantified based on the reads mapped to its contigs.
 15. Annotation files are written.
