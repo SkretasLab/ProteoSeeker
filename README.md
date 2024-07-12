@@ -101,7 +101,7 @@ conda deactivate
    -cfp/--comebin-folder-path     Str -Opt- The path to the bin folder of COMEBin.
 ~~~
 
-<p align="justify">As an example, the second option in our system has the following value: "/home/compteam/anaconda3/envs/ps_comebin_gpu/bin/COMEBin"</p>
+<p align="justify">For example, the second option in our system has the following value: "/home/compteam/anaconda3/envs/ps_comebin_gpu/bin/COMEBin"</p>
 
 ## 2.2 Docker
 <p align="justify">To install ProteoSeeker from DockerHub as a docker image docker must be installed in your system. To install docker in Linux follow the instructions provided by the link below
