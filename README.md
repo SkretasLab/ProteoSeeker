@@ -82,7 +82,7 @@ cd ProteoSeeker/installation
 ./instal.sh
 ~~~
 
-<p align="justify">It should be noted that COMEBin can also be installed and run on a GPU. Instructions are available at: https://github.com/ziyewang/COMEBin and also:</p>
+<p align="justify">It should be noted that COMEBin can also be installed and run on a GPU. Instructions are available at: https://github.com/ziyewang/COMEBin and also below:</p>
 
 ~~~bash
 conda create -n ps_comebin_gpu
