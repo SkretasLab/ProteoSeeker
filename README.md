@@ -82,14 +82,14 @@ cd ProteoSeeker/installation
 ./instal.sh
 ~~~
 
-It should be noted that COMEBin can also be installed and run on a GPU. Instructions are available at: https://github.com/ziyewang/COMEBin. We have seen that running COMEBin with a GPU offers a great improvement in the running time of COMEBin. To use COMEBin in an enviroment with GPU installed simply change the name of the enviroment of COMEBin to the one that can run with teh GPU and also modify the path to the COMEBin directory of the enviroment. These paths refer to the following options of ProteoSeeker:
+It should be noted that COMEBin can also be installed and run on a GPU. Instructions are available at: https://github.com/ziyewang/COMEBin. We have seen that running COMEBin with a GPU offers a great improvement in the running time of COMEBin. To use COMEBin in an enviroment which allows the usage of a GPU simply provide that enrioment's name to the default name of the enviroment for COMEBin and also modify the path to the COMEBin directory of the enviroment. These paths refer to the following options of ProteoSeeker:
 ~~~bash
    -sen/--comebin-env             Str -Opt: ps_comebin- The conda enviroment for sra tools.
                                   'None/none': To not use an enviroment at all.
 
    -cfp/--comebin-folder-path     Str -Opt- The path to the bin folder of COMEBin.
 ~~~
-
+As an example, the second option in our system has the following value: "/compteam/anaconda3/envs/ps_comebin_gpu/COMEBin"
 
 ## 2.2 Docker
 <p align="justify">To install ProteoSeeker from DockerHub as a docker image docker must be installed in your system. To install docker in Linux follow the instructions provided by the link below
