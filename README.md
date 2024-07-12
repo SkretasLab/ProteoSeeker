@@ -82,7 +82,17 @@ cd ProteoSeeker/installation
 ./instal.sh
 ~~~
 
-<p align="justify">It should be noted that COMEBin can also be installed and run on a GPU. Instructions are available at: https://github.com/ziyewang/COMEBin. We have seen that running COMEBin with a GPU offers a great improvement in the running time of COMEBin. To use COMEBin in an enviroment which allows the usage of a GPU simply provide that enrioment's name to the default name of the enviroment for COMEBin and also modify the path to the COMEBin directory of the enviroment. These paths refer to the following options of ProteoSeeker:</p>
+<p align="justify">It should be noted that COMEBin can also be installed and run on a GPU. Instructions are available at: https://github.com/ziyewang/COMEBin and also:</p>
+
+~~~bash
+conda create -n ps_comebin_gpu
+conda activate ps_comebin_gpu
+conda install -c conda-forge -c bioconda comebin
+conda install pytorch pytorch-cuda=11.8 -c pytorch -c nvidia -c conda-forge
+conda deactivate
+~~~
+
+<p align="justify">We have seen that running COMEBin with a GPU offers a great improvement in the running time of COMEBin. To use COMEBin in an enviroment which allows the usage of a GPU simply provide that enrioment's name to the default name of the enviroment for COMEBin and also modify the path to the COMEBin directory of the enviroment. These paths refer to the following options of ProteoSeeker:</p>
 
 ~~~bash
    -sen/--comebin-env             Str -Opt: ps_comebin- The conda enviroment for sra tools.
