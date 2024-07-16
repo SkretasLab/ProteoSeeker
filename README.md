@@ -648,6 +648,3 @@ python taxonomy_tests/create_par_files.py
 ~~~bash
 run_1_kraken.sh
 ~~~
-
-## Note
-Add suggestions on the combination of tools depending on the input/analysis
