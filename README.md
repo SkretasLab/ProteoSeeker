@@ -643,8 +643,8 @@ python proteoseeker.py -pfp par_phylo_dbs_nr_rna_pol.txt
 python taxonomy_tests/create_par_files.py
 ~~~
 
-5. Once the Python script creates the parameter files and the Basch scripts there are four Bash scripts associated with running each sample for all methods, "run_X_all.sh", "run_X_kraken.sh", "run_X_metabinner.sh" and "run_X_comebin.sh". The first one runs all methods, the second one runs Kraken2 with every database, the third one runs MetaBinner with nr and the last one runs COMEBin with nr. The first (MetaBinner) and third (COMEBin) one can be run at any time. The MetaBinner and COMEBin methods require for the Kraken2 Basch script to have run beforehand. To run any of the Basch scripts you must be located at the installation directory of ProteoSeeker. For example:
+5. Once the Python script creates the parameter files and the Basch scripts there are four Bash scripts associated with running each sample for all methods, "run_X_all.sh", "run_X_kraken.sh", "run_X_metabinner.sh" and "run_X_comebin.sh". The first one runs all methods, the second one runs Kraken2 with every database, the third one runs MetaBinner with nr and the last one runs COMEBin with nr. The first (MetaBinner) and third (COMEBin) one can be run at any time. The MetaBinner and COMEBin methods require for the Kraken2 Basch script to have run beforehand. To run any of the Basch scripts you must be located at the installation directory of ProteoSeeker. For example, after activating ps_env:
 
 ~~~bash
-run_1_kraken.sh
+./taxonomy_tests/run_1_kraken.sh
 ~~~
