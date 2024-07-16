@@ -648,3 +648,15 @@ python taxonomy_tests/create_par_files.py
 ~~~bash
 ./taxonomy_tests/run_1_kraken.sh
 ~~~
+
+6. To extract the statistics from the results of ProteoSeeker for the taxonomy evaluation all the methods from at least one sample must have run. The Bash script will analyze and provide output (plots, statistics etc.) for any number of samples analyzed based on all methods. To run the Bash script simply move to the directory "taxonomy_tests_analysis" and run the Script:
+
+~~~bash
+./analyze_results.sh
+~~~
+
+,or select any of the analysis commands from the "analyze_commands.txt" file and run it based on the Python script. For example:
+
+~~~ bash
+python ps_br_analysis.py -p /mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/results_16_07_2024 -o analysis_plots_general -m k8,k16,k72,k8_ng,k16_ng,k72_ng,cnr,mnr
+~~~
