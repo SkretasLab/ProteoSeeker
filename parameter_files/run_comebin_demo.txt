@@ -1,0 +1,50 @@
+#!/bin/bash
+set -e
+
+./taxonomy_tests/setup.sh
+
+K_8_PATH="${HDD_PATH}/sample_X/sample_X_kraken_8"
+C_NR_PATH="${PS_PATH}/results/sample_X/sample_X_comebin_nr"
+
+if [ ! -d "${PS_PATH}/results/sample_X" ]; then
+  mkdir "${PS_PATH}/results/sample_X"
+fi
+
+if [ ! -d "${HDD_PATH}/sample_X/" ]; then
+  mkdir "${HDD_PATH}/sample_X/"
+fi
+
+# Datbase: nr
+if [ -d "${K_8_PATH}" ]; then
+  if [ ! -d "${C_NR_PATH}" ]; then
+    mkdir "${C_NR_PATH}"
+    mkdir "${C_NR_PATH}/contigs"
+  fi
+  cp "${K_8_PATH}/log_input.txt" "${C_NR_PATH}"
+  cp "${K_8_PATH}/log_output.txt" "${C_NR_PATH}"
+  cp "${K_8_PATH}/identified_adapters.fa" "${C_NR_PATH}"
+  cp "${K_8_PATH}/read_information.txt" "${C_NR_PATH}"
+  cp -r "${K_8_PATH}/summaries_errors" "${C_NR_PATH}"
+  cp -r "${K_8_PATH}/fastqc_results" "${C_NR_PATH}"
+  cp -r "${K_8_PATH}/trimmed_results" "${C_NR_PATH}"
+  cp -r "${K_8_PATH}/megahit_results" "${C_NR_PATH}"
+  cp -r "${K_8_PATH}/gene_results" "${C_NR_PATH}"
+
+  # Contigs
+  cp "${K_8_PATH}/contigs/contigs.fa" "${C_NR_PATH}/contigs"
+  cp "${K_8_PATH}/contigs/contigs_formated.fna" "${C_NR_PATH}/contigs"
+
+  # Run nr
+  python -u proteoseeker.py -pfp "${PS_PATH}/parameter_files/X/par_sX_phylo_c_nr.txt" &> "${PS_PATH}/results/sample_X/stdoe_sX_cnr.txt"
+
+  # Move nr
+  mv "${C_NR_PATH}" "${HDD_PATH}/sample_X/"
+  mkdir "${C_NR_PATH}"
+  mkdir "${C_NR_PATH}/comebin_results"
+  if [ -f "${HDD_PATH}/sample_X/sample_X_comebin_nr/comebin_results/b_summary_info_comebin.tsv" ]; then
+    cp "${HDD_PATH}/sample_X/sample_X_comebin_nr/comebin_results/b_summary_info_comebin.tsv" "${C_NR_PATH}/comebin_results/"
+  fi
+  if [ -f "${HDD_PATH}/sample_X/sample_X_comebin_nr/time_analysis.tsv" ]; then
+    cp "${HDD_PATH}/sample_X/sample_X_comebin_nr/time_analysis.tsv" "${C_NR_PATH}/comebin_results/"
+  fi
+fi
