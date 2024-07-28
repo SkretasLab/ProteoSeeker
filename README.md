@@ -75,8 +75,14 @@ Anaconda for Linux: https://docs.anaconda.com/free/anaconda/install/linux/
 
 Miniconda for Linux: https://docs.anaconda.com/free/miniconda/miniconda-install/
 
-### 2. git, gunzip:
-These packages should be installed in the base enviroment of Anaconda.
+### 2. git, wget, gzip, tar:
+These packages should be installed in the base enviroment of Anaconda or the enviroment from which the installation of ProteoSeeker will be initiated. In general, only git will need to be installed, the other packages are part of the base enviroment.
+~~~bash
+conda install anaconda::git
+conda install anaconda::wget
+conda install conda-forge::gzip
+conda install conda-forge::tar
+~~~
 
 ### Install
 <p align="justify">Open a terminal, download the repository, extract it and move to the installation folder. Make sure that all shell scripts in the installation directory can be executed as programs. If not, change the permissions as to allow for their execution. The terminal should be in the "base" enviroment of your conda installation. Then run the installation script. Depending on your internet connection it might take from 5 to 30 minutes for the installation to be completed. Follow the steps below:</p>
