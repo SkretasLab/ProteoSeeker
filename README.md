@@ -88,7 +88,7 @@ conda deactivate
 ~~~
 
 ### Install
-<p align="justify">Open a terminal, download the repository, extract it and move to the installation folder. Make sure that all shell scripts in the installation directory can be executed as programs. If not, change the permissions as to allow for their execution. The terminal should be in the "base" enviroment of your conda installation. Then run the installation script. Depending on your internet connection it might take from 5 to 30 minutes for the installation to be completed. Follow the steps below:</p>
+<p align="justify">Open a terminal, download the repository, extract it and move to the installation folder. Make sure that all shell scripts in the installation directory can be executed as programs. If not, change the permissions as to allow for their execution. The conda enviroment where the installation will take place should be activate (whether it is the base or another enviroment). Then run the installation script. Depending on your internet connection it might take from 5 to 30 minutes for the installation to be completed. Follow the steps below:</p>
 
 ~~~bash
 git clone https://github.com/SkretasLab/ProteoSeeker.git
@@ -96,7 +96,9 @@ unzip ProteoSeeker.zip
 cd ProteoSeeker
 sudo chmod -R 777 installation
 cd installation
+conda activate ps_install
 ./instal.sh
+conda deactivate
 ~~~
 
 <p align="justify">It should be noted that COMEBin can also be installed and run on a GPU. Instructions are available at: https://github.com/ziyewang/COMEBin and also below:</p>
