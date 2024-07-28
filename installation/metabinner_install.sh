@@ -26,7 +26,7 @@ conda deactivate
 conda activate ps_metabinner
 if ! [[ $(which run_metabinner.sh) ]]; then
     conda deactivate
-    echo "MetaBinner was not installed successfully. Trying installation based on its git reporisory."
+    echo "MetaBinner was not installed successfully. Trying installing MetaBinner based on its git reporisory."
     # Create the ps_tools dir if needed.
     if [ ! -d "${PS_TOOLS_DIR}" ]; then
       mkdir "${PS_TOOLS_DIR}"

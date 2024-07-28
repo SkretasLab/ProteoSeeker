@@ -20,17 +20,17 @@ conda activate ps_bbtools
 conda install bioconda::bbmap -y
 # Check if bbduk.sh was installed. If not, try installation from its git repository.
 if [[ $(which bbduk.sh) ]]; then
-    echo "bbduk.sh was installed successfully."
+    echo "bbtools were installed successfully."
 fi
 conda deactivate
 
 # Trying another conda package.
 conda activate ps_bbtools
 if ! [[ $(which bbduk.sh) ]]; then
-    echo "bbduk.sh was not installed successfully. Trying another approach."
+    echo "bbtools were not installed successfully. Trying installing bbtools from the agbiome channel."
     conda install agbiome::bbtools -y
     if [[ $(which bbduk.sh) ]]; then
-        echo "bbduk.sh was installed successfully."
+        echo "bbtools were installed successfully."
     fi
 fi
 conda deactivate
@@ -55,9 +55,9 @@ if ! [[ $(which bbduk.sh) ]]; then
     tar -xvzf "${BBTOOLS_DN_TG_FILE}" -C "${BBTOOLS_DIR}"
     # Check for the shell script.
     if [[ -f "${BBDUK_SH_FILE}" ]]; then
-      echo "bbduk.sh was installed successfully."
+      echo "bbtools were installed successfully."
     else
-      echo "bbduk.sh was not installed successfully."
+      echo "bbtools were not installed successfully."
     fi
 else
     conda deactivate
