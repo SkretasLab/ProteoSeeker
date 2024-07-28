@@ -73,12 +73,14 @@ Anaconda for Linux: https://docs.anaconda.com/free/anaconda/install/linux/
 
 Miniconda for Linux: https://docs.anaconda.com/free/miniconda/miniconda-install/
 
-<p align="justify">Open a terminal, download the repository, extract it and move to the installation folder. The terminal should be in the "base" enviroment of your conda installation. Then run the installation script. Depending on your internet connection it might take from 5 to 30 minutes for the installation to be completed. Follow the steps below:</p>
+<p align="justify">Open a terminal, download the repository, extract it and move to the installation folder. Make sure that all shell scripts in the installation directory can be executed as programs. If not, change the permissions as to allow for their execution. The terminal should be in the "base" enviroment of your conda installation. Then run the installation script. Depending on your internet connection it might take from 5 to 30 minutes for the installation to be completed. Follow the steps below:</p>
 
 ~~~bash
 git clone https://github.com/SkretasLab/ProteoSeeker.git
 unzip ProteoSeeker.zip
-cd ProteoSeeker/installation
+cd ProteoSeeker
+sudo chmod -R 777 installation
+cd installation
 ./instal.sh
 ~~~
 
