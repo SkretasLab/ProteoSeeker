@@ -76,12 +76,15 @@ Anaconda for Linux: https://docs.anaconda.com/free/anaconda/install/linux/
 Miniconda for Linux: https://docs.anaconda.com/free/miniconda/miniconda-install/
 
 ### 2. git, wget, gzip, tar:
-These packages should be installed in the base enviroment of Anaconda or the enviroment from which the installation of ProteoSeeker will be initiated. In general, only git will need to be installed, the other packages are part of the base enviroment.
+These packages should be installed in the enviroment from which the installation of ProteoSeeker will be initiated. It is suggested that a new enviroment is created to install these tools rather than insatlling them in the base enviroment. In general, only git will need to be installed, the other packages are part of the base enviroment.
 ~~~bash
+conda create -n ps_install
+conda activate ps_install
 conda install anaconda::git
 conda install anaconda::wget
 conda install conda-forge::gzip
 conda install conda-forge::tar
+conda deactivate
 ~~~
 
 ### Install
