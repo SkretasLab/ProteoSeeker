@@ -29,14 +29,16 @@ conda activate ps_bbtools
 if ! [[ $(which bbduk.sh) ]]; then
     echo "bbduk.sh was not installed successfully. Trying another approach."
     conda install agbiome::bbtools -y
-fi
-if [[ $(which bbduk.sh) ]]; then
-    echo "bbduk.sh was installed successfully."
+    if [[ $(which bbduk.sh) ]]; then
+        echo "bbduk.sh was installed successfully."
+    fi
 fi
 conda deactivate
 
 # Trying by source.
+conda activate ps_bbtools
 if ! [[ $(which bbduk.sh) ]]; then
+    conda deactivate
     # Create the ps_tools dir if needed.
     if [ ! -d "${PS_TOOLS_DIR}" ]; then
       mkdir "${PS_TOOLS_DIR}"
@@ -53,8 +55,10 @@ if ! [[ $(which bbduk.sh) ]]; then
     tar -xvzf "${BBTOOLS_DN_TG_FILE}" -C "${BBTOOLS_DIR}"
     # Check for the shell script.
     if [[ -f "${BBDUK_SH_FILE}" ]]; then
-      echo "bbduk.sh was intalled successfully."
+      echo "bbduk.sh was installed successfully."
     else
-      echo "bbduk.sh was not intalled successfully."
+      echo "bbduk.sh was not installed successfully."
     fi
+else
+    conda deactivate
 fi

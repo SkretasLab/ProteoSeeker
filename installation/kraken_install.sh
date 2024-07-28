@@ -23,7 +23,9 @@ if [[ $(which kraken2) ]]; then
 fi
 conda deactivate
 
+conda activate ps_kraken
 if ! [[ $(which kraken2) ]]; then
+    conda deactivate
     echo "Kraken2 was not installed successfully. Trying installing Kraken2 based on its git reporisory."
     # Create the ps_tools dir if needed.
     if [ ! -d "${PS_TOOLS_DIR}" ]; then
@@ -54,5 +56,7 @@ if ! [[ $(which kraken2) ]]; then
     else
       echo "kraken2 was not installed successfully."
     fi
+    conda deactivate
+else
     conda deactivate
 fi

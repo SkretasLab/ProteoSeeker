@@ -23,7 +23,9 @@ fi
 conda deactivate
 
 # Trying by source.
+conda activate ps_comebin
 if ! [[ $(which run_comebin.sh) ]]; then
+    conda deactivate
     echo "COMEBin was not installed successfully. Trying installation based on it git reporisory."
     # Create the ps_tools dir if needed.
     if [ ! -d "${PS_TOOLS_DIR}" ]; then
@@ -37,4 +39,6 @@ if ! [[ $(which run_comebin.sh) ]]; then
     else
       echo "COMEBin was not installed successfully."
     fi
+else
+    conda deactivate
 fi
