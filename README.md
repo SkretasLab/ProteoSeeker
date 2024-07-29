@@ -119,14 +119,7 @@ conda install pytorch pytorch-cuda=11.8 -c pytorch -c nvidia -c conda-forge
 conda deactivate
 ~~~
 
-### Removing enviroments and specific directories
-<p align="justify">To remove the enviroments, all their files and the directories which enviroments and directories were created during the installation of ProteoSeeker (by running the "./install.sh" script) you can run the following script in the installation directory from the installation directory. You can then delete the main directory of ProteoSeeker and all enviroments and files associated with installing ProteoSeeker will have been removed by your system.</p>
-
-~~~bash
-./remove.sh
-~~~
-
-<p align="justify">We have seen that running COMEBin with a GPU offers a great improvement in the running time of COMEBin. To use COMEBin in an enviroment which allows the usage of a GPU simply provide that enrioment's name to the default name of the enviroment for COMEBin and also modify the path to the COMEBin directory of the enviroment. These paths refer to the following options of ProteoSeeker:</p>
+<p align="justify">We have observed that running COMEBin with a GPU offers a great improvement in the running time of COMEBin. To use COMEBin in an enviroment which allows the usage of a GPU simply provide that enrioment's name to the default name of the enviroment for COMEBin and also modify the path to the COMEBin directory of the enviroment. These paths refer to the following options of ProteoSeeker:</p>
 
 ~~~bash
    -sen/--comebin-env             Str -Opt: ps_comebin- The conda enviroment for sra tools.
@@ -136,6 +129,13 @@ conda deactivate
 ~~~
 
 <p align="justify">For example, the second option in our system has the following value: "/home/compteam/anaconda3/envs/ps_comebin_gpu/bin/COMEBin"</p>
+
+### Removing installation enviroments, files and diretories
+<p align="justify">To remove the enviroments, all their files and the directories which enviroments and directories were created during the installation of ProteoSeeker (by running the "./install.sh" script) you can run the script below, in the installation directory from the installation directory. You can then delete the main directory of ProteoSeeker and all enviroments and files associated with installing ProteoSeeker will have been removed by your system.</p>
+
+~~~bash
+./remove.sh
+~~~
 
 ## 2.2 Docker
 <p align="justify">To install ProteoSeeker from DockerHub as a docker image docker must be installed in your system. To install docker in Linux follow the instructions provided by the link below
