@@ -87,7 +87,7 @@ conda install conda-forge::tar
 
 <p align="justify">In addition, the name of the custom enviroment must replace the name of the enviroment ("ps_install") in line 14 ("conda activate ps_install") in the file "install.sh". It is suggested not to perform these changes if possible and let the installation process handle the creation and usage of the installation enviroment for these packages.</p>
 
-### Install
+### Installation
 <p align="justify">Open a terminal, download the repository, extract it and move to the installation folder. Make sure that all shell scripts in the installation directory can be executed as programs. If not, change the permissions as to allow for their execution. The conda enviroment where the installation will take place should be activate (whether it is the base or another enviroment). Then run the installation script. Depending on your internet connection it might take from 5 to 30 minutes for the installation to be completed. Follow the steps below:</p>
 
 ~~~bash
