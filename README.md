@@ -101,6 +101,13 @@ conda activate ps_install
 conda deactivate
 ~~~
 
+### Parameter files
+<p align="justify">You can create a set of "template" parameter files which can be used to run the "seek" or the "taxonomy" mode or both modes of ProteoSeeker based on the taxonomy route of Kraken2 or COMEBin/MetaBinner by running the following script in the installation directory from the same directory. This set of files is generated in the main directory of ProteoSeeker.</p>
+
+~~~bash
+./parameter_files.sh
+~~~
+
 <p align="justify">It should be noted that COMEBin can also be installed and run on a GPU. Instructions are available at: https://github.com/ziyewang/COMEBin and also below:</p>
 
 ~~~bash
