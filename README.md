@@ -68,7 +68,7 @@ The stages of the “taxonomy” mode of ProteoSeeker. ProteoSeeker offers two m
 # 2. Installation
 ## 2.1 Source code
 ### Prerequisites
-### Anaconda:
+### 1. Anaconda:
 <p align="justify">To install ProteoSeeker from source code, conda (from Anaconda or Miniconda) must be installed and activated in your system. Instructions for installing Anaconda and Miniconda in Linux are provided in the following links:</p>
 
 Anaconda for Linux: https://docs.anaconda.com/free/anaconda/install/linux/
