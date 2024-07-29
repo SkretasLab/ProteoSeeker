@@ -654,10 +654,10 @@ sudo docker attach ps_con
 <p align="justify">ProteoSeeker is locate at "/home/proteoseeker/" and one can run it directly as a command-line tool. To retain the output the output path should be set in the volume or bind-mount.</p>
 
 # 4. Test cases
-## 4.1 Seek and taxonomy evaluation
+## 4.1 Seek and taxonomy modes evaluation
 <p align="justify">The seek and taxonomy mode of ProteoSeeker can be tested on specific samples which have been analyzed by our lab in the process of discovering novel enzymes with desirable characteristics. The following samples were used for these analyses: "", "" and "". More details about the datasets can be found in the [MANUSCRIPT - UNDER REVIEW]. To analyze the results from these analyses you can run the "analyze_seek_tax_results.sh" script from the "tests/seek_tax_results_analysis" directory which utilizes a Python script from the same directory. The latter script uses an input file which contains information about the species of the best hit of each of the evaluated proteins against the nr database through BLASTP. The best hit is identified based on the lowest e-vaalue amongst all the hits."</p>
 
-## 4.2 Taxonomy evaluation
+## 4.2 Taxonomy mode evaluation
 <p align="justify">To run ProteoSeeker on the 19 benchmark datasets which correspond to the gold standard populations and which were used to evaluate the taxonomy mode of ProteoSeeker, the folowing steps must be followed.</p>
 
 1. Create the database for the taxonomy route of COMEBin/MetaBinner. Copy the parameter file "taxonomy_tests/dbs/par_phylo_dbs_nr_rna_pol.txt" to the ProteoSeeker directory. Modify the values for the parameters for the path of the protein database (nr database) and the output path. Then, activate "ps_env" and run:
