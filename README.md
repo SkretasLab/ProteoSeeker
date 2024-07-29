@@ -108,6 +108,7 @@ conda deactivate
 ./parameter_files.sh
 ~~~
 
+### COMEBin - GPU
 <p align="justify">It should be noted that COMEBin can also be installed and run on a GPU. Instructions are available at: https://github.com/ziyewang/COMEBin and also below:</p>
 
 ~~~bash
