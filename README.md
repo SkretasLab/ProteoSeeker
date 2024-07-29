@@ -68,7 +68,7 @@ The stages of the “taxonomy” mode of ProteoSeeker. ProteoSeeker offers two m
 # 2. Installation
 ## 2.1 Source code
 ### Prerequisites
-### 1. Anaconda:
+### Anaconda:
 <p align="justify">To install ProteoSeeker from source code, conda (from Anaconda or Miniconda) must be installed and activated in your system. Instructions for installing Anaconda and Miniconda in Linux are provided in the following links:</p>
 
 Anaconda for Linux: https://docs.anaconda.com/free/anaconda/install/linux/
@@ -76,7 +76,7 @@ Anaconda for Linux: https://docs.anaconda.com/free/anaconda/install/linux/
 Miniconda for Linux: https://docs.anaconda.com/free/miniconda/miniconda-install/
 
 ### 2. git, wget, gzip, tar:
-These packages should be installed in the enviroment from which the installation of ProteoSeeker will be initiated. It is suggested that a new enviroment is created to install these tools rather than insatlling them in the base enviroment. In general, only git will need to be installed, the other packages are part of the base enviroment.
+These packages are handled by the installation process of ProteoSeeker and are installed in a enviroment from which the installation of ProteoSeeker will be initiated. A new enviroment called "ps_install" is created, used to download and collect the latter packages. If one wants to use a custom conda enviroment to base upon it the installation of ProteoSeeker, the latter enviroment should contain the following:
 ~~~bash
 conda create -n ps_install
 conda activate ps_install
@@ -86,6 +86,7 @@ conda install conda-forge::gzip
 conda install conda-forge::tar
 conda deactivate
 ~~~
+In addition, the name of the custom enviroment must replace the name of the enviroment ("ps_install") in line 14 ("conda activate ps_install") in the file "install.sh". It is suggested not to perform these changes if possible and let the installation process handle the creation and usage of the installation enviroment.
 
 ### Install
 <p align="justify">Open a terminal, download the repository, extract it and move to the installation folder. Make sure that all shell scripts in the installation directory can be executed as programs. If not, change the permissions as to allow for their execution. The conda enviroment where the installation will take place should be activate (whether it is the base or another enviroment). Then run the installation script. Depending on your internet connection it might take from 5 to 30 minutes for the installation to be completed. Follow the steps below:</p>
