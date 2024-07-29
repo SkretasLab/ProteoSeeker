@@ -654,7 +654,10 @@ sudo docker attach ps_con
 <p align="justify">ProteoSeeker is locate at "/home/proteoseeker/" and one can run it directly as a command-line tool. To retain the output the output path should be set in the volume or bind-mount.</p>
 
 # 4. Test cases
-## 4.1 Taxonomy mode
+## 4.1 Seek and taxonomy evaluation
+<p align="justify">The seek and taxonomy mode of ProteoSeeker can be tested on specific samples which have been analyzed by our lab in the process of discovering novel enzymes with desirable characteristics. The following samples were used for these analyses: "", "" and "". More details about the datasets can be found in the [MANUSCRIPT - UNDER REVIEW]. To analyze the results from these analyses you can run the "analyze_seek_tax_results.sh" script from the "tests/seek_tax_results_analysis" directory which utilizes a Python script from the same directory. The latter script uses an input file which contains information about the species of the best hit of each of the evaluated proteins against the nr database through BLASTP. The best hit is identified based on the lowest e-vaalue amongst all the hits."</p>
+
+## 4.2 Taxonomy evaluation
 <p align="justify">To run ProteoSeeker on the 19 benchmark datasets which correspond to the gold standard populations and which were used to evaluate the taxonomy mode of ProteoSeeker, the folowing steps must be followed.</p>
 
 1. Create the database for the taxonomy route of COMEBin/MetaBinner. Copy the parameter file "taxonomy_tests/dbs/par_phylo_dbs_nr_rna_pol.txt" to the ProteoSeeker directory. Modify the values for the parameters for the path of the protein database (nr database) and the output path. Then, activate "ps_env" and run:
@@ -674,7 +677,7 @@ python proteoseeker.py -pfp par_phylo_dbs_nr_rna_pol.txt
 4. Run the Python script which creates the parameters files for ProteoSeeker and the Bash script files to be used for running the taxonomy evaluation.
 
 ~~~bash
-python taxonomy_tests/create_par_files.py
+python parameter_files/create_par_files.py
 ~~~
 
 5. Once the Python script creates the parameter files and the Basch scripts there are four Bash scripts associated with running each sample for all methods, "run_X_all.sh", "run_X_kraken.sh", "run_X_metabinner.sh" and "run_X_comebin.sh". The first one runs all methods, the second one runs Kraken2 with every database, the third one runs MetaBinner with nr and the last one runs COMEBin with nr. The first (MetaBinner) and third (COMEBin) one can be run at any time. The MetaBinner and COMEBin methods require for the Kraken2 Basch script to have run beforehand. To run any of the Basch scripts you must be located at the installation directory of ProteoSeeker. For example, after activating ps_env:
@@ -683,14 +686,10 @@ python taxonomy_tests/create_par_files.py
 ./taxonomy_tests/run_1_kraken.sh
 ~~~
 
-6. To extract the statistics from the results of ProteoSeeker for the taxonomy evaluation all the methods from at least one sample must have run. The Bash script will analyze and provide output (plots, statistics etc.) for any number of samples analyzed based on all methods. To run the Bash script simply move to the directory "taxonomy_tests_analysis" and run the Script:
+6. To extract the statistics from the results of ProteoSeeker for the taxonomy evaluation all the methods from at least one sample must have run. The Bash script will analyze and provide output (plots, statistics etc.) for any number of samples analyzed based on all methods. To run the script simply move to the directory "/tests/tax_results_analysis" and run the following:
 
 ~~~bash
-./analyze_results.sh
+./tests/tax_results_analysis/analyze_tax_results.sh
 ~~~
 
-,or select any of the analysis commands from the "analyze_commands.txt" file and run it based on the Python script. For example:
-
-~~~ bash
-python ps_br_analysis.py -p /mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/results_16_07_2024 -o analysis_plots_general -m k8,k16,k72,k8_ng,k16_ng,k72_ng,cnr,mnr
-~~~
+The "analyze_tax_results_spec.sh" can be used for secondry analysis of different subsets of the results. This script is located also in the directory "/tests/tax_results_analysis".
