@@ -39,7 +39,7 @@ The stages of the “seek” mode of ProteoSeeker. ProteoSeeker offers two main 
 13. Motifs provided by the user are screened against each protein.
 14. The protein family of each protein is predicted. 15. Annotation files are written.
 
-The stages of the “taxonomy” mode of ProteoSeeker. ProteoSeeker offers two main functionalities applied through the “seek” mode (blue) and the “taxonomy” mode (green). The taxonomic analysis can be performed by either of two”routes” of analysis. The fist one is based on binning by COMEBin or MetaBinner (purple) and the second one is based on the taxonomic analysis of reads from Kraken2 (orange). The possible types of input for ProteoSeeker include an SRA code, reads in FASTQ files, contigs or genomes or proteins if FASTA format. If an SRA code is provided the corresponding SRA file and FASTQ files are generated.
+The stages of the “taxonomy” mode of ProteoSeeker. ProteoSeeker offers two main functionalities applied through the “seek” mode (blue) and the “taxonomy” mode (green). The taxonomic analysis can be performed by either of two”routes” of analysis. The fist one is based on binning based on the taxonomic analysis of reads from Kraken2 (orange) and the second one is performed by COMEBin or MetaBinner (purple). The possible types of input for ProteoSeeker include an SRA code, reads in FASTQ files, contigs or genomes or proteins if FASTA format. If an SRA code is provided the corresponding SRA file and FASTQ files are generated.
 
 ![ProteoSeeker Taxonomy Functionality](images/Figure_3.png)
 
@@ -578,7 +578,7 @@ Options:
 <p align="justify">There are three images available for ProteoSeeker at "giorgosfilis/proteoseeker". Each image contains the necessary files and databases for ProteoSeeker to run by its seek mode. The three images differ at the databases they contain regarding the taxonomy mode of ProteoSeeker. These three images are described below:</p>
 
 1. Tag: **"latest"** and **"light"**. Size: **31.6 GB**. Contains the "minikraken v.1" database and only the taxonomy Kraken2 route is available.
-2. Tag: **"full"**. Size: **49.9 GB**. Contains the "minikraken v.1" database and the "Uniref 50" protein database and the taxonomy Kraken2 and taxonomy MetaBinner/COMEBin routes are available.
+2. Tag: **"full"**. Size: **49.9 GB**. Contains the "minikraken v.1" database and the "Uniref 50" protein database and the taxonomy Kraken2 and taxonomy COMEBin/MetaBinner routes are available.
 3. Tag: **"plain"**. Size: **23.6 GB** Contains no database associated with the taxonome mode of ProteoSeeker. For the latter image, to run the taxonomy mode of ProteoSeeker you must download and provided through a volume or bind mount (described below) a Kraken2 index or protein database to ProteoSeeker.
 
 <p align="justify">These distinct docker images give the opportunity to you to choose between different sizes for the image to download and ommit the usage of the taxonomy mode if such is not needed or provide a database of your own that you find more suitable.</p>
