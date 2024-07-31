@@ -76,7 +76,7 @@ Anaconda for Linux: https://docs.anaconda.com/free/anaconda/install/linux/
 Miniconda for Linux: https://docs.anaconda.com/free/miniconda/miniconda-install/
 
 ### Dependencies
-<p align="justify">All dependencies, except for the protein database, are automatically installed by the installation process of ProteoSeeker.</p>
+<p align="justify">All dependencies, except for the protein database, are automatically installed by the installation process of ProteoSeeker. You can skip this part if you want to go straight to the installation instructions but do read the information related to the protein database which is not installed automatically by the installation process of ProteoSeeker.</p>
 
 #### 1. git, wget, gzip, tar:
 <p align="justify">These packages are handled by the installation process of ProteoSeeker and are installed in a enviroment from which the installation of ProteoSeeker will be initiated. A new enviroment called "ps_install" is created, used to download and collect the latter packages. If one wants to use a custom conda enviroment to base upon it the installation of ProteoSeeker, the latter enviroment should contain the following:</p>
