@@ -126,9 +126,7 @@ unzip ProteoSeeker.zip
 cd ProteoSeeker
 sudo chmod -R 777 installation
 cd installation
-conda activate ps_install
 ./instal.sh
-conda deactivate
 ~~~
 
 ### Parameter files
