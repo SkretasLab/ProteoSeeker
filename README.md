@@ -122,9 +122,8 @@ conda install conda-forge::tar
 
 ~~~bash
 git clone https://github.com/SkretasLab/ProteoSeeker.git
-unzip ProteoSeeker.zip
-cd ProteoSeeker
-sudo chmod -R 777 installation
+cd ProteoSeeker_main
+sudo chmod -R 755 installation
 cd installation
 ./instal.sh
 ~~~
