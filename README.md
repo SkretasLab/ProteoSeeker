@@ -681,15 +681,16 @@ sudo docker attach ps_con
 <p align="justify">ProteoSeeker is locate at "/home/proteoseeker/" and one can run it directly as a command-line tool. To retain the output the output path should be set in the volume or bind-mount.</p>
 
 # 4. Test cases
-<p align="justify">All tests for the evaluation were run based on the ProteoSeeker version 1.0.0 and the tool versions described in it, which refer to the current release of ProteoSeeker. The collection dates for the databases used in the evaluation are the following:</p>
+<p align="justify">All tests for the evaluation were run based on the ProteoSeeker version 1.0.0 and the tool versions described in it, which refer to the current release of ProteoSeeker. The collection dates for the databases used in the evaluation are found below. In addition, we also mention the download date of the flat file for the reviewed (Swiss-Prot) proteins of the Uniprot database, which was used to collect information about protein families, protein Pfam domains, protein names, protein lengths and their associations.</p>
 
 1. Pfam database: 29/05/2024
 2. Swiss-Prot/UniprotKB database: 29/05/2024
 3. GTDB taxonomy taxdump files: 29/05/2024
-4. Kraken 2/Bracken Refseq indexes: Collection Standard-8: 05/06/2024 (prior to the update of the same date)
-5. Kraken 2/Bracken Refseq indexes: Collection Standard-16: 05/06/2024 (prior to the update of the same date)
-6. Kraken 2/Bracken Refseq indexes: Collection Standard: 05/06/2024 (prior to the update of the same date)
+4. Kraken 2/Bracken Refseq indexes: Collection Standard-8: 05/06/2024 (prior to the update)
+5. Kraken 2/Bracken Refseq indexes: Collection Standard-16: 05/06/2024 (prior to the update)
+6. Kraken 2/Bracken Refseq indexes: Collection Standard: 05/06/2024 (prior to the update)
 7. nr database: 27/06/2024
+8. Reviewed (Swiss-Prot) flat file: 04/08/2023
 
 ## 4.1 Seek and taxonomy modes evaluation
 <p align="justify">The seek and taxonomy mode of ProteoSeeker can be tested on specific samples which have been analyzed by our lab in the process of discovering novel enzymes with desirable characteristics. The following samples were used for these analyses: "+++", "+++" and "+++". More details about the datasets can be found in the [MANUSCRIPT - UNDER REVIEW]. To analyze the results from these analyses you can run the "analyze_seek_tax_results.sh" script from the "tests/seek_tax_results_analysis" directory which utilizes a Python script from the same directory. The latter script uses an input file which contains information about the species of the best hit of each of the evaluated proteins against the nr database through BLASTP. The best hit is identified based on the lowest e-vaalue amongst all the hits."</p>
