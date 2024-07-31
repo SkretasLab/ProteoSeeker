@@ -68,14 +68,17 @@ The stages of the “taxonomy” mode of ProteoSeeker. ProteoSeeker offers two m
 # 2. Installation
 ## 2.1 Source code
 ### Prerequisites
-### 1. Anaconda:
+#### 1. Anaconda:
 <p align="justify">To install ProteoSeeker from source code, conda (from Anaconda or Miniconda) must be installed and activated in your system. Instructions for installing Anaconda and Miniconda in Linux are provided in the following links:</p>
 
 Anaconda for Linux: https://docs.anaconda.com/free/anaconda/install/linux/
 
 Miniconda for Linux: https://docs.anaconda.com/free/miniconda/miniconda-install/
 
-### 2. git, wget, gzip, tar:
+### Dependencies
+<p align="justify">All dependencies, except for the protein database, are automatically installed by the installation process of ProteoSeeker.</p>
+
+#### 1. git, wget, gzip, tar:
 <p align="justify">These packages are handled by the installation process of ProteoSeeker and are installed in a enviroment from which the installation of ProteoSeeker will be initiated. A new enviroment called "ps_install" is created, used to download and collect the latter packages. If one wants to use a custom conda enviroment to base upon it the installation of ProteoSeeker, the latter enviroment should contain the following:</p>
    
 ~~~bash
@@ -86,6 +89,30 @@ conda install conda-forge::tar
 ~~~
 
 <p align="justify">In addition, the name of the custom enviroment must replace the name of the enviroment ("ps_install") in line 14 ("conda activate ps_install") in the file "install.sh". It is suggested not to perform these changes if possible and let the installation process handle the creation and usage of the installation enviroment for these packages.</p>
+
+#### 2. Pipeline tools
+<p align="justify">These tools are all aumatically installed by the installation process of ProteoSeeker or have already been set in the Docker image of ProteoSeeker. The spcific versions of these tools which are during ProteoSeeker's installation are the ones also used for the evaluation of the "seek" and "taxonomy" modes of ProteoSeeker. These tools and their versions are the following:</p>
+
+1. bbmap: 39.01
+2. bowtie2: 2.5.3
+3. cd-hit: 4.8.1
+4. comebin: 1.0.4
+5. diamond: 2.1.9
+6. fastqc 0.12.1
+7. hmmer: 3.4
+8. kraken2: 2.1.3
+9. megahit: 1.2.9
+10. metabinner: 1.4.2
+11. sra-tools: 3.1.0
+12. taxonkit: 0.16.0
+13. csvtk: 0.30.0
+14. FragGeneScanRs: 1.1.0
+
+#### 3. Databases
+<p align="justify">The latests versions of the following databases are installed automatically by ProteoSeeker. To see the datatime of their collection for the evaluation of ProteoSeeker check the evaluation section. Only the protein database should be installed by the user, in which case he can use one of the already prepared shell scripts for installing either the nr or the Uniref50 or Uniref90 or Uniref100 databases. The latter files are located in the "installation" directory. The user should be certain that the system has enough available memory to hold the decompressed protein database that he wants to download.</p>
+
+1. Pfam database: Latests
+2. Swiss-Prot/UniprotKB database: Latest
 
 ### Installation
 <p align="justify">Open a terminal, download the repository, extract it and move to the installation folder. Make sure that all shell scripts in the installation directory can be executed as programs. If not, change the permissions as to allow for their execution. The conda enviroment where the installation will take place should be activate (whether it is the base or another enviroment). Then run the installation script. Depending on your internet connection it might take from 5 to 30 minutes for the installation to be completed. Follow the steps below:</p>
