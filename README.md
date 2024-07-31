@@ -111,8 +111,11 @@ conda install conda-forge::tar
 #### 3. Databases
 <p align="justify">The latests versions of the following databases are installed automatically by ProteoSeeker. To see the datatime of their collection for the evaluation of ProteoSeeker check the evaluation section. Only the protein database should be installed by the user, in which case he can use one of the already prepared shell scripts for installing either the nr or the Uniref50 or Uniref90 or Uniref100 databases. The latter files are located in the "installation" directory. The user should be certain that the system has enough available memory to hold the decompressed protein database that he wants to download.</p>
 
-1. Pfam database: Latests
-2. Swiss-Prot/UniprotKB database: Latest
+1. Pfam database: Latest - Installed automatically
+2. Swiss-Prot/UniprotKB database: Latest - Installed automatically
+3. GTDB taxonomy taxdump files: Latest - Installed automatically
+4. Kraken 2/Bracken Refseq indexes: Collection Standard-8 of 05/06/2024 - Installed automatically
+5. nr database: Latest - Installed manually
 
 ### Installation
 <p align="justify">Open a terminal, download the repository, extract it and move to the installation folder. Make sure that all shell scripts in the installation directory can be executed as programs. If not, change the permissions as to allow for their execution. The conda enviroment where the installation will take place should be activate (whether it is the base or another enviroment). Then run the installation script. Depending on your internet connection it might take from 5 to 30 minutes for the installation to be completed. Follow the steps below:</p>
@@ -681,8 +684,18 @@ sudo docker attach ps_con
 <p align="justify">ProteoSeeker is locate at "/home/proteoseeker/" and one can run it directly as a command-line tool. To retain the output the output path should be set in the volume or bind-mount.</p>
 
 # 4. Test cases
+<p align="justify">All tests for the evaluation were run based on the ProteoSeeker version 1.0.0 and the tool versions described in it, which refer to the current release of ProteoSeeker. The collection dates for the databases used in the evaluation are the following:</p>
+
+1. Pfam database: 29/05/2024
+2. Swiss-Prot/UniprotKB database: 29/05/2024
+3. GTDB taxonomy taxdump files: 29/05/2024
+4. Kraken 2/Bracken Refseq indexes: Collection Standard-8: 05/06/2024 (prior to the update of the same date)
+5. Kraken 2/Bracken Refseq indexes: Collection Standard-16: 05/06/2024 (prior to the update of the same date)
+6. Kraken 2/Bracken Refseq indexes: Collection Standard: 05/06/2024 (prior to the update of the same date)
+7. nr database: 27/06/2024
+
 ## 4.1 Seek and taxonomy modes evaluation
-<p align="justify">The seek and taxonomy mode of ProteoSeeker can be tested on specific samples which have been analyzed by our lab in the process of discovering novel enzymes with desirable characteristics. The following samples were used for these analyses: "", "" and "". More details about the datasets can be found in the [MANUSCRIPT - UNDER REVIEW]. To analyze the results from these analyses you can run the "analyze_seek_tax_results.sh" script from the "tests/seek_tax_results_analysis" directory which utilizes a Python script from the same directory. The latter script uses an input file which contains information about the species of the best hit of each of the evaluated proteins against the nr database through BLASTP. The best hit is identified based on the lowest e-vaalue amongst all the hits."</p>
+<p align="justify">The seek and taxonomy mode of ProteoSeeker can be tested on specific samples which have been analyzed by our lab in the process of discovering novel enzymes with desirable characteristics. The following samples were used for these analyses: "+++", "+++" and "+++". More details about the datasets can be found in the [MANUSCRIPT - UNDER REVIEW]. To analyze the results from these analyses you can run the "analyze_seek_tax_results.sh" script from the "tests/seek_tax_results_analysis" directory which utilizes a Python script from the same directory. The latter script uses an input file which contains information about the species of the best hit of each of the evaluated proteins against the nr database through BLASTP. The best hit is identified based on the lowest e-vaalue amongst all the hits."</p>
 
 ## 4.2 Taxonomy mode evaluation
 <p align="justify">To run ProteoSeeker on the 19 benchmark datasets which correspond to the gold standard populations and which were used to evaluate the taxonomy mode of ProteoSeeker, the folowing steps must be followed.</p>
