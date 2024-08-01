@@ -73,7 +73,8 @@ The stages of the “taxonomy” mode of ProteoSeeker. ProteoSeeker offers two m
 
 Anaconda for Linux: https://docs.anaconda.com/free/anaconda/install/linux/
 
-Miniconda for Linux: https://docs.anaconda.com/free/miniconda/miniconda-install/
+#### 2. git:
+<p align="justify">Necessary to download the ProteoSeeker repository.</p>
 
 ### Dependencies
 <p align="justify">All dependencies, except for the protein database, are automatically installed by the installation process of ProteoSeeker. You can skip this part if you want to go straight to the installation instructions but do read the information related to the protein database which is not installed automatically by the installation process of ProteoSeeker.</p>
@@ -125,6 +126,9 @@ git clone https://github.com/SkretasLab/ProteoSeeker.git
 cd ProteoSeeker_main
 sudo chmod -R 755 installation
 cd installation
+conda config --add channels conda-forge
+conda config --add channels bioconda
+conda config --set channel_priority flexible
 ./instal.sh
 ~~~
 
