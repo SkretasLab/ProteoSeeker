@@ -628,11 +628,12 @@ Options:
 ~~~
 
 Then run ProteoSeeker in the Docker image based on one of the parameter files.
+
 ~~~bash
 ./docker_run_proteoseeker.sh
 ~~~
 
-So in this case, the data shared between the local host and the container will be located at **"/var/lib/docker/volumes/ps_vol/_data"**, except if docker is installed in another location in your system, whereas in that case the "volumes/ps_vol/_data" directories will be in that location.
+So in this case, the data shared between the local host and the container will be located at **"/var/lib/docker/volumes/ps_vol/_data"**. To find the results of the run check in the directory **"/var/lib/docker/volumes/ps_vol/_data/results"**. Similarly, you can run ProteoSeeker based on a custom parameters file. After ProteoSeeker has terminated the container stops and exits, hence one can not find the results in that container.
 
 ### 3.3.2 Bind mount
 <p align="justify">A volume is a directory located in the local host and not run by Docker. As for the volume, the data stored in the mount are reatined after the container is stopped or exits, may be used by different containers and are also accessible by the local host. Create a directory to use as the bind mount, for example "ps_mnt" which in my local computer is located at "/home/user/docker_files/".</p>
