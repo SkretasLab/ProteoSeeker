@@ -173,9 +173,18 @@ conda deactivate
 
 Docker engine for Linux: https://docs.docker.com/engine/install/ubuntu/
 
-Then simply download the image from dockerhub:</p>
+Then download the image of ProteoSeeker from dockerhub. There are two versions. The "main" version contains the "Kraken 2/Bracken Refseq indexe Collection Standard-8 database" while the "light" version does not. Hence, the "main" version can be used directly to run the "seek" or the "taxonomy" mode of ProteoSeeker, specificaly through the "Kraken2" route. The "light" version can be used directly to run only the "seek" mode of ProteoSeeker. Neither version contains a protein database. The process of using a protein database through Docker is explained below. Both versions can be modified to utilize a protein database and thus be used to run the "taxonomy" mode of ProteoSeeker through the "COMEBin/MetaBinner" route. </p>
+
+The "main" version has a size of  **23.6 GB**. To install the "main" version use one of the following commands:
 ~~~bash
 sudo docker image pull proteoseeker
+sudo docker image pull proteoseeker:latest
+sudo docker image pull proteoseeker:main
+~~~
+
+The "main" version has a size of  **15.6 GB**. To install the "light" version use one of the following commands:
+~~~bash
+sudo docker image pull proteoseeker:light
 ~~~
 
 ### Phobius
@@ -604,14 +613,6 @@ Options:
 ~~~
 
 ## 3.3 Docker Hub
-<p align="justify">There are three images available for ProteoSeeker at "giorgosfilis/proteoseeker". Each image contains the necessary files and databases for ProteoSeeker to run by its seek mode. The three images differ at the databases they contain regarding the taxonomy mode of ProteoSeeker. These three images are described below:</p>
-
-1. Tag: **"latest"** and **"light"**. Size: **31.6 GB**. Contains the "minikraken v.1" database and only the taxonomy Kraken2 route is available.
-2. Tag: **"full"**. Size: **49.9 GB**. Contains the "minikraken v.1" database and the "Uniref 50" protein database and the taxonomy Kraken2 and taxonomy COMEBin/MetaBinner routes are available.
-3. Tag: **"plain"**. Size: **23.6 GB** Contains no database associated with the taxonome mode of ProteoSeeker. For the latter image, to run the taxonomy mode of ProteoSeeker you must download and provided through a volume or bind mount (described below) a Kraken2 index or protein database to ProteoSeeker.
-
-<p align="justify">These distinct docker images give the opportunity to you to choose between different sizes for the image to download and ommit the usage of the taxonomy mode if such is not needed or provide a database of your own that you find more suitable.</p>
-   
 <p align="justify">We present two ways to run ProteoSeeker through its image. Both ways depend on creating a volume or bind-mount and attaching it to the container running based on the image. The first way is running ProteoSeeker directly with creating a container. The second way is to start a container in interactive mode and then run ProteoSeeker. In addition, in either case the volume or bind-mount can be used to provide a tool or database to ProteoSeeker in the container.</p>
 
 ### 3.3.1 Volume
