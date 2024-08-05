@@ -616,11 +616,20 @@ Options:
 <p align="justify">We present two ways to run ProteoSeeker through its image. Both ways depend on creating a volume or bind-mount and attaching it to the container running based on the image. The first way is running ProteoSeeker directly with creating a container. The second way is to start a container in interactive mode and then run ProteoSeeker. In addition, in either case the volume or bind-mount can be used to provide a tool or database to ProteoSeeker in the container.</p>
 
 ### 3.3.1 Volume
-<p align="justify">A volume is a directory inside Docker. Volumes can be found in the "volumes" directory of your Docker installation (e.g., /var/lib/docker/volumes). The data of the volume is stored in the "_data" directory of the volume. This data are retained in the volume after the container is stopped or exits, may be used by different containers and are also accessible by the local host. Any directory or file placed in the "_data" directory will be accessible from the local host and the container to which is has been added. To create a volume and then check were it was successfully created or not:</p>
+<p align="justify">A volume is a directory inside Docker. Volumes can be found in the "volumes" directory of your Docker installation (e.g., /var/lib/docker/volumes). The data of the volume is stored in the "_data" directory of the volume. This data are retained in the volume after the container is stopped or exits, may be used by different containers and are also accessible by the local host. Any directory or file placed in the "_data" directory will be accessible from the local host and the container to which is has been added. From the **main direcotry** of ProteoSeeker run the Bash script below which performs the following actions:</p>
+
+1. Create a Docker volume.
+2. Find the full path of the Docker volume.
+3. Create directories in the volumes needed to run ProteoSeeker in the image and collect the results in the host system.
+4. Copy the parameter files used as examples to run ProteoSeeker in the image.
 
 ~~~bash
-sudo docker volume create ps_vol
-sudo docker volume ls
+./installation/docker_vol_setup.sh
+~~~
+
+Then run ProteoSeeker in the Docker image based on one of the parameter files.
+~~~bash
+./docker_run_proteoseeker.sh
 ~~~
 
 So in this case, the data shared between the local host and the container will be located at **"/var/lib/docker/volumes/ps_vol/_data"**, except if docker is installed in another location in your system, whereas in that case the "volumes/ps_vol/_data" directories will be in that location.
