@@ -169,11 +169,11 @@ conda deactivate
 ~~~
 
 ## 2.2 Docker
-<p align="justify">To install ProteoSeeker from DockerHub as a docker image docker must be installed in your system. To install docker in Linux follow the instructions provided by the link below
+<p align="justify">To install ProteoSeeker from DockerHub as a docker image docker must be installed in your system. To install docker in Linux follow the instructions provided by the link below:</p>
 
 Docker engine for Linux: https://docs.docker.com/engine/install/ubuntu/
 
-Then download the image of ProteoSeeker from dockerhub. There are two versions. The "main" version contains the "Kraken 2/Bracken Refseq indexe Collection Standard-8 database" while the "light" version does not. Hence, the "main" version can be used directly to run the "seek" or the "taxonomy" mode of ProteoSeeker, specificaly through the "Kraken2" route. The "light" version can be used directly to run only the "seek" mode of ProteoSeeker. Neither version contains a protein database. The process of using a protein database through Docker is explained below. Both versions can be modified to utilize a protein database and thus be used to run the "taxonomy" mode of ProteoSeeker through the "COMEBin/MetaBinner" route. </p>
+<p align="justify">Then download the image of ProteoSeeker from dockerhub. There are two versions. The "main" version contains the "Kraken 2/Bracken Refseq indexe Collection Standard-8 database" while the "light" version does not. Hence, the "main" version can be used directly to run the "seek" or the "taxonomy" mode of ProteoSeeker, specificaly through the "Kraken2" route. The "light" version can be used directly to run only the "seek" mode of ProteoSeeker. Neither version contains a protein database. The process of using a protein database through Docker is explained below. Both versions can be modified to utilize a protein database and thus be used to run the "taxonomy" mode of ProteoSeeker through the "COMEBin/MetaBinner" route.</p>
 
 The "main" version has a size of  **23.6 GB**. To install the "main" version use one of the following commands:
 ~~~bash
