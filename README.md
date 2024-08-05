@@ -627,7 +627,7 @@ Options:
 ./installation/docker_vol_setup.sh
 ~~~
 
-Then run ProteoSeeker in the Docker image based on one of the parameter files.
+Then run ProteoSeeker in the Docker image based on one of the parameter files. The following script will run ProteoSeeker in the Docker image in interactive mode so the user can observe the stages of the pipeline being run. One can also run the same command of the script by adding the "-d" option which runs the container in the background. He can then attach to the container to observe which stage the pipeline is currently runnning.
 
 ~~~bash
 ./docker_run_proteoseeker.sh
