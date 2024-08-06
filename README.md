@@ -625,7 +625,7 @@ conda deactivate
 <p align="justify">We present two ways to run ProteoSeeker through its image. Both ways depend on creating a volume or bind-mount and attaching it to the container running based on the image. The first way is running ProteoSeeker directly with creating a container. The second way is to start a container in interactive mode and then run ProteoSeeker. In addition, in either case the volume or bind-mount can be used to provide a tool or database to ProteoSeeker in the container.</p>
 
 ### 3.4.1 Volume
-<p align="justify">A volume is a directory inside Docker. Volumes can be found in the "volumes" directory of your Docker installation (e.g., /var/lib/docker/volumes). The data of the volume is stored in the "_data" directory of the volume. This data are retained in the volume after the container is stopped or exits, may be used by different containers and are also accessible by the local host. Any directory or file placed in the "_data" directory will be accessible from the local host and the container to which is has been added. From the **main direcotry** of ProteoSeeker run the Bash script below which performs the following actions:</p>
+<p align="justify">A volume is a directory inside Docker. Volumes can be found in the "volumes" directory of your Docker installation (e.g., /var/lib/docker/volumes). The data of the volume is stored in the "_data" directory of the volume. This data are retained in the volume after the container is stopped or exits, may be used by different containers and are also accessible by the local host. Any directory or file placed in the "_data" directory will be accessible from the local host and the container to which is has been added. From the **main direcotry** of ProteoSeeker run the Bash script with sudo (mandatory) below which performs the following actions:</p>
 
 1. Creates a Docker volume.
 2. Finds the full path of the Docker volume.
@@ -633,7 +633,7 @@ conda deactivate
 4. Copies the parameter files used as examples to run ProteoSeeker in the image.
 
 ~~~bash
-./installation/docker_vol_setup.sh
+sudo ./installation/docker_vol_setup.sh
 ~~~
 
 <p align="justify">Then run ProteoSeeker in the Docker image based on one of the parameter files. The following script will run ProteoSeeker in the Docker image in interactive mode so the user can observe the stages of the pipeline being run.</p>
@@ -645,14 +645,14 @@ conda deactivate
 <p align="justify">So in this case, the data shared between the local host and the container will be located at "/var/lib/docker/volumes/ps_vol/_data". To find the results of the run check in the directory "/var/lib/docker/volumes/ps_vol/_data/results". Similarly, you can run ProteoSeeker based on a custom parameters file. After ProteoSeeker has terminated the container stops and exits, hence one can not find the results in that container. One can also run the same command of the script by adding the "-d" option which runs the container in the background. He can then attach to the container to observe which stage the pipeline is currently runnning. In addition, one can use "/bin/bash/ as the command to run in the container and enter the container in interactive mode, then run ProteoSeeker from the container (as one would directly from the command-line of the host) and then transfer the results to the host through a shared volume or bind.</p>
 
 ### 3.4.2 Bind mount
-<p align="justify">A volume is a directory located in the local host and not run by Docker. As for the volume, the data stored in the mount are reatined after the container is stopped or exits, may be used by different containers and are also accessible by the local host. From the **main direcotry** of ProteoSeeker run the Bash script below which performs the following actions:</p>
+<p align="justify">A volume is a directory located in the local host and not run by Docker. As for the volume, the data stored in the mount are reatined after the container is stopped or exits, may be used by different containers and are also accessible by the local host. From the **main direcotry** of ProteoSeeker run the Bash script below (should not be run with sudo, otherwise it might not work) which performs the following actions:</p>
 
 1. Creates the "docker_mount_dir" directory in the home directory of the user.
 2. Create directories in the volumes needed to run ProteoSeeker in the image and collect the results in the host system.
 3. Copies the parameter files used as examples to run ProteoSeeker in the image.
 
 ~~~bash
-./installation/docker_bind_setup.sh
+./installation/docker_bindmount_setup.sh
 ~~~
 
 <p align="justify">Then run ProteoSeeker in the Docker image based on one of the parameter files. The following script will run ProteoSeeker in the Docker image in interactive mode so the user can observe the stages of the pipeline being run.</p>
