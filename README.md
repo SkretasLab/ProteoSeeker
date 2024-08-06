@@ -666,7 +666,7 @@ conda deactivate
 <p align="justify">In addition, in both cases of volumes and bind mounts, one can use "/bin/bash/ as the command to run in the container and enter the container in interactive mode, then run ProteoSeeker from the container (as one would directly from the command-line of the host) and then transfer the results to the host through the shared volume or bind mount.</p>
 
 ### 3.4.3 Utilizing Phobius in the docker container
-<p align="justify">The "phobius" directory in the volume or bind can be used to store the files of the Phobius installation. If done so, ProteoSeeker will detect and use Phobius when running in the Docker container (except if set otherwise in the parameters file). Download and install Phobius based on the instructions from: https://phobius.sbc.su.se/data.html</p>
+<p align="justify">The "phobius" directory in the volume or bind mount can be used to store the files of the Phobius installation. If done so, ProteoSeeker will detect and use Phobius when running in the Docker container (except if set otherwise in the parameters file). Download and install Phobius based on the instructions from: https://phobius.sbc.su.se/data.html</p>
 
 # 4. Test cases
 <p align="justify">All tests for the evaluation were run based on the ProteoSeeker version 1.0.0 and the tool versions described in it, which refer to the current release of ProteoSeeker. The collection dates for the databases used in the evaluation are found below. In addition, we also mention the download date of the flat file for the reviewed (Swiss-Prot) proteins of the Uniprot database, which was used to collect information about protein families, protein Pfam domains, protein names, protein lengths and their associations.</p>
