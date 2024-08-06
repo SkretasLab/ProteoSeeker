@@ -666,55 +666,6 @@ conda deactivate
 ### 3.4.3 Utilizing Phobius in the docker container
 <p align="justify">The "phobius" directory in the volume or bind can be used to store the files of the Phobius installation. If done so, ProteoSeeker will detect and use Phobius when running in the Docker container (except if set otherwise in the parameters file). Download and install Phobius based on the instructions from: https://phobius.sbc.su.se/data.html</p>
 
-#### A. Creating container and running ProteoSeeker directly
-<p align="justify">In the volume or bind-mount create four directories:</p>
-
-1. "docker_params": To store the parameter files.
-2. "input_files": To store input FastQ or FASTA files.
-3. "output": To store the output.
-4. "phobius": To store the files associated with the Phobius executable.
-
-<p align="justify">The following container is now created based on the proteoseeker image and the command to download an SRA file and analyze its corresponding FastQ files is passed directly after the creation of the container. The paramter file has been stored in the "docker_params" folder. You can modify the parameter file according to your needs.</p>
-
-~~~bash
-sudo docker run --name ps_con -dit --mount source=ps_vol,target=/home/ps_data proteoseeker python /home/proteoseeker/proteoseeker.py -pfp /home/ps_data/docker_params/paramter_file.txt
-~~~
-
-#### B. Creating container and attaching to it in interactive mode
-<p align="justify">By moving to "/home/ProteoSeeker" one can use ProteoSeeker as a command-line tool in the container, have access to the data in the "/home/ps_data" directory and also set an output path in the "/home/lhc_data" directory so that the results remain accessible to the local host or another container after stopping the container currently running. Some importnat files that may be accessible in the shared volume or bint mound are parameter files, an output directory to be used as the base path for the output of ProteoSeeker and possibly the Phobius installation directory.</p>
-
-#### B.1 Volume
-<p align="justify">Create a container of the proteoseeker image, run the container and make the volume accessible to the container. Then attach to the container based on its name (its ID may be used alternatively).</p>
-
-~~~bash
-sudo docker run --name ps_con -dit --mount source=my-vol,target=/home/ps_data proteoseeker
-sudo docker attach ps_con
-~~~
-
-<p align="justify">If the container has stopped or exited, start the container and attach to it using the following commands:</p>
-
-~~~bash
-sudo docker start ps_con
-sudo docker attach ps_con
-~~~
-
-#### B.2 Bind-mount
-<p align="justify">Create a container of the proteoseeker image, run the container and make the volume accessible to the container. Then attach to the container based on its name (its ID may be used alternatively).</p>
-
-~~~bash
-sudo docker run --name ps_con -dit --mount type=bind,src="/home/user/docker_files/ps_mnt",target=/home/ps_data proteoseeker
-sudo docker attach ps_con
-~~~
-
-<p align="justify">If the container has stopped or exited, start the container and attach to it using the following commands:</p>
-
-~~~bash
-sudo docker start ps_con
-sudo docker attach ps_con
-~~~
-
-<p align="justify">ProteoSeeker is locate at "/home/proteoseeker/" and one can run it directly as a command-line tool. To retain the output the output path should be set in the volume or bind-mount.</p>
-
 # 4. Test cases
 <p align="justify">All tests for the evaluation were run based on the ProteoSeeker version 1.0.0 and the tool versions described in it, which refer to the current release of ProteoSeeker. The collection dates for the databases used in the evaluation are found below. In addition, we also mention the download date of the flat file for the reviewed (Swiss-Prot) proteins of the Uniprot database, which was used to collect information about protein families, protein Pfam domains, protein names, protein lengths and their associations.</p>
 
