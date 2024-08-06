@@ -182,7 +182,7 @@ sudo docker image pull proteoseeker:latest
 sudo docker image pull proteoseeker:main
 ~~~
 
-The "main" version has a size of  **15.6 GB**. To install the "light" version use one of the following commands:
+The "light" version has a size of  **15.6 GB**. To install the "light" version use one of the following commands:
 ~~~bash
 sudo docker image pull proteoseeker:light
 ~~~
