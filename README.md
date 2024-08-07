@@ -175,7 +175,7 @@ Docker engine for Linux: https://docs.docker.com/engine/install/ubuntu/
 
 <p align="justify">Then download the image of ProteoSeeker from dockerhub. There are two versions. The "main" version contains the "Kraken 2/Bracken Refseq indexe Collection Standard-8 database" while the "light" version does not. Hence, the "main" version can be used directly to run the "seek" or the "taxonomy" mode of ProteoSeeker, specificaly through the "Kraken2" route. The "light" version can be used directly to run only the "seek" mode of ProteoSeeker. Neither version contains a protein database. The process of using a protein database through Docker is explained below. Both versions can be modified to utilize a protein database and thus be used to run the "taxonomy" mode of ProteoSeeker through the "COMEBin/MetaBinner" route.</p>
 
-The "main" version has a size of  **23.6 GB**. To install the "main" version use one of the following commands:
+The "main" version has a size of  **29.6 GB**. To install the "main" version use one of the following commands:
 ~~~bash
 sudo docker image pull proteoseeker
 sudo docker image pull proteoseeker:latest
