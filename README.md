@@ -622,7 +622,16 @@ conda deactivate
 ~~~
 
 ## 3.4 Docker
-<p align="justify">We present two ways to run ProteoSeeker through its image. Both ways depend on creating a volume or bind-mount and attaching it to the container running based on the image. The first way is running ProteoSeeker directly with creating a container. The second way is to start a container in interactive mode and then run ProteoSeeker. In addition, in either case the volume or bind-mount can be used to provide a tool or database to ProteoSeeker in the container. In both cases (volume and bind mount) the protein database provided as an example is a small part of the nr database with additions of proteins associated with RNA polymerase. It is used to test that the functionality of the "seek" mode through "type 2" analysis and the "taxonomy" mode through the route of "COMEBin/MetaBinner" work properly in ProteoSeeker. You should provide your own protein database, ideally that of the decompressed nr database, in order to use properly the "seek" mode through the "type 2" analysis and the "taxonomy" mode through the "COMEBin/MetaBinner" route of ProteoSeeker. To use any other type of analysis and route of the modes of ProteoSeeker the protein database in not necessary.</p>
+<p align="justify">We present two ways to run ProteoSeeker through its image. Both ways depend on creating a volume or bind-mount and attaching it to the container running based on the image. The first way is running ProteoSeeker directly with creating a container. The second way is to start a container in interactive mode and then run ProteoSeeker. In addition, in either case the volume or bind-mount can be used to provide a tool or database to ProteoSeeker in the container. In both cases (volume and bind mount) the protein database provided as an example is a small part of the nr database with additions of proteins associated with RNA polymerase. It is used to test that the functionality of the "seek" mode through "type 2" analysis and the "taxonomy" mode through the route of "COMEBin/MetaBinner" work properly in ProteoSeeker. You should provide your own protein database, ideally that of the decompressed nr database, in order to use properly the "seek" mode through the "type 2" analysis and the "taxonomy" mode through the "COMEBin/MetaBinner" route of ProteoSeeker. To use any other type of analysis and route of the modes of ProteoSeeker the protein database in not necessary. For both cases you can perform a test based on a template parameter file (located at the "patameter_files" directory in the volume or bind mount) each of which runs a different analysis. The test is selected with a number. The selections are described below:</p>
+
+1. Runs ProteoSeeker with the "seek" mode type 3 analysis and "taxonomy" mode with the Kraken2 route
+2. Runs ProteoSeeker with the "taxonomy" mode with the Kraken2 route.
+3. Runs ProteoSeeker with the "taxonomy" mode with the COMEBin/MetaBinner route with MetaBinner.
+4. Runs ProteoSeeker with the "taxonomy" mode with the COMEBin/MetaBinner route with COMEBin.
+
+Selection | #1 | #2 | #3 | #4 | #5 | #6 | #7 | #8 | #9 | #10 | #11
+--- | --- | --- | --- |--- |--- |--- |--- |--- |--- |--- |---
+Seconds | 301 | 283 | 290 | 286 | 289 | 285 | 287 | 287 | 272 | 276 | 269
 
 ### 3.4.1 Volume
 <p align="justify">A volume is a directory inside Docker. Volumes can be found in the "volumes" directory of your Docker installation (e.g., /var/lib/docker/volumes). The data of the volume is stored in the "_data" directory of the volume. This data are retained in the volume after the container is stopped or exits, may be used by different containers and are also accessible by the local host. Any directory or file placed in the "_data" directory will be accessible from the local host and the container to which is has been added. From the **main direcotry** of ProteoSeeker run the Bash script with sudo (mandatory) below which performs the following actions:</p>
@@ -636,7 +645,7 @@ conda deactivate
 sudo ./installation/docker_vol_setup.sh
 ~~~
 
-<p align="justify">Then run ProteoSeeker in the Docker image based on one of the parameter files. The following script will run ProteoSeeker in the Docker image in interactive mode so the user can observe the stages of the pipeline being run. As an example you can select to run either a "seek" and "taxonomy" analysis with the Kraken2 route (selection: 1) or only a "taxonomy" analysis with the Kraken2 route (selection: 2).</p>
+<p align="justify">Then run ProteoSeeker in the Docker image based on one of the parameter files. The following script will run ProteoSeeker in the Docker image in interactive mode so the user can observe the stages of the pipeline being run.</p>
 
 ~~~bash
 ./docker_vol_run_proteoseeker.sh
@@ -655,7 +664,7 @@ sudo ./installation/docker_vol_setup.sh
 ./installation/docker_bindmount_setup.sh
 ~~~
 
-<p align="justify">Then run ProteoSeeker in the Docker image based on one of the parameter files. The following script will run ProteoSeeker in the Docker image in interactive mode so the user can observe the stages of the pipeline being run. As an example you can select to run either a "seek" and "taxonomy" analysis with the Kraken2 route (selection: 1) or only a "taxonomy" analysis with the Kraken2 route (selection: 2).</p>
+<p align="justify">Then run ProteoSeeker in the Docker image based on one of the parameter files. The following script will run ProteoSeeker in the Docker image in interactive mode so the user can observe the stages of the pipeline being run.</p>
 
 ~~~bash
 ./docker_bind_run_proteoseeker.sh
