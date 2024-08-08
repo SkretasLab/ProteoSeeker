@@ -722,10 +722,12 @@ conda deactivate
 python parameter_files/create_par_files.py
 ~~~
 
-5. <p align="justify">Once the Python script creates the parameter files and the Basch scripts there are four Bash scripts associated with running each sample for all methods, "run_X_all.sh", "run_X_kraken.sh", "run_X_metabinner.sh" and "run_X_comebin.sh". The first one runs all methods, the second one runs Kraken2 with every database, the third one runs MetaBinner with nr and the last one runs COMEBin with nr. The first (MetaBinner) and third (COMEBin) one can be run at any time. The MetaBinner and COMEBin methods require for the Kraken2 Basch script to have run beforehand. To run any of the Basch scripts you must be located at the installation directory of ProteoSeeker. For example, after activating ps_env:</p>
+5. <p align="justify">Once the Python script creates the parameter files and the Basch scripts there are four Bash scripts associated with running each sample for all methods, "run_X_all.sh", "run_X_kraken.sh", "run_X_metabinner.sh" and "run_X_comebin.sh". The first one runs all methods, the second one runs Kraken2 with every database, the third one runs MetaBinner with nr and the last one runs COMEBin with nr. The first (all) and second (Kraken2) Bash scripts can be run at any time, individually. The third (MetaBinner) and fourth (COMEBin) Bash scripts require for the Kraken2 Basch script to have be run beforehand. To run any of the Basch scripts you must be located at the installation directory of ProteoSeeker. For example:</p>
 
 ~~~bash
+conda activate ps_env
 ./taxonomy_tests/run_1_kraken.sh
+conda deactivate
 ~~~
 
 6. <p align="justify">To extract the statistics from the results of ProteoSeeker for the taxonomy evaluation all the methods from at least one sample must have run. The Bash script will analyze and provide output (plots, statistics etc.) for any number of samples analyzed based on all methods. To run the script simply move to the directory "/tests/tax_results_analysis" and run the following:</p>
