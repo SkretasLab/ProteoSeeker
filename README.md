@@ -627,9 +627,12 @@ conda deactivate
 #Selection | #Mode | #Analyis Type | #Route
 --- | --- | --- | ---
 1 | seek & taxonomy | type 3 | Kraken2
-2 | taxonomy | - | Kraken2: Kraken2
-3 | taxonomy | - | COMEBin/MetaBinner: MetaBinner
-4 | taxonomy | - | COMEBin/MetaBinner: COMEBin
+2 | seek & taxonomy | type 3 | COMEBin/MetaBinner: MetaBinner
+3 | seek & taxonomy | type 3 | COMEBin/MetaBinner: COMEBin
+4 | seek | type 3 | -
+5 | taxonomy | - | Kraken2
+6 | taxonomy | - | COMEBin/MetaBinner: MetaBinner
+7 | taxonomy | - | COMEBin/MetaBinner: COMEBin
 
 ### 3.4.1 Volume
 <p align="justify">A volume is a directory inside Docker. Volumes can be found in the "volumes" directory of your Docker installation (e.g., /var/lib/docker/volumes). The data of the volume is stored in the "_data" directory of the volume. This data are retained in the volume after the container is stopped or exits, may be used by different containers and are also accessible by the local host. Any directory or file placed in the "_data" directory will be accessible from the local host and the container to which is has been added. From the **main direcotry** of ProteoSeeker run the Bash script with sudo (mandatory) below which performs the following actions:</p>
