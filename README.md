@@ -735,3 +735,14 @@ python parameter_files/create_par_files.py
 ~~~
 
 The "analyze_tax_results_spec.sh" can be used for secondry analysis of different subsets of the results. This script is located also in the directory "/tests/tax_results_analysis".
+
+# References
+[1] https://www.bioinformatics.babraham.ac.uk/projects/fastqc/
+[2] 
+
+# Contacts and bug reports
+Feel free to send questions or bug reports to one of the following people:
+1. MSc Georgios Filis: filis@fleming.gr
+2. MSc Dimitra Bezantakou: bezantakou@fleming.gr
+3. PhD Dimitra Zarafeta: zarafeta@fleming.gr
+4. Science Director Georgios Skretas: skretas@fleming.gr
