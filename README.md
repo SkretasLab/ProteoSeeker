@@ -785,4 +785,4 @@ Feel free to send questions or bug reports to one of the following people:
 4. Science Director Georgios Skretas: skretas@fleming.gr
 
 # License
-This project is licensed under the GPLv3 License. See the LICENSE(LICENSE) file for details.
+This project is licensed under the GPLv3 License. See the [LICENSE](LICENSE) file for details.
