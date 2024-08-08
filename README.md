@@ -733,7 +733,7 @@ conda deactivate
 6. <p align="justify">To extract the statistics from the results of ProteoSeeker for the taxonomy evaluation all the methods from at least one sample must have run. The Bash script will analyze and provide output (plots, statistics etc.) for any number of samples analyzed based on all methods. To run the script simply move to the directory "/tests/tax_results_analysis" and run the following:</p>
 
 ~~~bash
-./tests/tax_results_analysis/analyze_tax_results.sh
+./analyze_tax_results.sh
 ~~~
 
 <p align="justify">The "analyze_tax_results_spec.sh" can be used for secondry analysis of different subsets of the results. This script is located also in the directory "/tests/tax_results_analysis".</p>
