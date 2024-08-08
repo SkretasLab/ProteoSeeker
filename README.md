@@ -661,6 +661,12 @@ sudo ./installation/docker_vol_setup.sh
 ./docker_bind_run_proteoseeker.sh
 ~~~
 
+<p align="justify">When running the Docker container and collecting the results in a directory located in the "${HOME}" path of the user, one should first change the permissions of the results directory by providing read and write permissions to all its contents, otherwise the directory generated as output from ProteoSeeker from the Docker container will be missing these permissions.</p>
+
+~~~bash
+sudo chmod -R a+rw ${HOME}/proteoseeker_bindmount/results
+~~~
+
 <p align="justify">So in this case, the data shared between the local host and the container will be located at "/${home}/docker_mount_dir". To find the results of the run check in the directory "/${home}/docker_mount_dir/results". One can also run the same command of the script by adding the "-d" option which runs the container in the background. He can then attach to the container to observe which stage the pipeline is currently runnning.</p>
 
 <p align="justify">In addition, in both cases of volumes and bind mounts, one can use "/bin/bash/ as the command to run in the container and enter the container in interactive mode, then run ProteoSeeker from the container (as one would directly from the command-line of the host) and then transfer the results to the host through the shared volume or bind mount.</p>
