@@ -636,7 +636,7 @@ conda deactivate
 sudo ./installation/docker_vol_setup.sh
 ~~~
 
-<p align="justify">Then run ProteoSeeker in the Docker image based on one of the parameter files. The following script will run ProteoSeeker in the Docker image in interactive mode so the user can observe the stages of the pipeline being run.</p>
+<p align="justify">Then run ProteoSeeker in the Docker image based on one of the parameter files. The following script will run ProteoSeeker in the Docker image in interactive mode so the user can observe the stages of the pipeline being run. As an example you can select to run either a "seek" and "taxonomy" analysis with the Kraken2 route (selection: 1) or only a "taxonomy" analysis with the Kraken2 route (selection: 2).</p>
 
 ~~~bash
 ./docker_vol_run_proteoseeker.sh
@@ -655,7 +655,7 @@ sudo ./installation/docker_vol_setup.sh
 ./installation/docker_bindmount_setup.sh
 ~~~
 
-<p align="justify">Then run ProteoSeeker in the Docker image based on one of the parameter files. The following script will run ProteoSeeker in the Docker image in interactive mode so the user can observe the stages of the pipeline being run.</p>
+<p align="justify">Then run ProteoSeeker in the Docker image based on one of the parameter files. The following script will run ProteoSeeker in the Docker image in interactive mode so the user can observe the stages of the pipeline being run. As an example you can select to run either a "seek" and "taxonomy" analysis with the Kraken2 route (selection: 1) or only a "taxonomy" analysis with the Kraken2 route (selection: 2).</p>
 
 ~~~bash
 ./docker_bind_run_proteoseeker.sh
