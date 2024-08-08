@@ -737,7 +737,7 @@ python parameter_files/create_par_files.py
 The "analyze_tax_results_spec.sh" can be used for secondry analysis of different subsets of the results. This script is located also in the directory "/tests/tax_results_analysis".
 
 # Publications
-Pending.
+Under review.
 
 # References
 [1] Anaconda Software Distribution. Computer software. Vers. 2-2.4.0. Anaconda, Nov. 2016. Web. <https://anaconda.com>.
