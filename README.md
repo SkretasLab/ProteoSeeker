@@ -736,7 +736,7 @@ conda deactivate
 ./analyze_tax_results.sh
 ~~~
 
-<p align="justify">The "analyze_tax_results_spec.sh" can be used for secondry analysis of different subsets of the results. This script is located also in the directory "/tests/tax_results_analysis".</p>
+<p align="justify">The Bash script "analyze_tax_results_spec.sh" can be used to run secondry analysis of different subsets of the results. This script is located also in the directory "/tests/tax_results_analysis".</p>
 
 # Publications
 Under review.
