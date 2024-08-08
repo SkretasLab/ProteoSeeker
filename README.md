@@ -624,19 +624,11 @@ conda deactivate
 ## 3.4 Docker
 <p align="justify">We present two ways to run ProteoSeeker through its image. Both ways depend on creating a volume or bind-mount and attaching it to the container running based on the image. The first way is running ProteoSeeker directly with creating a container. The second way is to start a container in interactive mode and then run ProteoSeeker. In addition, in either case the volume or bind-mount can be used to provide a tool or database to ProteoSeeker in the container. In both cases (volume and bind mount) the protein database provided as an example is a small part of the nr database with additions of proteins associated with RNA polymerase. It is used to test that the functionality of the "seek" mode through "type 2" analysis and the "taxonomy" mode through the route of "COMEBin/MetaBinner" work properly in ProteoSeeker. You should provide your own protein database, ideally that of the decompressed nr database, in order to use properly the "seek" mode through the "type 2" analysis and the "taxonomy" mode through the "COMEBin/MetaBinner" route of ProteoSeeker. To use any other type of analysis and route of the modes of ProteoSeeker the protein database in not necessary. For both cases you can perform a test based on a template parameter file (located at the "patameter_files" directory in the volume or bind mount) each of which runs a different analysis. The test is selected with a number. The selections are described below:</p>
 
-1. Runs ProteoSeeker with the "seek" mode type 3 analysis and "taxonomy" mode with the Kraken2 route
-2. Runs ProteoSeeker with the "taxonomy" mode with the Kraken2 route.
-3. Runs ProteoSeeker with the "taxonomy" mode with the COMEBin/MetaBinner route with MetaBinner.
-4. Runs ProteoSeeker with the "taxonomy" mode with the COMEBin/MetaBinner route with COMEBin.
-
 #Selection | #Mode | #Analyis Type | #Route
 --- | --- | --- | ---
 1 | seek & taxonomy | type 3 | Kraken2
---- | --- | --- | ---
 2 | taxonomy | - | Kraken2: Kraken2
---- | --- | --- | ---
 3 | taxonomy | - | COMEBin/MetaBinner: MetaBinner
---- | --- | --- | ---
 4 | taxonomy | - | COMEBin/MetaBinner: COMEBin
 
 ### 3.4.1 Volume
