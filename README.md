@@ -640,7 +640,7 @@ conda deactivate
 1. Creates a Docker volume.
 2. Finds the full path of the Docker volume.
 3. Creates directories in the volumes needed to run ProteoSeeker in the image and collect the results in the host system.
-4. Copies the parameter files used as examples to run ProteoSeeker in the image.
+4. Copies the parameter files used as templates to run ProteoSeeker in the image.
 
 ~~~bash
 sudo ./installation/docker_vol_setup.sh
@@ -659,7 +659,7 @@ sudo ./installation/docker_vol_setup.sh
 
 1. Creates the "docker_mount_dir" directory in the home directory of the user.
 2. Create directories in the volumes needed to run ProteoSeeker in the image and collect the results in the host system.
-3. Copies the parameter files used as examples to run ProteoSeeker in the image.
+3. Copies the parameter files used as templates to run ProteoSeeker in the image.
 
 ~~~bash
 ./installation/docker_bindmount_setup.sh
