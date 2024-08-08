@@ -782,10 +782,10 @@ Pending.
 
 # Contacts and bug reports
 Feel free to send questions or bug reports to one of the following people:
-1. MSc Georgios Filis: filis@fleming.gr
-2. MSc Dimitra Bezantakou: bezantakou@fleming.gr
-3. PhD Dimitra Zarafeta: zarafeta@fleming.gr
-4. Science Director Georgios Skretas: skretas@fleming.gr
+1. Georgios Filis: filis@fleming.gr
+2. Dimitra Bezantakou: bezantakou@fleming.gr
+3. Dimitra Zarafeta: zarafeta@fleming.gr
+4. Georgios Skretas: skretas@fleming.gr
 
 # License
 This project is licensed under the GPLv3 License. See the [LICENSE](LICENSE) file for details.
