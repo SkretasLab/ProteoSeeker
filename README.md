@@ -700,10 +700,12 @@ sudo -E chmod -R a+rw "${HOME}/proteoseeker_bindmount/results"
 ## 4.2 Taxonomy mode evaluation
 <p align="justify">To run ProteoSeeker on the 19 benchmark datasets which correspond to the gold standard populations and which were used to evaluate the taxonomy mode of ProteoSeeker, the folowing steps must be followed.</p>
 
-1. Create the database for the taxonomy route of COMEBin/MetaBinner. Copy the parameter file "taxonomy_tests/dbs/par_phylo_dbs_nr_rna_pol.txt" to the ProteoSeeker directory. Modify the values for the parameters for the path of the protein database (nr database) and the output path. Then, activate "ps_env" and run:
+1. Create the database for the taxonomy route of COMEBin/MetaBinner. Copy the parameter file "taxonomy_tests/dbs/par_phylo_dbs_nr_rna_pol.txt" to the ProteoSeeker directory. Modify the values for the parameters for the path of the protein database (nr database) and the output path. Then, run the following:
 
 ~~~bash
+conda activate ps_env
 python proteoseeker.py -pfp par_phylo_dbs_nr_rna_pol.txt
+conda deactivate
 ~~~
 
 2. Modify the "par_sX_sra.txt" file for sample X based on the paths to the databases and tools installed in your system. For each sample to be downloaded and processed by ProteoSeeker separately and not during the analysis run, modify its corresponding parameter file and run from the parent directory of ProteoSeeker the script:
