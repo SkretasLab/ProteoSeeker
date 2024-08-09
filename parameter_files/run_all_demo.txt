@@ -1,8 +1,0 @@
-#!/bin/bash
-set -e
-
-./taxonomy_tests/setup.sh
-
-. "${PS_PATH}/taxonomy_tests/run_X_kraken.sh"
-. "${PS_PATH}/taxonomy_tests/run_X_comebin.sh"
-. "${PS_PATH}/taxonomy_tests/run_X_metabinner.sh"
