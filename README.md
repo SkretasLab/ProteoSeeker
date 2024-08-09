@@ -628,11 +628,15 @@ conda deactivate
 
 From:
 
+~~~bash
 my $DECODEANHMM =      "$PHOBIUS_DIR/decodeanhmm";
+~~~
 
 To:
 
+~~~bash
 my $DECODEANHMM =      "$PHOBIUS_DIR/decodeanhmm.64bit";
+~~~
 
 <p align="justify">For both cases of volumes and bind mounts you can perform a test based on a template parameter file (located at the "patameter_files" directory in the volume or bind mount) each of which runs a different analysis. The test is selected with a number. The selections are described below:</p>
 
