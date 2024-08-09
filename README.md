@@ -163,7 +163,7 @@ conda deactivate
 
 <p align="justify">For example, the second option in our system has the following value: "/home/compteam/anaconda3/envs/ps_comebin_gpu/bin/COMEBin"</p>
 
-### Removing installation environments, files and diretories
+### Removing installation environments, files and directories
 <p align="justify">To remove the environments, all their files and the directories which environments and directories were created during the installation of ProteoSeeker (by running the "./install.sh" script) you can run the script below, in the installation directory from the installation directory. You can then delete the main directory of ProteoSeeker and all environments and files associated with installing ProteoSeeker will have been removed by your system.</p>
 
 ~~~bash
@@ -194,7 +194,7 @@ For either case of installation process followed in order to use the topology an
 
 # 3. Use
 ## 3.1 Parameter file
-<p align="justify">In general the easiest way to run ProteoSeeker is to use a parameter file. A parameter file should at the very least contain the parameters for the options of ProteoSeeker which are to be modified from their default values. Parameter files for different case-scenarios may be downloaded from *here*. These files are also generated when running the "install.sh" in the installation folder and more specifically one can generate them at any time when running the "parameter_files.sh" in the installation folder. The latter files contains all options and have parameters specifically for those that are to be modified. A parameter file is the proposed way of using ProteoSeeker either when installing from source or when installing it as a Docker image. In addition, we advise that the paths used as input to ProteoSeeker (for files or databases) contain no whitespaces, although ProteoSeeker is designed to handle them properly. </p>
+<p align="justify">In general, the easiest way to run ProteoSeeker is to use a parameter file. A parameter file should at the very least contain the parameters for the options of ProteoSeeker which are to be modified from their default values. Parameter files for different case-scenarios may be downloaded from *here*. These files are also generated when running the "install.sh" in the installation folder and more specifically one can generate them at any time when running the "parameter_files.sh" in the installation folder. The latter files contain all options and have parameters specifically for those that are to be modified. A parameter file is the proposed way of using ProteoSeeker either when installing from source or when installing it as a Docker image. In addition, we advise that the paths used as input to ProteoSeeker (for files or databases) contain no whitespaces, although ProteoSeeker is designed to handle them properly. </p>
 
 ## 3.2 Options
 <p align="justify">The options of ProteoSeeker as a command-line tool, their default parameters and descriptions are described below.</p>
