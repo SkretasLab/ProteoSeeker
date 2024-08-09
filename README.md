@@ -69,19 +69,19 @@ The stages of the “taxonomy” mode of ProteoSeeker. ProteoSeeker offers two m
 
 # 2. Installation
 ## 2.1 Source code
-### Prerequisites
-#### 1. Anaconda:
+### 2.1.1 Prerequisites
+#### Anaconda:
 <p align="justify">To install ProteoSeeker from source code, conda (from Anaconda or Miniconda) must be installed and activated in your system. Instructions for installing Anaconda and Miniconda in Linux are provided in the following links:</p>
 
 Anaconda for Linux: https://docs.anaconda.com/free/anaconda/install/linux/
 
-#### 2. git:
+#### git:
 <p align="justify">Necessary to download the ProteoSeeker repository.</p>
 
-### Dependencies
+### 2.1.2 Dependencies
 <p align="justify">All dependencies, except for the protein database, are automatically installed by the installation process of ProteoSeeker. You can skip this part if you want to go straight to the installation instructions but do read the information related to the protein database which is not installed automatically by the installation process of ProteoSeeker.</p>
 
-#### 1. git, wget, gzip, tar:
+#### git, wget, gzip, tar:
 <p align="justify">These packages are handled by the installation process of ProteoSeeker and are installed in a environment from which the installation of ProteoSeeker will be initiated. A new environment called "ps_install" is created, used to download and collect the latter packages. If one wants to use a custom conda environment to base upon it the installation of ProteoSeeker, the latter environment should contain the following:</p>
    
 ~~~bash
@@ -93,7 +93,7 @@ conda install conda-forge::tar
 
 <p align="justify">In addition, the name of the custom environment must replace the name of the environment ("ps_install") in line 14 ("conda activate ps_install") in the file "install.sh". It is suggested not to perform these changes if possible and let the installation process handle the creation and usage of the installation environment for these packages.</p>
 
-#### 2. Pipeline tools
+#### Pipeline tools
 <p align="justify">These tools are all automatically installed by the installation process of ProteoSeeker or have already been set in the Docker image of ProteoSeeker. The specific versions of these tools which are during ProteoSeeker's installation are the ones also used for the evaluation of the "seek" and "taxonomy" modes of ProteoSeeker. These tools and their versions are the following:</p>
 
 1. bbmap: 39.01
@@ -111,7 +111,7 @@ conda install conda-forge::tar
 13. csvtk: 0.30.0
 14. FragGeneScanRs: 1.1.0
 
-#### 3. Databases
+### 2.1.3 Databases
 <p align="justify">The latest versions of the following databases are installed automatically by ProteoSeeker. To see the datetime of their collection for the evaluation of ProteoSeeker check the evaluation section. Only the protein database should be installed by the user, in which case he can use one of the already prepared shell scripts for installing either the nr or the Uniref50 or Uniref90 or Uniref100 databases. The latter files are located in the "installation" directory. The user should be certain that the system has enough available memory to hold the decompressed protein database that he wants to download.</p>
 
 1. Pfam database: Latest - Installed automatically
@@ -120,7 +120,7 @@ conda install conda-forge::tar
 4. Kraken 2/Bracken Refseq indexes: Collection Standard-8 of 05/06/2024 - Installed automatically
 5. nr database: Latest - Installed manually
 
-### Installation
+### 2.1.4 Installation
 <p align="justify">Open a terminal, download the repository, extract it and move it to the installation folder. Make sure that all shell scripts in the installation directory can be executed as programs. If not, change the permissions to allow for their execution. The conda environment where the installation will take place should be activated (whether it is the base or another environment). Then run the installation script. Depending on your internet connection it might take from 5 to 30 minutes for the installation to be completed. Follow the steps below:</p>
 
 ~~~bash
@@ -134,14 +134,14 @@ conda config --set channel_priority flexible
 ./instal.sh
 ~~~
 
-### Parameter files
+### 2.1.5 Parameter files
 <p align="justify">You can create a set of "template" parameter files which can be used to run the "seek" or the "taxonomy" mode or both modes of ProteoSeeker based on the taxonomy route of Kraken2 or COMEBin/MetaBinner by running the following script in the installation directory from the same directory. This set of files is generated in the main directory of ProteoSeeker.</p>
 
 ~~~bash
 ./parameter_files.sh
 ~~~
 
-### COMEBin - GPU
+### 2.1.6 COMEBin - GPU
 <p align="justify">It should be noted that COMEBin can also be installed and run on a GPU. Instructions are available at: https://github.com/ziyewang/COMEBin and also below:</p>
 
 ~~~bash
@@ -163,7 +163,7 @@ conda deactivate
 
 <p align="justify">For example, the second option in our system has the following value: "/home/compteam/anaconda3/envs/ps_comebin_gpu/bin/COMEBin"</p>
 
-### Removing installation environments, files and directories
+### 2.1.7 Removing installation environments, files and directories
 <p align="justify">To remove the environments, all their files and the directories which environments and directories were created during the installation of ProteoSeeker (by running the "./install.sh" script) you can run the script below, in the installation directory from the installation directory. You can then delete the main directory of ProteoSeeker and all environments and files associated with installing ProteoSeeker will have been removed by your system.</p>
 
 ~~~bash
