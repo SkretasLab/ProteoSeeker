@@ -171,11 +171,11 @@ conda deactivate
 ~~~
 
 ## 2.2 Docker
-<p align="justify">To install ProteoSeeker from DockerHub as a docker image docker must be installed in your system. To install docker in Linux follow the instructions provided by the link below:</p>
+<p align="justify">To install ProteoSeeker from Docker Hub as a docker image docker must be installed in your system. To install docker in Linux follow the instructions provided by the link below:</p>
 
 Docker engine for Linux: https://docs.docker.com/engine/install/ubuntu/
 
-<p align="justify">Then download the image of ProteoSeeker from dockerhub. There are two versions. The "main" version contains the "Kraken 2/Bracken Refseq indexe Collection Standard-8 database" while the "light" version does not. Hence, the "main" version can be used directly to run the "seek" or the "taxonomy" mode of ProteoSeeker, specificaly through the "Kraken2" route. The "light" version can be used directly to run only the "seek" mode of ProteoSeeker. Neither version contains a protein database. The process of using a protein database through Docker is explained below. Both versions can be modified to utilize a protein database and thus be used to run the "taxonomy" mode of ProteoSeeker through the "COMEBin/MetaBinner" route.</p>
+<p align="justify">Then download the image of ProteoSeeker from Docker Hub. There are two versions. The "main" version contains the "Kraken 2/Bracken Refseq indexes Collection Standard-8 database" while the "light" version does not. Hence, the "main" version can be used directly to run the "seek" or the "taxonomy" mode of ProteoSeeker, specifically through the "Kraken2" route. The "light" version can be used directly to run only the "seek" mode of ProteoSeeker. Neither version contains a protein database. The process of using a protein database through Docker is explained below. Both versions can be modified to utilize a protein database and thus be used to run the "taxonomy" mode of ProteoSeeker through the "COMEBin/MetaBinner" route.</p>
 
 The "main" version has a size of  **29.6 GB**. To install the "main" version use one of the following commands:
 ~~~bash
@@ -194,7 +194,7 @@ For either case of installation process followed in order to use the topology an
 
 # 3. Use
 ## 3.1 Parameter file
-<p align="justify">In general the easiest way to run ProteoSeeker is to use a parameter file. A parameter file should at the very least contain the parameters for the options of ProteoSeeker which are to be modified from their default values. Paramteter files for differect case-scenarios may be downloaded from *here*. These files are also generated when running the "install.sh" in the installation folder and more specifically one can generate them at any time when running the "parameter_files.sh" in the installation folder. The latter files contains all options and have parameters specificilly for those that are to be modified. A parameter file is the proposed way of using ProteoSeeker eitehr when installing from source or when installing it as a Docker image. In addition, we advise that the paths used as input to ProteoSeeker (for files or databases) contain no whitespaces, although ProteoSeeker is designed to handle them properly. </p>
+<p align="justify">In general the easiest way to run ProteoSeeker is to use a parameter file. A parameter file should at the very least contain the parameters for the options of ProteoSeeker which are to be modified from their default values. Parameter files for different case-scenarios may be downloaded from *here*. These files are also generated when running the "install.sh" in the installation folder and more specifically one can generate them at any time when running the "parameter_files.sh" in the installation folder. The latter files contains all options and have parameters specifically for those that are to be modified. A parameter file is the proposed way of using ProteoSeeker either when installing from source or when installing it as a Docker image. In addition, we advise that the paths used as input to ProteoSeeker (for files or databases) contain no whitespaces, although ProteoSeeker is designed to handle them properly. </p>
 
 ## 3.2 Options
 <p align="justify">The options of ProteoSeeker as a command-line tool, their default parameters and descriptions are described below.</p>
