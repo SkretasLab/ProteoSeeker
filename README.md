@@ -1,6 +1,6 @@
 # Ep
 
-![ProteoSeeker Logo](images/ProteoSeeker_Logo.tiff)
+![ProteoSeeker Logo](images/ProteoSeeker_Logo.png)
 
 # 1. Overview
 ## 1.1 Scope of usage
