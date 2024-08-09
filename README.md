@@ -1,4 +1,4 @@
-![ProteoSeeker Logo](images/ProteoSeeker_Logo.png)
+![ProteoSeeker Logo](images/ProteoSeeker_Logo.tiff)
 
 # 1. Overview
 ## 1.1 Scope of usage
