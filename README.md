@@ -82,7 +82,7 @@ Anaconda for Linux: https://docs.anaconda.com/free/anaconda/install/linux/
 <p align="justify">All dependencies, except for the protein database, are automatically installed by the installation process of ProteoSeeker. You can skip this part if you want to go straight to the installation instructions but do read the information related to the protein database which is not installed automatically by the installation process of ProteoSeeker.</p>
 
 #### 1. git, wget, gzip, tar:
-<p align="justify">These packages are handled by the installation process of ProteoSeeker and are installed in a enviroment from which the installation of ProteoSeeker will be initiated. A new enviroment called "ps_install" is created, used to download and collect the latter packages. If one wants to use a custom conda enviroment to base upon it the installation of ProteoSeeker, the latter enviroment should contain the following:</p>
+<p align="justify">These packages are handled by the installation process of ProteoSeeker and are installed in a environment from which the installation of ProteoSeeker will be initiated. A new environment called "ps_install" is created, used to download and collect the latter packages. If one wants to use a custom conda environment to base upon it the installation of ProteoSeeker, the latter environment should contain the following:</p>
    
 ~~~bash
 conda install anaconda::git
@@ -91,7 +91,7 @@ conda install conda-forge::gzip
 conda install conda-forge::tar
 ~~~
 
-<p align="justify">In addition, the name of the custom enviroment must replace the name of the enviroment ("ps_install") in line 14 ("conda activate ps_install") in the file "install.sh". It is suggested not to perform these changes if possible and let the installation process handle the creation and usage of the installation enviroment for these packages.</p>
+<p align="justify">In addition, the name of the custom environment must replace the name of the environment ("ps_install") in line 14 ("conda activate ps_install") in the file "install.sh". It is suggested not to perform these changes if possible and let the installation process handle the creation and usage of the installation environment for these packages.</p>
 
 #### 2. Pipeline tools
 <p align="justify">These tools are all aumatically installed by the installation process of ProteoSeeker or have already been set in the Docker image of ProteoSeeker. The spcific versions of these tools which are during ProteoSeeker's installation are the ones also used for the evaluation of the "seek" and "taxonomy" modes of ProteoSeeker. These tools and their versions are the following:</p>
@@ -121,7 +121,7 @@ conda install conda-forge::tar
 5. nr database: Latest - Installed manually
 
 ### Installation
-<p align="justify">Open a terminal, download the repository, extract it and move to the installation folder. Make sure that all shell scripts in the installation directory can be executed as programs. If not, change the permissions as to allow for their execution. The conda enviroment where the installation will take place should be activate (whether it is the base or another enviroment). Then run the installation script. Depending on your internet connection it might take from 5 to 30 minutes for the installation to be completed. Follow the steps below:</p>
+<p align="justify">Open a terminal, download the repository, extract it and move to the installation folder. Make sure that all shell scripts in the installation directory can be executed as programs. If not, change the permissions as to allow for their execution. The conda environment where the installation will take place should be activate (whether it is the base or another environment). Then run the installation script. Depending on your internet connection it might take from 5 to 30 minutes for the installation to be completed. Follow the steps below:</p>
 
 ~~~bash
 git clone https://github.com/SkretasLab/ProteoSeeker.git
@@ -152,19 +152,19 @@ conda install pytorch pytorch-cuda=11.8 -c pytorch -c nvidia -c conda-forge
 conda deactivate
 ~~~
 
-<p align="justify">We have observed that running COMEBin with a GPU offers a great improvement in the running time of COMEBin. To use COMEBin in an enviroment which allows the usage of a GPU simply provide that enrioment's name to the default name of the enviroment for COMEBin and also modify the path to the COMEBin directory of the enviroment. These paths refer to the following options of ProteoSeeker:</p>
+<p align="justify">We have observed that running COMEBin with a GPU offers a great improvement in the running time of COMEBin. To use COMEBin in an environment which allows the usage of a GPU simply provide that enrioment's name to the default name of the environment for COMEBin and also modify the path to the COMEBin directory of the environment. These paths refer to the following options of ProteoSeeker:</p>
 
 ~~~bash
-   -sen/--comebin-env             Str -Opt: ps_comebin- The conda enviroment for sra tools.
-                                  'None/none': To not use an enviroment at all.
+   -sen/--comebin-env             Str -Opt: ps_comebin- The conda environment for sra tools.
+                                  'None/none': To not use an environment at all.
 
    -cfp/--comebin-folder-path     Str -Opt- The path to the bin folder of COMEBin.
 ~~~
 
 <p align="justify">For example, the second option in our system has the following value: "/home/compteam/anaconda3/envs/ps_comebin_gpu/bin/COMEBin"</p>
 
-### Removing installation enviroments, files and diretories
-<p align="justify">To remove the enviroments, all their files and the directories which enviroments and directories were created during the installation of ProteoSeeker (by running the "./install.sh" script) you can run the script below, in the installation directory from the installation directory. You can then delete the main directory of ProteoSeeker and all enviroments and files associated with installing ProteoSeeker will have been removed by your system.</p>
+### Removing installation environments, files and diretories
+<p align="justify">To remove the environments, all their files and the directories which environments and directories were created during the installation of ProteoSeeker (by running the "./install.sh" script) you can run the script below, in the installation directory from the installation directory. You can then delete the main directory of ProteoSeeker and all environments and files associated with installing ProteoSeeker will have been removed by your system.</p>
 
 ~~~bash
 ./remove.sh
@@ -522,48 +522,48 @@ Options:
    -uta/--up-to-assembly          True/False -Opt: False- The pipeline ends after the assembly
                                   of the reads.
 
----------Tool enviroments---------
-   -sen/--sra-env                 Str -Opt: ps_sra_tools- The conda enviroment for sra tools.
-                                  'None/none': To not use an enviroment at all.
+---------Tool environments---------
+   -sen/--sra-env                 Str -Opt: ps_sra_tools- The conda environment for sra tools.
+                                  'None/none': To not use an environment at all.
 
-   -fen/--fastqc-env              Str -Opt: ps_fastqc- The conda enviroment for FastQC.
-                                  'None/none': To not use an enviroment at all.
+   -fen/--fastqc-env              Str -Opt: ps_fastqc- The conda environment for FastQC.
+                                  'None/none': To not use an environment at all.
 
-   -uen/--bbtools-env             Str -Opt: ps_bbtools- The conda enviroment for bbtools.
-                                  'None/none': To not use an enviroment at all.
+   -uen/--bbtools-env             Str -Opt: ps_bbtools- The conda environment for bbtools.
+                                  'None/none': To not use an environment at all.
 
-   -men/--megahit-env             Str -Opt: ps_megahit- The conda enviroment for megahit.
-                                  'None/none': To not use an enviroment at all.
+   -men/--megahit-env             Str -Opt: ps_megahit- The conda environment for megahit.
+                                  'None/none': To not use an environment at all.
 
-   -ken/--kraken-env              Str -Opt: ps_kraken- The conda enviroment for kraken2.
-                                  'None/none': To not use an enviroment at all.
+   -ken/--kraken-env              Str -Opt: ps_kraken- The conda environment for kraken2.
+                                  'None/none': To not use an environment at all.
 
-   -nen/--metabinner-env          Str -Opt: ps_metabinner- The conda enviroment for
-                                  MetaBinner. 'None/none': To not use an enviroment at all.
+   -nen/--metabinner-env          Str -Opt: ps_metabinner- The conda environment for
+                                  MetaBinner. 'None/none': To not use an environment at all.
 
-   -sen/--comebin-env             Str -Opt: ps_comebin- The conda enviroment for sra tools.
-                                  'None/none': To not use an enviroment at all.
+   -sen/--comebin-env             Str -Opt: ps_comebin- The conda environment for sra tools.
+                                  'None/none': To not use an environment at all.
 
-   -ien/--cdhit-env               Str -Opt: ps_cd_hit- The conda enviroment for CD-HIT.
-                                  'None/none': To not use an enviroment at all.
+   -ien/--cdhit-env               Str -Opt: ps_cd_hit- The conda environment for CD-HIT.
+                                  'None/none': To not use an environment at all.
 
-   -gen/--genepred-env            Str -Opt- The conda enviroment for FragGeneScanRs.
-                                  'None/none': To not use an enviroment at all.
+   -gen/--genepred-env            Str -Opt- The conda environment for FragGeneScanRs.
+                                  'None/none': To not use an environment at all.
 
-   -hen/--hmmer-env               Str -Opt: ps_hmmer- The conda enviroment for HMMER.
-                                  'None/none': To not use an enviroment at all.
+   -hen/--hmmer-env               Str -Opt: ps_hmmer- The conda environment for HMMER.
+                                  'None/none': To not use an environment at all.
 
-   -den/--dimaond-env             Str -Opt: ps_diamond- The conda enviroment for DIMAOND
-                                  BLASTP. 'None/none': To not use an enviroment at all.
+   -den/--dimaond-env             Str -Opt: ps_diamond- The conda environment for DIMAOND
+                                  BLASTP. 'None/none': To not use an environment at all.
 
-   -ten/--taxonkit-env            Str -Opt: ps_taxonkit- The conda enviroment for taxonkit.
-                                  'None/none': To not use an enviroment at all.
+   -ten/--taxonkit-env            Str -Opt: ps_taxonkit- The conda environment for taxonkit.
+                                  'None/none': To not use an environment at all.
 
-   -pen/--phobius-env             Str -Opt: ps_phobius- The conda enviroment for Phobius.
-                                  'None/none': To not use an enviroment at all.
+   -pen/--phobius-env             Str -Opt: ps_phobius- The conda environment for Phobius.
+                                  'None/none': To not use an environment at all.
 
-   -ben/--bowtie-env              Str -Opt: ps_bowtie- The conda enviroment for Bowtie2.
-                                  'None/none': To not use an enviroment at all.
+   -ben/--bowtie-env              Str -Opt: ps_bowtie- The conda environment for Bowtie2.
+                                  'None/none': To not use an environment at all.
 
 ---------Tool paths---------
    -adp/--anaconda-dir-path       Str -Opt- The path to the anaconda installation directory.
@@ -615,7 +615,7 @@ Options:
 ~~~
 
 ## 3.3 Command-line
-<p align="justify">To run ProteoSeeker through the command-line a parameter file facilitates the process greatly. By using one of the template parameter files one can easily customize the values for the options of ProteoSeeker and run it. To run ProteoSeeker, at first one should activate its enviroment. The commands below suffice to run ProteoSeeker through the command-line from the main directory of ProteoSeeker by its "taxonomy" mode through the Kraken2 route. To run ProteoSeeker by its seek mode one should set the path to the protein database in the parameters file and then select one of the template files that include the "seek" mode at its name.</p>
+<p align="justify">To run ProteoSeeker through the command-line a parameter file facilitates the process greatly. By using one of the template parameter files one can easily customize the values for the options of ProteoSeeker and run it. To run ProteoSeeker, at first one should activate its environment. The commands below suffice to run ProteoSeeker through the command-line from the main directory of ProteoSeeker by its "taxonomy" mode through the Kraken2 route. To run ProteoSeeker by its seek mode one should set the path to the protein database in the parameters file and then select one of the template files that include the "seek" mode at its name.</p>
 
 ~~~bash
 conda activate ps_env
