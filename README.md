@@ -1,5 +1,3 @@
-# Ep
-
 ![ProteoSeeker Logo](images/ProteoSeeker_Logo.png)
 
 # 1. Overview
