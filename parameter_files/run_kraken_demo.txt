@@ -1,7 +1,10 @@
 #!/bin/bash
 set -e
 
-./taxonomy_tests/setup.sh
+# Get the current directory
+PARAMETER_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+source "${PARAMETER_DIR}/setup.sh"
 
 K_8_PATH="${PS_PATH}/results/sample_X/sample_X_kraken_8"
 K_16_PATH="${PS_PATH}/results/sample_X/sample_X_kraken_16"
@@ -11,8 +14,8 @@ if [ ! -d "${PS_PATH}/results/sample_X" ]; then
   mkdir "${PS_PATH}/results/sample_X"
 fi
 
-if [ ! -d "${HDD_PATH}/sample_X/" ]; then
-  mkdir "${HDD_PATH}/sample_X/"
+if [ ! -d "${RESULTS_ALL_PATH}/sample_X/" ]; then
+  mkdir "${RESULTS_ALL_PATH}/sample_X/"
 fi
 
 # Database: 8
@@ -36,13 +39,13 @@ if [ -d "${K_8_PATH}" ]; then
   cp -r "${K_8_PATH}/gene_results" "${K_16_PATH}"
 
   # Move 8
-  mv "${K_8_PATH}" "${HDD_PATH}/sample_X/"
+  mv "${K_8_PATH}" "${RESULTS_ALL_PATH}/sample_X/"
   mkdir "${K_8_PATH}"
-  if [ -d "${HDD_PATH}/sample_X/sample_X_kraken_8/kraken_results" ]; then
-    cp -r "${HDD_PATH}/sample_X/sample_X_kraken_8/kraken_results" "${K_8_PATH}/"
+  if [ -d "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/kraken_results" ]; then
+    cp -r "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/kraken_results" "${K_8_PATH}/"
   fi
-  if [ -f "${HDD_PATH}/sample_X/sample_X_kraken_8/time_analysis.tsv" ]; then
-    cp "${HDD_PATH}/sample_X/sample_X_kraken_8/time_analysis.tsv" "${K_8_PATH}/kraken_results/"
+  if [ -f "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/time_analysis.tsv" ]; then
+    cp "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/time_analysis.tsv" "${K_8_PATH}/kraken_results/"
   fi
 
   # Run 16
@@ -66,25 +69,25 @@ if [ -d "${K_16_PATH}" ]; then
   cp -r "${K_16_PATH}/gene_results" "${K_72_PATH}"
 
   # Move 16
-  mv "${K_16_PATH}" "${HDD_PATH}/sample_X/"
+  mv "${K_16_PATH}" "${RESULTS_ALL_PATH}/sample_X/"
   mkdir "${K_16_PATH}"
-  if [ -d "${HDD_PATH}/sample_X/sample_X_kraken_16/kraken_results" ]; then
-    cp -r "${HDD_PATH}/sample_X/sample_X_kraken_16/kraken_results" "${K_16_PATH}/"
+  if [ -d "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_16/kraken_results" ]; then
+    cp -r "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_16/kraken_results" "${K_16_PATH}/"
   fi
-  if [ -f "${HDD_PATH}/sample_X/sample_X_kraken_16/time_analysis.tsv" ]; then
-    cp "${HDD_PATH}/sample_X/sample_X_kraken_16/time_analysis.tsv" "${K_16_PATH}/kraken_results/"
+  if [ -f "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_16/time_analysis.tsv" ]; then
+    cp "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_16/time_analysis.tsv" "${K_16_PATH}/kraken_results/"
   fi
 
   # Run 72
   python -u proteoseeker.py -pfp "${PS_PATH}/parameter_files/X/par_sX_phylo_k72.txt" &> "${PS_PATH}/results/sample_X/stdoe_sX_k72.txt"
   
   # Move 72
-  mv "${K_72_PATH}" "${HDD_PATH}/sample_X/"
+  mv "${K_72_PATH}" "${RESULTS_ALL_PATH}/sample_X/"
   mkdir "${K_72_PATH}"
-  if [ -d "${HDD_PATH}/sample_X/sample_X_kraken_72/kraken_results" ]; then
-    cp -r "${HDD_PATH}/sample_X/sample_X_kraken_72/kraken_results" "${K_72_PATH}/"
+  if [ -d "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_72/kraken_results" ]; then
+    cp -r "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_72/kraken_results" "${K_72_PATH}/"
   fi
-  if [ -f "${HDD_PATH}/sample_X/sample_X_kraken_72/time_analysis.tsv" ]; then
-    cp "${HDD_PATH}/sample_X/sample_X_kraken_72/time_analysis.tsv" "${K_72_PATH}/kraken_results/"
+  if [ -f "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_72/time_analysis.tsv" ]; then
+    cp "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_72/time_analysis.tsv" "${K_72_PATH}/kraken_results/"
   fi
 fi

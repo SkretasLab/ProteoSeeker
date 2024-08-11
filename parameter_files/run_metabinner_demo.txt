@@ -1,17 +1,20 @@
 #!/bin/bash
 set -e
 
-./taxonomy_tests/setup.sh
+# Get the current directory
+PARAMETER_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-K_8_PATH="${HDD_PATH}/sample_X/sample_X_kraken_8"
+source "${PARAMETER_DIR}/setup.sh"
+
+K_8_PATH="${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8"
 M_NR_PATH="${PS_PATH}/results/sample_X/sample_X_metabinner_nr"
 
 if [ ! -d "${PS_PATH}/results/sample_X" ]; then
   mkdir "${PS_PATH}/results/sample_X"
 fi
 
-if [ ! -d "${HDD_PATH}/sample_X/" ]; then
-  mkdir "${HDD_PATH}/sample_X/"
+if [ ! -d "${RESULTS_ALL_PATH}/sample_X/" ]; then
+  mkdir "${RESULTS_ALL_PATH}/sample_X/"
 fi
 
 # Datbase: nr
@@ -38,13 +41,13 @@ if [ -d "${K_8_PATH}" ]; then
   python -u proteoseeker.py -pfp "${PS_PATH}/parameter_files/X/par_sX_phylo_m_nr.txt" &> "${PS_PATH}/results/sample_X/stdoe_sX_mnr.txt"
   
   # Move nr
-  mv "${M_NR_PATH}" "${HDD_PATH}/sample_X/"
+  mv "${M_NR_PATH}" "${RESULTS_ALL_PATH}/sample_X/"
   mkdir "${M_NR_PATH}"
   mkdir "${M_NR_PATH}/metabinner_results"
-  if [ -f "${HDD_PATH}/sample_X/sample_X_metabinner_nr/metabinner_results/b_summary_info_metabinner.tsv" ]; then
-    cp "${HDD_PATH}/sample_X/sample_X_metabinner_nr/metabinner_results/b_summary_info_metabinner.tsv" "${M_NR_PATH}/metabinner_results/"
+  if [ -f "${RESULTS_ALL_PATH}/sample_X/sample_X_metabinner_nr/metabinner_results/b_summary_info_metabinner.tsv" ]; then
+    cp "${RESULTS_ALL_PATH}/sample_X/sample_X_metabinner_nr/metabinner_results/b_summary_info_metabinner.tsv" "${M_NR_PATH}/metabinner_results/"
   fi
-  if [ -f "${HDD_PATH}/sample_X/sample_X_metabinner_nr/time_analysis.tsv" ]; then
-    cp "${HDD_PATH}/sample_X/sample_X_metabinner_nr/time_analysis.tsv" "${M_NR_PATH}/metabinner_results/"
+  if [ -f "${RESULTS_ALL_PATH}/sample_X/sample_X_metabinner_nr/time_analysis.tsv" ]; then
+    cp "${RESULTS_ALL_PATH}/sample_X/sample_X_metabinner_nr/time_analysis.tsv" "${M_NR_PATH}/metabinner_results/"
   fi
 fi
