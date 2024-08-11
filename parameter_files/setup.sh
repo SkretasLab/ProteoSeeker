@@ -22,7 +22,5 @@ PROTEIN_DB_PATH="/home/user/databases/nr_db"
 
 # Create the directory for the main part of the results, if not created already.
 if [ ! -d "${RESULTS_ALL_PATH}" ]; then
-  mkdir "${RESULTS_ALL_PATH}"
+    mkdir "${RESULTS_ALL_PATH}"
 fi
-
-

@@ -2,6 +2,7 @@ import os
 import stat
 import shutil
 import pathlib
+import subprocess
 
 
 def read_file(file_path):
@@ -16,13 +17,6 @@ def read_file(file_path):
 
 
 def cparf():
-    par_demo_path = "par_demo.txt"
-    kraken_demo_path = "run_kraken_demo.txt"
-    comebin_demo_path = "run_comebin_demo.txt"
-    metabinner_demo_path = "run_metabinner_demo.txt"
-    all_demo_path = "run_all_demo.txt"
-    setup_path = "setup.sh"
-
     prefix = "par"
     sra_codes_dict = {
         1: "SRR12829168",
@@ -53,30 +47,54 @@ def cparf():
         4: "phylo_c_nr"
     }
 
-    # Getting the current working directory.
+    # Getting the path to the parameter, the main proteseeker and the installation directory.
     parameter_path = pathlib.Path(__file__).parent.resolve()
     ps_path = parameter_path.parent.resolve()
-    base_output_path = "{}/results".format(ps_path)
-    
+    installation_path = "{}/installation".format(ps_path)
+
+    # Getting the path for conda.
+    conda_find_script = "{}/find_conda.sh".format(installation_path)
+    command_phrase = "source {} && echo $CONDA_INST_DIR && echo $CONDA_SH_PATH".format(conda_find_script)
+    result = subprocess.run(command_phrase, shell=True, check=True, executable='/bin/bash', capture_output=True, text=True)
+    bash_output = result.stdout.strip().split('\n')
+    conda_inst_dir = bash_output[0]
+    conda_sh_path = bash_output[1]
+
+    # Getting the paths for the COMEBin and MetaBinner bins.
+    mb_cb_find_script = "{}/find_mb_cb.sh".format(installation_path)
+    command_phrase = "source {} && echo $CTBPATH && echo $CBINPATH && echo $MTBPATH && echo $MBINPATH".format(mb_cb_find_script)
+    result = subprocess.run(command_phrase, shell=True, check=True, executable='/bin/bash', capture_output=True, text=True)
+    bash_output = result.stdout.strip().split('\n')
+    ctbpath = bash_output[0]
+    cbinpath = bash_output[1]
+    mtbpath = bash_output[2]
+    mbinpath = bash_output[3]
+
     # Getting the paths for the databases from the "setup.sh" script.
-    kraken_8_db_path = ""
-    kraken_16_db_path = ""
-    kraken_72_db_path = ""
-    protein_db_path = ""
-    setup_lines = read_file(setup_path)
-    for line in setup_lines:
-        if "KRAKEN_8_DB_PATH" in line:
-            line_splited = line.split("\"")
-            kraken_8_db_path = line_splited[1]
-        elif "KRAKEN_16_DB_PATH" in line:
-            line_splited = line.split("\"")
-            kraken_16_db_path = line_splited[1]
-        elif "KRAKEN_72_DB_PATH" in line:
-            line_splited = line.split("\"")
-            kraken_72_db_path = line_splited[1]
-        elif "PROTEIN_DB_PATH" in line:
-            line_splited = line.split("\"")
-            protein_db_path = line_splited[1]
+    setup_script = "{}/setup.sh".format(parameter_path)
+    command_phrase = "source {} && echo $KRAKEN_8_DB_PATH && echo $KRAKEN_16_DB_PATH && echo $KRAKEN_72_DB_PATH && echo $PROTEIN_DB_PATH".format(setup_script)
+    result = subprocess.run(command_phrase, shell=True, check=True, executable='/bin/bash', capture_output=True, text=True)
+    bash_output = result.stdout.strip().split('\n')
+    kraken_8_db_path = bash_output[0]
+    kraken_16_db_path = bash_output[1]
+    kraken_72_db_path = bash_output[2]
+    protein_db_path = bash_output[3]
+
+    # Setting the other paths.
+    adapters_path = "{}/adapters.fa".format(ps_path)
+    pfam_path = "{}/pfam_database/Pfam-A.hmm".format(ps_path)
+    swissprot_path = "{}/swissprot_database/swissprot".format(ps_path)
+    motifs_path = "{}/motifs.txt".format(ps_path)
+    base_output_path = "{}/results".format(ps_path)
+    fraggenescanrs_path = "{}/ps_tools/fgsrs/FragGeneScanRs".format(ps_path)
+    phobius_path = "{}/ps_tools/phobius_files/phobius".format(ps_path)
+
+    # The paths for the parameter files.
+    par_demo_path = "{}/par_demo.txt".format(parameter_path)
+    kraken_demo_path = "{}/run_kraken_demo.txt".format(parameter_path)
+    comebin_demo_path = "{}/run_comebin_demo.txt".format(parameter_path)
+    metabinner_demo_path = "{}/run_metabinner_demo.txt".format(parameter_path)
+    all_demo_path = "{}/run_all_demo.txt".format(parameter_path)
 
     # Parameter lines
     par_lines = read_file(par_demo_path)
@@ -107,6 +125,26 @@ def cparf():
                 if line == "sra_code=\"\"":
                     sra_code = sra_codes_dict[sample_id]
                     line = "sra_code=\"{}\"".format(sra_code)
+                elif line == "adapters_path=\"\"":
+                    line = "adapters_path=\"{}\"".format(adapters_path)
+                elif line == "profiles_broad_path=\"\"":
+                    line = "profiles_broad_path=\"{}\"".format(pfam_path)
+                elif line == "swissprot_path=\"\"":
+                    line = "swissprot_path=\"{}\"".format(swissprot_path)
+                elif line == "motifs_path=\"\"":
+                    line = "motifs_path=\"{}\"".format(motifs_path)
+                elif line == "conda_bin=\"\"":
+                    line = "conda_bin=\"{}\"".format(conda_inst_dir)
+                elif line == "conda_sh=\"\"":
+                    line = "conda_sh=\"{}\"".format(conda_sh_path)
+                elif line == "metabinner_bin_path=\"\"":
+                    line = "metabinner_bin_path=\"{}\"".format(mbinpath)
+                elif line == "comebin_bin_path=\"\"":
+                    line = "comebin_bin_path=\"{}\"".format(cbinpath)
+                elif line == "fraggenescanrs_path=\"\"":
+                    line = "fraggenescanrs_path=\"{}\"".format(fraggenescanrs_path)
+                elif line == "phobius_path=\"\"":
+                    line = "phobius_path=\"{}\"".format(phobius_path)
                 elif line == "protein_db_path=\"\"":
                     if bs_key in [3, 4]:
                         line = "protein_db_path=\"{}\"".format(protein_db_path)
