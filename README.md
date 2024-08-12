@@ -20,7 +20,7 @@
 9. **Taxonomic Assignment:** The tool expands on the process of assigning one or more organisms to identified proteins, aiding in the understanding of microbial community composition.
 
 ## 1.2 Pipeline
-<p align="justify">The overall pipeline implemented by ProteoSeeker can be seen in the image below. ProteoSeeker offers two main functionalities with a multitude of options for users not accustomed to metagenomic analysis tools and more advanced users that may want to modify the behaviour of certain tools included in ProteoSeeker's pipeline. The first functionality is to **seek** proteins that may be part of selected protein families and the second funcitonality is to find the **taxonomy** of the proteins discovered from the analysis of a sample. The second functionality is based either on the taxonomy of the reads (kraken2 route) or on binning the contigs and searching for the taxonomy of the proteins through the "taxonomy filtered protein database" (COMEBin/MetaBinner route).</p>
+<p align="justify">The overall pipeline implemented by ProteoSeeker can be seen in the image below. ProteoSeeker offers two main functionalities with a multitude of options for users not accustomed to metagenomic analysis tools and more advanced users that may want to modify the behaviour of certain tools included in ProteoSeeker's pipeline. The first functionality is to **seek** proteins that may be part of selected protein families and the second functionality is to find the **taxonomy** of the proteins discovered from the analysis of a sample. The second functionality is based either on the taxonomy of the reads (kraken2 route) or on binning the contigs and searching for the taxonomy of the proteins through the "taxonomy filtered protein database" (COMEBin/MetaBinner route).</p>
 
 The stages of the “seek” mode of ProteoSeeker. ProteoSeeker offers two main functionalities applied through the seek mode (blue) and the “taxonomy” mode (green). Each stage is colored based on the mode it belongs to. The possible types of input for ProteoSeeker include an SRA code, reads in FASTQ files, contigs or genomes or proteins if FASTA format. If an SRA code is provided the corresponding SRA file and FASTQ files are generated.
 
@@ -374,7 +374,7 @@ Options:
 
    -kt/--kraken-threshold         Int/Float -Opt -1: False- A list with read-filtering
                                   threshold for the species reported by kraken. The list
-                                  should include integers of floats seperated by commads. An
+                                  should include integers of floats separated by commads. An
                                   integer is used as an absolute read threshold and a float is
                                   used as a percentage threshold applied to the percentagies
                                   reported by kraken for each species (e.g., 100 to represent
@@ -452,11 +452,11 @@ Options:
                                   for further annotation.
 
 ---------General options: Annotation---------
-   -at/--add-type                 Str -Opt- A comma-seperated list which includes kinds of
+   -at/--add-type                 Str -Opt- A comma-separated list which includes kinds of
                                   information related to the analysis. The items of the list
                                   are added for each protein in each of the annotation files.
 
-   -ai/--add-info                 Str -Opt- A comma-seperated list which includes values for
+   -ai/--add-info                 Str -Opt- A comma-separated list which includes values for
                                   the corresponding kinds of information set by -at. The items
                                   of the list are added for each protein in each of the
                                   annotation files.
@@ -638,7 +638,7 @@ To:
 my $DECODEANHMM =      "$PHOBIUS_DIR/decodeanhmm.64bit";
 ~~~
 
-<p align="justify">For both cases of volumes and bind mounts you can perform a test based on a template parameter file (located at the "patameter_files" directory in the volume or bind mount) each of which runs a different analysis. The test is selected with a number. The selections are described below:</p>
+<p align="justify">For both cases of volumes and bind mounts you can perform a test based on a template parameter file (located at the "parameter_files" directory in the volume or bind mount) each of which runs a different analysis. The test is selected with a number. The selections are described below:</p>
 
 Selection | Mode | Analysis Type | Route
 --- | --- | --- | ---
@@ -671,7 +671,7 @@ sudo ./installation/docker_vol_setup.sh
 <p align="justify">In this case, the data shared between the local host and the container will be located at "/var/lib/docker/volumes/ps_vol/_data". To find the results of the run check in the directory "/var/lib/docker/volumes/ps_vol/_data/results". Similarly, you can run ProteoSeeker based on a custom parameters file. After ProteoSeeker has terminated the container stops and exits, hence one can not find the results in that container. One can also run the same command of the script by adding the "-d" option which runs the container in the background. He can then attach to the container to observe which stage the pipeline is currently running. In addition, one can use "/bin/bash/ as the command to run the container in interactive mode, then run ProteoSeeker from the container (as one would directly from the command-line of the host) and then transfer the results to the host through a shared volume or bind mount.</p>
 
 ### 3.4.2 Bind mount
-<p align="justify">A volume is a directory located in the local host and not run by Docker. As for the volume, the data stored in the mount are reatined after the container is stopped or exits, may be used by different containers and are also accessible by the local host. From the main direcotry of ProteoSeeker run the Bash script below (should not be run with sudo) which performs the following actions:</p>
+<p align="justify">A volume is a directory located in the local host and not run by Docker. As for the volume, the data stored in the mount are retained after the container is stopped or exits, may be used by different containers and are also accessible by the local host. From the main directory of ProteoSeeker run the Bash script below (should not be run with sudo) which performs the following actions:</p>
 
 1. Creates the "docker_mount_dir" directory in the home directory of the user.
 2. Create directories in the volumes needed to run ProteoSeeker in the image and collects the results in the host system.
@@ -693,7 +693,7 @@ sudo ./installation/docker_vol_setup.sh
 sudo -E chmod -R a+rw "${HOME}/proteoseeker_bindmount/results"
 ~~~
 
-<p align="justify">In this case, the data shared between the local host and the container will be located at "/${home}/docker_mount_dir". To find the results of the run check in the directory "/${home}/docker_mount_dir/results". One can also run the same command of the script by adding the "-d" option which runs the container in the background. He can then attach to the container to observe which stage the pipeline is currently runnning. In addition, in both cases of volumes and bind mounts, one can use "/bin/bash/ as the command to run the container in interactive mode, then run ProteoSeeker from the container (as one would directly from the command-line of the host) and then transfer the results to the host through the shared volume or bind mount.</p>
+<p align="justify">In this case, the data shared between the local host and the container will be located at "/${home}/docker_mount_dir". To find the results of the run check in the directory "/${home}/docker_mount_dir/results". One can also run the same command of the script by adding the "-d" option which runs the container in the background. He can then attach to the container to observe which stage the pipeline is currently running. In addition, in both cases of volumes and bind mounts, one can use "/bin/bash/ as the command to run the container in interactive mode, then run ProteoSeeker from the container (as one would directly from the command-line of the host) and then transfer the results to the host through the shared volume or bind mount.</p>
 
 ### 3.4.3 Utilizing Phobius in the docker container
 <p align="justify">The "phobius" directory in the volume or bind mount can be used to store the files of the Phobius installation. If done so, ProteoSeeker will detect and use Phobius when running in the Docker container. Download and install Phobius based on the instructions from: https://phobius.sbc.su.se/data.html</p>
@@ -710,12 +710,12 @@ sudo -E chmod -R a+rw "${HOME}/proteoseeker_bindmount/results"
 7. nr database: 27/06/2024
 8. Reviewed (Swiss-Prot) flat file: 04/08/2023
 
-**Caution! The results generated by some of the test cases for the seek and taxonomy mode evlauation and most of the results generated for the test cases for the taxonomy evaluation take up a lot of memory space, in the range of 100-200 GBs. If memory space is a limiting factor for you then run the test cases one at a time, as we provide such an option, and delete the files not directly associated with the evaluation.**
+**Caution! The results generated by some of the test cases for the seek and taxonomy mode evaluation and most of the results generated for the test cases for the taxonomy evaluation take up a lot of memory space, in the range of 100-200 GB. If memory space is a limiting factor for you then run the test cases one at a time, as we provide such an option, and delete the files not directly associated with the evaluation.**
 
 ## 4.1 Seek and taxonomy modes evaluation
 <p align="justify">The seek and taxonomy mode of ProteoSeeker can be tested on specific samples which have been analyzed by our lab in the process of discovering novel enzymes with desirable characteristics. The following samples were used for these analyses: "SRR3961740", "DRR163688" and "SRR17771278"."</p>
 
-1. <p align="justify">Modify the paths to the directory that will include the total of the results generated by ProteoSeeker (the results associated with the taxonomy analysis will remain to the directory set in the parameter files which is in the "results" directory), the Kraken2 Collection Standard-8, Standard-16, Standard databases and to the protein database, using their full paths based on your system. The option to selected another directory to contain all the results exists because the total sze of the results is too big and might be suitable for you to store them in another directory or even completely delete them after the analysis is completed. These variables are the following:</p>
+1. <p align="justify">Modify the paths to the directory that will include the total of the results generated by ProteoSeeker (the results associated with the taxonomy analysis will remain to the directory set in the parameter files which is in the "results" directory), the Kraken2 Collection Standard-8, Standard-16, Standard databases and to the protein database, using their full paths based on your system. The option to selected another directory to contain all the results exists because the total size of the results is too big and might be suitable for you to store them in another directory or even completely delete them after the analysis is completed. These variables are the following:</p>
 
 ~~~bash
 RESULTS_ALL_PATH="${PS_PATH}/Benchmark"
@@ -725,13 +725,13 @@ KRAKEN_72_DB_PATH="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metag
 PROTEIN_DB_PATH="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/parameter_files/docker/nr_part.fasta"
 ~~~
 
-2. <p align="justify">Move in the "parameter_files" directory and run the following script which will create the parameter files needed to run the seek and taxonomy analyses. Before creating the parameter files one can modify any of the files in the "cas_als/ca_run/SRR3961740", "cas_als/ca_run/DRR163688 and "cas_als/al_run/SRR17771278" direcotries which are used as the basis to create the same parameter files with the right paths according to the host system. To perform the analysis based on identical factors regarding the time efficiency of ProteoSeeker you should provide the name of an enviroment for COMEBin in which it will be able to utilize a GPU (details to install COMEBin to utilize a GPU are found in the installation section). The default installation does not include COMEBin combined with using a GPU. Similarly, one can modify any other option if to run ProteoSeeker based on other prospects (with that not being identical with the evaluation runs used in the [MANUSCRIPT - UNDER REVIEW].</p>
+2. <p align="justify">Move in the "parameter_files" directory and run the following script which will create the parameter files needed to run the seek and taxonomy analyses. Before creating the parameter files one can modify any of the files in the "cas_als/ca_run/SRR3961740", "cas_als/ca_run/DRR163688 and "cas_als/al_run/SRR17771278" directories which are used as the basis to create the same parameter files with the right paths according to the host system. To perform the analysis based on identical factors regarding the time efficiency of ProteoSeeker you should provide the name of an environment for COMEBin in which it will be able to utilize a GPU (details to install COMEBin to utilize a GPU are found in the installation section). The default installation does not include COMEBin combined with using a GPU. Similarly, one can modify any other option if to run ProteoSeeker based on other prospects (with that not being identical with the evaluation runs used in the [MANUSCRIPT - UNDER REVIEW].</p>
 
 ~~~bash
 python seek_tax_par_files.py
 ~~~
 
-3. <p align="justify">There are three samples used to test the seek and taxonomy analyses modes. For each sample at first you must run ProteoSeeker to download its SRA and craete the filtered protein database. To do this go to the main drectory and run:</p>
+3. <p align="justify">There are three samples used to test the seek and taxonomy analyses modes. For each sample at first you must run ProteoSeeker to download its SRA and create the filtered protein database. To do this go to the main directory and run:</p>
 
 ~~~bash
 conda activate ps_env
@@ -752,7 +752,7 @@ python proteoseeker.py -pfp parameter_files/cas_als/al_run/SRR17771278/parameter
 python proteoseeker.py -pfp parameter_files/cas_als/al_run/SRR17771278/parameters_SRR17771278_k8_al.txt
 ~~~
 
-5. <p align="justify">If you run all the parameter files, you can then run the "tests/seek_tax_results_analysis/analyze_seek_tax_results.sh" script in the "tests" to automatically analyze the results from these analyses for the three experimentally validated enzymes described in [MANUSCRIPT - UNDER REVIEW]. The latter script uses an input file which contains information about the species of the best hit of each of the evaluated proteins against the nr database through BLASTP. The best hit is identified based on the lowest e-vaalue amongst all the hits.</p>
+5. <p align="justify">If you run all the parameter files, you can then run the "tests/seek_tax_results_analysis/analyze_seek_tax_results.sh" script in the "tests" to automatically analyze the results from these analyses for the three experimentally validated enzymes described in [MANUSCRIPT - UNDER REVIEW]. The latter script uses an input file which contains information about the species of the best hit of each of the evaluated proteins against the nr database through BLASTP. The best hit is identified based on the lowest e-value among all the hits.</p>
 
 ~~~bash
 cd /tests/seek_tax_results_analysis
@@ -762,7 +762,7 @@ cd /tests/seek_tax_results_analysis
 ## 4.2 Taxonomy mode evaluation
 <p align="justify">To run ProteoSeeker on the 19 benchmark datasets which correspond to the gold standard populations that were used to evaluate the taxonomy mode of ProteoSeeker, the following steps must be followed. More information for the samples can be found in [MANUSCRIPT - UNDER REVISION].</p>
 
-1. <p align="justify">Modify the paths to the directory that will include the total of the results generated by ProteoSeeker (the results associated with the taxonomy analysis will remain to the directory set in the parameter files which is in the "results" directory), the Kraken2 Collection Standard-8, Standard-16, Standard databases and to the protein database, using their full paths based on your system. The option to selected another directory to contain all the results exists because the total sze of the results is too big and might be suitable for you to store them in another directory or even completely delete them after the analysis is completed. These variables are the following:</p>
+1. <p align="justify">Modify the paths to the directory that will include the total of the results generated by ProteoSeeker (the results associated with the taxonomy analysis will remain to the directory set in the parameter files which is in the "results" directory), the Kraken2 Collection Standard-8, Standard-16, Standard databases and to the protein database, using their full paths based on your system. The option to selected another directory to contain all the results exists because the total size of the results is too big and might be suitable for you to store them in another directory or even completely delete them after the analysis is completed. These variables are the following:</p>
 
 ~~~bash
 RESULTS_ALL_PATH="${PS_PATH}/Benchmark"
@@ -772,13 +772,13 @@ KRAKEN_72_DB_PATH="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metag
 PROTEIN_DB_PATH="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/parameter_files/docker/nr_part.fasta"
 ~~~
 
-2. <p align="justify">Move in the "parameter_files" directory and run the following script which will create the parameter files needed to run the seek and taxonomy analyses. It will also create Bash shell scripts which automate the whole process of calling ProteoSeeker for each analysis and collecting the output specifically associated with the taxonomy analysis in a seperate directory than the output directory for all the results generated. Before creating the parameter files one can modify the "par_demo.txt" file which is used as the basis to create all parameter files. To perform the analysis based on identical factors regarding the time efficiency of ProteoSeeker you should provide the name of an enviroment for COMEBin in which it will be able to utilize a GPU (details to install COMEBin to utilize a GPU are found in the installation section). The default installation does not include COMEBin combined with using a GPU. Similarly, one can modify any other option if to run ProteoSeeker based on other prospects (with that not being identical with the evaluation runs used in the [MANUSCRIPT - UNDER REVIEW].</p>
+2. <p align="justify">Move in the "parameter_files" directory and run the following script which will create the parameter files needed to run the seek and taxonomy analyses. It will also create Bash shell scripts which automate the whole process of calling ProteoSeeker for each analysis and collecting the output specifically associated with the taxonomy analysis in a separate directory than the output directory for all the results generated. Before creating the parameter files one can modify the "par_demo.txt" file which is used as the basis to create all parameter files. To perform the analysis based on identical factors regarding the time efficiency of ProteoSeeker you should provide the name of an environment for COMEBin in which it will be able to utilize a GPU (details to install COMEBin to utilize a GPU are found in the installation section). The default installation does not include COMEBin combined with using a GPU. Similarly, one can modify any other option if to run ProteoSeeker based on other prospects (with that not being identical with the evaluation runs used in the [MANUSCRIPT - UNDER REVIEW].</p>
 
 ~~~bash
 python tax_par_files.py
 ~~~
 
-3. <p align="justify">The first parameter file run for any of the samples will collect and process the SRA file associated with that sample. This process will not be repeated for other parameter files of the same sample. Similarly, the first parameter file run for COMEBin or MetaBinner for any sample will create the protein database needed for their analyses, a process that will not be repeated for any other parameter file for an analysis of COMEBin or MetaBinner. You have the option to run each process of collecting and processing the SRA file of each sample, seperately from the rest of the analysis by running the Bash scripts in the "parameter_file/sra_process" directory. For example, to run ProteoSeeker only for the SRA-related processes of samples 1, 4 and 19 and for all of the samples run the following:</p>
+3. <p align="justify">The first parameter file run for any of the samples will collect and process the SRA file associated with that sample. This process will not be repeated for other parameter files of the same sample. Similarly, the first parameter file run for COMEBin or MetaBinner for any sample will create the protein database needed for their analyses, a process that will not be repeated for any other parameter file for an analysis of COMEBin or MetaBinner. You have the option to run each process of collecting and processing the SRA file of each sample, separately from the rest of the analysis by running the Bash scripts in the "parameter_file/sra_process" directory. For example, to run ProteoSeeker only for the SRA-related processes of samples 1, 4 and 19 and for all of the samples run the following:</p>
 
 ~~~bash
 conda activate ps_env
@@ -789,7 +789,7 @@ python proteoseeker.py -pfp parameter_files/sra_process/run_sra_all.sh
 conda deactivate
 ~~~
 
-4. <p align="justify">The test runs of ProteoSeeker for a sample demand to run the Kraken2 analyses at first. The stages up untill and including the assembly (Megahit) from run of ProteoSeeker for the Kraken2 Collection Standard-8 database, are not performed again for the rest of the analyses for the sample. Each other analysis start after the stage of the assembly. To run all the analyses for a sample use the "run_X_all.sh" script where X is the number of the sample. To run the analyses specifically associated with the Kraken2 or COMEBin or MetaBinner methods run the "run_X_kraken.sh", "run_X_comebin.sh" and "run_X_metabinner.sh" Bash scripts respectively. The latter two scripts demand that the first one has been run in order for them to be run without an error. For example, one can run:</p>
+4. <p align="justify">The test runs of ProteoSeeker for a sample demand to run the Kraken2 analyses at first. The stages up until and including the assembly (Megahit) from run of ProteoSeeker for the Kraken2 Collection Standard-8 database, are not performed again for the rest of the analyses for the sample. Each other analysis start after the stage of the assembly. To run all the analyses for a sample use the "run_X_all.sh" script where X is the number of the sample. To run the analyses specifically associated with the Kraken2 or COMEBin or MetaBinner methods run the "run_X_kraken.sh", "run_X_comebin.sh" and "run_X_metabinner.sh" Bash scripts respectively. The latter two scripts demand that the first one has been run in order for them to be run without an error. For example, one can run:</p>
 
 ~~~bash
 conda activate ps_env
@@ -809,7 +809,7 @@ cd tests/tax_results_analysis
 ./analyze_tax_results.sh
 ~~~
 
-<p align="justify">The Bash script "analyze_tax_results_spec.sh" can be used to run secondry analysis of different subsets of the results. This script is located also in the directory "/tests/tax_results_analysis".</p>
+<p align="justify">The Bash script "analyze_tax_results_spec.sh" can be used to run secondary analysis of different subsets of the results. This script is located also in the directory "/tests/tax_results_analysis".</p>
 
 # Publications
 Under review.
