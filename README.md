@@ -740,7 +740,7 @@ python proteoseeker.py -pfp parameter_files/cas_als/al_run/SRR17771278/parameter
 conda deactivtae
 ~~~
 
-4. <p align="justify">You can now run any of the parameter files associated for any of the samples. The latter files are located at the directories "SRR3961740", "DRR163688" and "SRR17771278". For example:</p>
+4. <p align="justify">You can now run any of the parameter files associated to any of the samples. The latter files are located at the directories "SRR3961740", "DRR163688" and "SRR17771278". For example:</p>
 
 ~~~bash
 python proteoseeker.py -pfp parameter_files/cas_als/ca_run/SRR3961740/parameters_SRR3961740_k8_ca.txt
