@@ -711,7 +711,45 @@ sudo -E chmod -R a+rw "${HOME}/proteoseeker_bindmount/results"
 8. Reviewed (Swiss-Prot) flat file: 04/08/2023
 
 ## 4.1 Seek and taxonomy modes evaluation
-<p align="justify">The seek and taxonomy mode of ProteoSeeker can be tested on specific samples which have been analyzed by our lab in the process of discovering novel enzymes with desirable characteristics. The following samples were used for these analyses: "+++", "+++" and "+++". More details about the datasets can be found in the [MANUSCRIPT - UNDER REVIEW]. To analyze the results from these analyses you can run the "analyze_seek_tax_results.sh" script from the "tests/seek_tax_results_analysis" directory which utilizes a Python script from the same directory. The latter script uses an input file which contains information about the species of the best hit of each of the evaluated proteins against the nr database through BLASTP. The best hit is identified based on the lowest e-vaalue amongst all the hits."</p>
+<p align="justify">The seek and taxonomy mode of ProteoSeeker can be tested on specific samples which have been analyzed by our lab in the process of discovering novel enzymes with desirable characteristics. The following samples were used for these analyses: "SRR3961740", "DRR163688" and "SRR17771278"."</p>
+
+1. Modify the paths to the Kraken2 Standard Collection 8, 16 and 72 GB databases and to the protein database, using their full paths based on your system. These variables are the following:
+
+~~~bash
+RESULTS_ALL_PATH="${PS_PATH}/Benchmark"
+KRAKEN_8_DB_PATH="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/ps_tools/kraken2/kraken2_databases/kraken2_8st_db"
+KRAKEN_16_DB_PATH="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/ps_tools/kraken2/kraken2_databases/kraken2_db_16"
+KRAKEN_72_DB_PATH="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/ps_tools/kraken2/kraken2_databases/kraken2_db_72"
+PROTEIN_DB_PATH="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/parameter_files/docker/nr_part.fasta"
+~~~
+
+2. Move in the "parameter_files" directory and run the following script which will create the parameter files needed to run the seek and taxonomy analyses.
+
+~~~bash
+python seek_tax_par_files.py
+~~~
+
+3. There are three samples used to test the seek and taxonomy analyses modes. For each sample at first you must run ProteoSeeker to download its SRA and craete the filtered protein database. To do this go to the main drectory and run:
+
+~~~bash
+conda activate ps_env
+python proteoseeker.py -pfp parameter_files/cas_als/ca_run/SRR3961740/parameters_SRR3961740_sra_dbs.txt
+python proteoseeker.py -pfp parameter_files/cas_als/ca_run/DRR163688/parameters_DRR163688_sra_dbs.txt
+python proteoseeker.py -pfp parameter_files/cas_als/al_run/SRR17771278/parameters_SRR17771278_sra_dbs.txt
+conda deactivtae
+~~~
+
+4. You can now run any of the parameter files associated for any of the samples. The latter files are located at the directories "SRR3961740", "DRR163688" and "SRR17771278". For example:
+~~~bash
+python proteoseeker.py -pfp parameter_files/cas_als/ca_run/SRR3961740/parameters_SRR3961740_k8_ca.txt
+python proteoseeker.py -pfp parameter_files/cas_als/ca_run/SRR3961740/parameters_SRR3961740_mnr_ca.txt
+python proteoseeker.py -pfp parameter_files/cas_als/ca_run/DRR163688/parameters_DRR163688_k72_0c01_ca.txt
+python proteoseeker.py -pfp parameter_files/cas_als/ca_run/DRR163688/parameters_DRR163688_cnr_ca.txt
+python proteoseeker.py -pfp parameter_files/cas_als/al_run/SRR17771278/parameters_SRR17771278_k72_0c01_al.txt
+python proteoseeker.py -pfp parameter_files/cas_als/al_run/SRR17771278/parameters_SRR17771278_k8_al.txt
+~~~
+
+5. If you run all the parameter files, you can then run the "tests//analyze_seek_tax_results.sh" script in the "tests" to automatically analyze the results from these analyses for the three experimentally validated enzymes described in [MANUSCRIPT - UNDER REVIEW]. The latter script uses an input file which contains information about the species of the best hit of each of the evaluated proteins against the nr database through BLASTP. The best hit is identified based on the lowest e-vaalue amongst all the hits.
 
 ## 4.2 Taxonomy mode evaluation
 <p align="justify">To run ProteoSeeker on the 19 benchmark datasets which correspond to the gold standard populations and which were used to evaluate the taxonomy mode of ProteoSeeker, the following steps must be followed.</p>
