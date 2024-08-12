@@ -753,9 +753,29 @@ python proteoseeker.py -pfp parameter_files/cas_als/al_run/SRR17771278/parameter
 5. <p align="justify">If you run all the parameter files, you can then run the "tests//analyze_seek_tax_results.sh" script in the "tests" to automatically analyze the results from these analyses for the three experimentally validated enzymes described in [MANUSCRIPT - UNDER REVIEW]. The latter script uses an input file which contains information about the species of the best hit of each of the evaluated proteins against the nr database through BLASTP. The best hit is identified based on the lowest e-vaalue amongst all the hits.</p>
 
 ## 4.2 Taxonomy mode evaluation
-<p align="justify">To run ProteoSeeker on the 19 benchmark datasets which correspond to the gold standard populations and which were used to evaluate the taxonomy mode of ProteoSeeker, the following steps must be followed.</p>
+<p align="justify">To run ProteoSeeker on the 19 benchmark datasets which correspond to the gold standard populations that were used to evaluate the taxonomy mode of ProteoSeeker, the following steps must be followed. More information for the samples can be found in [MANUSCRIPT - UNDER REVISION].</p>
 
-1. <p align="justify">Create the database for the taxonomy route of COMEBin/MetaBinner. Copy the parameter file "taxonomy_tests/dbs/par_phylo_dbs_nr_rna_pol.txt" to the ProteoSeeker directory. Modify the values for the parameters for the path of the protein database (nr database) and the output path. Then, run the following:</p>
+1. <p align="justify">Modify the paths to the Kraken2 Standard Collection 8, 16 and 72 GB databases and to the protein database, using their full paths based on your system. These variables are the following:</p>
+
+~~~bash
+RESULTS_ALL_PATH="${PS_PATH}/Benchmark"
+KRAKEN_8_DB_PATH="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/ps_tools/kraken2/kraken2_databases/kraken2_8st_db"
+KRAKEN_16_DB_PATH="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/ps_tools/kraken2/kraken2_databases/kraken2_db_16"
+KRAKEN_72_DB_PATH="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/ps_tools/kraken2/kraken2_databases/kraken2_db_72"
+PROTEIN_DB_PATH="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/parameter_files/docker/nr_part.fasta"
+~~~
+
+2. <p align="justify">Move in the "parameter_files" directory and run the following script which will create the parameter files needed to run the seek and taxonomy analyses. It will also create Bash shell scripts which automate the whole process of calling ProteoSeeker for each analysis and collecting the output specifically associated with the taxonomy analysis in a seperate directory than the output directory for all the results generated.</p>
+
+~~~bash
+python tax_par_files.py
+~~~
+
+
+
+
+
+3. <p align="justify">Create the database for the taxonomy route of COMEBin/MetaBinner. Copy the parameter file "taxonomy_tests/dbs/par_phylo_dbs_nr_rna_pol.txt" to the ProteoSeeker directory. Modify the values for the parameters for the path of the protein database (nr database) and the output path. Then, run the following:</p>
 
 ~~~bash
 conda activate ps_env
