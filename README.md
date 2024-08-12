@@ -771,17 +771,21 @@ PROTEIN_DB_PATH="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagen
 python tax_par_files.py
 ~~~
 
-
-
-
-
-3. <p align="justify">Create the database for the taxonomy route of COMEBin/MetaBinner. Copy the parameter file "taxonomy_tests/dbs/par_phylo_dbs_nr_rna_pol.txt" to the ProteoSeeker directory. Modify the values for the parameters for the path of the protein database (nr database) and the output path. Then, run the following:</p>
+3. <p align="justify">The first parameter file run for any of the samples will collect and process the SRA file associated with that sample. This process will not be repeated for other parameter files of the same sample. Similarly, the first parameter file run for COMEBin or MetaBinner for any sample will create the protein database needed for their analyses, a process that will not be repeated for any other parameter file for an analysis of COMEBin or MetaBinner. You have the option to run each process of collecting and processing the SRA file of each sample, seperately from the rest of the analysis by running the Bash scripts in the "parameter_file/sra_process" directory. For example, to run ProteoSeeker only for the SRA-related processes of samples 1, 4 and 19 and for all of the samples run the following:</p>
 
 ~~~bash
 conda activate ps_env
-python proteoseeker.py -pfp par_phylo_dbs_nr_rna_pol.txt
+python proteoseeker.py -pfp parameter_files/sra_process/run_sra_1.sh
+python proteoseeker.py -pfp parameter_files/sra_process/run_sra_4.sh
+python proteoseeker.py -pfp parameter_files/sra_process/run_sra_19.sh
+python proteoseeker.py -pfp parameter_files/sra_process/run_sra_all.sh
 conda deactivate
 ~~~
+
+
+
+
+
 
 2. <p align="justify">Modify the "par_sX_sra.txt" file for sample X based on the paths to the databases and tools installed in your system. For each sample to be downloaded and processed by ProteoSeeker separately and not during the analysis run, modify its corresponding parameter file and run from the parent directory of ProteoSeeker the script:</p>
 
