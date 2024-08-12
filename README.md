@@ -172,7 +172,7 @@ conda deactivate
 ~~~
 
 ## 2.2 Docker
-<p align="justify">To install ProteoSeeker from Docker Hub as a docker image docker must be installed in your system. To install docker in Linux follow the instructions provided by the link below:</p>
+<p align="justify">To install ProteoSeeker from Docker Hub as a docker image, docker must be installed in your system. To install docker in Linux, follow the instructions provided by the link below:</p>
 
 Docker engine for Linux: https://docs.docker.com/engine/install/ubuntu/
 
@@ -191,14 +191,14 @@ sudo docker image pull proteoseeker:light
 ~~~
 
 ### Phobius
-For either case of installation process followed in order to use the topology and signal peptide predictions provided by Phobius you must download Phobius from https://phobius.sbc.su.se/data.html. Otherwise, ProteoSeeker will run without performing topology and signal peptide predictions in its seek functionality.
+For either case of installation process, in order to use the topology and signal peptide predictions provided by Phobius you must download Phobius from https://phobius.sbc.su.se/data.html. Otherwise, ProteoSeeker will run without performing topology and signal peptide predictions in its seek functionality.
 
 # 3. Use
 ## 3.1 Parameter file
-<p align="justify">In general, the easiest way to run ProteoSeeker is to use a parameter file. A parameter file should at the very least contain the parameters for the options of ProteoSeeker which are to be modified from their default values. Parameter files for different case-scenarios may be downloaded from *here*. These files are also generated when running the "install.sh" in the installation folder and more specifically one can generate them at any time when running the "parameter_files.sh" in the installation folder. The latter files contain all options and have parameters specifically for those that are to be modified. A parameter file is the proposed way of using ProteoSeeker either when installing from source or when installing it as a Docker image. In addition, we advise that the paths used as input to ProteoSeeker (for files or databases) contain no whitespaces, although ProteoSeeker is designed to handle them properly. </p>
+<p align="justify">In general, the easiest way to run ProteoSeeker is to use a parameter file. A parameter file should, at least, contain the parameters for the options of ProteoSeeker which are to be modified from their default values. Parameter files for different case-scenarios may be downloaded from *here*. These files are also generated when running the "install.sh" in the installation folder and more specifically, the user can generate them at any time by running the "parameter_files.sh" in the installation folder. The latter files contain all options and have parameters specifically for those that are to be modified. A parameter file is the proposed way of using ProteoSeeker either when installing from source or when installing it as a Docker image. In addition, we advise that the paths used as input to ProteoSeeker (for files or databases) contain no whitespaces, although ProteoSeeker is designed to handle them properly. </p>
 
 ## 3.2 Options
-<p align="justify">The options of ProteoSeeker as a command-line tool, their default parameters and descriptions are described below.</p>
+<p align="justify">The options of ProteoSeeker as a command-line tool, their default parameters and their descriptions are presented below.</p>
 
 ~~~bash
 ProteoSeeker Version 1.0.0
@@ -616,7 +616,7 @@ Options:
 ~~~
 
 ## 3.3 Command-line
-<p align="justify">To run ProteoSeeker through the command-line a parameter file facilitates the process greatly. By using one of the template parameter files one can easily customize the values for the options of ProteoSeeker and run it. To run ProteoSeeker, at first one should activate its environment. The commands below suffice to run ProteoSeeker through the command-line from the main directory of ProteoSeeker by its "taxonomy" mode through the Kraken2 route. To run ProteoSeeker by its seek mode one should set the path to the protein database in the parameters file and then select one of the template files that include the "seek" mode at its name.</p>
+<p align="justify">To run ProteoSeeker through the command-line, a parameter file facilitates the process greatly. By using one of the template parameter files, the user can easily customize the values for the options of ProteoSeeker and run it. To run ProteoSeeker, at first, its environment shoulb be activated. The commands below suffice to run ProteoSeeker through the command-line from the main directory of ProteoSeeker by its "taxonomy" mode through the Kraken2 route. To run ProteoSeeker by its seek mode one should set the path to the protein database in the parameters file and then select one of the template files that include the "seek" mode at its name.</p>
 
 ~~~bash
 conda activate ps_env
@@ -625,7 +625,7 @@ conda deactivate
 ~~~
 
 ## 3.4 Docker
-<p align="justify">We present two ways to run ProteoSeeker through its image. Both ways depend on creating a volume or bind-mount and attaching it to the container running based on the image. The first way is running ProteoSeeker directly with creating a container. The second way is to start a container in interactive mode and then run ProteoSeeker. In addition, in either case the volume or bind-mount can be used to provide a tool or database to ProteoSeeker in the container. In both cases (volume and bind mount) the protein database provided as an example is a small part of the nr database with additions of proteins associated with RNA polymerase. It is used to test that the functionality of the "seek" mode through "type 2" analysis and the "taxonomy" mode through the route of "COMEBin/MetaBinner" work properly in ProteoSeeker. You should provide your own protein database, ideally that of the decompressed nr database, in order to use properly the "seek" mode through the "type 2" analysis and the "taxonomy" mode through the "COMEBin/MetaBinner" route of ProteoSeeker. To use any other type of analysis and route of the modes of ProteoSeeker the protein database in not necessary. ProteoSeeker will detect and utilize Phobius for the topology prediction, if Phobius is installed in the proper directory "phobius" of the shared directory (volume or bind mount), otherwise no topology predictions will take place for the proteins. In addition, you must modify the following line of "phobius.pl" (should be line 25) by changing the name of the file "decodeanhmm" with "decodeanhmm.64bit" for Phobius to work properly in the container:</p>
+<p align="justify">We present two ways to run ProteoSeeker through its image. Both ways depend on creating a volume or bind-mount and attaching it to the container running, based on the image. The first way is running ProteoSeeker directly with creating a container. The second way is to start a container in interactive mode and then run ProteoSeeker. In addition, in either case, the volume or bind-mount can be used to provide a tool or database to ProteoSeeker in the container. In both cases (volume and bind mount), the protein database provided as an example is a small part of the nr database with additions of proteins associated with RNA polymerase. It is used to test that the functionality of the "seek" mode through "type 2" analysis and the "taxonomy" mode through the route of "COMEBin/MetaBinner" function properly in ProteoSeeker. You should provide your own protein database, ideally the decompressed nr database, in order to use properly the "seek" mode through the "type 2" analysis and the "taxonomy" mode through the "COMEBin/MetaBinner" route of ProteoSeeker. To use any other type of analysis and route of the modes of ProteoSeeker, the protein database in not necessary. ProteoSeeker will detect and utilize Phobius for the topology prediction, if Phobius is installed in the proper directory ("phobius") of the shared directory (volume or bind mount), otherwise no topology predictions will take place for the proteins. In addition, you must modify the following line of "phobius.pl" (should be line 25) by changing the name of the file "decodeanhmm" with "decodeanhmm.64bit" for Phobius to work properly in the container:</p>
 
 From:
 
@@ -639,7 +639,7 @@ To:
 my $DECODEANHMM =      "$PHOBIUS_DIR/decodeanhmm.64bit";
 ~~~
 
-<p align="justify">For both cases of volumes and bind mounts you can perform a test based on a template parameter file (located at the "parameter_files" directory in the volume or bind mount) each of which runs a different analysis. The test is selected with a number. The selections are described below:</p>
+<p align="justify">For both cases of volumes and bind mounts, you can perform a test based on a template parameter file (located at the "parameter_files" directory in the volume or bind mount) each of which runs a different analysis. The test is selected with a number. The selections are described below:</p>
 
 Selection | Mode | Analysis Type | Route
 --- | --- | --- | ---
