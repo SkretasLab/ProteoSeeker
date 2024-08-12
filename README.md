@@ -752,7 +752,12 @@ python proteoseeker.py -pfp parameter_files/cas_als/al_run/SRR17771278/parameter
 python proteoseeker.py -pfp parameter_files/cas_als/al_run/SRR17771278/parameters_SRR17771278_k8_al.txt
 ~~~
 
-5. <p align="justify">If you run all the parameter files, you can then run the "tests//analyze_seek_tax_results.sh" script in the "tests" to automatically analyze the results from these analyses for the three experimentally validated enzymes described in [MANUSCRIPT - UNDER REVIEW]. The latter script uses an input file which contains information about the species of the best hit of each of the evaluated proteins against the nr database through BLASTP. The best hit is identified based on the lowest e-vaalue amongst all the hits.</p>
+5. <p align="justify">If you run all the parameter files, you can then run the "tests/seek_tax_results_analysis/analyze_seek_tax_results.sh" script in the "tests" to automatically analyze the results from these analyses for the three experimentally validated enzymes described in [MANUSCRIPT - UNDER REVIEW]. The latter script uses an input file which contains information about the species of the best hit of each of the evaluated proteins against the nr database through BLASTP. The best hit is identified based on the lowest e-vaalue amongst all the hits.</p>
+
+~~~bash
+cd /tests/seek_tax_results_analysis
+./analyze_seek_tax_results.sh
+~~~
 
 ## 4.2 Taxonomy mode evaluation
 <p align="justify">To run ProteoSeeker on the 19 benchmark datasets which correspond to the gold standard populations that were used to evaluate the taxonomy mode of ProteoSeeker, the following steps must be followed. More information for the samples can be found in [MANUSCRIPT - UNDER REVISION].</p>
