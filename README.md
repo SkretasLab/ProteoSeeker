@@ -755,7 +755,7 @@ conda activate ps_env
 conda deactivate
 ~~~
 
-5. <p align="justify">To extract the statistics from the results of ProteoSeeker for the taxonomy evaluation all the methods from at least one sample must have run. The Bash script will analyze and provide output (plots, statistics etc.) for any number of samples analyzed based on all methods. To run the script move to the directory "tests/tax_results_analysis" and run the following:</p>
+5. <p align="justify">To extract the statistics from the results of ProteoSeeker for the taxonomy evaluation all the methods from at least one sample must have run. The Bash script will analyze and provide output (plots, statistics etc.) for any number of samples analyzed based on all methods. To run the script go to the directory "tests/tax_results_analysis" and run the following:</p>
 
 ~~~bash
 ./analyze_tax_results.sh
@@ -800,7 +800,7 @@ python proteoseeker.py -pfp parameter_files/cas_als/al_run/SRR17771278/parameter
 python proteoseeker.py -pfp parameter_files/cas_als/al_run/SRR17771278/parameters_SRR17771278_k8_al.txt
 ~~~
 
-5. <p align="justify">If you run all the parameter files, you can then run the "tests/seek_tax_results_analysis/analyze_seek_tax_results.sh" script in the "tests" to automatically analyze the results from these analyses for the three experimentally validated enzymes described in [MANUSCRIPT - UNDER REVIEW]. The latter script uses an input file which contains information about the species of the best hit of each of the evaluated proteins against the nr database through BLASTP. The best hit is identified based on the lowest e-value among all the hits. Thus, if you run all the parameter files, move to the "tests/seek_tax_results_analysis" direcotry and run:</p>
+5. <p align="justify">If you run all the parameter files, you can then run the "tests/seek_tax_results_analysis/analyze_seek_tax_results.sh" script in the "tests" to automatically analyze the results from these analyses for the three experimentally validated enzymes described in [MANUSCRIPT - UNDER REVIEW]. The latter script uses an input file which contains information about the species of the best hit of each of the evaluated proteins against the nr database through BLASTP. The best hit is identified based on the lowest e-value among all the hits. Thus, if you run all the parameter files, you can go to the "tests/seek_tax_results_analysis" direcotry and run:</p>
 
 ~~~bash
 ./analyze_seek_tax_results.sh
