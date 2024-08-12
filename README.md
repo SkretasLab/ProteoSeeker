@@ -8,46 +8,47 @@
 
 1. **Sampling Site Documentation:** Specific characteristics of the sample's environmental source, including factors such as location, habitat, sampling conditions and collection method are documented.
 2. **Sample Collection:** The metagenomic material is collected from the environmental niche of interest.
-3. **DNA Isolation and Preparation:** Following DNA extraction, the metagenomic material is preped for sequencing.
+3. **DNA Isolation and Preparation:** Following DNA extraction, the metagenomic material is prepped for sequencing.
 4. **Next-Generation Sequencing (NGS):**  NGS is performed to collect the metagenomic dataset of the sample
 5. **NGS Data Processing:** The sequencing files (reads) resulting from NGS are generated and data quality control is performed. Datasets and metadata are shared in open-access databases, facilitating collaborative research and data reuse.
    
-<p align="justify">*Such files can be provided directly to ProteoSeeker for analysis, forming the exploration ground for the tool. Proteoseeker aspires to provide a coprehensive, user-friendly platform for the discovery of novel proteins/enzymes originating from envoronmetns of interest, enriching the scientific community's capacity to explore microbial ecosystems. A user may download such data and provide it to ProteoSeeker or in the case of SRA of NCBI use the code (SRA accession) of the sample from the online database directly to ProteoSeeker.*</p>
+<p align="justify">*Such files can be provided directly to ProteoSeeker for analysis, forming the exploration ground for the tool. Proteoseeker aspires to provide a coprehensive, user-friendly platform for the discovery of novel proteins/enzymes originating from environments of interest, enriching the scientific community's capacity to explore microbial ecosystems. A user may download such data and use it as input in the ProteoSeeker, or in the case of SRA of NCBI use the code (SRA accession) of the sample from the online database directly to ProteoSeeker.*</p>
 
 6. **ProteoSeeker Analysis:** The selected dataset is uploaded to Proteoseeker. The tool identifies putative proteins derived from the input reads.
-7. **Functional Analysis:** Functionalities offered by ProteoSeeker include "seek" and "taxonomy" functionalities, and their respective purposes in protein/enzyme discovery and taxonomic assignment.
-8. **Protein Family Profiling:** Protein family profiles from databases like Pfam, groups proteins and facilitates the discovery of novel proteins/enzymes with specific functionalities.
+7. **Functional Analysis:** ProteoSeeker includes two functionalities called  "seek" and "taxonomy", purposed in protein/enzyme discovery and taxonomic assignment respectively.
+8. **Protein Family Profiling:** Protein family profiles from databases like Pfam, group proteins and facilitate the discovery of novel proteins/enzymes with specific functionalities.
 9. **Taxonomic Assignment:** The tool expands on the process of assigning one or more organisms to identified proteins, aiding in the understanding of microbial community composition.
 
 ## 1.2 Pipeline
-<p align="justify">The overall pipeline implemented by ProteoSeeker can be seen in the image below. ProteoSeeker offers two main functionalities with a multitude of options for users not accustomed to metagenomic analysis tools and more advanced users that may want to modify the behaviour of certain tools included in ProteoSeeker's pipeline. The first functionality is to **seek** proteins that may be part of selected protein families and the second functionality is to find the **taxonomy** of the proteins discovered from the analysis of a sample. The second functionality is based either on the taxonomy of the reads (kraken2 route) or on binning the contigs and searching for the taxonomy of the proteins through the "taxonomy filtered protein database" (COMEBin/MetaBinner route).</p>
+<p align="justify">The overall pipeline implemented by ProteoSeeker can be seen in the image below. ProteoSeeker offers two main functionalities with a multitude of options for users not accustomed to metagenomic analysis tools and more advanced users that may want to modify the behaviour of certain tools included in ProteoSeeker's pipeline. The first functionality is to **seek** proteins that may be part of selected protein families and the second functionality is to find the **taxonomy** of the proteins discovered from the analysis of a sample. The second functionality is based either on the taxonomy of the reads (kraken2 route) or on binning the contigs and searching for the taxonomy of the proteins, through the "taxonomy filtered protein database" (COMEBin/MetaBinner route).</p>
 
-The stages of the “seek” mode of ProteoSeeker. ProteoSeeker offers two main functionalities applied through the seek mode (blue) and the “taxonomy” mode (green). Each stage is colored based on the mode it belongs to. The possible types of input for ProteoSeeker include an SRA code, reads in FASTQ files, contigs or genomes or proteins if FASTA format. If an SRA code is provided the corresponding SRA file and FASTQ files are generated.
+The stages of the “seek” mode of ProteoSeeker. ProteoSeeker offers two main functionalities applied through the "seek" mode (blue) and the “taxonomy” mode (green). Each stage is colored based on the mode it belongs to. The possible types of input for ProteoSeeker include an SRA code, reads in FASTQ files, contigs or genomes or proteins in FASTA format. If an SRA code is provided, the corresponding SRA file and FASTQ files are generated.
 
 ![ProteoSeeker Seek Functionality](images/Figure_4.png)
 
-1. The protein families selected are determined based on their input codes.
+1. The selected protein families are determined based on their input codes.
 2. The profiles and protein names associated with the selected families are collected and the spd is created.
-3. The protein database is filtered based on the collected protein names the sfpd is created.
+3. The protein database is filtered based on the collected protein names, the sfpd is created.
 4. The reads of the FASTQ files undergo several quality control checks by FastQC.
 5. The reads are preprocessed by BBDuk and then are analyzed by FastQC for a second time.
 6. The preprocessed reads are assembled into contigs by Megahit.
 7. Protein coding regions (pcdrs) are predicted in the contigs by FragGeneScanRs.
 8. CD-HIT is used to reduce the redundancy of the pcdrs.
 9. The pcdrs are screened against the spd with HMMER. Any pcdr with at least one hit based on the latter screening is retained (set 1).
-10. The rest of the pcdrs are screened against the sfpd and only those with a hit of low enough e-value are retained (set 2). In addition, set 1 is screened against the Swiss-Prot protein database.
+10. The rest of the pcdrs are screened against the sfpd and only those with a lower than the e-value threshold hit are retained (set 2). In addition, set 1 is screened against the Swiss-Prot protein database.
 11. Both sets are screened against all the profiles of the Pfam database with HMMER.
-12. Topology prediction are performed by Phobius.
+12. Topology prediction is performed by Phobius.
 13. Motifs provided by the user are screened against each protein.
-14. The protein family of each protein is predicted. 15. Annotation files are written.
+14. The protein family of each protein is predicted.
+15. Annotation files are written.
 
-The stages of the “taxonomy” mode of ProteoSeeker. ProteoSeeker offers two main functionalities applied through the “seek” mode (blue) and the “taxonomy” mode (green). The taxonomic analysis can be performed by either of two”routes” of analysis. The fist one is based on binning based on the taxonomic analysis of reads from Kraken2 (orange) and the second one is performed by COMEBin or MetaBinner (purple). The possible types of input for ProteoSeeker include an SRA code, reads in FASTQ files, contigs or genomes or proteins if FASTA format. If an SRA code is provided the corresponding SRA file and FASTQ files are generated.
+The stages of the “taxonomy” mode of ProteoSeeker. ProteoSeeker offers two main functionalities applied through the “seek” mode (blue) and the “taxonomy” mode (green). The taxonomic analysis can be performed by either of two ”routes” of analysis. The fist one is based on binning based on the taxonomic analysis of reads from Kraken2 (orange) and the second one is performed by COMEBin or MetaBinner (purple). The possible types of input for ProteoSeeker include an SRA code, reads in FASTQ files, contigs or genomes or proteins in FASTA format. If an SRA code is provided, the corresponding SRA file and FASTQ files are generated.
 
 ![ProteoSeeker Taxonomy Functionality](images/Figure_5.png)
 
-1. The protein families selected are determined based on their input codes.
+1. The selected protein families are determined based on their input codes.
 2. The profiles and protein names associated with the selected families are collected and the tpd is created.
-3. The protein database is filtered based on the collected protein names the tfpd is created.
+3. The protein database is filtered based on the collected protein names, the tfpd is created.
 4. The reads of the FASTQ files undergo several quality control checks by FastQC.
 5. The reads are preprocessed by BBDuk and then are analyzed by FastQC for a second time.
 6. The preprocessed reads are assembled into contigs by Megahit.
@@ -61,7 +62,7 @@ The stages of the “taxonomy” mode of ProteoSeeker. ProteoSeeker offers two m
 14. Each bin, along with any taxa assigned to it, is quantified based on the reads mapped to its contigs.
 15. Annotation files are written.
 16. Species are assigned to the reads based on Kraken2.
-17. Through the read-contig mapping each species is quantified for each contig. Species are assigned to the contigs.
+17. Through the read-contig mapping, each species is quantified for each contig. Species are assigned to the contigs.
 18. The contigs are binned based on their species.
 19. Species are assigned to the bins.
 20. Species are assigned to the proteins of the latter bins.
@@ -79,10 +80,10 @@ Anaconda for Linux: https://docs.anaconda.com/free/anaconda/install/linux/
 <p align="justify">Necessary to download the ProteoSeeker repository.</p>
 
 ### 2.1.2 Dependencies
-<p align="justify">All dependencies, except for the protein database, are automatically installed by the installation process of ProteoSeeker. You can skip this part if you want to go straight to the installation instructions but do read the information related to the protein database which is not installed automatically by the installation process of ProteoSeeker.</p>
+<p align="justify">All dependencies, except for the protein database, are automatically installed by the installation process of ProteoSeeker. You can skip this part if you want to go straight to the installation instructions but do read the information related to the protein database which is not installed automatically.</p>
 
 #### git, wget, gzip, tar:
-<p align="justify">These packages are handled by the installation process of ProteoSeeker and are installed in a environment from which the installation of ProteoSeeker will be initiated. A new environment called "ps_install" is created, used to download and collect the latter packages. If one wants to use a custom conda environment to base upon it the installation of ProteoSeeker, the latter environment should contain the following:</p>
+<p align="justify">These packages are handled by the installation process of ProteoSeeker and are installed in an environment from which the installation of ProteoSeeker will be initiated. A new environment called "ps_install" is created, used to download and collect the required packages. If one wants to use a custom conda environment for the installation of ProteoSeeker, it should contain the following:</p>
    
 ~~~bash
 conda install anaconda::git
