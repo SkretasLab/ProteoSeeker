@@ -14,12 +14,31 @@ def read_file(file_path):
     return lines
 
 
-def modify_par_files(target_dir, ps_path, adapters_path, protein_db_path, pfam_path, swissprot_path, motifs_path, conda_inst_dir, conda_sh_path, mbinpath, cbinpath, fraggenescanrs_path, phobius_path, kraken_8_db_path, kraken_16_db_path, kraken_72_db_path):
+def modify_par_files(target_dir, output_dict, ps_path, adapters_path, protein_db_path, pfam_path, swissprot_path, motifs_path, conda_inst_dir, conda_sh_path, mbinpath, cbinpath, fraggenescanrs_path, phobius_path, kraken_8_db_path, kraken_16_db_path, kraken_72_db_path):
     target_dir_files = os.listdir(target_dir)
     for sfn in target_dir_files:
         sfn_full_path = "{}/{}".format(target_dir, sfn)
         sfn_lines = read_file(sfn_full_path)
         sfn_file = open(sfn_full_path, "w")
+        output_type = None
+        if "sra_dbs" in sfn:
+            output_type = 0
+        elif "k8_0c01" in sfn:
+            output_type = 2
+        elif "k16_0c01" in sfn:
+            output_type = 4
+        elif "k72_0c01" in sfn:
+            output_type = 6
+        elif "k8" in sfn:
+            output_type = 1
+        elif "k16" in sfn:
+            output_type = 3
+        elif "k72" in sfn:
+            output_type = 5
+        elif "cnr" in sfn:
+            output_type = 7
+        elif "mnr" in sfn:
+            output_type = 8
         for line in sfn_lines:
             if "adapters_path=" in line:
                 line = "adapters_path=\"{}\"".format(adapters_path)
@@ -51,9 +70,8 @@ def modify_par_files(target_dir, ps_path, adapters_path, protein_db_path, pfam_p
                 elif "k72" in sfn:
                     line = "phobius_path=\"{}\"".format(kraken_72_db_path)
             elif "output_path=" in line:
-                output_line_splited = line.split("\"")
-                output_line_part = output_line_splited[1]
-                output_dir_path = "{}/{}".format(ps_path, output_line_part)
+                output_part = output_dict[output_type]
+                output_dir_path = "{}/{}".format(ps_path, output_part)
                 line =  "output_path=\"{}\"".format(output_dir_path)
             sfn_file.write("{}\n".format(line))
         sfn_file.close()
@@ -75,13 +93,11 @@ def cparf():
 
     # Getting the paths for the COMEBin and MetaBinner bins.
     mb_cb_find_script = "{}/find_mb_cb.sh".format(installation_path)
-    command_phrase = "source {} && echo $CTBPATH && echo $CBINPATH && echo $MTBPATH && echo $MBINPATH".format(mb_cb_find_script)
+    command_phrase = "source {} && echo $CBINPATH && echo $MBINPATH".format(mb_cb_find_script)
     result = subprocess.run(command_phrase, shell=True, check=True, executable='/bin/bash', capture_output=True, text=True)
     bash_output = result.stdout.strip().split('\n')
-    ctbpath = bash_output[0]
-    cbinpath = bash_output[1]
-    mtbpath = bash_output[2]
-    mbinpath = bash_output[3]
+    cbinpath = bash_output[0]
+    mbinpath = bash_output[1]
 
     # Getting the paths for the databases from the "setup.sh" script.
     setup_script = "{}/setup.sh".format(parameter_path)
@@ -102,12 +118,48 @@ def cparf():
     phobius_path = "{}/ps_tools/phobius_files/phobius".format(ps_path)
 
     # Parameter lines for the seek/taxonomy analysis and the analysis run.
+    # SRR3961740
     srr3961740_dir = "{}/cas_als/ca_run/SRR3961740".format(parameter_path)
-    modify_par_files(srr3961740_dir, ps_path, adapters_path, protein_db_path, pfam_path, swissprot_path, motifs_path, conda_inst_dir, conda_sh_path, mbinpath, cbinpath, fraggenescanrs_path, phobius_path, kraken_8_db_path, kraken_16_db_path, kraken_72_db_path)
+    output_dict_srr3961740 = {
+        0: "results_ca_srr3961740_sra_dbs",
+        1: "results_ca_srr3961740_k8",
+        2: "results_ca_srr3961740_k8_0c01",
+        3: "results_ca_srr3961740_k16",
+        4: "results_ca_srr3961740_k16_0c01",
+        5: "results_ca_srr3961740_k72",
+        6: "results_ca_srr3961740_k72_0c01",
+        7: "results_ca_srr3961740_cnr",
+        8: "results_ca_srr3961740_mnr"
+    }
+    modify_par_files(srr3961740_dir, output_dict_srr3961740, ps_path, adapters_path, protein_db_path, pfam_path, swissprot_path, motifs_path, conda_inst_dir, conda_sh_path, mbinpath, cbinpath, fraggenescanrs_path, phobius_path, kraken_8_db_path, kraken_16_db_path, kraken_72_db_path)
+    # Drr163688
     drr163688_dir = "{}/cas_als/ca_run/DRR163688".format(parameter_path)
-    modify_par_files(drr163688_dir, ps_path, adapters_path, protein_db_path, pfam_path, swissprot_path, motifs_path, conda_inst_dir, conda_sh_path, mbinpath, cbinpath, fraggenescanrs_path, phobius_path, kraken_8_db_path, kraken_16_db_path, kraken_72_db_path)
+    output_dict_drr163688 = {
+        0: "results_ca_drr163688_sra_dbs",
+        1: "results_ca_drr163688_k8",
+        2: "results_ca_drr163688_k8_0c01",
+        3: "results_ca_drr163688_k16",
+        4: "results_ca_drr163688_k16_0c01",
+        5: "results_ca_drr163688_k72",
+        6: "results_ca_drr163688_k72_0c01",
+        7: "results_ca_drr163688_cnr",
+        8: "results_ca_drr163688_mnr"
+    }
+    modify_par_files(drr163688_dir, output_dict_drr163688, ps_path, adapters_path, protein_db_path, pfam_path, swissprot_path, motifs_path, conda_inst_dir, conda_sh_path, mbinpath, cbinpath, fraggenescanrs_path, phobius_path, kraken_8_db_path, kraken_16_db_path, kraken_72_db_path)
+    # SRR17771278
     srr17771278_dir = "{}/cas_als/al_run/SRR17771278".format(parameter_path)
-    modify_par_files(srr17771278_dir, ps_path, adapters_path, protein_db_path, pfam_path, swissprot_path, motifs_path, conda_inst_dir, conda_sh_path, mbinpath, cbinpath, fraggenescanrs_path, phobius_path, kraken_8_db_path, kraken_16_db_path, kraken_72_db_path)
+    output_dict_srr17771278 = {
+        0: "results_al_srr17771278_sra_dbs",
+        1: "results_al_srr17771278_k8",
+        2: "results_al_srr17771278_k8_0c01",
+        3: "results_al_srr17771278_k16",
+        4: "results_al_srr17771278_k16_0c01",
+        5: "results_al_srr17771278_k72",
+        6: "results_al_srr17771278_k72_0c01",
+        7: "results_al_srr17771278_cnr",
+        8: "results_al_srr17771278_mnr"
+    }
+    modify_par_files(srr17771278_dir, output_dict_srr17771278, ps_path, adapters_path, protein_db_path, pfam_path, swissprot_path, motifs_path, conda_inst_dir, conda_sh_path, mbinpath, cbinpath, fraggenescanrs_path, phobius_path, kraken_8_db_path, kraken_16_db_path, kraken_72_db_path)
 
 
 if __name__ == "__main__":
