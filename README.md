@@ -652,11 +652,11 @@ Selection | Mode | Analysis Type | Route
 7 | taxonomy | - | COMEBin/MetaBinner: COMEBin
 
 ### 3.4.1 Volume
-<p align="justify">A volume is a directory inside Docker. Volumes can be found in the "volumes" directory of your Docker installation (e.g., /var/lib/docker/volumes). The data of the volume is stored in the "_data" directory of the volume. This data is retained in the volume after the container is stopped or exits, may be used by different containers and is also accessible by the local host. Any directory or file placed in the "_data" directory will be accessible from the local host and the container to which is has been added. From the main directory of ProteoSeeker run the Bash script with sudo (mandatory) below which performs the following actions:</p>
+<p align="justify">A volume is a directory inside Docker. Volumes can be found in the "volumes" directory of your Docker installation (e.g., /var/lib/docker/volumes). The data of the volume is stored in the "_data" directory of the volume. This data is retained in the volume after the container is stopped or exits, may be used by different containers and is also accessible by the local host. Any directory or file placed in the "_data" directory will be accessible from the local host and the container to which it has been added. From the main directory of ProteoSeeker, run the Bash script with sudo (mandatory) which performs the following actions:</p>
 
 1. Creates a Docker volume.
 2. Finds the full path of the Docker volume.
-3. Creates directories in the volumes needed to run ProteoSeeker in the image and collect the results in the host system.
+3. Creates directories in the volumes needed to run ProteoSeeker in the image and collects the results in the host system.
 4. Copies the parameter files used as templates to run ProteoSeeker in the image.
 
 ~~~bash
@@ -669,7 +669,7 @@ sudo ./installation/docker_vol_setup.sh
 ./docker_vol_run_proteoseeker.sh
 ~~~
 
-<p align="justify">In this case, the data shared between the local host and the container will be located at "/var/lib/docker/volumes/ps_vol/_data". To find the results of the run check in the directory "/var/lib/docker/volumes/ps_vol/_data/results". Similarly, you can run ProteoSeeker based on a custom parameters file. After ProteoSeeker has terminated the container stops and exits, hence one can not find the results in that container. One can also run the same command of the script by adding the "-d" option which runs the container in the background. He can then attach to the container to observe which stage the pipeline is currently running. In addition, one can use "/bin/bash/ as the command to run the container in interactive mode, then run ProteoSeeker from the container (as one would directly from the command-line of the host) and then transfer the results to the host through a shared volume or bind mount.</p>
+<p align="justify">In this case, the data shared between the local host and the container will be located at "/var/lib/docker/volumes/ps_vol/_data". To find the results of the run, check in the directory "/var/lib/docker/volumes/ps_vol/_data/results". Similarly, you can run ProteoSeeker based on a custom parameters file. After ProteoSeeker has terminated, the container stops and exits, hence, the results cannot be found in that container. The user can also run the same command of the script by adding the "-d" option, which runs the container in the background. He can then attach to the container to observe which stage the pipeline is currently running. In addition, the user can use "/bin/bash/ as the command to run the container in interactive mode, then run ProteoSeeker from the container (as you would directly from the command-line of the host) and then transfer the results to the host through a shared volume or bind mount.</p>
 
 ### 3.4.2 Bind mount
 <p align="justify">A volume is a directory located in the local host and not run by Docker. As for the volume, the data stored in the mount are retained after the container is stopped or exits, may be used by different containers and are also accessible by the local host. From the main directory of ProteoSeeker run the Bash script below (should not be run with sudo) which performs the following actions:</p>
