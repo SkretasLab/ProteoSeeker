@@ -652,7 +652,7 @@ Selection | Mode | Analysis Type | Route
 7 | taxonomy | - | COMEBin/MetaBinner: COMEBin
 
 ### 3.4.1 Bind mount
-<p align="justify">A volume is a directory located in the local host and not run by Docker. As for the volume, the data stored in the mount are retained after the container is stopped or exits, may be used by different containers and are also accessible by the local host. From the main directory of ProteoSeeker run the Bash script below (should not be run with sudo) which performs the following actions:</p>
+<p align="justify">A bind mount is a directory located in the local host and not run by Docker. The data stored in the bind mount are retained after the container is stopped or exits, may be used by different containers and are also accessible by the local host. From the main directory of ProteoSeeker run the Bash script below (should not be run with sudo) which performs the following actions:</p>
 
 1. Creates the "docker_mount_dir" directory in the home directory of the user.
 2. Create directories in the volumes needed to run ProteoSeeker in the image and collects the results in the host system.
