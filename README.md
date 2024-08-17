@@ -95,23 +95,29 @@ conda install conda-forge::tar
 <p align="justify">In addition, the name of the custom environment must replace the name of the environment ("ps_install") in line 14 ("conda activate ps_install") in the file "install.sh". It is suggested not to perform these changes if possible and let the installation process handle the creation and usage of the installation environment for these packages.</p>
 
 #### Pipeline tools
-<p align="justify">These tools are all automatically installed by the installation process of ProteoSeeker or have already been set in the Docker image of ProteoSeeker. The specific versions of the tools included in the ProteoSeeker's installation are the ones also used for the evaluation of the "seek" and "taxonomy" modes of ProteoSeeker. The versions of conda and of these tools are the following:</p>
+<p align="justify">These tools are all automatically installed by the installation process of ProteoSeeker or have already been set in the Docker image of ProteoSeeker. The specific versions of the tools included in the ProteoSeeker's installation are the ones also used for the evaluation of the "seek" and "taxonomy" modes of ProteoSeeker. For some packages more than one installation method is provided. If the first method is not acheived then the next one is attempted. The versions of conda and of these tools are the following:</p>
 
 1. conda 24.1.2
 2. bbmap: 39.01
 3. bowtie2: 2.5.3
 4. cd-hit: 4.8.1
-5. comebin: 1.0.4
-6. diamond: 2.1.9
-7. fastqc 0.12.1
-8. hmmer: 3.4
-9. kraken2: 2.1.3
-10. megahit: 1.2.9
-11. metabinner: Conda: 1.4.4, Source: Branch: "master" and Hash: "". The source installation was used for the evaluation.
-12. sra-tools: 3.1.0
-13. taxonkit: 0.16.0
-14. csvtk: 0.30.0
-15. FragGeneScanRs: 1.1.0
+5. comebin:
+   5.1 Conda: 1.0.4 - The conda installation was used for the evaluation.
+   5.2 Source: Branch: "1.0.4".
+7. diamond: 2.1.9
+8. fastqc 0.12.1
+9. hmmer: 3.4
+10. kraken2:
+    10.1 Conda: 2.1.3 - The conda installation was used for the evaluation.
+    10.2 Source: Branch: "v2.1.3"
+12. megahit: 1.2.9
+13. metabinner:
+    13.1 Conda: 1.4.4
+    13.2 Source: Branch: "master" and Hash: "50a1281e8200d705a744736f23efe53c6048bbe8" - The source installation was used for the evaluation.
+15. sra-tools: 3.1.0
+16. taxonkit: 0.16.0
+17. csvtk: 0.30.0
+18. FragGeneScanRs: 1.1.0
 
 ### 2.1.3 Databases
 <p align="justify">The latest versions of the following databases are installed automatically by ProteoSeeker. To see the datetime of their collection for the evaluation of ProteoSeeker, check the evaluation section. Only the protein database should be installed by the user, in which case, he can use one of the already prepared shell scripts for installing either the nr or the Uniref50 or Uniref90 or Uniref100 databases. The latter files are located in the "installation" directory. The user should be certain that the system has enough available memory to hold the decompressed protein database that he wants to download.</p>
