@@ -102,22 +102,31 @@ conda install conda-forge::tar
 3. bowtie2: 2.5.3
 4. cd-hit: 4.8.1
 5. comebin:
+   
    5.1 Conda: 1.0.4 - The conda installation was used for the evaluation.
+
    5.2 Source: Branch: "1.0.4".
-7. diamond: 2.1.9
-8. fastqc 0.12.1
-9. hmmer: 3.4
-10. kraken2:
+   
+8. diamond: 2.1.9
+9. fastqc 0.12.1
+10. hmmer: 3.4
+11. kraken2:
+    
     10.1 Conda: 2.1.3 - The conda installation was used for the evaluation.
+    
     10.2 Source: Branch: "v2.1.3"
-12. megahit: 1.2.9
-13. metabinner:
+    
+13. megahit: 1.2.9
+14. metabinner:
+    
     13.1 Conda: 1.4.4
+    
     13.2 Source: Branch: "master" and Hash: "50a1281e8200d705a744736f23efe53c6048bbe8" - The source installation was used for the evaluation.
-15. sra-tools: 3.1.0
-16. taxonkit: 0.16.0
-17. csvtk: 0.30.0
-18. FragGeneScanRs: 1.1.0
+    
+16. sra-tools: 3.1.0
+17. taxonkit: 0.16.0
+18. csvtk: 0.30.0
+19. FragGeneScanRs: 1.1.0
 
 ### 2.1.3 Databases
 <p align="justify">The latest versions of the following databases are installed automatically by ProteoSeeker. To see the datetime of their collection for the evaluation of ProteoSeeker, check the evaluation section. Only the protein database should be installed by the user, in which case, he can use one of the already prepared shell scripts for installing either the nr or the Uniref50 or Uniref90 or Uniref100 databases. The latter files are located in the "installation" directory. The user should be certain that the system has enough available memory to hold the decompressed protein database that he wants to download.</p>
