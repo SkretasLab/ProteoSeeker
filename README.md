@@ -95,22 +95,23 @@ conda install conda-forge::tar
 <p align="justify">In addition, the name of the custom environment must replace the name of the environment ("ps_install") in line 14 ("conda activate ps_install") in the file "install.sh". It is suggested not to perform these changes if possible and let the installation process handle the creation and usage of the installation environment for these packages.</p>
 
 #### Pipeline tools
-<p align="justify">These tools are all automatically installed by the installation process of ProteoSeeker or have already been set in the Docker image of ProteoSeeker. The specific versions of the tools included in the ProteoSeeker's installation are the ones also used for the evaluation of the "seek" and "taxonomy" modes of ProteoSeeker. These tools and their versions are the following:</p>
+<p align="justify">These tools are all automatically installed by the installation process of ProteoSeeker or have already been set in the Docker image of ProteoSeeker. The specific versions of the tools included in the ProteoSeeker's installation are the ones also used for the evaluation of the "seek" and "taxonomy" modes of ProteoSeeker. The versions of conda and of these tools are the following:</p>
 
-1. bbmap: 39.01
-2. bowtie2: 2.5.3
-3. cd-hit: 4.8.1
-4. comebin: 1.0.4
-5. diamond: 2.1.9
-6. fastqc 0.12.1
-7. hmmer: 3.4
-8. kraken2: 2.1.3
-9. megahit: 1.2.9
-10. metabinner: 1.4.2
-11. sra-tools: 3.1.0
-12. taxonkit: 0.16.0
-13. csvtk: 0.30.0
-14. FragGeneScanRs: 1.1.0
+1. conda 24.1.2
+2. bbmap: 39.01
+3. bowtie2: 2.5.3
+4. cd-hit: 4.8.1
+5. comebin: 1.0.4
+6. diamond: 2.1.9
+7. fastqc 0.12.1
+8. hmmer: 3.4
+9. kraken2: 2.1.3
+10. megahit: 1.2.9
+11. metabinner: Conda: 1.4.4, Source: Latest by 29/05/2024
+12. sra-tools: 3.1.0
+13. taxonkit: 0.16.0
+14. csvtk: 0.30.0
+15. FragGeneScanRs: 1.1.0
 
 ### 2.1.3 Databases
 <p align="justify">The latest versions of the following databases are installed automatically by ProteoSeeker. To see the datetime of their collection for the evaluation of ProteoSeeker, check the evaluation section. Only the protein database should be installed by the user, in which case, he can use one of the already prepared shell scripts for installing either the nr or the Uniref50 or Uniref90 or Uniref100 databases. The latter files are located in the "installation" directory. The user should be certain that the system has enough available memory to hold the decompressed protein database that he wants to download.</p>
