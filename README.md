@@ -102,18 +102,18 @@ conda install conda-forge::tar
 3. bowtie2: 2.5.3
 4. cd-hit: 4.8.1
 5. comebin:
-   1. Conda: 1.0.4 - The conda installation was used for the evaluation.
+   1. Conda: 1.0.4 - Used for the evaluation.
    2. Source: Branch: "1.0.4".
 8. diamond: 2.1.9
 9. fastqc 0.12.1
 10. hmmer: 3.4
 11. kraken2:
-    1. Conda: 2.1.3 - The conda installation was used for the evaluation.
+    1. Conda: 2.1.3 - used for the evaluation.
     2. Source: Branch: "v2.1.3"
 13. megahit: 1.2.9
 14. metabinner:
     1. Conda: 1.4.4
-    2. Source: Branch: "master" and Hash: "50a1281e8200d705a744736f23efe53c6048bbe8" - The source installation was used for the evaluation.
+    2. Source: Branch: "master" and Hash: "50a1281e8200d705a744736f23efe53c6048bbe8" - Used for the evaluation.
 16. sra-tools: 3.1.0
 17. taxonkit: 0.16.0
 18. csvtk: 0.30.0
