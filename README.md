@@ -107,7 +107,7 @@ conda install conda-forge::tar
 8. hmmer: 3.4
 9. kraken2: 2.1.3
 10. megahit: 1.2.9
-11. metabinner: Conda: 1.4.4, Source: Latest by 29/05/2024
+11. metabinner: Conda: 1.4.4, Source: Branch: "master" and Hash: "". The source installation was used for the evaluation.
 12. sra-tools: 3.1.0
 13. taxonkit: 0.16.0
 14. csvtk: 0.30.0
