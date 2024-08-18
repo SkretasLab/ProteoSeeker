@@ -112,8 +112,8 @@ conda install conda-forge::tar
     2. Source: Branch: "v2.1.3"
 13. megahit: 1.2.9
 14. metabinner:
-    1. Conda: 1.4.4
-    2. Source: Branch: "master" and Hash: "50a1281e8200d705a744736f23efe53c6048bbe8" - Used for the evaluation.
+    1. Source: Branch: "master", Hash: "50a1281e8200d705a744736f23efe53c6048bbe8" - Used for the evaluation.
+    2. Conda: 1.4.4
 16. sra-tools: 3.1.0
 17. taxonkit: 0.16.0
 18. csvtk: 0.30.0
