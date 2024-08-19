@@ -623,15 +623,16 @@ Options:
 ~~~
 
 ## 3.3 Command-line
-<p align="justify">To run ProteoSeeker through the command-line, a parameter file facilitates the process greatly. By using one of the template parameter files, the user can easily customize the values for the options of ProteoSeeker and run it. To run ProteoSeeker, at first, its environment shoulb be activated. To run ProteoSeeker by its "seek" mode and "type 2 or 3" analysis or by its "taxonomy" mode and "COMEBin/MetaBinner" route, one should set the path to the protein database in the parameters file or provide it as an argument. The user can run ProteoSeeker based on certain parameter files by the "seek" mode and "type 1" analysis or by the "taxonomy" mode and "Kraken2" route, without the need to make any modifcation in the parameter file or provide any other arguments. You can find the mode and analysis type or route applied by ProteoSeeker in the run according to the parameter file used, based on the table below.</p>
+<p align="justify">To run ProteoSeeker through the command-line, a parameter file facilitates the process greatly. By using one of the template parameter files, the user can easily customize the values for the options of ProteoSeeker and run it. To run ProteoSeeker, at first, its environment shoulb be activated. To run ProteoSeeker by its "seek" mode and "type 2 or 3" analysis or by its "taxonomy" mode and "COMEBin/MetaBinner" route, one should set the path to the protein database in the parameters file or provide it as an argument. The user can run ProteoSeeker based on certain parameter files by the "seek" mode and "type 1" analysis or by the "taxonomy" mode and "Kraken2" route, without the need to make any modifcation in the parameter file or provide any other arguments. You can find the mode and analysis type or route applied by ProteoSeeker in the run according to the parameter file used, based on the table below. The template parameter files 1, 2, 3, 4 and 5 can directly be used to run ProteoSeeker without modifications, as they do not require a protein datbase. Parameter file 6, needs a protein datbase and certain modifications to be used by ProteoSeeker in order to utilize a protein datbase.</p>
 
 Parameter file | Mode | Analysis Type | Route
 --- | --- | --- | ---
 1 | par_seek_p.txt | type 1 | -
-2 | par_seek_tax_k_p.txt | type 1 | Kraken2
-3 | par_seek_tax_mc_p.txt | type 1 | COMEBin/MetaBinner: MetaBinner
-4 | par_tax_k_p.txt | - | Kraken2
-5 | par_tax_mc_p.txt | - | COMEBin/MetaBinner: MetaBinner
+2 | par_seek_c.txt | type 1 | -
+3 | par_seek_tax_k_p.txt | type 1 | Kraken2
+4 | par_seek_tax_mc_p.txt | type 1 | COMEBin/MetaBinner: MetaBinner
+5 | par_tax_k_p.txt | - | Kraken2
+6 | par_tax_mc_p.txt | - | COMEBin/MetaBinner: MetaBinner
 
 ~~~bash
 conda activate ps_env
@@ -639,7 +640,7 @@ python proteoseeker.py -pfp parameter_file.txt
 conda deactivate
 ~~~
 
-<p align="justify">To run the "seek" mode with the "type 2" or "type 3" analysis or the "taxonomy" mode with the "COMEBin/MetaBinner" route of ProteoSeeker make the necessary modifications:</p>
+<p align="justify">To use any of the template parameter files to run ProteoSeeker by the "seek" mode with the "type 2" or "type 3" analysis or the "taxonomy" mode with the "COMEBin/MetaBinner" route of ProteoSeeker make the necessary modifications:</p>
 
 1. seek_route="2" or seek_route="3"
 2. create_nr_db_status="" or create_nr_db_status="True"
