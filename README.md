@@ -628,11 +628,10 @@ Options:
 Parameter file | Mode | Analysis Type | Route
 --- | --- | --- | ---
 1 | par_seek_p.txt | type 1 | -
-2 | par_seek_c.txt | type 1 | -
-3 | par_seek_tax_k_p.txt | type 1 | Kraken2
-4 | par_seek_tax_mc_p.txt | type 1 | COMEBin/MetaBinner: MetaBinner
-5 | par_tax_k_p.txt | - | Kraken2
-6 | par_tax_mc_p.txt | - | COMEBin/MetaBinner: MetaBinner
+2 | par_seek_tax_k_p.txt | type 1 | Kraken2
+3 | par_seek_tax_mc_p.txt | type 1 | COMEBin/MetaBinner: MetaBinner
+4 | par_tax_k_p.txt | - | Kraken2
+5 | par_tax_mc_p.txt | - | COMEBin/MetaBinner: MetaBinner
 
 ~~~bash
 conda activate ps_env
