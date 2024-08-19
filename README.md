@@ -631,12 +631,22 @@ python proteoseeker.py -pfp par_tax_k_p.txt
 conda deactivate
 ~~~
 
-<p align="justify">To run the "seek" mode, "type 2" analysis or the "taxonomy" mode, "COMEBin/MetaBinner" route of ProteoSeeker, provide a suitable protein database in the parameter file or as an argument. For example, by using a protein database which is basically a small part of the nr database, used for testing the aforementioned functionalities of ProteoSeeker and not for an actual and full analysis by ProteoSeeker regarding the processes related to the utilization of the protein database, make the following modification in one of the parameter files or use an existing parameter file and provide the "nr_part.fasta" as an argument:</p>
+<p align="justify">To run the "seek" mode, "type 2" analysis or the "taxonomy" mode, "COMEBin/MetaBinner" route of ProteoSeeker, provide a suitable protein database in the parameter file or as an argument. For example, by using a protein database which is basically a small part of the nr database, used for testing the aforementioned functionalities of ProteoSeeker and not for an actual and full analysis by ProteoSeeker regarding the processes related to the utilization of the protein database, make the following modification in one of the parameter files:</p>
+
+protein_db_path="/home/georgios/ProteoSeeker-main/parameter_files/docker/nr_part.fasta"
 
 ~~~bash
-protein_db_path="/home/georgios/ProteoSeeker-main/parameter_files/docker/nr_part.fasta"
-or
+conda activate ps_env
+python proteoseeker.py -pfp param_file.txt
+conda deactivate
+~~~
+
+or use an existing parameter file and provide the "nr_part.fasta" as an argument:
+
+~~~bash
+conda activate ps_env
 python proteoseeker.py -pfp param_file.txt -pdp /home/georgios/ProteoSeeker-main/parameter_files/docker/nr_part.fasta
+conda deactivate
 ~~~
 
 ## 3.4 Docker
