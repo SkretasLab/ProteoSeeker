@@ -64,14 +64,14 @@ def modify_par_files(target_dir, output_dict, ps_path, adapters_path, protein_db
                 line = "phobius_path=\"{}\"".format(phobius_path)
             elif "kraken_db_path=" in line:
                 if "k8" in sfn:
-                    line = "phobius_path=\"{}\"".format(kraken_8_db_path)
+                    line = "kraken_db_path=\"{}\"".format(kraken_8_db_path)
                 elif "k16" in sfn:
-                    line = "phobius_path=\"{}\"".format(kraken_16_db_path)
+                    line = "kraken_db_path=\"{}\"".format(kraken_16_db_path)
                 elif "k72" in sfn:
-                    line = "phobius_path=\"{}\"".format(kraken_72_db_path)
+                    line = "kraken_db_path=\"{}\"".format(kraken_72_db_path)
             elif "output_path=" in line:
                 output_part = output_dict[output_type]
-                output_dir_path = "{}/{}".format(ps_path, output_part)
+                output_dir_path = "{}/results/{}".format(ps_path, output_part)
                 line =  "output_path=\"{}\"".format(output_dir_path)
             sfn_file.write("{}\n".format(line))
         sfn_file.close()

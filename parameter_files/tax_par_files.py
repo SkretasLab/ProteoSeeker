@@ -166,6 +166,8 @@ def cparf():
                         output_dir_path = "{}/sample_{}_kraken_72".format(output_dir_path, sample_id)
                     elif bs_key == 3:
                         output_dir_path = "{}/sample_{}_metabinner_nr".format(output_dir_path, sample_id)
+                    elif bs_key == 4:
+                        output_dir_path = "{}/sample_{}_comebin_nr".format(output_dir_path, sample_id)
                     line =  "output_path=\"{}\"".format(output_dir_path)
                 elif line == "family_code_phylo=\"\"":
                     if bs_key in [3, 4]:
