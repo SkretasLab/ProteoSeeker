@@ -631,21 +631,21 @@ python proteoseeker.py -pfp par_tax_k_p.txt
 conda deactivate
 ~~~
 
-<p align="justify">To run the "seek" mode, "type 2" analysis or the "taxonomy" mode, "COMEBin/MetaBinner" route of ProteoSeeker, provide a suitable protein database in the parameter file or as an argument. For example, by using a protein database which is basically a small part of the nr database, used for testing the aforementioned functionalities of ProteoSeeker and not for an actual and full analysis by ProteoSeeker regarding the processes related to the utilization of the protein database, make the following modification in one of the parameter files:</p>
+<p align="justify">To run the "seek" mode, "type 2" analysis or the "taxonomy" mode, "COMEBin/MetaBinner" route of ProteoSeeker, provide a suitable protein database in the parameter file or as an argument. Any file with protein sequences in FASTA format can be used to run the "seek" mode, "type 2" analysis of ProteoSeeker. For the "taxonomy" mode, "COMEBin/MetaBinner" route of ProteoSeeker the file used as the protein database should contain headers (for its protein sequences) which contain information about the taxon/taxa associated with their protein sequences, in a style identical to the one used by the non-redundant database of NCBI or the Uniref100/90/50 databases of UniprotKB. For example, to use a protein database which is basically a small part of the nr database, that is used for testing the aforementioned functionalities of ProteoSeeker and not for an actual and full analysis by ProteoSeeker based on the protein datbase, make the following modification in one of the parameter files and use it to run ProteoSeeker.</p>
 
 protein_db_path="/home/georgios/ProteoSeeker-main/parameter_files/docker/nr_part.fasta"
 
 ~~~bash
 conda activate ps_env
-python proteoseeker.py -pfp param_file.txt
+python proteoseeker.py -pfp parameter_file.txt
 conda deactivate
 ~~~
 
-or use an existing parameter file and provide the "nr_part.fasta" as an argument:
+or use an existing parameter file and provide the protein database as an argument:
 
 ~~~bash
 conda activate ps_env
-python proteoseeker.py -pfp param_file.txt -pdp /home/georgios/ProteoSeeker-main/parameter_files/docker/nr_part.fasta
+python proteoseeker.py -pfp parameter_file.txt -pdp /home/georgios/ProteoSeeker-main/parameter_files/docker/nr_part.fasta
 conda deactivate
 ~~~
 
