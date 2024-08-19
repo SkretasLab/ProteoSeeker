@@ -623,19 +623,24 @@ Options:
 ~~~
 
 ## 3.3 Command-line
-<p align="justify">To run ProteoSeeker through the command-line, a parameter file facilitates the process greatly. By using one of the template parameter files, the user can easily customize the values for the options of ProteoSeeker and run it. To run ProteoSeeker, at first, its environment shoulb be activated. The command below suffice to run ProteoSeeker through the command-line from the main directory of ProteoSeeker by its "taxonomy" mode through the Kraken2 route.</p>
+<p align="justify">To run ProteoSeeker through the command-line, a parameter file facilitates the process greatly. By using one of the template parameter files, the user can easily customize the values for the options of ProteoSeeker and run it. To run ProteoSeeker, at first, its environment shoulb be activated. To run ProteoSeeker by its "seek" mode and "type 2 or 3" analysis or by its "taxonomy" mode and "COMEBin/MetaBinner" route, one should set the path to the protein database in the parameters file or provide it as an argument. The user can run ProteoSeeker based on certain parameter files by the "seek" mode and "type 1" analysis or by the "taxonomy" mode and "Kraken2" route, without the need to make any modifcation in the parameter file or provide any other arguments. You can find the mode and analysis type or route applied by ProteoSeeker in the run according to the parameter file used, based on the table below.</p>
+
+Parameter file | Mode | Analysis Type | Route
+--- | --- | --- | ---
+1 | par_seek_p.txt | type 1 | -
+2 | par_seek_c.txt | type 1 | -
+3 | par_seek_tax_k_p.txt | type 1 | Kraken2
+4 | par_seek_tax_mc_p.txt | type 1 | COMEBin/MetaBinner: MetaBinner
+5 | par_tax_k_p.txt | - | Kraken2
+6 | par_tax_mc_p.txt | - | COMEBin/MetaBinner: MetaBinner
 
 ~~~bash
 conda activate ps_env
-python proteoseeker.py -pfp par_tax_k_p.txt
+python proteoseeker.py -pfp parameter_file.txt
 conda deactivate
 ~~~
 
-<p align="justify">To run ProteoSeeker by its "seek" mode and "type 2 or 3" analysis or by its "taxonomy" mode and "COMEBin/MetaBinner" route, one should set the path to the protein database in the parameters file or provide it as an argument. The user can run ProteoSeeker based on the following parameter files by the "seek" mode and "type 1" analysis or by the "taxonomy" mode and "Kraken2" route, without the need to make any modifcation in the parameter file or provide any other argument. You can find the mode and analysis type or route applied by ProteoSeeker in the run according to the parameter file used, based on the table below:</p>.
-
-
-
-<p align="justify">To run the "seek" mode, "type 2" analysis or the "taxonomy" mode, "COMEBin/MetaBinner" route of ProteoSeeker, provide a suitable protein database in the parameter file or as an argument. Any file with protein sequences in FASTA format can be used to run the "seek" mode, "type 2" analysis of ProteoSeeker. For the "taxonomy" mode, "COMEBin/MetaBinner" route of ProteoSeeker the file used as the protein database should contain headers (for its protein sequences) which contain information about the taxon/taxa associated with their protein sequences, in a style identical to the one used by the non-redundant database of NCBI or the Uniref100/90/50 databases of UniprotKB. For example, to use a protein database which is basically a small part of the nr database, that is used for testing the aforementioned functionalities of ProteoSeeker and not for an actual and full analysis by ProteoSeeker based on the protein datbase, make the following modification in one of the parameter files and use that parameter file to run ProteoSeeker.</p>
+<p align="justify">To run the "seek" mode with the "type 2" or "type 3" analysis or the "taxonomy" mode with the "COMEBin/MetaBinner" route of ProteoSeeker, provide a suitable protein database in the parameter file or as an argument. Any file with protein sequences in FASTA format can be used to run the "seek" mode, "type 2" analysis of ProteoSeeker. For the "taxonomy" mode, "COMEBin/MetaBinner" route of ProteoSeeker the file used as the protein database should contain headers (for its protein sequences) which contain information about the taxon/taxa associated with their protein sequences, in a style identical to the one used by the non-redundant database of NCBI or the Uniref100/90/50 databases of UniprotKB. For example, to use a protein database which is basically a small part of the nr database, that is used for testing the aforementioned functionalities of ProteoSeeker and not for an actual and full analysis by ProteoSeeker based on the protein datbase, make the following modification in one of the parameter files and use that parameter file to run ProteoSeeker.</p>
 
 protein_db_path="/home/georgios/ProteoSeeker-main/parameter_files/docker/nr_part.fasta"
 
