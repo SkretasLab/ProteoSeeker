@@ -401,11 +401,10 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
     # Sensitivity / Recall / True positive rate = TP / (TP + FN)
     # Specifcity = TN / (TN + FP) = 0
     # Precision = TP / (TP + FP)
-    # F1 Score = 2 * (Precision * Sensitivity) / (Precision + Sensitivity)
+    # F1 Score = Sorensen-Dice Index = 2 * (Precision * Sensitivity) / (Precision + Sensitivity) = 2 * TP / (2 * TP + FP + FN)
     # L1 Norm = Sum of the absolute difference of the percentagies of each species found in both of the groups, wihtout parsing the same species more than once.
     # Accuracy = (TP + TN) / (TP + TN + FP + FN) = TP / (TP + FN)
-    # Jaccard index = common_species / unique_species
-    # Sorensen-Dice Index = 2 * common_species / (species_val + species_pred)
+    # Jaccard index = common_species / unique_species = TP / (TP + FP + FN)
     # Note: The results of MetaBinner and COMEBin may have more than one species for one bin.
     # All species for each bin are considered in the results. Also all species of the same bin
     tp = 0
@@ -416,30 +415,22 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
     precision = -1
     f1_score = -1
     accuracy = -1
-    jac_index = -1
-    sorensen_dice = -1
-    diff_sum_wr = -1
-    mean_absolute_error = -1
-    squared_diff_sum_wr = -1
-    mean_squared_error = -1
-    root_mean_squared_error = -1
+    jaccard_index = -1
+
+    # Gold standard sample information
     gold_si_info = br_info_dict[sample_id]
+
     # Determine whether the information from the predictions, which are to be compared with the standard samples,
     # originate from the predictions based on all species found or based on the species from the bins which bins
     # are each assigned one species. When the predictions come from the Kraken2 methods the "pred_sole_info_dict"
     # is None as there are no predictions to filter for bins with sole species because each bin is assigned always
     # one species.
-    target_type = 2
-    if (target_type == 1) or (pred_sole_info_dict is None):
+    if pred_sole_info_dict is None:
         target_info_dict = copy.deepcopy(pred_info_dict)
-    elif target_type == 2:
-        target_info_dict = copy.deepcopy(pred_sole_info_dict)
     else:
-        target_info_dict = None
+        target_info_dict = copy.deepcopy(pred_sole_info_dict)
     target_si_info = target_info_dict[sample_id]
-    if pred_sole_info_dict is not None:
-        target_sole_si_info = pred_sole_info_dict[sample_id]
-    # Kraken2
+
     # Create a group of all the items from gold and predicted items.
     # unique_items: Union of the species from the gold standard sample and the predicted group of species
     unique_items = set()
@@ -447,14 +438,7 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
         unique_items.add(item)
     for item in target_si_info:
         unique_items.add(item)
-    # The strict items are only applicable to the COMEBin and MetaBinner methods.
-    # The Kraken2 method generates only one species per read which leads up to one species per bin.
-    if pred_sole_info_dict is not None:
-        unique_items_strict = set()
-        for item in gold_si_info:
-            unique_items_strict.add(item)
-        for item in target_sole_si_info:
-            unique_items_strict.add(item)
+
     # Parse the list of unique items and check the existance of each item in each of the lists.
     # common_items: Common species
     # group_val_items: Gold species
@@ -483,132 +467,62 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
         if (item not in gold_si_info) and (item not in target_si_info):
             # In none of the groups.
             tn += 1
+
     # Compute TP, FP, FN
     tp = len(common_items)
     fp = len(group_pred_unique_items)
     fn = len(group_val_unique_items)
+
     # Sensitivity
     if (tp + fn) != 0:
         sensitivity =  tp / (tp + fn)
         sensitivity = round(sensitivity, 2)
+
     # Precision
     if (tp + fp) != 0:
         precision = tp / (tp + fp)
         precision = round(precision, 2)
+
     # F1 Score
-    if (precision + sensitivity) != 0:
-        f1_score = 2 * ((precision * sensitivity) / (precision + sensitivity))
+    if (2 * tp + fp + fn) != 0:
+        f1_score = (2 * tp) / (2 * tp + fp + fn)
         f1_score = round(f1_score, 2)
+
     # Accuracy
     if (tp + tn + fp + fn) != 0:
         accuracy = (tp + tn) / (tp + tn + fp + fn)
         accuracy = round(accuracy, 2)
+
     # Jaccard index:
     # The true positive hits are the number of the items of the intersection of the two gruops.
     # The number of unique items of the two groups is the number of the items of their union.
-    unique_spec_num = len(unique_items)
-    if unique_spec_num != 0:
-        jac_index = tp / unique_spec_num
-        jac_index = round(jac_index, 2)
-    # Sorensen-Dice Index
-    # The true positive hits are the number of the items of the intersection of the two gruops.
-    val_species_num = len(gold_si_info)
-    pred_species_num = len(target_si_info)
-    if (val_species_num + pred_species_num) != 0:
-        sorensen_dice = (2 * tp) / (val_species_num + pred_species_num)
-        sorensen_dice = round(sorensen_dice, 2)
+    jaccard_index = tp / (tp + fp + fn)
+
     # L1 norm
     l1_norm = 0
-    if pred_sole_info_dict is None:
-        for item in unique_items:
-            if item in br_info_dict[sample_id]:
-                gold_abu_prec = float(br_info_dict[sample_id][item])
-            else:
-                gold_abu_prec = 0
-            if item in target_info_dict[sample_id]:
-                pred_abu_perc = float(target_info_dict[sample_id][item])
-            else:
-                pred_abu_perc = 0
-            temp_term = abs(gold_abu_prec - pred_abu_perc)
-            l1_norm += temp_term
-    else:
-        for item in unique_items_strict:
-            if item in br_info_dict[sample_id]:
-                gold_abu_prec = float(br_info_dict[sample_id][item])
-            else:
-                gold_abu_prec = 0
-            if item in pred_sole_info_dict[sample_id]:
-                pred_abu_perc = float(pred_sole_info_dict[sample_id][item])
-            else:
-                pred_abu_perc = 0
-            temp_term = abs(gold_abu_prec - pred_abu_perc)
-            l1_norm += temp_term
+    for item in unique_items:
+        if item in br_info_dict[sample_id]:
+            gold_abu_prec = float(br_info_dict[sample_id][item])
+        else:
+            gold_abu_prec = 0
+        if item in target_info_dict[sample_id]:
+            pred_abu_perc = float(target_info_dict[sample_id][item])
+        else:
+            pred_abu_perc = 0
+        temp_term = abs(gold_abu_prec - pred_abu_perc)
+        l1_norm += temp_term
     l1_norm = l1_norm / 100
-    # Mean Absolute Error / MAE
-    # For common species their percentagies is compared directly.
-    # For species unique to each of the groups, the percentage of that species for the other group is considered 0.
-    unique_spec_num = len(unique_items)
-    unique_val_num = len(group_val_unique_items)
-    unique_pred_num = len(group_pred_unique_items)
-    if unique_spec_num != 0:
-        diff_sum = 0
-        for item in common_items:
-            gold_abu_prec = float(br_info_dict[sample_id][item])
-            pred_abu_perc = float(target_info_dict[sample_id][item])
-            diff = gold_abu_prec - pred_abu_perc
-            abs_diff = abs(diff)
-            diff_sum += abs_diff
-        for item in group_val_unique_items:
-            gold_abu_prec = float(br_info_dict[sample_id][item])
-            diff = gold_abu_prec
-            abs_diff = abs(diff)
-            diff_sum += abs_diff
-        for item in group_pred_unique_items:
-            pred_abu_perc = float(target_info_dict[sample_id][item])
-            diff = pred_abu_perc
-            abs_diff = abs(diff)
-            diff_sum += abs_diff
-        mean_absolute_error = diff_sum / unique_spec_num
-        mean_absolute_error = round(mean_absolute_error, 2)
-        diff_sum_wr = round(diff_sum, 2)
-    # Mean Squared Error (MSE) and Root Mean Squared Error (RMSE)
-    # Same methodlogy as for MAE.
-    unique_spec_num = len(unique_items)
-    unique_val_num = len(group_val_unique_items)
-    unique_pred_num = len(group_pred_unique_items)
-    if unique_spec_num != 0:
-        squared_diff_sum = 0
-        for item in common_items:
-            gold_abu_prec = float(br_info_dict[sample_id][item])
-            pred_abu_perc = float(target_info_dict[sample_id][item])
-            diff = gold_abu_prec - pred_abu_perc
-            abs_diff = abs(diff)
-            abs_diff = abs_diff**2
-            squared_diff_sum += abs_diff
-        for item in group_val_unique_items:
-            gold_abu_prec = float(br_info_dict[sample_id][item])
-            diff = gold_abu_prec
-            abs_diff = abs(diff)
-            abs_diff = abs_diff**2
-            squared_diff_sum += abs_diff
-        for item in group_pred_unique_items:
-            pred_abu_perc = float(target_info_dict[sample_id][item])
-            diff = pred_abu_perc
-            abs_diff = abs(diff)
-            abs_diff = abs_diff**2
-            squared_diff_sum += abs_diff
-        mean_squared_error = squared_diff_sum / unique_spec_num
-        mean_squared_error = round(mean_squared_error, 2)
-        squared_diff_sum_wr = round(squared_diff_sum, 2)
-        root_mean_squared_error = math.sqrt(mean_squared_error)
-        root_mean_squared_error = round(root_mean_squared_error, 2)
-    # Number of common species
-    common_items_num = len(common_items)
+
     # Store information in the dictionary
+    val_species_num = len(gold_si_info)
+    pred_species_num = len(target_si_info)
+    unique_spec_num = len(unique_items)
+    unique_val_num = len(group_val_unique_items)
+    unique_pred_num = len(group_pred_unique_items)
     target_stats_dict[sample_id] = {
         "Gold species number": val_species_num,
         "Predicted species number": pred_species_num,
-        "Common species (intersection)": common_items_num,
+        "Common species (intersection)": tp,
         "Unique species from both groups (union)": unique_spec_num,
         "Unique to gold group": unique_val_num,
         "Unique to predicted group": unique_pred_num,
@@ -620,18 +534,9 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
         "Accuracy": accuracy,
         "F1 score": f1_score,
         "L1_norm": l1_norm,
-        "Jaccard Index": jac_index,
-        "Sorensen-Dice Index": sorensen_dice,
-        "Sum of absolute differences": diff_sum_wr,
-        "MAE": mean_absolute_error,
-        "Sum of squared absolute differencies": squared_diff_sum_wr,
-        "MSE": mean_squared_error,
-        "RMSE": root_mean_squared_error
+        "Jaccard Index": jaccard_index
     }
-    if common_items_num != tp:
-        print(target_stats_dict)
-        print("Error. The number of true positive hits differs from the number of common species. Exiting.")
-        exit()
+
     # Write the information in a csv file.
     return target_stats_dict, common_items, group_val_items, group_val_unique_items, group_pred_items, group_pred_unique_items
 
@@ -795,6 +700,8 @@ def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dic
     fs_num_1 = 25
     fs_num_2 = 20
     fs_num_3 = 20
+    # Letters for annotation
+    annotation_letters = list("abcdefghijklmnopqrstuvwxyz")
     # Creating the plots
     for key_group_metric in metric_group_dict.keys():
         cur_metric_group = metric_group_dict[key_group_metric]
@@ -818,6 +725,8 @@ def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dic
             cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
             # Title
             cur_axis.set_title(axis_title_label, pad=20, loc='center', fontsize=fs_num_1, fontweight='bold')
+            # Letter
+            cur_axis.annotate(annotation_letters[row_fig_index], xy=(0.02, 1.10), xycoords='axes fraction', fontsize=fs_num_1, fontweight='bold', ha='center', va='center')
             # Remove the legend, if for the last plot.
             if row_fig_index < row_num:
                 cur_axis.legend().remove()
@@ -861,6 +770,8 @@ def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_la
     fs_num_1 = 25
     fs_num_2 = 20
     fs_num_3 = 20
+    # Letters for annotation
+    annotation_letters = list("abcdefghijklmnopqrstuvwxyz")
     # Filter specific samples.
     for key_group in sample_group_dict.keys():
         sample_id_group = sample_group_dict[key_group]
@@ -896,6 +807,8 @@ def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_la
                 cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
                 # Title
                 cur_axis.set_title(axis_title_label, pad=20, loc='center', fontsize=fs_num_1, fontweight='bold')
+                # Letter
+                cur_axis.annotate(annotation_letters[row_fig_index], xy=(0.02, 1.10), xycoords='axes fraction', fontsize=fs_num_1, fontweight='bold', ha='center', va='center')
                 # Remove the legend, if for the last plot.
                 if row_fig_index < row_num:
                     cur_axis.legend().remove()
@@ -948,8 +861,8 @@ def rank_stats(pandas_dict, stats_dir_path):
     metrics_stats_file.close()
     # The higher ranking methods across for each sample are identified.
     group_pass = ["Gold species number", "True Negative (TN)"]
-    group_max = ["Predicted species number", "True Positive (TP)", "Sensitivity", "Specificty", "Precision", "Accuracy", "F1 score", "Jaccard Index", "Sorensen-Dice Index"]
-    group_min = ["Common species (intersection)", "Unique species from both groups (union)", "Unique to gold group", "Unique to predicted group", "False Positive (FP)", "False Negative (FN)", "L1_norm", "Sum of absolute differences", "MAE", "Sum of squared absolute differencies", "MSE", "RMSE"]
+    group_max = ["Predicted species number", "True Positive (TP)", "Sensitivity", "Specificty", "Precision", "Accuracy", "F1 score", "Jaccard Index"]
+    group_min = ["Common species (intersection)", "Unique species from both groups (union)", "Unique to gold group", "Unique to predicted group", "False Positive (FP)", "False Negative (FN)", "L1_norm", "Sum of absolute differences"]
     method_sample_rank_dict = {}
     for key_metric in pandas_dict.keys():
         if key_metric in group_pass:
@@ -1342,9 +1255,9 @@ def plot_full_sample_time(df_full_time_dict, megahit_time_dict, time_dir, stats_
         # Place a horizontal line at the sum of time up to megahit.
         ax.axhline(y=cur_megahit_time, color='r', linestyle='--', linewidth=1)
         # Labels
-        plt.xlabel('Taxonomy route and database', fontsize=fs_num_2, fontweight='bold')
-        plt.ylabel('Execution time (m)', fontsize=fs_num_2, fontweight='bold')
-        plt.title('Execution time vs Taxonomy route and database', fontsize=fs_num_1, fontweight='bold')
+        plt.xlabel('Taxonomy Route and Database', fontsize=fs_num_2, fontweight='bold')
+        plt.ylabel('Execution Time (m)', fontsize=fs_num_2, fontweight='bold')
+        plt.title('Execution Time vs Taxonomy Route and Database', fontsize=fs_num_1, fontweight='bold')
         # Place the legend outside the plot
         # Custom legend labels
         custom_labels = ["quality control", "preprcessing", "assembly", "gene prediction", "protein clustering", "binning", "taxonomy", "read alignment", "results"]
@@ -1392,9 +1305,9 @@ def plot_total_sample_time(df_total_time_dict, megahit_time_dict, time_dir, stat
         # Place a horizontal line at the sum of time up to megahit.
         plt.axhline(y=cur_megahit_time, color='r', linestyle='--', linewidth=1)
         # Labels
-        plt.xlabel('Taxonomy route and database', fontsize=fs_num_2, fontweight='bold')
-        plt.ylabel('Execution time (m)', fontsize=fs_num_2, fontweight='bold')
-        plt.title('Execution time vs Taxonomy route and database', fontsize=fs_num_1, fontweight='bold')
+        plt.xlabel('Taxonomy Route and Database', fontsize=fs_num_2, fontweight='bold')
+        plt.ylabel('Execution Time (m)', fontsize=fs_num_2, fontweight='bold')
+        plt.title('Execution Time vs Taxonomy Route and Database', fontsize=fs_num_1, fontweight='bold')
         # Changing the size of the tick labels        
         plt.tick_params(axis='both', which='major', labelsize=fs_num_3)
         # Layout
@@ -1420,9 +1333,9 @@ def plot_total_all_time(total_time_all_df, time_dir, stats_dir_path):
     total_time_all_barplot = sns.catplot(data=total_time_all_df, kind="bar", x="sample", y="total_time", hue="method", palette="dark", alpha=.6, height=6, aspect=2)
     # Labels
     x_axis_label = "Sample ID"
-    y_axis_label = "Execution time (m)"
-    title_label = "Execution time vs Sample ID"
-    legend_label = "Taxonomy route and database"
+    y_axis_label = "Execution Time (m)"
+    title_label = "Execution Time vs Sample ID"
+    legend_label = "Taxonomy Route and Database"
     total_time_all_barplot.set_axis_labels(x_axis_label, y_axis_label, fontsize=fs_num_2, fontweight='bold')
     plt.suptitle(title_label, fontsize=fs_num_1, fontweight='bold')
     total_time_all_barplot.legend.set_title(legend_label, prop={'size': fs_num_3, 'weight': 'bold'})
@@ -1445,6 +1358,8 @@ def plot_full_group_sample_time(df_full_time_all, time_dir, stats_dir_path, time
     fs_num_1 = 25
     fs_num_2 = 20
     fs_num_3 = 20
+    # Letters for annotation
+    annotation_letters = list("abcdefghijklmnopqrstuvwxyz")
     # The number of the methods to plot.
     methods_num = len(methods_group)
     # Save the dataframe to a CSV file.
@@ -1477,6 +1392,8 @@ def plot_full_group_sample_time(df_full_time_all, time_dir, stats_dir_path, time
         cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
         # Title
         cur_axis.set_title(axis_title_label, pad=20, loc='center', fontsize=fs_num_1, fontweight='bold')
+        # Letter
+        cur_axis.annotate(annotation_letters[row_fig_index], xy=(0.02, 1.10), xycoords='axes fraction', fontsize=fs_num_1, fontweight='bold', ha='center', va='center')
         # Changing the size of the tick labels        
         cur_axis.tick_params(axis='both', which='major', labelsize=fs_num_3)
         # Remove the legend, if for the last plot.
@@ -1506,8 +1423,8 @@ def plot_full_group_sample_time(df_full_time_all, time_dir, stats_dir_path, time
     # Space between the plots of the figure.
     plt.subplots_adjust(hspace=0.9)
     # File paths.
-    full_time_grouped_path_png = "{}/full_time_sample_grouped_time.png".format(time_dir)
-    full_time_grouped_path_jpg = "{}/full_time_sample_grouped_time.jpg".format(time_dir)
+    full_time_grouped_path_png = "{}/full_time_sample_grouped.png".format(time_dir)
+    full_time_grouped_path_jpg = "{}/full_time_sample_grouped.jpg".format(time_dir)
     # Saving the figure.
     figure.savefig(full_time_grouped_path_png)
     figure.savefig(full_time_grouped_path_jpg)
@@ -1521,6 +1438,8 @@ def plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_d
     fs_num_1 = 30
     fs_num_2 = 25
     fs_num_3 = 25
+    # Letters for annotation
+    annotation_letters = list("abcdefghijklmnopqrstuvwxyz")
     # Create the figure to store the subplots.
     col_num = 5
     figure, axis = plt.subplots(1, col_num, figsize=(40, 20))
@@ -1536,14 +1455,11 @@ def plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_d
         if total_time_all_filtered_df.empty:
             break
         sns.barplot(ax=cur_axis, data=total_time_all_filtered_df, x="sample", y="total_time", hue="method", palette="dark", alpha=.6)
-        # Removes the right and top axis.
-        sns.despine(ax=cur_axis)
         # Replace the y axis ticks.
         cur_axis.set_yticks(list(cur_axis.get_yticks()))
         # Remove the legend, if for the last plot.
         if row_fig_index < col_num:
             cur_axis.legend().remove()
-        # Labels
         # Labels
         y_axis_label = "Execution time (m)"
         axis_title_label = "Execution time per method for each group of samples"
@@ -1551,7 +1467,13 @@ def plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_d
         cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
         # Changing the size of the tick labels        
         cur_axis.tick_params(axis='both', which='major', labelsize=fs_num_3)
+        # Letter
+        cur_axis.annotate(annotation_letters[row_fig_index], xy=(0.95, 0.98), xycoords='axes fraction', fontsize=fs_num_1, fontweight='bold', ha='center', va='center')
         # Place vertical lines to divie the sample barplots.
+        sanme_num = len(sample_id_group)
+        for i in range(1, sanme_num):
+            cur_axis.axvline(x=i - 0.5, color='gray', linestyle='--', linewidth=0.8)
+        # Row index
         row_fig_index += 1
     # Get the axis for the middle plot
     middle_axis = axis[2]
@@ -1563,9 +1485,11 @@ def plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_d
     middle_axis.legend(title=legend_title, loc='upper center', bbox_to_anchor=(0.5, -0.05), ncol=11, prop={'size': fs_num_3}, title_fontproperties=legend_props)
     # Padding from left, bottom, right, top
     plt.tight_layout()
+    # Space between the subplots.
+    plt.subplots_adjust(wspace=0.3)
     # File paths
-    full_time_grouped_path_png = "{}/full_time_method_grouped_time.png".format(time_dir)
-    full_time_grouped_path_jpg = "{}/full_time_method_grouped_time.jpg".format(time_dir)
+    full_time_grouped_path_png = "{}/full_time_method_grouped.png".format(time_dir)
+    full_time_grouped_path_jpg = "{}/full_time_method_grouped.jpg".format(time_dir)
     # Saving the figure.
     figure.savefig(full_time_grouped_path_png)
     figure.savefig(full_time_grouped_path_jpg)
@@ -1578,6 +1502,8 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
     fs_num_1 = 25
     fs_num_2 = 20
     fs_num_3 = 20
+    # Letters for annotation
+    annotation_letters = list("abcdefghijklmnopqrstuvwxyz")
     # Create a dictionary where the first key is the method and the second key the sample ID and its value the total time.
     method_sample_time_dict = {}
     for key_sample in df_total_time_dict.keys():
@@ -1658,9 +1584,13 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
         # Set the minimum value for the x and y axis.
         cur_axis.set_xlim(left=0)
         cur_axis.set_ylim(bottom=0)
+        # Remove the 0.0 value from the x axis.
+        x_axis_ticks = cur_axis.get_xticks()
+        if x_axis_ticks[0] == 0.0:
+            cur_axis.set_xticks(x_axis_ticks[1:])
         # Labels
-        x_axis_label = "Sample size (GBs)"
-        y_axis_label = "Execution time (m)"
+        x_axis_label = "Sample Size (GB)"
+        y_axis_label = "Execution Time (m)"
         if key_method == "k8":
             title_part = "Kraken2 db:8"
         elif key_method == "k16":
@@ -1677,18 +1607,20 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
         cur_axis.set_title(title_part, pad=20, loc='center', fontsize=fs_num_1, fontweight='bold')
         # Changing the size of the tick labels.
         cur_axis.tick_params(axis='both', which='major', labelsize=fs_num_3)
+        # Letter
+        cur_axis.annotate(annotation_letters[row_fig_index], xy=(-0.05, 1.05), xycoords='axes fraction', fontsize=fs_num_1, fontweight='bold', ha='center', va='center')
         # Increament the index of the plot position.
         row_fig_index += 1
     # Get the axis for the middle plot
     middle_axis = axis[2]
     # Title
-    fig_title_label = "Sample size vs Execution time"
+    fig_title_label = "Sample Size vs Execution Time"
     title_pos = middle_axis.title.get_position()
     figure.text(title_pos[0], title_pos[1] - 0.04, fig_title_label, ha='center', fontsize=fs_num_1, fontweight='bold')
     # Layout
     plt.tight_layout(rect=[0, 0, 0.99, 0.95])
     # Space between the plots of the figure.
-    plt.subplots_adjust(wspace=0.2)
+    plt.subplots_adjust(wspace=0.4)
     # File paths.
     size_time_png_path = "{}/Size_time.png".format(time_dir)
     size_time_jpg_path = "{}/Size_time.png".format(time_dir)
@@ -1750,9 +1682,13 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
         # Set the minimum value for the x and y axis.
         cur_axis.set_xlim(left=0)
         cur_axis.set_ylim(bottom=0)
+        # Remove the 0.0 value from the x axis.
+        x_axis_ticks = cur_axis.get_xticks()
+        if x_axis_ticks[0] == 0.0:
+            cur_axis.set_xticks(x_axis_ticks[1:])
         # Labels
-        x_axis_label = "Species number"
-        y_axis_label = "Mean execution time (m)"
+        x_axis_label = "Species Number"
+        y_axis_label = "Execution Time (m)"
         if key_method == "k8":
             title_part = "Kraken2 db:8"
         elif key_method == "k16":
@@ -1772,23 +1708,25 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
             cur_axis.legend().remove()
         # Changing the size of the tick labels.
         cur_axis.tick_params(axis='both', which='major', labelsize=fs_num_3)
+        # Letter
+        cur_axis.annotate(annotation_letters[row_fig_index], xy=(-0.05, 1.05), xycoords='axes fraction', fontsize=fs_num_1, fontweight='bold', ha='center', va='center')
         # Increament the index of the plot position.
         row_fig_index += 1
     # Get the axis for the middle plot.
     middle_axis = axis[2]
     # Title
-    fig_title_label = "Species number vs Execution time"
+    fig_title_label = "Species Number vs Execution Time"
     title_pos = middle_axis.title.get_position()
     figure.text(title_pos[0], title_pos[1] - 0.04, fig_title_label, ha='center', fontsize=fs_num_1, fontweight='bold')
     # Legend
-    legend_title = "Species number"
+    legend_title = "Species Number"
     legend_props = FontProperties(weight='bold', size=fs_num_3)
     middle_axis.legend(title=legend_title, loc='upper center', markerscale=2, bbox_to_anchor=(0.5, -0.2), ncol=11, prop={'size': fs_num_3}, title_fontproperties=legend_props)
     # Layout
     # plt.tight_layout()
     plt.tight_layout(rect=[0, 0, 0.99, 0.95])
     # Space between the plots of the figure.
-    plt.subplots_adjust(wspace=0.2)
+    plt.subplots_adjust(wspace=0.4)
     # File paths
     size_time_png_path = "{}/Species_time.png".format(time_dir)
     size_time_jpg_path = "{}/Species_time.png".format(time_dir)
@@ -1852,9 +1790,13 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
         # Set the minimum value for the x and y axis.
         cur_axis.set_xlim(left=0)
         cur_axis.set_ylim(bottom=0)
+        # Remove the 0.0 value from the x axis.
+        x_axis_ticks = cur_axis.get_xticks()
+        if x_axis_ticks[0] == 0.0:
+            cur_axis.set_xticks(x_axis_ticks[1:])
         # Labels
-        x_axis_label = "Species number"
-        y_axis_label = "Mean execution time (m)"
+        x_axis_label = "Species Number"
+        y_axis_label = "Mean Execution Time (m)"
         if key_method == "k8":
             title_part = "Kraken2 db:8"
         elif key_method == "k16":
@@ -1874,23 +1816,25 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
             cur_axis.legend().remove()
         # Changing the size of the tick labels.
         cur_axis.tick_params(axis='both', which='major', labelsize=fs_num_3)
+        # Letter
+        cur_axis.annotate(annotation_letters[row_fig_index], xy=(-0.05, 1.05), xycoords='axes fraction', fontsize=fs_num_1, fontweight='bold', ha='center', va='center')
         # Increament the index of the plot position.
         row_fig_index += 1
     # Get the axis for the middle plot
     middle_axis = axis[2]
     # Title
-    fig_title_label = "Species number vs Mean execution time"
+    fig_title_label = "Species number vs Mean Execution Time"
     title_pos = middle_axis.title.get_position()
     figure.text(title_pos[0], title_pos[1] - 0.04, fig_title_label, ha='center', fontsize=fs_num_1, fontweight='bold')
     #middle_axis.set_title(axis_title_label, pad=20, loc='center', fontsize=fs_num_1, fontweight='bold')
     # Legend
-    legend_title = "Species number"
+    legend_title = "Species Number"
     legend_props = FontProperties(weight='bold', size=fs_num_3)
     middle_axis.legend(title=legend_title, loc='upper center', markerscale=2, bbox_to_anchor=(0.5, -0.2), ncol=11, prop={'size': fs_num_3}, title_fontproperties=legend_props)
     # Layout
     plt.tight_layout(rect=[0, 0, 0.99, 0.95])
     # Space between the plots of the figure.
-    plt.subplots_adjust(wspace=0.2)
+    plt.subplots_adjust(wspace=0.4)
     # File paths
     size_time_png_path = "{}/Species_meantime.png".format(time_dir)
     size_time_jpg_path = "{}/Species_meantime.png".format(time_dir)
@@ -2230,15 +2174,11 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     # Metric groups
     metric_group_1 = ["True Positive (TP)", "False Positive (FP)", "False Negative (FN)"]
     metric_group_2 = ["Sensitivity", "Precision", "Accuracy"]
-    metric_group_3 = ["F1 score", "L1_norm"]
-    metric_group_4 = ["Jaccard Index", "Sorensen-Dice Index"]
-    metric_group_5 = ["MAE", "MSE", "RMSE"]
+    metric_group_3 = ["F1 score", "L1_norm", "Jaccard Index"]
     metric_group_dict = {
         1: metric_group_1,
         2: metric_group_2,
-        3: metric_group_3,
-        4: metric_group_4,
-        5: metric_group_5
+        3: metric_group_3
     }
     metric_label_dict = {
         "Gold species number": "Standard Species Abundance",
@@ -2254,14 +2194,8 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         "Precision": "Precision",
         "Accuracy": "Accuracy",
         "F1 score": "F1 Score",
-        "L1_norm": "L1 norm",
-        "Jaccard Index": "Jaccard Index",
-        "Sorensen-Dice Index": "Sorensen-Dice Index",
-        "Sum of absolute differences": "Sum of Absolute Differences",
-        "MAE": "Mean Absolute Error",
-        "Sum of squared absolute differencies": "Sum of Squared Absolute ifferencies",
-        "MSE": "Mean Squared Error",
-        "RMSE": "Root Mean Squared Error"
+        "L1_norm": "L1 Norm",
+        "Jaccard Index": "Jaccard Index"
     }
     legend_label_dict = {
         "kraken_8": "Kraken2 db:8",
@@ -2321,11 +2255,11 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         5: "120 Species",
         6: "500 Species",
         7: "1000 Species",
-        8: "No bias",
-        9: "No bias - Simulated",
-        10: "No bias - Cultured",
-        11: "AT-rich bias",
-        12: "GC-rich bias"
+        8: "No Bias",
+        9: "No Bias - Simulated",
+        10: "No Bias - Cultured",
+        11: "AT-Rich Bias",
+        12: "GC-Rich Bias"
     }
     # Plots
     pandas_dict = design_stacked_plots(comb_info_dict, metric_label_dict, legend_label_dict, plot_dir_parh, stats_dir_path)

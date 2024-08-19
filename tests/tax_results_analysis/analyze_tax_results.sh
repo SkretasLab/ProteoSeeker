@@ -6,7 +6,7 @@ python ps_br_analysis.py -p /mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzy
 
 # Kraken2 selected results and COMEBIn - nr and MetaBinner - nr results analysis
 # Top method:
-# kraken_8_100: Accuracy, F1 Score, Jaccard Index, Sorensen_Dice Index
+# kraken_8_100: Accuracy, F1 Score, Jaccard Index
 # kraken_8_1c0: Precision
 # kraken_72: Sensitivity
 # kraken_72_ng: L1 Norm
