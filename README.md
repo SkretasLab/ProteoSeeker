@@ -631,6 +631,14 @@ python proteoseeker.py -pfp par_tax_k_p.txt
 conda deactivate
 ~~~
 
+<p align="justify">To run the "seek" mode, "type 2" analysis or the "taxonomy" mode, "COMEBin/MetaBinner" route of ProteoSeeker, provide a suitable protein database in the parameter file or as an argument. For example, by using a protein database which is basically a small part of the nr database, used for testing the aforementioned functionalities of ProteoSeeker and not for an actual and full analysis by ProteoSeeker regarding the processes related to the utilization of the protein database, make the following modification in one of the parameter files or use an existing parameter file and provide the "nr_part.fasta" as an argument:</p>
+
+~~~bash
+protein_db_path="/home/georgios/ProteoSeeker-main/parameter_files/docker/nr_part.fasta"
+or
+python proteoseeker.py -pfp param_file.txt -pdp /home/georgios/ProteoSeeker-main/parameter_files/docker/nr_part.fasta
+~~~
+
 ## 3.4 Docker
 <p align="justify">ProteoSeeker can run in a container created from its image based on a bind mount or volume. The version of Docker used to create the images and test the containers is that of "27.1.1". The bind-mount or volume is primarily used to provide input files, parameter files, databases, an output directory and the phobius installation, from the host system to the container. We advise using a bind mount over a volume due to its fewer requirements in providing the proper privileges in order to access the shared files. In both cases (bind mount and volume), the protein database provided as an example is a small part of the nr database with additions of proteins associated with RNA polymerase. It is used to test that the functionality of the "seek" mode through "type 2" analysis and the "taxonomy" mode through the route of "COMEBin/MetaBinner" function properly in ProteoSeeker. You should provide your own protein database, ideally the decompressed nr database, in order to use properly the "seek" mode through the "type 2" analysis and the "taxonomy" mode through the "COMEBin/MetaBinner" route of ProteoSeeker. To use any other type of analysis and route of the modes of ProteoSeeker, the protein database in not necessary. ProteoSeeker will detect and utilize Phobius for the topology prediction, if Phobius is installed in the proper directory ("phobius") of the shared directory (volume or bind mount), otherwise no topology predictions will take place for the proteins. In addition, you must modify the following line of "phobius.pl" (should be line 25) by changing the name of the file "decodeanhmm" with "decodeanhmm.64bit" for Phobius to work properly in the container:</p>
 
