@@ -623,7 +623,7 @@ Options:
 ~~~
 
 ## 3.3 Command-line
-<p align="justify">To run ProteoSeeker through the command-line, a parameter file facilitates the process greatly. By using one of the template parameter files, the user can easily customize the values for the options of ProteoSeeker and run it. To run ProteoSeeker, at first, its environment shoulb be activated. The commands below suffice to run ProteoSeeker through the command-line from the main directory of ProteoSeeker by its "taxonomy" mode through the Kraken2 route. To run ProteoSeeker by its seek mode one should set the path to the protein database in the parameters file and then select one of the template files that include the "seek" mode at its name.</p>
+<p align="justify">To run ProteoSeeker through the command-line, a parameter file facilitates the process greatly. By using one of the template parameter files, the user can easily customize the values for the options of ProteoSeeker and run it. To run ProteoSeeker, at first, its environment shoulb be activated. The commands below suffice to run ProteoSeeker through the command-line from the main directory of ProteoSeeker by its "taxonomy" mode through the Kraken2 route. To run ProteoSeeker by its "seek" mode one should set the path to the protein database in the parameters file and then select one of the template files that include the "seek" mode at its name or select "type 1" analysis for the "seek" mode and disable the option to use the protein database by the options: -sr/--seek-route and -fpd/--filter-protein-database respectively.</p>
 
 ~~~bash
 conda activate ps_env
