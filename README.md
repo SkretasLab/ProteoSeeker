@@ -641,8 +641,8 @@ conda deactivate
 
 <p align="justify">To run the "seek" mode with the "type 2" or "type 3" analysis or the "taxonomy" mode with the "COMEBin/MetaBinner" route of ProteoSeeker make the necessary modifications:</p>
 
-seek_route="2" or seek_route="3"
-create_nr_db_status="" or create_nr_db_status="True"
+1. seek_route="2" or seek_route="3"
+2. create_nr_db_status="" or create_nr_db_status="True"
 
 <p align="justify">Then rovide a suitable protein database in the parameter file or as an argument. Any file with protein sequences in FASTA format can be used to run the "seek" mode, "type 2" analysis of ProteoSeeker. For the "taxonomy" mode, "COMEBin/MetaBinner" route of ProteoSeeker the file used as the protein database should contain headers (for its protein sequences) which contain information about the taxon/taxa associated with their protein sequences, in a style identical to the one used by the non-redundant database of NCBI or the Uniref100/90/50 databases of UniprotKB. For example, to use a protein database which is basically a small part of the nr database, that is used for testing the aforementioned functionalities of ProteoSeeker and not for an actual and full analysis by ProteoSeeker based on the protein datbase, make the following modification in one of the parameter files and use that parameter file to run ProteoSeeker.</p>
 
