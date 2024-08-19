@@ -912,12 +912,12 @@ def create_nr_db(enzyme_names_dict, protein_db_path, diamond_db_bash_name, diamo
 
 
 def collect_sra(sra_env, sra_folder, prefetch_size, sra_run_folder, sra_file, fastq_folder, fastq_single_end, sra_code, input_log_file, output_log_file, prefetch_path, vdb_validate_path, fastq_dump_path, sra_bash_script, conda_sh_path):
-    print("SRA code selected: {}".format(sra_code))
+    print("\nSRA code selected: {}".format(sra_code))
     if not os.path.exists(sra_folder):
         os.mkdir(sra_folder)
     # Create a folder for the specific run.
     if os.path.exists(fastq_folder):
-        print("The folder with the FASTQ files of the specified run already exists. Analysis is continued based on the FASTQ files present in that folder ('{}').\n".format(fastq_folder))
+        print("\nThe folder with the FASTQ files of the specified run already exists. Analysis is continued based on the FASTQ files present in that folder ('{}').".format(fastq_folder))
     else:
         os.mkdir(sra_run_folder)
         prefetch_version_path = "{}/prefetch_version.txt".format(sra_run_folder)
@@ -2355,7 +2355,7 @@ def analyze_no_enzs(diamond_env, output_path_hmmer, output_path_blastp, prs_with
                     prs_blast_thr.append(line)
                 new_file_prs_blast_thr.write("{}\n".format(line))
     new_file_prs_blast_thr.close()
-    # BLASTΠ for the proteins without enzyme domains.
+    # BLASTP for the proteins without enzyme domains.
     if os.path.exists(file_prs_seq_no_enzs_name):
         if os.path.exists(fpr_db_fasta):
             # Start time
@@ -2401,6 +2401,8 @@ def analyze_no_enzs(diamond_env, output_path_hmmer, output_path_blastp, prs_with
             shell_status = True
             pr_status = False
             command_run(phrase_b1, phrase_b2, title_1, title_2, capture_status, shell_status, pr_status, input_log_file, output_log_file)
+        else:
+            print("\nBLASTP of the proteins without any of the seek domains was not performed against the sfpd. The sfpd ({}) was not located.".format(fpr_db_fasta))
         # Collect results from BLASTP in the annotation folder.
         blastp_output_info = open(blastp_info_no_doms_nr_file, "w")
         blastp_output_info.write("Protein_name\tNR_ID\tPercentage_identity\tE_value\tBitscore\n")
@@ -2418,6 +2420,8 @@ def analyze_no_enzs(diamond_env, output_path_hmmer, output_path_blastp, prs_with
                         bitscore = result_blastp_info.group(5)
                         blastp_output_info.write("{}\t{}\t{}\t{}\t{}\n".format(protein_name, uniprot_ac, percentage_identity, e_value, bitscore))
         blastp_output_info.close()
+    else:
+        print("\nBLASTP of the proteins without any of the seek domains was not performed against the sfpd. The file ({}) with the proteins without any of the seek domains, was not located.".format(file_prs_seq_no_enzs_name))
     # Information gathering, based on a given threshold, from the results of BLASTP of proteins without enzyme domains against the reductd nr.
     protein_ids_below_thr = []
     if os.path.exists(blastp_info_no_doms_nr_file):
