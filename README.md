@@ -625,14 +625,14 @@ Options:
 ## 3.3 Command-line
 <p align="justify">To run ProteoSeeker through the command-line, a parameter file facilitates the process greatly. By using one of the template parameter files, the user can easily customize the values for the options of ProteoSeeker and run it. To run ProteoSeeker, at first, its environment shoulb be activated. To run ProteoSeeker by its "seek" mode and "type 2 or 3" analysis or by its "taxonomy" mode and "COMEBin/MetaBinner" route, one should set the path to the protein database in the parameters file or provide it as an argument. The user can run ProteoSeeker based on certain parameter files by the "seek" mode and "type 1" analysis or by the "taxonomy" mode and "Kraken2" route, without the need to make any modifcation in the parameter file or provide any other arguments. You can find the mode and analysis type or route applied by ProteoSeeker in the run according to the parameter file used, based on the table below. The template parameter files 1, 2, 3, 4 and 5 can directly be used to run ProteoSeeker and analyze sample (SRA code:) "SRR12829170" without modifications, as they do not require a protein datbase. Parameter file 6, needs a protein database and certain modifications to be used by ProteoSeeker (as described below).</p>
 
-Index | Parameter file | Mode | Analysis Type | Route
---- | --- | --- | --- | ---
-1 | par_seek_p.txt | seek | type 1 | -
-2 | par_seek_c.txt | seek| type 1 | -
-3 | par_seek_tax_k_p.txt | seek & taxonomy | type 1 | Kraken2
-4 | par_seek_tax_mc_p.txt | seek & taxonomy | type 1 | COMEBin/MetaBinner: MetaBinner
-5 | par_tax_k_p.txt | taxonomy | - | Kraken2
-6 | par_tax_mc_p.txt | taxonomy | - | COMEBin/MetaBinner: MetaBinner
+Index | Parameter file | Mode | Analysis Type | Route | Input
+--- | --- | --- | --- | --- | ---
+1 | par_seek_p.txt | seek | type 1 | - | SRA or FASTQ paired-end
+2 | par_seek_c.txt | seek| type 1 | - | SRA or Contigs or Genome(s)
+3 | par_seek_tax_k_p.txt | seek & taxonomy | type 1 | Kraken2 | SRA or FASTQ paired-end
+4 | par_seek_tax_mc_p.txt | seek & taxonomy | type 1 | COMEBin/MetaBinner: MetaBinner | SRA or FASTQ paired-end
+5 | par_tax_k_p.txt | taxonomy | - | Kraken2 | SRA or FASTQ paired-end
+6 | par_tax_mc_p.txt | taxonomy | - | COMEBin/MetaBinner: MetaBinner | SRA or FASTQ paired-end
 
 ~~~bash
 conda activate ps_env
@@ -672,15 +672,15 @@ my $DECODEANHMM =      "$PHOBIUS_DIR/decodeanhmm.64bit";
 
 <p align="justify">For both cases of volumes and bind mounts, you can perform a test based on a template parameter file (located at the "parameter_files" directory in the volume or bind mount) each of which runs a different analysis. The test is selected with a number. The selections are described below:</p>
 
-Selection | Mode | Analysis Type | Route
---- | --- | --- | ---
-1 | seek & taxonomy | type 3 | Kraken2
-2 | seek & taxonomy | type 3 | COMEBin/MetaBinner: MetaBinner
-3 | seek & taxonomy | type 3 | COMEBin/MetaBinner: COMEBin
-4 | seek | type 3 | -
-5 | taxonomy | - | Kraken2
-6 | taxonomy | - | COMEBin/MetaBinner: MetaBinner
-7 | taxonomy | - | COMEBin/MetaBinner: COMEBin
+Selection | Mode | Analysis Type | Route | Input
+--- | --- | --- | --- | ---
+1 | seek & taxonomy | type 3 | Kraken2 | SRA or FASTQ paired-end
+2 | seek & taxonomy | type 3 | COMEBin/MetaBinner: MetaBinner | SRA or FASTQ paired-end
+3 | seek & taxonomy | type 3 | COMEBin/MetaBinner: COMEBin | SRA or FASTQ paired-end
+4 | seek | type 3 | - | SRA or FASTQ paired-end
+5 | taxonomy | - | Kraken2 | SRA or FASTQ paired-end
+6 | taxonomy | - | COMEBin/MetaBinner: MetaBinner | SRA or FASTQ paired-end
+7 | taxonomy | - | COMEBin/MetaBinner: COMEBin | SRA or FASTQ paired-end
 
 ### 3.4.1 Bind mount
 <p align="justify">A bind mount is a directory located in the local host and not run by Docker. The data stored in the bind mount are retained after the container is stopped or exits, may be used by different containers and are also accessible by the local host. From the main directory of ProteoSeeker run the Bash script below (should not be run with sudo) which performs the following actions:</p>
