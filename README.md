@@ -628,7 +628,7 @@ Options:
 Index | Parameter file | Mode | Analysis Type | Route | Input
 --- | --- | --- | --- | --- | ---
 1 | par_seek_p.txt | seek | type 1 | - | SRA or FASTQ paired-end
-2 | par_seek_c.txt | seek| type 1 | - | SRA or Contigs or Genome(s)
+2 | par_seek_c.txt | seek| type 1 | - | SRA or FASTA contigs/genome(s)
 3 | par_seek_tax_k_p.txt | seek & taxonomy | type 1 | Kraken2 | SRA or FASTQ paired-end
 4 | par_seek_tax_mc_p.txt | seek & taxonomy | type 1 | COMEBin/MetaBinner: MetaBinner | SRA or FASTQ paired-end
 5 | par_tax_k_p.txt | taxonomy | - | Kraken2 | SRA or FASTQ paired-end
