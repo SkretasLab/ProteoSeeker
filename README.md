@@ -108,7 +108,7 @@ conda install conda-forge::tar
 9. fastqc 0.12.1
 10. hmmer: 3.4
 11. kraken2:
-    1. Conda: 2.1.3 - used for the evaluation.
+    1. Conda: 2.1.3 - Used for the evaluation.
     2. Source: Branch: "v2.1.3"
 13. megahit: 1.2.9
 14. metabinner:
