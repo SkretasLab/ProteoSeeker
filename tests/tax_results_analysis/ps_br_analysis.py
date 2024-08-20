@@ -265,12 +265,8 @@ def ps_comebin_analyze(ps_cmbn, filter_name):
                 if fnid not in bin_ids_with_mult_species:
                     bin_ids_with_one_species.append(fnid)
             # Collecting information for the bins asigned to one species.
-            header_line = True
             perc_sum = 0
             for line in cmbn_lines:
-                if header_line:
-                    header_line = False
-                    continue
                 line_splited = line.split("\t")
                 line_splited_length = len(line_splited)
                 # The scientific name of the organism associated with a bin is automatically extracted by the protein headers of the protein database,
@@ -282,15 +278,16 @@ def ps_comebin_analyze(ps_cmbn, filter_name):
                 rank = line_splited[3]
                 # If the bin ID is one of the bin IDs for bins win one species then proceed.
                 if bin_id in bin_ids_with_one_species:
-                    percentage = float(line_splited[6])
-                    percentage_fl = float(line_splited[6])
-                    if taxid not in cmbn_sole_info_dict.keys():
-                        cmbn_sole_info_dict[sample_id][taxid] = percentage
-                        # Compute the sum of the percentagies of the identifeid species.
-                        perc_sum += percentage_fl
-                    else:
-                        cmbn_sole_info_dict[sample_id][taxid] += percentage
-                        perc_sum += percentage_fl
+                    if rank == "species":
+                        sole_percentage = line_splited[6]
+                        sole_percentage_fl = float(sole_percentage)
+                        if taxid not in cmbn_sole_info_dict[sample_id].keys():
+                            cmbn_sole_info_dict[sample_id][taxid] = sole_percentage_fl
+                            # Compute the sum of the percentagies of the identifeid species.
+                            perc_sum += sole_percentage_fl
+                        else:
+                            cmbn_sole_info_dict[sample_id][taxid] += sole_percentage_fl
+                            perc_sum += sole_percentage_fl
             perc_sum = round(perc_sum, 2)
             perc_sum_unidentified = 100 - perc_sum
             perc_sum_unidentified = round(perc_sum_unidentified, 2)
@@ -356,12 +353,8 @@ def ps_metabinner_analyze(ps_mtbr, filter_name):
                 if fnid not in bin_ids_with_mult_species:
                     bin_ids_with_one_species.append(fnid)
             # Collecting information for the bins asigned to one species.
-            header_line = True
             perc_sum = 0
             for line in mtbr_lines:
-                if header_line:
-                    header_line = False
-                    continue
                 line_splited = line.split("\t")
                 line_splited_length = len(line_splited)
                 # The scientific name of the organism associated with a bin is automatically extracted by the protein headers of the protein database,
@@ -373,15 +366,16 @@ def ps_metabinner_analyze(ps_mtbr, filter_name):
                 rank = line_splited[3]
                 # If the bin ID is one of the bin IDs for bins win one species then proceed.
                 if bin_id in bin_ids_with_one_species:
-                    percentage = float(line_splited[6])
-                    percentage_fl = float(line_splited[6])
-                    if taxid not in mtbr_sole_info_dict.keys():
-                        mtbr_sole_info_dict[sample_id][taxid] = percentage
-                        # Compute the sum of the percentagies of the identifeid species.
-                        perc_sum += percentage_fl
-                    else:
-                        mtbr_sole_info_dict[sample_id][taxid] += percentage
-                        perc_sum += percentage_fl
+                    if rank == "species":
+                        sole_percentage = line_splited[6]
+                        sole_percentage_fl = float(sole_percentage)
+                        if taxid not in mtbr_sole_info_dict[sample_id].keys():
+                            mtbr_sole_info_dict[sample_id][taxid] = sole_percentage_fl
+                            # Compute the sum of the percentagies of the identifeid species.
+                            perc_sum += sole_percentage_fl
+                        else:
+                            mtbr_sole_info_dict[sample_id][taxid] += sole_percentage_fl
+                            perc_sum += sole_percentage_fl
             perc_sum = round(perc_sum, 2)
             perc_sum_unidentified = 100 - perc_sum
             perc_sum_unidentified = round(perc_sum_unidentified, 2)
@@ -574,7 +568,7 @@ def write_species(common_items, group_val_items, group_val_unique_items, group_p
     syn_df = pd.DataFrame(columns=col_labels)
     syn_df = pd.DataFrame(dict([(k, pd.Series(v)) for k, v in species_dict.items()]))
     # CSV file for one sample and one analysis with all the stats for the species
-    syn_df.to_csv(sample_synopsis_path, sep="\t", index=False)
+    syn_df.fillna("-").to_csv(sample_synopsis_path, sep="\t", index=False)
 
 
 def comp_stats(br_info_dict, comp_dict, comp_sole_dict, stats_dir_path, label):
@@ -588,6 +582,19 @@ def comp_stats(br_info_dict, comp_dict, comp_sole_dict, stats_dir_path, label):
             exit()
     sample_ids = copy.deepcopy(sample_ids_dupl)
     sample_ids = sorted(sample_ids, key=int)
+    # Create a TSV for the comp_dict, which includes the percentagies of the species.
+    if comp_sole_dict is not None:
+        tsv_dict = copy.deepcopy(comp_sole_dict)
+    else:
+        tsv_dict = copy.deepcopy(comp_dict)
+    species_rel_abu_path = "{}/{}_species_rel_abu.tsv".format(stats_dir_path, label)
+    species_rel_abu_file = open(species_rel_abu_path, "w")
+    species_rel_abu_file.write("sample ID\ttaxon ID\trelative abundance\n")
+    for key_sample in tsv_dict.keys():
+        for key_taxonid in tsv_dict[key_sample].keys():
+            rel_abu = tsv_dict[key_sample][key_taxonid]
+            species_rel_abu_file.write("{}\t{}\t{}\n".format(key_sample, key_taxonid, rel_abu))
+    species_rel_abu_file.close()
     # Compute sensitivity
     comb_stats_dict = {}
     for si in sample_ids:
@@ -652,18 +659,21 @@ def design_stacked_plots(comb_info_dict, metric_label_dict, legend_label_dict, p
     for key_metric in pandas_dict.keys():
         df_metric = pandas_dict[key_metric]
         # File path
-        metric_tsv_path = "{}/{}.tsv".format(stats_dir_path, key_metric)
+        metric_label = metric_label_dict[key_metric]
+        metric_label_sep = metric_label.split(" ")
+        metric_label_con = "_".join(metric_label_sep)
+        metric_tsv_path = "{}/{}.tsv".format(stats_dir_path, metric_label_con)
         # Storing the pandas dataframe as a csv.
         df_metric.to_csv(metric_tsv_path, sep="\t", index=False)
         # Figure
         figure, cur_axis = plt.subplots(figsize=(20, 12))
         # Plotting the pandas dataframe: Grouped barplot
-        sns.barplot(data=df_metric, x="sample", y="value", hue="method", palette="dark", alpha=.6, ax=cur_axis)
+        sns.barplot(data=df_metric, x="sample", y="value", hue="method", palette="colorblind", alpha=.6, ax=cur_axis)
         # Place vertical lines to divie the sample barplots.
         for i in range(1, 19):
             cur_axis.axvline(x=i - 0.5, color='gray', linestyle='--', linewidth=0.8)
         # Legend title and legend
-        legend_title = "Taxonomy method\nand database"
+        legend_title = "Taxonomy Method\nand Database"
         legend_props = FontProperties(weight='bold', size=fs_num_2)
         cur_axis.legend(title=legend_title, loc='center left', bbox_to_anchor=(1, 0.5), prop={'size': fs_num_2}, title_fontproperties=legend_props)
         # Replace the legend's labels.
@@ -685,8 +695,11 @@ def design_stacked_plots(comb_info_dict, metric_label_dict, legend_label_dict, p
         # Layout: Padding from left, bottom, right, top
         plt.tight_layout()
         # File paths
-        plot_png_path = "{}/{}.png".format(plot_dir_parh, key_metric)
-        plot_jpg_path = "{}/{}.jpg".format(plot_dir_parh, key_metric)
+        metric_label = metric_label_dict[key_metric]
+        metric_label_sep = metric_label.split(" ")
+        metric_label_con = "_".join(metric_label_sep)
+        plot_png_path = "{}/{}.png".format(plot_dir_parh, metric_label_con)
+        plot_jpg_path = "{}/{}.jpg".format(plot_dir_parh, metric_label_con)
         # Store the plots
         figure.savefig(plot_png_path)
         figure.savefig(plot_jpg_path)
@@ -712,7 +725,7 @@ def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dic
         for item in cur_metric_group:
             cur_axis = axis[row_fig_index]
             df_metric = pandas_dict[item]
-            sns.barplot(ax=cur_axis, data=df_metric, x="sample", y="value", hue="method", palette="dark", alpha=.6)
+            sns.barplot(ax=cur_axis, data=df_metric, x="sample", y="value", hue="method", palette="colorblind", alpha=.6)
             # Removes the right, top, left and bottom axis.
             sns.despine(ax=cur_axis, left=True)
             # Labels for x axis, y axis and title.
@@ -741,7 +754,7 @@ def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dic
             row_fig_index += 1
         # Add one legend at the bottom. Make the legend as much horizontal as possible.
         # Legend
-        legend_title = "Taxonomy method and database"
+        legend_title = "Taxonomy Method and Database"
         legend_props = FontProperties(weight='bold', size=fs_num_2)
         legend_obj = cur_axis.legend(title=legend_title, loc='upper center', bbox_to_anchor=(0.5, -0.3), ncol=4, prop={'size': fs_num_2}, title_fontproperties=legend_props)
         # Replace the legend's labels.
@@ -794,7 +807,7 @@ def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_la
                     break
                 # Placing the plot in the figure.
                 cur_axis = axis[row_fig_index]
-                sns.barplot(ax=cur_axis, data=df_metric_filtered, x="sample", y="value", hue="method", palette="dark", alpha=.6)
+                sns.barplot(ax=cur_axis, data=df_metric_filtered, x="sample", y="value", hue="method", palette="colorblind", alpha=.6)
                 # Removes the right, top, left and bottom axis.
                 sns.despine(ax=cur_axis, left=True)
                 # Labels for x axis, y axis and title.
@@ -825,7 +838,7 @@ def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_la
                 break
             # Add one legend at the bottom. Make the legend as much horizontal as possible.
             # Legend
-            legend_title = "Taxonomy method and database"
+            legend_title = "Taxonomy Method and Database"
             legend_props = FontProperties(weight='bold', size=fs_num_2)
             legend_obj = cur_axis.legend(title=legend_title, loc='upper center', bbox_to_anchor=(0.5, -0.3), ncol=4, prop={'size': fs_num_2}, title_fontproperties=legend_props)
             # Replace the legend's labels.
@@ -848,7 +861,7 @@ def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_la
             plt.close()
 
 
-def rank_stats(pandas_dict, stats_dir_path):
+def rank_stats(pandas_dict, stats_dir_path, metric_label_dict):
     print("Ranking the methods...\n")
     # Write all computed metrics for all samples in a tsv file.
     metrics_stats_path = "{}/metrics_stats.tsv".format(stats_dir_path)
@@ -862,7 +875,7 @@ def rank_stats(pandas_dict, stats_dir_path):
     # The higher ranking methods across for each sample are identified.
     group_pass = ["Gold species number", "True Negative (TN)"]
     group_max = ["Predicted species number", "True Positive (TP)", "Sensitivity", "Specificty", "Precision", "Accuracy", "F1 score", "Jaccard Index"]
-    group_min = ["Common species (intersection)", "Unique species from both groups (union)", "Unique to gold group", "Unique to predicted group", "False Positive (FP)", "False Negative (FN)", "L1_norm", "Sum of absolute differences"]
+    group_min = ["Common species (intersection)", "Unique species from both groups (union)", "Unique to gold group", "Unique to predicted group", "False Positive (FP)", "False Negative (FN)", "L1_norm"]
     method_sample_rank_dict = {}
     for key_metric in pandas_dict.keys():
         if key_metric in group_pass:
@@ -897,7 +910,8 @@ def rank_stats(pandas_dict, stats_dir_path):
         for key_sample in method_sample_rank_dict[key_metric].keys():
             top_methods = method_sample_rank_dict[key_metric][key_sample]
             top_methods_str = ",".join(top_methods)
-            temp_list = [key_metric, key_sample, top_methods_str]
+            metric_label = metric_label_dict[key_metric]
+            temp_list = [metric_label, key_sample, top_methods_str]
             method_sample_rank_df.loc[row_index] = temp_list
             row_index += 1
     # Store the dataframe.
@@ -922,7 +936,8 @@ def rank_stats(pandas_dict, stats_dir_path):
     for key_metric in method_allsamples_count_dict.keys():
         for key_top_method in method_allsamples_count_dict[key_metric].keys():
             top_method_freq = method_allsamples_count_dict[key_metric][key_top_method]
-            temp_list = [key_metric, key_top_method, top_method_freq]
+            metric_label = metric_label_dict[key_metric]
+            temp_list = [metric_label, key_top_method, top_method_freq]
             method_allsamples_rank_df.loc[row_index] = temp_list
             row_index += 1
     # Sort the dataframe.
@@ -1250,8 +1265,12 @@ def plot_full_sample_time(df_full_time_dict, megahit_time_dict, time_dir, stats_
         stacked_tsv_path = "{}/sample_{}_full_time.tsv".format(stats_dir_path, key_sample)
         # Save to CSV
         full_time_metric_df.to_csv(stacked_tsv_path, sep="\t", index=True)
+        # Color palette
+        cld_palette = sns.color_palette("colorblind")
+        # Removing the 9nth color wich is a very dim yellow.
+        del cld_palette[8]
         # Create the plot
-        ax = full_time_metric_df.plot(kind='bar', stacked=True)
+        ax = full_time_metric_df.plot(kind='bar', stacked=True, color=cld_palette)
         # Place a horizontal line at the sum of time up to megahit.
         ax.axhline(y=cur_megahit_time, color='r', linestyle='--', linewidth=1)
         # Labels
@@ -1301,7 +1320,7 @@ def plot_total_sample_time(df_total_time_dict, megahit_time_dict, time_dir, stat
         # Create a new figure
         plt.figure()
         # Create the plot
-        sns.barplot(x='method', y='total_time', data=total_time_sample_df)
+        sns.barplot(x='method', y='total_time', data=total_time_sample_df, hue="total_time", palette="colorblind", legend=False)
         # Place a horizontal line at the sum of time up to megahit.
         plt.axhline(y=cur_megahit_time, color='r', linestyle='--', linewidth=1)
         # Labels
@@ -1330,7 +1349,9 @@ def plot_total_all_time(total_time_all_df, time_dir, stats_dir_path):
     # Storing the pandas dataframe as a csv.
     total_time_all_df.to_csv(total_time_all_tsv_path, sep="\t", index=False)
     # Plotting the pandas dataframe: Barplot
-    total_time_all_barplot = sns.catplot(data=total_time_all_df, kind="bar", x="sample", y="total_time", hue="method", palette="dark", alpha=.6, height=6, aspect=2)
+    total_time_all_barplot = sns.catplot(data=total_time_all_df, kind="bar", x="sample", y="total_time", hue="method", palette="colorblind", alpha=.6, height=6, aspect=2)
+    # Remove legend.
+    total_time_all_barplot._legend.remove()
     # Labels
     x_axis_label = "Sample ID"
     y_axis_label = "Execution Time (m)"
@@ -1338,7 +1359,9 @@ def plot_total_all_time(total_time_all_df, time_dir, stats_dir_path):
     legend_label = "Taxonomy Route and Database"
     total_time_all_barplot.set_axis_labels(x_axis_label, y_axis_label, fontsize=fs_num_2, fontweight='bold')
     plt.suptitle(title_label, fontsize=fs_num_1, fontweight='bold')
-    total_time_all_barplot.legend.set_title(legend_label, prop={'size': fs_num_3, 'weight': 'bold'})
+    # Legend properties
+    legend_specs = FontProperties(weight='bold', size=fs_num_3)
+    plt.legend(title=legend_label, title_fontproperties=legend_specs, loc='upper right', prop={'size': fs_num_3})
     # Changing the size of the tick labels        
     plt.tick_params(axis='both', which='major', labelsize=fs_num_2)
     # Layout
@@ -1381,7 +1404,12 @@ def plot_full_group_sample_time(df_full_time_all, time_dir, stats_dir_path, time
         # Create the plot
         cur_axis = axis[row_fig_index]
         df_time_filtered.set_index(['sample', 'method'], inplace=True)
-        df_time_filtered.plot(kind='bar', stacked=True, ax=cur_axis, alpha=.6)
+        # Color palette
+        cld_palette = sns.color_palette("colorblind")
+        # Removing the 9nth color wich is a very dim yellow.
+        del cld_palette[8]
+        # Plot
+        df_time_filtered.plot(kind='bar', stacked=True, ax=cur_axis, alpha=.6, color=cld_palette)
         cur_axis.set_xticklabels([f"{sample}-{method}" for sample, method in df_time_filtered.index], rotation=45, ha="right")
         # Labels for x axis, y axis and title.
         x_axis_label = "Sample ID"
@@ -1454,7 +1482,7 @@ def plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_d
         cur_axis = axis[row_fig_index]
         if total_time_all_filtered_df.empty:
             break
-        sns.barplot(ax=cur_axis, data=total_time_all_filtered_df, x="sample", y="total_time", hue="method", palette="dark", alpha=.6)
+        sns.barplot(ax=cur_axis, data=total_time_all_filtered_df, x="sample", y="total_time", hue="method", palette="colorblind", alpha=.6)
         # Replace the y axis ticks.
         cur_axis.set_yticks(list(cur_axis.get_yticks()))
         # Remove the legend, if for the last plot.
@@ -1480,7 +1508,7 @@ def plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_d
     # Title
     middle_axis.set_title(axis_title_label, pad=20, loc='center', fontsize=fs_num_1, fontweight='bold')
     # Legend
-    legend_title = "Taxonomy method and database"
+    legend_title = "Taxonomy Method and Database"
     legend_props = FontProperties(weight='bold', size=fs_num_3)
     middle_axis.legend(title=legend_title, loc='upper center', bbox_to_anchor=(0.5, -0.05), ncol=11, prop={'size': fs_num_3}, title_fontproperties=legend_props)
     # Padding from left, bottom, right, top
@@ -1542,8 +1570,11 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
         plot_df = method_df_dict[key_method]
         # The current axis.
         cur_axis = axis[row_fig_index]
+        # Color
+        cld_palette = sns.color_palette("colorblind")
+        dot_color = cld_palette[0] 
         # Scatter plot
-        sns.scatterplot(ax=cur_axis, data=plot_df, x="size", y="total_time", s=100)
+        sns.scatterplot(ax=cur_axis, data=plot_df, x="size", y="total_time", color=dot_color, s=100)
         # Regression plot
         # Convert the dataframe columns to lists of floats.
         x_points_pre = plot_df['size'].tolist()
@@ -1640,8 +1671,10 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
         # The current axis.
         cur_axis = axis[row_fig_index]
         # Returns a list of colors or continuous colormap defining a palette.
-        uni_colors = sns.color_palette('hsv', len(plot_df['species_number'].unique()))
-        sns.scatterplot(ax=cur_axis, data=plot_df, x="species_number", y="total_time", hue="species_number", palette=uni_colors, s=100)
+        species_num = len(plot_df['species_number'].unique())
+        cld_palette = sns.color_palette("colorblind", n_colors=species_num)
+        # Plot
+        sns.scatterplot(ax=cur_axis, data=plot_df, x="species_number", y="total_time", hue="species_number", palette=cld_palette, s=100)
         # Regression plot
         # Convert the dataframe columns to lists of floats.
         x_points_pre = plot_df['species_number'].tolist()
@@ -1746,8 +1779,11 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
         mean_plot_df = plot_df.groupby('species_number')['total_time'].mean().reset_index()
         # The current axis.
         cur_axis = axis[row_fig_index]
+        # Returns a list of colors or continuous colormap defining a palette.
+        species_num = len(plot_df['species_number'].unique())
+        cld_palette = sns.color_palette("colorblind", n_colors=species_num)
         # Scatter plot
-        sns.scatterplot(ax=cur_axis, data=mean_plot_df, x="species_number", y="total_time", hue="species_number", s=100)
+        sns.scatterplot(ax=cur_axis, data=mean_plot_df, x="species_number", y="total_time", hue="species_number", palette=cld_palette, s=100)
         # Regression plot
         # Convert the dataframe columns to lists of floats.
         # The data are extracted from the dataframe which was generated by computing the mean values of the execution times for each category of samples
@@ -2111,7 +2147,7 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     # Kraken2 1%
     # COMEBin
     if "cnr" in methods_group:
-        label = "comebine_nr"
+        label = "comebin_nr"
         cmbn_nr_stats_dict = comp_stats(br_info_dict, cmbn_nr_info_dict, cmbn_nr_sole_info_dict, stats_dir_path, label)
     # MetaBinner
     if "mnr" in methods_group:
@@ -2181,12 +2217,12 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         3: metric_group_3
     }
     metric_label_dict = {
-        "Gold species number": "Standard Species Abundance",
-        "Predicted species number": "Predicted Species Abundance",
-        "Common species (intersection)": "Common Species Abundance",
-        "Unique species from both groups (union)": "Unique Stdandard and Predicted Species Abundance",
-        "Unique to gold group": "Unique Standard Species Abundance",
-        "Unique to predicted group": "Unique Predicted Species Abundance",
+        "Gold species number": "Abundance of Gold Standard Species",
+        "Predicted species number": "Abundance of Predicted Species",
+        "Common species (intersection)": "Abundance of Common Species",
+        "Unique species from both groups (union)": "Abudance of Gold Standard and Predicted Species",
+        "Unique to gold group": "Abundance of Species Unique to the Gold Standard Group",
+        "Unique to predicted group": "Abundance of Species Unique to the Predicted Group",
         "True Positive (TP)": "True Positive",
         "False Positive (FP)": "False Positive",
         "False Negative (FN)": "False Negative",
@@ -2267,7 +2303,7 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict, legend_label_dict, sample_group_dict, sample_group_label_dict, plot_dir_parh)
     
     # Analyze the statistics
-    rank_stats(pandas_dict, stats_dir_path)
+    rank_stats(pandas_dict, stats_dir_path, metric_label_dict)
 
     if time_status:
         # Time groups
