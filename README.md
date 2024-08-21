@@ -20,10 +20,10 @@
 9. **Taxonomic Assignment:** The tool expands on the process of assigning one or more organisms to identified proteins, aiding in the understanding of microbial community composition.
 
 ## 1.2 Pipeline
-<p align="justify">The pipeline implemented by ProteoSeeker in the "seek" and "taxonomy" modes can be seen in the images below. ProteoSeeker offers two main functionalities with a multitude of options for users not accustomed to metagenomic analysis tools and more advanced users that may want to modify the behaviour of certain tools included in ProteoSeeker's pipeline. The first functionality is to "seek" proteins that may be part of selected protein families and the second functionality is to find the "taxonomy" of the proteins discovered from the analysis of a sample. The "seek" mode offers 3 types of analysis. The "taxonomy" mode is applied either by the "Kraken2" route which is based on the taxonomy of the reads or by the "COMEBin/MetaBinner" route which is based on binning the contigs and searching for the taxonomy of the proteins, through the "taxonomy filtered protein database".</p>
+<p align="justify">The pipeline implemented by ProteoSeeker in the "seek" and "taxonomy" modes can be seen in the images below. ProteoSeeker offers two main functionalities with a multitude of options for users not accustomed to metagenomic analysis tools and more advanced users that may want to modify the behaviour of certain tools included in ProteoSeeker's pipeline. The first functionality is to seek proteins that may be part of selected protein families and the second functionality is to find the "taxonomy" of the proteins discovered from the analysis of a sample. The seek mode offers 3 types of analysis. The taxonomy mode is applied either by the "Kraken2 route" which is based on the taxonomy of the reads or by the "COMEBin/MetaBinner route" which is based on binning the contigs and searching for the taxonomy of the proteins, through the "taxonomy filtered protein database".</p>
 
 ### 1.2.1 Seek mode
-The stages of the “seek” mode of ProteoSeeker. ProteoSeeker offers two main functionalities applied through the "seek" mode (blue) and the “taxonomy” mode (green). Each stage is colored based on the mode it belongs to. The possible types of input for ProteoSeeker include an SRA code, reads in FASTQ files, contigs or genomes or proteins in FASTA format. If an SRA code is provided, the corresponding SRA file and FASTQ files are generated.
+The stages of the seek mode of ProteoSeeker. ProteoSeeker offers two main functionalities applied through the seek mode (blue) and the taxonomy mode (green). Each stage is colored based on the mode it belongs to. The possible types of input for ProteoSeeker include an SRA code, reads in FASTQ files, contigs or genomes or proteins in FASTA format. If an SRA code is provided, the corresponding SRA file and FASTQ files are generated.
 
 ![ProteoSeeker Seek Functionality](images/Figure_4.png)
 
@@ -44,7 +44,7 @@ The stages of the “seek” mode of ProteoSeeker. ProteoSeeker offers two main 
 15. Annotation files are written. Type **1, 2, 3** analysis.
 
 ### 1.2.2 Taxonomy mode
-The stages of the “taxonomy” mode of ProteoSeeker. ProteoSeeker offers two main functionalities applied through the “seek” mode (blue) and the “taxonomy” mode (green). The taxonomic analysis can be performed by either of two ”routes” of analysis. The fist one is based on binning based on the taxonomic analysis of reads from Kraken2 (orange) and the second one is performed by COMEBin or MetaBinner (purple). The possible types of input for ProteoSeeker include an SRA code, reads in FASTQ files, contigs or genomes or proteins in FASTA format. If an SRA code is provided, the corresponding SRA file and FASTQ files are generated.
+The stages of the taxonomy mode of ProteoSeeker. ProteoSeeker offers two main functionalities applied through the seek mode (blue) and the taxonomy mode (green). The taxonomic analysis can be performed by either of two routes of analysis. The fist one is based on binning based on the taxonomic analysis of reads from Kraken2 (orange) and the second one is performed by COMEBin or MetaBinner (purple). The possible types of input for ProteoSeeker include an SRA code, reads in FASTQ files, contigs or genomes or proteins in FASTA format. If an SRA code is provided, the corresponding SRA file and FASTQ files are generated.
 
 ![ProteoSeeker Taxonomy Functionality](images/Figure_5.png)
 
@@ -145,7 +145,7 @@ conda config --set channel_priority flexible
 ~~~
 
 ### 2.1.5 Parameter files
-<p align="justify">You can create a set of "template" parameter files which can be used to run the "seek" or the "taxonomy" mode or both modes of ProteoSeeker based on the taxonomy route of Kraken2 or COMEBin/MetaBinner by running the following script in the installation directory from the same directory. This set of files is generated in the main directory of ProteoSeeker.</p>
+<p align="justify">You can create a set of "template" parameter files which can be used to run the seek or the taxonomy mode or both modes of ProteoSeeker based on the taxonomy route of Kraken2 or COMEBin/MetaBinner by running the following script in the installation directory from the same directory. This set of files is generated in the main directory of ProteoSeeker.</p>
 
 ~~~bash
 ./parameter_files.sh
@@ -185,9 +185,9 @@ conda deactivate
 
 Docker engine for Linux: https://docs.docker.com/engine/install/ubuntu/
 
-<p align="justify">Then download the image of ProteoSeeker from Docker Hub. There are two versions. The "main" version contains the "Kraken 2/Bracken Refseq indexes Collection Standard-8 database" while the "light" version does not. Hence, the "main" version can be used directly to run the "seek" or the "taxonomy" mode of ProteoSeeker, specifically through the "Kraken2" route. The "light" version can be used directly to run only the "seek" mode of ProteoSeeker. Neither version contains a protein database. The process of using a protein database through Docker is explained below. Both versions can be modified to utilize a protein database and thus be used to run the seek mode type 2 or 3 analysis and the taxonomy mode through the COMEBin/MetaBinner route of ProteoSeeker.</p>
+<p align="justify">Then download the image of ProteoSeeker from Docker Hub. There are two versions. The "main" version contains the "Kraken 2/Bracken Refseq indexes Collection Standard-8 database" while the "light" version does not. Hence, the "main" version can be used directly to run the seek or the taxonomy mode of ProteoSeeker, specifically through the Kraken2 route. The light version can be used directly to run only the seek mode of ProteoSeeker. Neither version contains a protein database. The process of using a protein database through Docker is explained below. Both versions can be modified to utilize a protein database and thus be used to run the seek mode type 2 or 3 analysis and the taxonomy mode through the COMEBin/MetaBinner route of ProteoSeeker.</p>
 
-The "main" version has a size of  **29.9 GB**. To install the "main" version use **one** of the following commands:
+The main version has a size of  **29.9 GB**. To install the main version use **one** of the following commands:
 ~~~bash
 sudo docker image pull proteoseeker
 or
@@ -196,7 +196,7 @@ or
 sudo docker image pull proteoseeker:main
 ~~~
 
-The "light" version has a size of  **21.9 GB**. To install the "light" version use the following command:
+The light version has a size of  **21.8 GB**. To install the light version use the following command:
 ~~~bash
 sudo docker image pull proteoseeker:light
 ~~~
@@ -631,7 +631,7 @@ Options:
 ~~~
 
 ## 3.3 Command-line
-<p align="justify">To run ProteoSeeker through the command-line, a parameter file facilitates the process greatly. By using one of the template parameter files, the user can easily customize the values for the options of ProteoSeeker and run it. To run ProteoSeeker, at first, its environment shoulb be activated. To run ProteoSeeker by its "seek" mode and "type 2 or 3" analysis or by its "taxonomy" mode and "COMEBin/MetaBinner" route, one should set the path to the protein database in the parameters file or provide it as an argument. The user can run ProteoSeeker based on certain parameter files by the "seek" mode and "type 1" analysis or by the "taxonomy" mode and "Kraken2" route, without the need to make any modifcation in the parameter file or provide any other arguments. You can find the mode and analysis type or route applied by ProteoSeeker in the run according to the parameter file used, based on the table below. All template parameter files are ready to be used to run ProteoSeeker by analyzing the sample with the SRA code "SRR12829170". Each parameter file is also set up to handle either FASTQ paired-end input or FASTA contig(s)/genome(s) input (given that the SRA code is removed from the parameter file). The template parameter files 1, 2, 3, 4 and 5 can directly be used to run ProteoSeeker without modifications, as they do not require a protein datbase. Parameter file 6, needs a protein database and certain modifications to be used by ProteoSeeker (as described below).</p>
+<p align="justify">To run ProteoSeeker through the command-line, a parameter file facilitates the process greatly. By using one of the template parameter files, the user can easily customize the values for the options of ProteoSeeker and run it. To run ProteoSeeker, at first, its environment shoulb be activated. To run ProteoSeeker by its seek mode and type 2 or 3 analysis or by its taxonomy mode and COMEBin/MetaBinner route, one should set the path to the protein database in the parameters file or provide it as an argument. The user can run ProteoSeeker based on certain parameter files by the seek mode and type 1 analysis or by the taxonomy mode and Kraken2 route, without the need to make any modifcation in the parameter file or provide any other arguments. You can find the mode and analysis type or route applied by ProteoSeeker in the run according to the parameter file used, based on the table below. All template parameter files are ready to be used to run ProteoSeeker by analyzing the sample with the SRA code "SRR12829170". Each parameter file is also set up to handle either FASTQ paired-end input or FASTA contig(s)/genome(s) input (given that the SRA code is removed from the parameter file). The template parameter files 1, 2, 3, 4 and 5 can directly be used to run ProteoSeeker without modifications, as they do not require a protein datbase. Parameter file 6, needs a protein database and certain modifications to be used by ProteoSeeker (as described below).</p>
 
 Index | Parameter file | Mode | Analysis Type | Route | Input
 --- | --- | --- | --- | --- | ---
@@ -648,12 +648,12 @@ python proteoseeker.py -pfp parameter_file.txt
 conda deactivate
 ~~~
 
-<p align="justify">To use any of the template parameter files to run ProteoSeeker by the "seek" mode with the "type 2" or "type 3" analysis or the "taxonomy" mode with the "COMEBin/MetaBinner" route of ProteoSeeker make the following necessary modifications:</p>
+<p align="justify">To use any of the template parameter files to run ProteoSeeker by the seek mode with the type 2 or type 3 analysis or the taxonomy mode with the COMEBin/MetaBinner route of ProteoSeeker make the following necessary modifications:</p>
 
 1. seek_route="2" or seek_route="3"
 2. create_nr_db_status="" or create_nr_db_status="True"
 
-<p align="justify">Then provide a suitable protein database. Any file with protein sequences in FASTA format can be used to run the "seek" mode, "type 2" or "type 3" analysis of ProteoSeeker. For the "taxonomy" mode, "COMEBin/MetaBinner" route of ProteoSeeker the file used as the protein database should contain headers (for its protein sequences) which contain information about the taxon/taxa associated with their protein sequences, in a style identical to the one used by the non-redundant database of NCBI or the Uniref100/90/50 databases of UniprotKB. For example, to use a protein database which is basically a small part of the nr database, that is used for testing the aforementioned functionalities of ProteoSeeker and not for an actual and full analysis by ProteoSeeker based on the protein datbase, make the following modification in one of the parameter files and use that parameter file to run ProteoSeeker.</p>
+<p align="justify">Then provide a suitable protein database. Any file with protein sequences in FASTA format can be used to run the seek mode, type 2 or type 3 analysis of ProteoSeeker. For the taxonomy mode, COMEBin/MetaBinner route of ProteoSeeker the file used as the protein database should contain headers (for its protein sequences) which contain information about the taxon/taxa associated with their protein sequences, in a style identical to the one used by the non-redundant database of NCBI or the Uniref100/90/50 databases of UniprotKB. For example, to use a protein database which is basically a small part of the nr database, that is used for testing the aforementioned functionalities of ProteoSeeker and not for an actual and full analysis by ProteoSeeker based on the protein datbase, make the following modification in one of the parameter files and use that parameter file to run ProteoSeeker.</p>
 
 protein_db_path="/home/georgios/ProteoSeeker-main/parameter_files/docker/nr_part.fasta"
 
@@ -664,7 +664,7 @@ conda deactivate
 ~~~
 
 ## 3.4 Docker
-<p align="justify">ProteoSeeker can run in a container created from its image based on a bind mount or volume. The version of Docker used to create the images and test the containers is that of "27.1.1". The bind-mount or volume is primarily used to provide input files, parameter files, databases, an output directory and the phobius installation, from the host system to the container. We advise using a bind mount over a volume due to its fewer requirements in providing the proper privileges in order to access the shared files. In both cases (bind mount and volume), the protein database provided as an example is a small part of the nr database with additions of proteins associated with RNA polymerase. It is used to test that the functionality of the "seek" mode through "type 2" analysis and the "taxonomy" mode through the route of "COMEBin/MetaBinner" function properly in ProteoSeeker. You should provide your own protein database, ideally the decompressed nr database, in order to use properly the "seek" mode through the "type 2" analysis and the "taxonomy" mode through the "COMEBin/MetaBinner" route of ProteoSeeker. To use any other type of analysis and route of the modes of ProteoSeeker, the protein database in not necessary. ProteoSeeker will detect and utilize Phobius for the topology prediction, if Phobius is installed in the proper directory ("phobius") of the shared directory (volume or bind mount), otherwise no topology predictions will take place for the proteins. In addition, you must modify the following line of "phobius.pl" (should be line 25) by changing the name of the file "decodeanhmm" with "decodeanhmm.64bit" for Phobius to work properly in the container:</p>
+<p align="justify">ProteoSeeker can run in a container created from its image based on a bind mount or volume. The version of Docker used to create the images and test the containers is that of "27.1.1". The bind-mount or volume is primarily used to provide input files, parameter files, databases, an output directory and the phobius installation, from the host system to the container. We advise using a bind mount over a volume due to its fewer requirements in providing the proper privileges in order to access the shared files. In both cases (bind mount and volume), the protein database provided as an example is a small part of the nr database with additions of proteins associated with RNA polymerase. It is used to test that the functionality of the seek mode through type 2 analysis and the taxonomy mode through the route of COMEBin/MetaBinner function properly in ProteoSeeker. You should provide your own protein database, ideally the decompressed nr database, in order to use properly the seek mode through the type 2 analysis and the taxonomy mode through the COMEBin/MetaBinner route of ProteoSeeker. To use any other type of analysis and route of the modes of ProteoSeeker, the protein database in not necessary. ProteoSeeker will detect and utilize Phobius for the topology prediction, if Phobius is installed in the proper directory ("phobius") of the shared directory (volume or bind mount), otherwise no topology predictions will take place for the proteins. In addition, you must modify the following line of "phobius.pl" (should be line 25) by changing the name of the file "decodeanhmm" with "decodeanhmm.64bit" for Phobius to work properly in the container:</p>
 
 From:
 
@@ -678,7 +678,7 @@ To:
 my $DECODEANHMM =      "$PHOBIUS_DIR/decodeanhmm.64bit";
 ~~~
 
-<p align="justify">For both cases of volumes and bind mounts, you can perform a test based on a template parameter file (located at the "parameter_files" directory in the volume or bind mount) each of which runs a different analysis. The test is selected with a number. All template parameter files are ready to be used to run ProteoSeeker by analyzing the sample with the SRA code "SRR12829170". Each parameter file is also set up to handle FASTQ paired-end input. The selections are described below:</p>
+<p align="justify">For both cases of volumes and bind mounts, you can perform a test based on a template parameter file (located at the "parameter_files" directory in the volume or bind mount) each of which runs a different analysis. The test is selected with a number. All template parameter files are ready to be used to run ProteoSeeker by analyzing the sample with the SRA code "SRR12829170". Each parameter file is also set up to handle FASTQ paired-end input. Furthermore, the light Docker image may be used to run a container for ProteoSeeker for the Kraken2 taxonomy route only if the user provides a path to a Kraken2 database in the shared directory (bind mount or volume). The selections are described below:</p>
 
 Selection | Mode | Analysis Type | Route | Input
 --- | --- | --- | --- | ---
@@ -701,7 +701,7 @@ Selection | Mode | Analysis Type | Route | Input
 ./installation/docker_bindmount_setup.sh
 ~~~
 
-<p align="justify">Then run ProteoSeeker in a Docker container based on one of the parameter files. The following script will run ProteoSeeker in a Docker container in interactive mode so the user can observe the stages of the pipeline being run. The analyses to be performed by ProteoSeeker based on the template file corresponding to your selection are explained above in the table.</p>
+<p align="justify">Then run ProteoSeeker in a Docker container based on one of the parameter files. The following script will run ProteoSeeker in a Docker container of the <strong>main</strong>strong> image, in interactive mode so the user can observe the stages of the pipeline being run. The analyses to be performed by ProteoSeeker based on the template file corresponding to your selection are explained above in the table.</p>
 
 ~~~bash
 ./docker_bind_run_proteoseeker.sh
@@ -733,7 +733,7 @@ sudo ./installation/docker_vol_setup.sh
 ./docker_vol_run_proteoseeker.sh
 ~~~
 
-<p align="justify">In this case, the data shared between the local host and the container will be located at "/var/lib/docker/volumes/ps_vol/_data". To find the results of the run, check in the directory "/var/lib/docker/volumes/ps_vol/_data/results". Similarly, you can run ProteoSeeker based on a custom parameters file. After ProteoSeeker has terminated, the container stops and exits, hence, the results cannot be found in that container. The user can also run the same command of the script by adding the "-d" option, which runs the container in the background. He can then attach to the container to observe which stage the pipeline is currently running. In addition, the user can use "/bin/bash/ as the command to run the container in interactive mode, then run ProteoSeeker from the container (as you would directly from the command-line of the host) and then transfer the results to the host through a shared volume or bind mount.</p>
+<p align="justify">In this case, the data shared between the local host and the container will be located at "/var/lib/docker/volumes/ps_vol/_data". To find the results of the run, check in the directory "/var/lib/docker/volumes/ps_vol/_data/results". Similarly, you can run ProteoSeeker based on a custom parameters file. After ProteoSeeker has terminated, the container stops and exits, hence, the results cannot be found in that container. The user can also run the same command of the script by adding the "-d" option, which runs the container in the background. He can then attach to the container to observe which stage the pipeline is currently running. In addition, the user can use "/bin/bash/" as the command to run the container in interactive mode, then run ProteoSeeker from the container (as you would directly from the command-line of the host) and then transfer the results to the host through a shared volume or bind mount.</p>
 
 ### 3.4.3 Utilizing Phobius in the docker container
 <p align="justify">The "phobius" directory in the volume or bind mount can be used to store the files of the Phobius installation. If done so, ProteoSeeker will detect and use Phobius when running in the Docker container. Download and install Phobius based on the instructions from: https://phobius.sbc.su.se/data.html</p>
@@ -802,7 +802,7 @@ conda deactivate
 ~~~
 
 ## 4.2 Seek and taxonomy modes evaluation
-<p align="justify">The seek and taxonomy mode of ProteoSeeker can be tested on specific samples which have been analyzed by our lab in the process of discovering novel enzymes with desirable characteristics. The following samples were used for these analyses: "SRR3961740", "DRR163688" and "SRR17771278"."</p>
+<p align="justify">The seek and taxonomy mode of ProteoSeeker can be tested on specific samples which have been analyzed by our lab in the process of discovering novel enzymes with desirable characteristics. The following samples were used for these analyses: "SRR3961740", "DRR163688" and "SRR17771278".</p>
 
 1. <p align="justify">In the Bash script "setup.sh" in the directory "parameter_files", modify the paths to the Kraken2 Collection Standard-8, Standard-16, Standard databases and to the protein database, using their full paths based on your system. The variables storing these paths are the following:</p>
 
