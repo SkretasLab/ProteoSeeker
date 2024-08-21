@@ -214,7 +214,7 @@ sudo docker image pull proteoseeker:light
 ~~~bash
 ProteoSeeker Version 1.0.0
 
-python enzann.py [options] -i <Input_Folder_Path>
+python proteoseeker.py -pfp <parameters_file_path> [other_options]
 
 Option description:
 1. Parameter type
