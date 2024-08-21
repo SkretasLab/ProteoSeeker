@@ -209,7 +209,7 @@ sudo docker image pull proteoseeker:light
 <p align="justify">In general, the easiest way to run ProteoSeeker is to use a parameter file. A parameter file should, at least, contain the parameters for the options of ProteoSeeker which are to be modified from their default values. Parameter files for different case-scenarios are offered by the installation of ProteoSeeker for utilizing it as a command-line tool or in a Docker container. The "template" parameter files contain all options and have values specifically for those that are to be modified from their default values. A parameter file is the proposed way of using ProteoSeeker. In addition, we advise that the paths used as input to ProteoSeeker (for files or databases) contain no whitespaces and are absolute paths instead of relative paths, although ProteoSeeker is designed to handle each of these cases.</p>
 
 ## 3.2 Options
-<p align="justify">The options of ProteoSeeker as a command-line tool, their default parameters and their descriptions are presented below.</p>
+<p align="justify">The options of ProteoSeeker as a command-line tool, their default values and their descriptions are presented below.</p>
 
 ~~~bash
 ProteoSeeker Version 1.0.0
