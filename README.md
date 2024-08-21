@@ -27,21 +27,21 @@ The stages of the “seek” mode of ProteoSeeker. ProteoSeeker offers two main 
 
 ![ProteoSeeker Seek Functionality](images/Figure_4.png)
 
-1. The selected protein families are determined based on their input codes. Type 1, 2, 3 analysis
-2. The profiles and protein names associated with the selected families are collected and the spd is created. Type 1, 2, 3 analysis
-3. The protein database is filtered based on the collected protein names, the sfpd is created. Type 2, 3 analysis
-4. The reads of the FASTQ files go several quality control checks by FastQC. Type 1, 2, 3 analysis
-5. The reads are preprocessed by BBDuk and then are analyzed by FastQC for a second time. Type 1, 2, 3 analysis
-6. The preprocessed reads are assembled into contigs by Megahit. Type 1, 2, 3 analysis
-7. Protein coding regions (pcdrs) are predicted in the contigs by FragGeneScanRs. Type 1, 2, 3 analysis
-8. CD-HIT is used to reduce the redundancy of the pcdrs. Type 1, 2, 3 analysis
-9. The pcdrs are screened against the spd with HMMER. Any pcdr with at least one hit based on the latter screening is retained (set 1). Type 1, 2, 3 analysis
-10. The rest of the pcdrs are screened against the sfpd and only those with a lower than the e-value threshold hit are retained (set 2). In addition, set 1 is screened against the Swiss-Prot protein database. Type 2, 3 analysis
-11. Both sets are screened against all the profiles of the Pfam database with HMMER. Type 1, 2, 3 analysis
-12. Topology prediction is performed by Phobius. Type 1, 2, 3 analysis
-13. Motifs provided by the user are screened against each protein. Type 1, 2, 3 analysis
-14. The protein family of each protein is predicted. Type 1, 2, 3 analysis
-15. Annotation files are written. Type 1, 2, 3 analysis
+1. The selected protein families are determined based on their input codes. Type **1, 2, 3** analysis.
+2. The profiles and protein names associated with the selected families are collected and the spd is created. Type **1, 2, 3** analysis.
+3. The protein database is filtered based on the collected protein names, the sfpd is created. Type **2, 3** analysis.
+4. The reads of the FASTQ files go several quality control checks by FastQC. Type **1, 2, 3** analysis.
+5. The reads are preprocessed by BBDuk and then are analyzed by FastQC for a second time. Type **1, 2, 3** analysis.
+6. The preprocessed reads are assembled into contigs by Megahit. Type **1, 2, 3** analysis.
+7. Protein coding regions (pcdrs) are predicted in the contigs by FragGeneScanRs. Type **1, 2, 3** analysis.
+8. CD-HIT is used to reduce the redundancy of the pcdrs. Type **1, 2, 3** analysis.
+9. The pcdrs are screened against the spd with HMMER. Any pcdr with at least one hit based on the latter screening is retained (set 1). Type **1, 2, 3** analysis.
+10. The rest of the pcdrs are screened against the sfpd and only those with a lower than the e-value threshold hit are retained (set 2). In addition, set 1 is screened against the Swiss-Prot protein database. Type **2, 3** analysis.
+11. Both sets are screened against all the profiles of the Pfam database with HMMER. Type **1, 2, 3** analysis.
+12. Topology prediction is performed by Phobius. Type **1, 2, 3** analysis.
+13. Motifs provided by the user are screened against each protein. Type **1, 2, 3** analysis.
+14. The protein family of each protein is predicted. Type **1, 2, 3** analysis.
+15. Annotation files are written. Type **1, 2, 3** analysis.
 
 ### 1.2.2 Taxonomy mode
 The stages of the “taxonomy” mode of ProteoSeeker. ProteoSeeker offers two main functionalities applied through the “seek” mode (blue) and the “taxonomy” mode (green). The taxonomic analysis can be performed by either of two ”routes” of analysis. The fist one is based on binning based on the taxonomic analysis of reads from Kraken2 (orange) and the second one is performed by COMEBin or MetaBinner (purple). The possible types of input for ProteoSeeker include an SRA code, reads in FASTQ files, contigs or genomes or proteins in FASTA format. If an SRA code is provided, the corresponding SRA file and FASTQ files are generated.
