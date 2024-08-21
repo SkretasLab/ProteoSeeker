@@ -16,7 +16,7 @@
 
 6. **ProteoSeeker Analysis:** The selected dataset is uploaded to Proteoseeker. The tool identifies putative proteins derived from the input reads.
 7. **Functional Analysis:** ProteoSeeker offers two functionalities applied through its "seek" and "taxonomy" modes, purposed in discovering proteins/enzymes from specific protein families and performing taxonomic assignment of the proteins respectively.
-8. **Protein Family Profiling:** Protein family profiles from databases like Pfam, group proteins and facilitate the discovery of novel proteins/enzymes with specific functionalities.
+8. **Protein Family Profiling:** Protein family profile Hidden Markov Models (pHMMs) from the Pfam database form the basis for the discovery of novel proteins/enzymes from specific protein families, thus with specific functionalities.
 9. **Taxonomic Assignment:** The tool expands on the process of assigning one or more organisms to identified proteins, aiding in the understanding of microbial community composition.
 
 ## 1.2 Pipeline
