@@ -215,6 +215,8 @@ sudo docker image pull proteoseeker:light
 ProteoSeeker Version 1.0.0
 
 python proteoseeker.py -pfp <parameters_file_path> [other_options]
+or
+python proteoseeker.py [options]
 
 Option description:
 1. Parameter type
