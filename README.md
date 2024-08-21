@@ -223,6 +223,7 @@ Option description:
 2. Req: Required, Opt: Optional
 3. Default value (shown if not empty or none)
 4. Description
+
 Terminology:
 spd: seek profile database
 tpd: taxonomy profile database
