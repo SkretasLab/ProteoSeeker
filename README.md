@@ -15,7 +15,7 @@
 <p align="justify">Such files can be provided directly to ProteoSeeker for analysis, forming the exploration ground for the tool. Proteoseeker aspires to provide a coprehensive, user-friendly platform for the discovery of novel proteins/enzymes originating from environments of interest, enriching the scientific community's capacity to explore microbial ecosystems. A user may download such data and use it as input in the ProteoSeeker, or in the case of SRA of NCBI use the code (SRA accession) of the sample from the online database directly to ProteoSeeker.</p>
 
 6. **ProteoSeeker Analysis:** The selected dataset is uploaded to Proteoseeker. The tool identifies putative proteins derived from the input reads.
-7. **Functional Analysis:** ProteoSeeker includes two functionalities called  "seek" and "taxonomy", purposed in protein/enzyme discovery and taxonomic assignment respectively.
+7. **Functional Analysis:** ProteoSeeker offers two functionalities applied through its "seek" and "taxonomy" modes, purposed in discovering proteins/enzymes from specific protein families and performing taxonomic assignment of the proteins respectively.
 8. **Protein Family Profiling:** Protein family profiles from databases like Pfam, group proteins and facilitate the discovery of novel proteins/enzymes with specific functionalities.
 9. **Taxonomic Assignment:** The tool expands on the process of assigning one or more organisms to identified proteins, aiding in the understanding of microbial community composition.
 
