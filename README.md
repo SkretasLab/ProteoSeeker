@@ -131,7 +131,7 @@ conda install conda-forge::tar
 5. nr database: Latest - Installed manually
 
 ### 2.1.4 Installation
-<p align="justify">Open a terminal, download the repository and move it to the desired installation directory or download the ZIP file and extract in the desired installation directory. Make sure that all the shell scripts in the installation directory can be executed as programs. If not, change the permissions to allow for their execution. The conda environment where the installation will take place should be activated (whether it is the base or another environment). Then run the installation script. Depending on your internet connection it might take from 5 to 30 minutes for the installation to be completed. Follow the steps below:</p>
+<p align="justify">Open a terminal, download the repository and move it to the desired installation directory or download the ZIP file and extract in the desired installation directory. Follow the steps below to perform the following tasks. Give the proper permissions to the files of the installation directory. Add, if not present and move to the top the conda enviroments of "conda-forge" and "bioconda" and set the chennel priority of conda to "flexible". Then run the installation script. Depending on your internet connection it might take from 5 to 40 minutes for the installation to be completed.</p>
 
 ~~~bash
 git clone https://github.com/SkretasLab/ProteoSeeker.git
