@@ -22,6 +22,7 @@
 ## 1.2 Pipeline
 <p align="justify">The pipeline implemented by ProteoSeeker in the "seek" and "taxonomy" modes can be seen in the images below. ProteoSeeker offers two main functionalities with a multitude of options for users not accustomed to metagenomic analysis tools and more advanced users that may want to modify the behaviour of certain tools included in ProteoSeeker's pipeline. The first functionality is to "seek" proteins that may be part of selected protein families and the second functionality is to find the "taxonomy" of the proteins discovered from the analysis of a sample. The "seek" mode offers 3 types of analysis. The "taxonomy" mode is applied either by the "Kraken2" route which is based on the taxonomy of the reads or by the "COMEBin/MetaBinner" route which is based on binning the contigs and searching for the taxonomy of the proteins, through the "taxonomy filtered protein database".</p>
 
+### 1.2.1 Seek mode
 The stages of the “seek” mode of ProteoSeeker. ProteoSeeker offers two main functionalities applied through the "seek" mode (blue) and the “taxonomy” mode (green). Each stage is colored based on the mode it belongs to. The possible types of input for ProteoSeeker include an SRA code, reads in FASTQ files, contigs or genomes or proteins in FASTA format. If an SRA code is provided, the corresponding SRA file and FASTQ files are generated.
 
 ![ProteoSeeker Seek Functionality](images/Figure_4.png)
@@ -42,6 +43,7 @@ The stages of the “seek” mode of ProteoSeeker. ProteoSeeker offers two main 
 14. The protein family of each protein is predicted.
 15. Annotation files are written.
 
+### 1.2.2 Taxonomy mode
 The stages of the “taxonomy” mode of ProteoSeeker. ProteoSeeker offers two main functionalities applied through the “seek” mode (blue) and the “taxonomy” mode (green). The taxonomic analysis can be performed by either of two ”routes” of analysis. The fist one is based on binning based on the taxonomic analysis of reads from Kraken2 (orange) and the second one is performed by COMEBin or MetaBinner (purple). The possible types of input for ProteoSeeker include an SRA code, reads in FASTQ files, contigs or genomes or proteins in FASTA format. If an SRA code is provided, the corresponding SRA file and FASTQ files are generated.
 
 ![ProteoSeeker Taxonomy Functionality](images/Figure_5.png)
