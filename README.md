@@ -185,21 +185,21 @@ conda deactivate
 
 Docker engine for Linux: https://docs.docker.com/engine/install/ubuntu/
 
-<p align="justify">Then download the image of ProteoSeeker from Docker Hub. There are two versions. The "main" version contains the "Kraken 2/Bracken Refseq indexes Collection Standard-8 database" while the "light" version does not. Hence, the "main" version can be used directly to run the seek or the taxonomy mode of ProteoSeeker, specifically through the Kraken2 route. The light version can be used directly to run only the seek mode of ProteoSeeker. Neither version contains a protein database. The process of using a protein database through Docker is explained below. Both versions can be modified to utilize a protein database and thus be used to run the seek mode type 2 or 3 analysis and the taxonomy mode through the COMEBin/MetaBinner route of ProteoSeeker.</p>
+<p align="justify">Then download the image of ProteoSeeker from Docker Hub. There are two versions. The "main_v1.0.0" version contains the "Kraken 2/Bracken Refseq indexes Collection Standard-8 database" while the "light_v1.0.0" version does not. Hence, the "main_v1.0.0" version can be used directly to run the seek or the taxonomy mode of ProteoSeeker, specifically through the Kraken2 route. The light_v1.0.0 version can be used directly to run only the seek mode of ProteoSeeker. Neither version contains a protein database. The process of using a protein database through Docker is explained below. Both versions can be modified to utilize a protein database and thus be used to run the seek mode type 2 or 3 analysis and the taxonomy mode through the COMEBin/MetaBinner route of ProteoSeeker.</p>
 
-The main version has a download size of  **12.92 GB** and decompressed has a size of **29.9 GB**. To install the main version use **one** of the following commands:
+The main_v1.0.0 version has a download size of  **12.92 GB** and decompressed has a size of **29.9 GB**. To install the main_v1.0.0 version use **one** of the following commands:
 ~~~bash
 sudo docker image pull proteoseeker
 or
 sudo docker image pull proteoseeker:latest
 or
-sudo docker image pull proteoseeker:main
+sudo docker image pull proteoseeker:main_v1.0.0
 ~~~
 
 
-The light version has a download size of  **? GB** and decompressed has a size of **21.8 GB**. To install the light version use the following command:
+The light_v1.0.0 version has a download size of  **? GB** and decompressed has a size of **21.8 GB**. To install the light_v1.0.0 version use the following command:
 ~~~bash
-sudo docker image pull proteoseeker:light
+sudo docker image pull proteoseeker:light_v1.0.0
 ~~~
 
 ### Phobius
@@ -679,7 +679,7 @@ To:
 my $DECODEANHMM =      "$PHOBIUS_DIR/decodeanhmm.64bit";
 ~~~
 
-<p align="justify">For both cases of volumes and bind mounts, you can perform a test based on a template parameter file (located at the "parameter_files" directory in the volume or bind mount) each of which runs a different analysis. The test is selected with a number. All template parameter files are ready to be used to run ProteoSeeker by analyzing the sample with the SRA code "SRR12829170". Each parameter file is also set up to handle FASTQ paired-end input. Furthermore, the light Docker image may be used to run a container for ProteoSeeker for the Kraken2 taxonomy route only if the user provides a path to a Kraken2 database in the shared directory (bind mount or volume). The selections are described below:</p>
+<p align="justify">For both cases of volumes and bind mounts, you can perform a test based on a template parameter file (located at the "parameter_files" directory in the volume or bind mount) each of which runs a different analysis. The test is selected with a number. All template parameter files are ready to be used to run ProteoSeeker by analyzing the sample with the SRA code "SRR12829170". Each parameter file is also set up to handle FASTQ paired-end input. Furthermore, the light_v1.0.0 Docker image may be used to run a container for ProteoSeeker for the Kraken2 taxonomy route only if the user provides a path to a Kraken2 database in the shared directory (bind mount or volume). The selections are described below:</p>
 
 Selection | Mode | Analysis Type | Route | Input
 --- | --- | --- | --- | ---
@@ -702,7 +702,7 @@ Selection | Mode | Analysis Type | Route | Input
 ./installation/docker_bindmount_setup.sh
 ~~~
 
-<p align="justify">Then run ProteoSeeker in a Docker container based on one of the parameter files. The following script will run ProteoSeeker, in a Docker container of the <strong>main</strong> image, in interactive mode so the user can observe the stages of the pipeline being run. To run one of the commands of the file below for the light image, change "proteoseeker:main" to "proteoseeker:light" in the same command. The analyses to be performed by ProteoSeeker based on the template file corresponding to your selection are explained above in the table.</p>
+<p align="justify">Then run ProteoSeeker in a Docker container based on one of the parameter files. The following script will run ProteoSeeker, in a Docker container of the <strong>main_v1.0.0</strong> image, in interactive mode so the user can observe the stages of the pipeline being run. To run one of the commands of the file below for the light_v1.0.0 image, change "proteoseeker:main_v1.0.0" to "proteoseeker:light_v1.0.0" in the same command. The analyses to be performed by ProteoSeeker based on the template file corresponding to your selection are explained above in the table.</p>
 
 ~~~bash
 ./docker_bind_run_proteoseeker.sh
@@ -728,7 +728,7 @@ sudo -E chmod -R a+rw "${HOME}/proteoseeker_bindmount/results"
 sudo ./installation/docker_vol_setup.sh
 ~~~
 
-<p align="justify">Then run ProteoSeeker in a Docker container based on one of the parameter files. The following script will run ProteoSeeker, in a Docker container of the <strong>main</strong> image, in interactive mode so the user can observe the stages of the pipeline being run. To run one of the commands of the file below for the light image, change "proteoseeker:main" to "proteoseeker:light" in the same command. The analyses to be performed by ProteoSeeker based on the template file corresponding to your selection are explained above in the table.</p>
+<p align="justify">Then run ProteoSeeker in a Docker container based on one of the parameter files. The following script will run ProteoSeeker, in a Docker container of the <strong>main_v1.0.0</strong> image, in interactive mode so the user can observe the stages of the pipeline being run. To run one of the commands of the file below for the light_v1.0.0 image, change "proteoseeker:main_v1.0.0" to "proteoseeker:light_v1.0.0" in the same command. The analyses to be performed by ProteoSeeker based on the template file corresponding to your selection are explained above in the table.</p>
 
 ~~~bash
 ./docker_vol_run_proteoseeker.sh
