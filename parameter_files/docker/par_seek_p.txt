@@ -102,6 +102,7 @@ bowtie_env=""
 
 #---------Tool paths---------
 conda_bin="/opt/conda"
+conda_sh="/opt/conda/etc/profile.d/conda.sh"
 prefetch_path=""
 vdb_validate_path=""
 fastq_dump_path=""
