@@ -705,7 +705,7 @@ Selection | Mode | Analysis Type | Route | Input
 <p align="justify">Then run ProteoSeeker in a Docker container based on one of the parameter files. The following script will run ProteoSeeker, in a Docker container of the <strong>main_v1.0.0</strong> image, in interactive mode so the user can observe the stages of the pipeline being run. To run one of the commands of the file below for the light_v1.0.0 image, change "proteoseeker:main_v1.0.0" to "proteoseeker:light_v1.0.0" in the same command. The analyses to be performed by ProteoSeeker based on the template file corresponding to your selection are explained above in the table.</p>
 
 ~~~bash
-./docker_bind_run_proteoseeker.sh
+./docker_bindmount_run_proteoseeker.sh
 ~~~
 
 <p align="justify">When running the Docker container and collecting the results in a directory located in the "${HOME}" path of the user, one should first change the permissions of the results directory by providing read and write permissions to all its contents, otherwise the directory generated as output from ProteoSeeker from the Docker container will be missing these permissions.</p>
