@@ -25,4 +25,4 @@ cp "parameter_files/docker/par_tax_m_p.txt" \
 "${BIND_DIR}/parameter_files"
 
 # Copy the protein database used to run ProteoSeeker in the Docker image.
-cp "parameter_files/docker/nr_head_1000000_rnapol.fasta" "${BIND_DIR}/protein_databases"
+cp "parameter_files/docker/nr_part.fasta" "${BIND_DIR}/protein_databases"
