@@ -197,7 +197,7 @@ sudo docker image pull proteoseeker:main_v1.0.0
 ~~~
 
 
-The light_v1.0.0 version has a download size of  **? GB** and decompressed has a size of **21.8 GB**. To install the light_v1.0.0 version use the following command:
+The light_v1.0.0 version has a download size of  **7.42 GB** and decompressed has a size of **21.8 GB**. To install the light_v1.0.0 version use the following command:
 ~~~bash
 sudo docker image pull proteoseeker:light_v1.0.0
 ~~~
