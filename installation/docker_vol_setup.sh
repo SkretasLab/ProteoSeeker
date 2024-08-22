@@ -18,12 +18,13 @@ mkdir "${VOL_PATH}/parameter_files"
 mkdir "${VOL_PATH}/phobius"
 
 # Copy the template parameter files used to run ProteoSeeker in the Docker image.
-cp "parameter_files/docker/par_seek_p.txt" \
-"parameter_files/docker/par_seek_tax_mc_c.txt" \
+cp "parameter_files/docker/par_tax_m_p.txt" \
 "parameter_files/docker/par_tax_k_p.txt" \
+"parameter_files/docker/par_tax_c_p.txt" \
+"parameter_files/docker/par_seek_tax_m_p.txt" \
 "parameter_files/docker/par_seek_tax_k_p.txt" \
-"parameter_files/docker/par_seek_tax_mc_p.txt" \
-"parameter_files/docker/par_tax_mc_p.txt" \
+"parameter_files/docker/par_seek_tax_c_p.txt" \
+"parameter_files/docker/par_seek_p.txt" \
 "${VOL_PATH}/parameter_files"
 
 # Copy the protein database used to run ProteoSeeker in the Docker image.
