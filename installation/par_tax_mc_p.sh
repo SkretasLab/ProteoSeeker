@@ -125,6 +125,7 @@ echo "" >> "${PARAMETER_FILE}"
 
 echo "#---------Tool paths---------" >> "${PARAMETER_FILE}"
 echo "conda_bin=\"${CONDA_INST_DIR}\"" >> "${PARAMETER_FILE}"
+echo "conda_sh=\"${CONDA_SH_PATH}\"" >> "${PARAMETER_FILE}"
 echo "prefetch_path=\"\"" >> "${PARAMETER_FILE}"
 echo "vdb_validate_path=\"\"" >> "${PARAMETER_FILE}"
 echo "fastq_dump_path=\"\"" >> "${PARAMETER_FILE}"
