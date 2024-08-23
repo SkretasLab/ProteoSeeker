@@ -44,7 +44,7 @@ The stages of the seek mode of ProteoSeeker. ProteoSeeker offers two main functi
 15. Annotation files are written. Type **1, 2, 3** analysis.
 
 ### 1.2.2 Taxonomy mode
-The stages of the taxonomy mode of ProteoSeeker. ProteoSeeker offers two main functionalities applied through the seek mode (blue) and the taxonomy mode (green). The taxonomic analysis can be performed by either of two routes of analysis. The fist one is based on binning based on the taxonomic analysis of reads from Kraken2 (orange) and the second one is performed by COMEBin or MetaBinner (purple). The possible types of input for ProteoSeeker include an SRA code, reads in FASTQ files, contigs or genomes or proteins in FASTA format. If an SRA code is provided, the corresponding SRA file and FASTQ files are generated.
+The stages of the taxonomy mode of ProteoSeeker. ProteoSeeker offers two main functionalities applied through the seek mode (blue) and the taxonomy mode (green). The taxonomic analysis can be performed by either of two routes of analysis. The first one is based on binning based on the taxonomic analysis of reads from Kraken2 (orange) and the second one is performed by COMEBin or MetaBinner (purple). The possible types of input for ProteoSeeker include an SRA code, reads in FASTQ files, contigs or genomes or proteins in FASTA format. If an SRA code is provided, the corresponding SRA file and FASTQ files are generated.
 
 ![ProteoSeeker Taxonomy Functionality](images/Figure_5.png)
 
