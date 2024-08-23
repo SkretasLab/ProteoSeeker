@@ -72,9 +72,9 @@
 
 # 2. Installation
 ## 2.1 Docker
-<p align="justify">To install ProteoSeeker from Docker Hub as a docker image, docker must be installed in your system. To install docker in Linux, follow the instructions provided by the link below:</p>
+<p align="justify">To install ProteoSeeker from Docker Hub as a docker image, docker must be installed in your system. To install docker in Ubuntu, follow the instructions provided by the link below:</p>
 
-Docker engine for Linux: https://docs.docker.com/engine/install/ubuntu/
+Docker engine for Ubuntu: https://docs.docker.com/engine/install/ubuntu/
 
 <p align="justify">Then download the image of ProteoSeeker from Docker Hub. There are two versions. The "main_v1.0.0" version contains the "Kraken 2/Bracken Refseq indexes Collection Standard-8 database" while the "light_v1.0.0" version does not. Hence, the "main_v1.0.0" version can be used directly to run the seek or the taxonomy mode of ProteoSeeker, specifically through the Kraken2 route. The light_v1.0.0 version can be used directly to run only the seek mode of ProteoSeeker. Neither version contains a protein database. The process of using a protein database through Docker is explained below. Both versions can be modified to utilize a protein database and thus be used to run the seek mode type 2 or 3 analysis and the taxonomy mode through the COMEBin/MetaBinner route of ProteoSeeker.</p>
 
