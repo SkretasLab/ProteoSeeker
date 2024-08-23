@@ -80,16 +80,16 @@ Docker engine for Ubuntu: https://docs.docker.com/engine/install/ubuntu/
 
 The main_v1.0.0 version has a download size of  **12.92 GB** and decompressed has a size of **29.9 GB**. To install the main_v1.0.0 version use **one** of the following commands:
 ~~~bash
-sudo docker image pull proteoseeker
+sudo docker image pull skretaslab/proteoseeker
 or
-sudo docker image pull proteoseeker:latest
+sudo docker image pull skretaslab/proteoseeker:latest
 or
-sudo docker image pull proteoseeker:main_v1.0.0
+sudo docker image pull skretaslab/proteoseeker:main_v1.0.0
 ~~~
 
 The light_v1.0.0 version has a download size of  **7.42 GB** and decompressed has a size of **21.8 GB**. To install the light_v1.0.0 version use the following command:
 ~~~bash
-sudo docker image pull proteoseeker:light_v1.0.0
+sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
 ~~~
 
 ## 2.2 Source code
