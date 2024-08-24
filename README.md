@@ -739,6 +739,8 @@ conda activate ps_env
 python proteoseeker.py -pfp parameter_file.txt
 conda deactivate
 ~~~
+
+3.4.1 Utilizing Phobius
 <p align="justify">When ProteoSeeker is run by the command-line, in order to utilize Phobius, the user should download and extract Phobius in a directory and modify the value of "phobius_path" in the parameter file or the value of the corresponding option of proteoseeker.py to the Phobius directory.</p>
 
 # 4. Test cases
