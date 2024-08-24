@@ -145,11 +145,11 @@ conda install conda-forge::tar
 ### 2.2.3 Databases
 <p align="justify">The latest versions of the following databases are installed automatically by ProteoSeeker. To see the datetime of their collection for the evaluation of ProteoSeeker, check the evaluation section. Only the protein database should be installed by the user, in which case, he can use one of the already prepared Bash shell script for installing the nr database. The latter file is located in the "installation" directory. The user should be certain that the system has enough available memory to hold the decompressed protein database is to be downloaded. The decompressed nr database approximately needs 400 GB of memory space.</p>
 
-1. Pfam database: Latest - Installed automatically
-2. Swiss-Prot/UniprotKB database: Latest - Installed automatically
-3. GTDB taxonomy taxdump files: Latest - Installed automatically
-4. Kraken 2/Bracken Refseq indexes: Collection Standard-8 of 05/06/2024 - Installed automatically
-5. nr database: Latest - Installed manually
+1. Pfam database: Latest - Automatic installation
+2. Swiss-Prot/UniprotKB database: Latest - Automatic installation
+3. GTDB taxonomy taxdump files: Latest - Automatic installation
+4. Kraken 2/Bracken Refseq indexes: Collection Standard-8 of 05/06/2024 - Automatic installation
+5. nr database: Latest - Automatic installation
 
 ### 2.2.4 Installation
 <p align="justify">Follow the steps below to perform the following installation steps. Open a terminal in the desired directory, download the repository (or download the ZIP file of the repository and extract it in the desired installation directory) and move in the main ProteoSeeker directory. Give the proper permissions to the files of the installation directory. Add, if not present, and move to the top the conda environments of "conda-forge" and "bioconda" and set the channel priority of conda to "flexible". Then run the installation script. Depending on your internet connection it might take from 5 to 30 minutes for the installation to be completed.</p>
