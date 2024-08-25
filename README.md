@@ -64,7 +64,7 @@
 17. Through the read-contig mapping, each species is quantified for each contig. Species are assigned to the contigs.
 18. The contigs are binned based on their species.
 19. Species are assigned to the bins.
-20. Species are assigned to the proteins of the latter bins.
+20. Species are assigned to the proteins of the bins.
 21. Annotation files are written.
 
 # 2. Installation
