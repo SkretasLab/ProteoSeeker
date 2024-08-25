@@ -142,7 +142,7 @@ conda install conda-forge::tar
 19. FragGeneScanRs: 1.1.0
 
 ### 2.2.3 Databases
-<p align="justify">The latest versions of the following databases are installed automatically by ProteoSeeker. To see the datetime of their collection for the evaluation of ProteoSeeker, check the evaluation section. Only the protein database should be installed by the user, in which case, he can use the Bash shell script "nr_install.sh" for installing the nr database. The latter file is located in the "installation" directory. The user should be certain that the system has enough available memory space to hold the decompressed nr database which is approximately <strong>400 GB</strong>.</p>
+<p align="justify">The latest versions of the following databases are installed automatically by ProteoSeeker. To see the datetime of their collection for the evaluation of ProteoSeeker, check the evaluation section "4". Only the protein database should be installed by the user, in which case, he can use the Bash shell script "nr_install.sh" for installing the nr database. The latter file is located in the "installation" directory. The user should be certain that the system has enough available memory space to hold the decompressed nr database which is approximately <strong>400 GB</strong>.</p>
 
 1. Pfam database: Latest - Automatic installation
 2. Swiss-Prot/UniprotKB database: Latest - Automatic installation
