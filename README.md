@@ -147,7 +147,7 @@ conda install conda-forge::tar
 1. Pfam database: Latest - Automatic installation
 2. Swiss-Prot/UniprotKB database: Latest - Automatic installation
 3. GTDB taxonomy taxdump files: Latest - Automatic installation
-4. Kraken 2/Bracken Refseq indexes: Collection Standard-8 of 05/06/2024 - Automatic installation
+4. Kraken 2/Bracken Refseq indexes: Collection Standard-8: Latest - Automatic installation
 5. nr database: Latest - Automatic installation
 
 ### 2.2.4 Installation
