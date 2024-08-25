@@ -6,17 +6,17 @@
 
 ![ProteoSeeker Overview](images/Figure_1.png)
 
-1. **Sampling Site Documentation:** Specific characteristics of the sample's environmental source, including factors such as location, habitat, sampling conditions and collection method are documented.
+1. <p align="justify"><strong>Sampling Site Documentation:</strong>Specific characteristics of the sample's environmental source, including factors such as location, habitat, sampling conditions and collection method are documented.</p>
 2. <p align="justify"><strong>Sample Collection:</strong>The metagenomic material is collected from the environmental niche of interest.</p>
-3. **DNA Isolation and Preparation:** Following DNA extraction, the metagenomic material is prepped for sequencing.
-4. **Next-Generation Sequencing (NGS):**  NGS is performed to collect the dataset(s) with the reads originating from the sample.
-5. **NGS Data Processing:** Datasets and metadata are shared in open-access databases, facilitating collaborative research and data reuse.
+3. <p align="justify"><strong>DNA Isolation and Preparation:</strong>Following DNA extraction, the metagenomic material is prepped for sequencing.</p>
+4. <p align="justify"><strong>Next-Generation Sequencing (NGS):</strong> NGS is performed to collect the dataset(s) with the reads originating from the sample.</p>
+5. <p align="justify"><strong>NGS Data Processing:</strong>Datasets and metadata are shared in open-access databases, facilitating collaborative research and data reuse.</p>
    
 <p align="justify">Such files can be provided directly to ProteoSeeker for analysis, forming the exploration ground for the tool. Proteoseeker aspires to provide a comprehensive, user-friendly platform for the discovery of novel proteins/enzymes originating from environments of interest, enriching the scientific community's capacity to explore microbial ecosystems. A user may download such data and use it as input in the ProteoSeeker, or in the case of SRA of NCBI use the code (SRA accession) of the sample from the online database directly to ProteoSeeker.</p>
 
-6. **ProteoSeeker Analysis:** The selected dataset is uploaded to Proteoseeker. The tool identifies putative proteins derived from the input reads.
-7. **Functional Analysis:** ProteoSeeker offers two functionalities applied through its "seek" and "taxonomy" modes, purposed in discovering proteins/enzymes from specific protein families and performing taxonomic assignment of the proteins respectively.
-8. **Protein Family Profiling:** Protein family profile Hidden Markov Models (pHMMs) from the Pfam database form the basis for the discovery of novel proteins/enzymes from specific protein families, thus with specific functionalities.
+6. <p align="justify"><strong>ProteoSeeker Analysis:</strong>The selected dataset is uploaded to Proteoseeker. The tool identifies putative proteins derived from the input reads.</p>
+7. <p align="justify"><strong>Functional Analysis:</strong>ProteoSeeker offers two functionalities applied through its "seek" and "taxonomy" modes, purposed in discovering proteins/enzymes from specific protein families and performing taxonomic assignment of the proteins respectively.</p>
+8. <p align="justify"><strong>Protein Family Profiling:</strong>Protein family profile Hidden Markov Models (pHMMs) from the Pfam database form the basis for the discovery of novel proteins/enzymes from specific protein families, thus with specific functionalities.</p>
 9. <p align="justify"><strong>Taxonomic Assignment:</strong>The tool expands on the process of assigning one or more organisms to identified proteins, aiding in the understanding of microbial community composition.</p>
 
 ## 1.2 Pipeline
