@@ -33,7 +33,7 @@
 7. Protein coding regions (pcdrs) are predicted in the contigs by FragGeneScanRs. Type **1, 2, 3** analysis.
 8. CD-HIT is used to reduce the redundancy of the pcdrs. Type **1, 2, 3** analysis.
 9. The pcdrs are screened against the spd with HMMER. Any pcdr with at least one hit based on the latter screening is retained (set 1). Type **1, 2, 3** analysis.
-10. The rest of the pcdrs are screened against the sfpd and only those with at least one hit with a lower e-value than the threshold are retained (set 2). In addition, set 1 is screened against the Swiss-Prot protein database. Type **2, 3** analysis.
+10. The rest of the pcdrs are screened against the sfpd and only those with at least one hit with an e-value lower than the threshold are retained (set 2). In addition, set 1 is screened against the Swiss-Prot protein database. Type **2, 3** analysis.
 11. Both sets are screened against all the profiles of the Pfam database with HMMER. Type **1, 2, 3** analysis.
 12. Topology prediction is performed by Phobius. Type **1, 2, 3** analysis.
 13. Motifs provided by the user are screened against each protein. Type **1, 2, 3** analysis.
