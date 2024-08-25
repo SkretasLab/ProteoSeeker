@@ -32,9 +32,9 @@
 6. The preprocessed reads are assembled into contigs by Megahit. Type **1, 2, 3** analysis.
 7. Protein coding regions (pcdrs) are predicted in the contigs by FragGeneScanRs. Type **1, 2, 3** analysis.
 8. CD-HIT is used to reduce the redundancy of the pcdrs. Type **1, 2, 3** analysis.
-9. The pcdrs are screened against the spd with HMMER. Any pcdr with at least one hit based on the latter screening is retained (set 1). Type **1, 2, 3** analysis.
+9. The pcdrs are screened against the spd. Any pcdr with at least one hit based on the latter screening is retained (set 1). Type **1, 2, 3** analysis.
 10. The rest of the pcdrs are screened against the sfpd and only those with at least one hit with an e-value lower than the threshold are retained (set 2). In addition, set 1, if not empty, is screened against the Swiss-Prot protein database. Type **2, 3** analysis.
-11. Both sets are screened against all the profiles of the Pfam database with HMMER. Type **1, 2, 3** analysis.
+11. Both sets are screened against all the profiles of the Pfam database. Type **1, 2, 3** analysis.
 12. Topology prediction is performed by Phobius. Type **1, 2, 3** analysis.
 13. Motifs provided by the user are screened against each protein. Type **1, 2, 3** analysis.
 14. The protein family of each protein is predicted. Type **1, 2, 3** analysis.
@@ -55,7 +55,7 @@
 8. CD-HIT is used to reduce the redundancy of the pcdrs.
 9. Bowtie2 maps the reads to the contigs.
 10. The contigs are binned based on MetaBinner or COMEBin.
-11. The pcdrs are screened against the tpd with HMMER.
+11. The pcdrs are screened against the tpd.
 12. Any pcdr with at least one hit against the tpd is screened against the tfpd.
 13. Species are assigned to the proteins based on the species assignment to the bins.
 14. Each bin, along with any taxa assigned to it, is quantified based on the reads mapped to its contigs.
