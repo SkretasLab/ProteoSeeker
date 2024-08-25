@@ -165,7 +165,7 @@ conda config --set channel_priority flexible
 ~~~
 
 ### 2.2.5 Parameter files
-<p align="justify">You can create a set of "template" parameter files which can be used to run the seek or the taxonomy mode or both modes of ProteoSeeker based on the taxonomy route of Kraken2 or COMEBin/MetaBinner by running the following script in the installation directory from the same directory. This set of files is generated in the main directory of ProteoSeeker.</p>
+<p align="justify">You can create a set of "template" parameter files which can be used to run the seek or the taxonomy mode or both modes of ProteoSeeker by running the following script in the installation directory from the same directory. This set of files is generated in the main directory of ProteoSeeker.</p>
 
 ~~~bash
 ./parameter_files.sh
