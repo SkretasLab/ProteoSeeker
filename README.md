@@ -68,6 +68,8 @@
 21. Annotation files are written.
 
 # 2. Installation
+<p align="justify">It is proposed to run ProteoSeeker in a Docker container through its image than directly through the command-line, when that is possible. Therefore, it is proposed to install Docker and download the Docker image of ProteoSeeker. Running ProteoSeeker through the command-line would be necessary to perform the tests described in the evaluation section and when the same SRA sample is to be analyzed multiple times in which case running ProteoSeeker directly through the command-line would retain the SRA file after it is downloaded and processed and there would be no need to download and process it again in future runs.</p>
+
 ## 2.1 Docker
 <p align="justify">To install ProteoSeeker from Docker Hub as a docker image, docker must be installed in your system. To install docker in Ubuntu, follow the instructions provided by the link below:</p>
 
@@ -90,8 +92,6 @@ sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
 ~~~
 
 ## 2.2 Source code
-It is proposed to run ProteoSeeker in a Docker container through its image than directly through the command-line, when that is possible. Therefore, it is proposed to install Docker and downloaded its Docker image. Running ProteoSeeker through the command-line would be necessary to perform the tests described in the evaluation section and when the same SRA sample is to be analyzed multiple times in which case running ProteoSeeker directly through the command-line would retain the SRA file after it is downloaded and processed and there would be no need to download and process it again in future runs.
-
 ### 2.2.1 Prerequisites
 #### Anaconda:
 <p align="justify">To install ProteoSeeker from source code, conda (from Anaconda or Miniconda) must be installed and activated in your system. Instructions for the installation of Anaconda in Linux are provided in the following link:</p>
