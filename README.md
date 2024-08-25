@@ -57,7 +57,7 @@
 10. The contigs are binned based on MetaBinner or COMEBin.
 11. The pcdrs are screened against the tpd through HMMER.
 12. Any pcdr with at least one hit against the tpd is screened against the tfpd through DIAMOND BLASTP.
-13. Species are assigned to the proteins based on the species assignment to the bins.
+13. Taxa are assigned to the proteins based on the species assignment to the bins.
 14. Each bin, along with any taxa assigned to it, is quantified based on the reads mapped to its contigs.
 15. Annotation files are written.
 16. Species are assigned to the reads based on Kraken2.
