@@ -7,7 +7,7 @@
 ![ProteoSeeker Overview](images/Figure_1.png)
 
 1. **Sampling Site Documentation:** Specific characteristics of the sample's environmental source, including factors such as location, habitat, sampling conditions and collection method are documented.
-2. **Sample Collection:** The metagenomic material is collected from the environmental niche of interest.
+2. <p align="justify"><strong>Sample Collection:</strong>The metagenomic material is collected from the environmental niche of interest.</p>
 3. **DNA Isolation and Preparation:** Following DNA extraction, the metagenomic material is prepped for sequencing.
 4. **Next-Generation Sequencing (NGS):**  NGS is performed to collect the dataset(s) with the reads originating from the sample.
 5. **NGS Data Processing:** Datasets and metadata are shared in open-access databases, facilitating collaborative research and data reuse.
