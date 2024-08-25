@@ -26,7 +26,7 @@
 
 1. The selected protein families are determined based on their input codes. Type **1, 2, 3** analysis.
 2. The profiles and protein names associated with the selected families are collected and the spd is created. Type **1, 2, 3** analysis.
-3. The protein database is filtered based on the collected protein names, the sfpd is created. Type **2, 3** analysis.
+3. The protein database is filtered based on the collected protein names and the sfpd is created. Type **2, 3** analysis.
 4. The reads of the FASTQ files go several quality control checks by FastQC. Type **1, 2, 3** analysis.
 5. The reads are preprocessed by BBDuk and then are analyzed by FastQC for a second time. Type **1, 2, 3** analysis.
 6. The preprocessed reads are assembled into contigs by Megahit. Type **1, 2, 3** analysis.
@@ -47,7 +47,7 @@
 
 1. The selected protein families are determined based on their input codes.
 2. The profiles and protein names associated with the selected families are collected and the tpd is created.
-3. The protein database is filtered based on the collected protein names, the tfpd is created.
+3. The protein database is filtered based on the collected protein names and the tfpd is created.
 4. The reads of the FASTQ files go several quality control checks by FastQC.
 5. The reads are preprocessed by BBDuk and then are analyzed by FastQC for a second time.
 6. The preprocessed reads are assembled into contigs by Megahit.
