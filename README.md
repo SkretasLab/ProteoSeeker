@@ -9,7 +9,7 @@
 1. **Sampling Site Documentation:** Specific characteristics of the sample's environmental source, including factors such as location, habitat, sampling conditions and collection method are documented.
 2. **Sample Collection:** The metagenomic material is collected from the environmental niche of interest.
 3. **DNA Isolation and Preparation:** Following DNA extraction, the metagenomic material is prepped for sequencing.
-4. **Next-Generation Sequencing (NGS):**  NGS is performed to collect the metagenomic dataset of the sample
+4. **Next-Generation Sequencing (NGS):**  NGS is performed to collect the metagenomic dataset of the sample.
 5. **NGS Data Processing:** The sequencing files (reads) resulting from NGS are generated and data quality control is performed. Datasets and metadata are shared in open-access databases, facilitating collaborative research and data reuse.
    
 <p align="justify">Such files can be provided directly to ProteoSeeker for analysis, forming the exploration ground for the tool. Proteoseeker aspires to provide a comprehensive, user-friendly platform for the discovery of novel proteins/enzymes originating from environments of interest, enriching the scientific community's capacity to explore microbial ecosystems. A user may download such data and use it as input in the ProteoSeeker, or in the case of SRA of NCBI use the code (SRA accession) of the sample from the online database directly to ProteoSeeker.</p>
