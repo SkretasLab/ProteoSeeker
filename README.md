@@ -102,7 +102,7 @@ Anaconda for Linux: https://docs.anaconda.com/free/anaconda/install/linux/
 <p align="justify">Necessary to download the ProteoSeeker repository.</p>
 
 ### 2.2.2 Dependencies
-<p align="justify">All dependencies, except for the protein database, are automatically installed by the installation process of ProteoSeeker. You can skip this part if you want to go straight to the installation instructions but do read the information related to the protein database which is not installed automatically.</p>
+<p align="justify">All dependencies, except for the protein database, are automatically installed by the installation process of ProteoSeeker. You can skip this part if you want to go straight to the installation instructions but do read the information related to the protein database (at section "2.2.3") which is not installed automatically.</p>
 
 #### git, wget, gzip, tar:
 <p align="justify">These packages are handled by the installation process of ProteoSeeker and are installed in an environment from which the installation of ProteoSeeker will be initiated. A new environment called "ps_install" is created, used to download and collect the required packages. If one wants to use a custom conda environment for the installation of ProteoSeeker, it should contain the following:</p>
@@ -142,7 +142,7 @@ conda install conda-forge::tar
 19. FragGeneScanRs: 1.1.0
 
 ### 2.2.3 Databases
-<p align="justify">The latest versions of the following databases are installed automatically by ProteoSeeker. To see the datetime of their collection for the evaluation of ProteoSeeker, check the evaluation section. Only the protein database should be installed by the user, in which case, he can use one of the already prepared Bash shell script for installing the nr database. The latter file is located in the "installation" directory. The user should be certain that the system has enough available memory to hold the decompressed protein database is to be downloaded. The decompressed nr database approximately needs 400 GB of memory space.</p>
+<p align="justify">The latest versions of the following databases are installed automatically by ProteoSeeker. To see the datetime of their collection for the evaluation of ProteoSeeker, check the evaluation section. Only the protein database should be installed by the user, in which case, he can use one of the already prepared Bash shell script for installing the nr database. The latter file is located in the "installation" directory. The user should be certain that the system has enough available memory to hold the decompressed protein database is to be downloaded. The decompressed nr database approximately needs <strong>400 GB</strong> of memory space.</p>
 
 1. Pfam database: Latest - Automatic installation
 2. Swiss-Prot/UniprotKB database: Latest - Automatic installation
