@@ -771,10 +771,10 @@ protein_db_path="path_to_ProteoSeeker-main/ProteoSeeker-main/nr_database/nr"
 
 ~~~bash
 RESULTS_ALL_PATH="${PS_PATH}/Benchmark"
-KRAKEN_8_DB_PATH="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/ps_tools/kraken2/kraken2_databases/kraken2_8st_db"
-KRAKEN_16_DB_PATH="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/ps_tools/kraken2/kraken2_databases/kraken2_db_16"
-KRAKEN_72_DB_PATH="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/ps_tools/kraken2/kraken2_databases/kraken2_db_72"
-PROTEIN_DB_PATH="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/parameter_files/docker/nr_part.fasta"
+KRAKEN_8_DB_PATH="${PS_PATH}/ps_tools/kraken2/kraken2_databases/kraken2_8st_db"
+KRAKEN_16_DB_PATH=""
+KRAKEN_72_DB_PATH=""
+PROTEIN_DB_PATH="${PS_PATH}/parameter_files/docker/nr_part.fasta"
 ~~~
 
 2. <p align="justify">Move in the "parameter_files" directory and run the following script which will create the parameter files needed to run the taxonomy analyses. It will also create Bash scripts which automate the whole process of calling ProteoSeeker for each analysis and collecting the output specifically associated with the taxonomy analysis in a separate directory than the output directory for all the results generated. Before creating the parameter files one can modify the "par_demo.txt" file which is used as the basis to create all parameter files. To perform the analysis based on identical factors regarding the runs of ProteoSeeker as the ones used in the taxonomy evaluation of [manuscript under review] you should provide the name of an environment where COMEBin is able to run with a GPU at the option "comebin_env" and its bin path as the option "comebin_bin_path" and set the option "kraken_memory_mapping" as equal to False. If none of these modifications are made the results of the tests compared to the results from the evaluation described in the publication will be identical. These modifications were done to the parameter files to allow for any user without a GPU or with low RAM available to run the evaluation</p>
