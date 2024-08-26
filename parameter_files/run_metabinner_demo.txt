@@ -38,7 +38,7 @@ if [ -d "${K_8_PATH}" ]; then
   cp "${K_8_PATH}/contigs/contigs_formated.fna" "${M_NR_PATH}/contigs"
 
   # Run nr
-  python -u proteoseeker.py -pfp "${PS_PATH}/parameter_files/X/par_sX_phylo_m_nr.txt" &> "${PS_PATH}/results/sample_X/stdoe_sX_mnr.txt"
+  python -u "${PS_PATH}/proteoseeker.py" -pfp "${PS_PATH}/parameter_files/X/par_sX_phylo_m_nr.txt" &> "${PS_PATH}/results/sample_X/stdoe_sX_mnr.txt"
   
   # Move nr
   mv "${M_NR_PATH}" "${RESULTS_ALL_PATH}/sample_X/"
