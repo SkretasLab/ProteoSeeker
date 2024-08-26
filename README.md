@@ -675,7 +675,7 @@ Selection | Mode | Analysis Type | Route | Input
 ./docker_bindmount_run_proteoseeker.sh
 ~~~
 
-<p align="justify">When running the Docker container and collecting the results in a directory located in the "${HOME}" path of the user, one should first change the permissions of the results directory by providing read and write permissions to all its contents, because the directory generated as output from ProteoSeeker in the Docker container (and in the bind mount) will be missing these permissions.</p>
+<p align="justify">You should change the permissions of the output directory in the "results" directory of the bind mount by providing read and write permissions to all its contents, because the output directory generated as output from ProteoSeeker in the Docker container (and in the bind mount) will be missing these permissions.</p>
 
 ~~~bash
 sudo -E chmod -R a+rw "${HOME}/proteoseeker_bindmount/results"
