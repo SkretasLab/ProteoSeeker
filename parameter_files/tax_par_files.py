@@ -95,7 +95,6 @@ def cparf():
     comebin_demo_path = "{}/run_comebin_demo.txt".format(parameter_path)
     metabinner_demo_path = "{}/run_metabinner_demo.txt".format(parameter_path)
     all_demo_path = "{}/run_all_demo.txt".format(parameter_path)
-    par_sra_demo_path = "{}/sra_process/par_sra_demo.txt".format(parameter_path)
 
     # Parameter lines for the taxonomy analysis
     par_lines = read_file(par_demo_path)
@@ -241,47 +240,6 @@ def cparf():
         bash_script_all_file.close()
         file_stats = os.stat(bash_script_all_path)
         os.chmod(bash_script_all_path, file_stats.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
-
-    # The paths for the parameter files.
-    par_sra_demo_path = "{}/sra_process/par_sra_demo.txt".format(parameter_path)
-
-    # Parameter lines for the sra collection of the taxonomy analysis.
-    par_sra_demo_lines = read_file(par_sra_demo_path)
-    for sample_id in range(1, 20):
-        sample_id_str = str(sample_id)
-        par_sra_path = "sra_process/par_s{}_sra.txt".format(sample_id_str)
-        par_sra_file = open(par_sra_path, "w")
-        for line in par_sra_demo_lines:
-            if line == "sra_code=\"\"":
-                sra_code = sra_codes_dict[sample_id]
-                line = "sra_code=\"{}\"".format(sra_code)
-            elif line == "adapters_path=\"\"":
-                line = "adapters_path=\"{}\"".format(adapters_path)
-            elif "protein_db_path=" in line:
-                line = "protein_db_path=\"{}\"".format(protein_db_path)
-            elif line == "profiles_broad_path=\"\"":
-                line = "profiles_broad_path=\"{}\"".format(pfam_path)
-            elif line == "swissprot_path=\"\"":
-                line = "swissprot_path=\"{}\"".format(swissprot_path)
-            elif line == "motifs_path=\"\"":
-                line = "motifs_path=\"{}\"".format(motifs_path)
-            elif line == "conda_bin=\"\"":
-                line = "conda_bin=\"{}\"".format(conda_inst_dir)
-            elif line == "conda_sh=\"\"":
-                line = "conda_sh=\"{}\"".format(conda_sh_path)
-            elif line == "metabinner_bin_path=\"\"":
-                line = "metabinner_bin_path=\"{}\"".format(mbinpath)
-            elif line == "comebin_bin_path=\"\"":
-                line = "comebin_bin_path=\"{}\"".format(cbinpath)
-            elif line == "fraggenescanrs_path=\"\"":
-                line = "fraggenescanrs_path=\"{}\"".format(fraggenescanrs_path)
-            elif line == "phobius_path=\"\"":
-                line = "phobius_path=\"{}\"".format(phobius_path)
-            elif line == "output_path=\"\"":
-                output_dir_path = "{}/samples_sra/sample_{}_sra".format(parameter_path, sample_id_str)
-                line =  "output_path=\"{}\"".format(output_dir_path)
-            par_sra_file.write("{}\n".format(line))
-        par_sra_file.close()
 
 
 if __name__ == "__main__":
