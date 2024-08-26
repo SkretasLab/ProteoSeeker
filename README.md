@@ -661,7 +661,7 @@ Selection | Mode | Analysis Type | Route | Input
 ### 3.3.1 Bind mount
 <p align="justify">A bind mount is a directory located in the local host and not run by Docker. The data stored in the bind mount are retained after the container is stopped or exits, may be used by different containers and are also accessible by the local host. From the main directory of ProteoSeeker run the Bash script below (should not be run with sudo) which performs the following actions:</p>
 
-1. Creates the "docker_mount_dir" directory in the home directory of the user.
+1. Creates the "proteoseeker_bindmount" directory in the home directory of the user.
 2. Create directories in the volumes needed to run ProteoSeeker in the image and collects the results in the host system.
 3. Copies the parameter files used as templates to run ProteoSeeker in the image.
 
