@@ -686,7 +686,7 @@ sudo -E chmod -R a+rw "${HOME}/proteoseeker_bindmount/results"
 ### 3.3.2 Volume
 <p align="justify">A volume is a directory inside Docker. Volumes can be found in the "volumes" directory of your Docker installation (e.g., /var/lib/docker/volumes). The data of the volume is stored in the "_data" directory of the volume. This data is retained in the volume after the container is stopped or exits, may be used by different containers and is also accessible by the local host. Any directory or file placed in the "_data" directory will be accessible from the local host and the container to which it has been added. From the main directory of ProteoSeeker, run the Bash script with sudo (mandatory) which performs the following actions:</p>
 
-1. Creates a Docker volume.
+1. Creates the "proteoseeker_vol" Docker volume.
 2. Finds the full path of the Docker volume.
 3. Creates directories in the volumes needed to run ProteoSeeker in the image and collects the results in the host system.
 4. Copies the parameter files used as templates to run ProteoSeeker in the image.
