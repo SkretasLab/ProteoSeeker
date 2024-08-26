@@ -663,7 +663,7 @@ Selection | Mode | Analysis Type | Route | Input
 
 1. Creates the "proteoseeker_bindmount" directory in the home directory of the user.
 2. Creates directories in the bind mount ("proteoseeker_bindmount") which are needed to run ProteoSeeker  and collect the results in the host system.
-3. Copies the parameter files used as templates to run ProteoSeeker in the bind mount.
+3. Copies the parameter files used as templates to run ProteoSeeker in the bind mount ("proteoseeker_bindmount").
 
 ~~~bash
 ./installation/docker_bindmount_setup.sh
@@ -689,7 +689,7 @@ sudo -E chmod -R a+rw "${HOME}/proteoseeker_bindmount/results"
 1. Creates the "proteoseeker_vol" Docker volume.
 2. Finds the full path of the Docker volume.
 3. Creates directories in the volume ("proteoseeker_vol") which are needed to run ProteoSeeker in the image and collect the results in the host system.
-4. Copies the parameter files used as templates to run ProteoSeeker in the volume.
+4. Copies the parameter files used as templates to run ProteoSeeker in the Docker volume ("proteoseeker_vol").
 
 ~~~bash
 sudo ./installation/docker_vol_setup.sh
