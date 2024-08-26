@@ -662,8 +662,8 @@ Selection | Mode | Analysis Type | Route | Input
 <p align="justify">A bind mount is a directory located in the local host and not run by Docker. The data stored in the bind mount are retained after the container is stopped or exits, may be used by different containers and are also accessible by the local host. From the main directory of ProteoSeeker run the Bash script below (should not be run with sudo) which performs the following actions:</p>
 
 1. Creates the "proteoseeker_bindmount" directory in the home directory of the user.
-2. Creates directories in the bind mount (proteoseeker_bindmount) which are needed to run ProteoSeeker in the image and collect the results in the host system.
-3. Copies the parameter files used as templates to run ProteoSeeker in the image.
+2. Creates directories in the bind mount (proteoseeker_bindmount) which are needed to run ProteoSeeker  and collect the results in the host system.
+3. Copies the parameter files used as templates to run ProteoSeeker in the bind mount.
 
 ~~~bash
 ./installation/docker_bindmount_setup.sh
@@ -689,7 +689,7 @@ sudo -E chmod -R a+rw "${HOME}/proteoseeker_bindmount/results"
 1. Creates the "proteoseeker_vol" Docker volume.
 2. Finds the full path of the Docker volume.
 3. Creates directories in the volume (proteoseeker_vol) which are needed to run ProteoSeeker in the image and collect the results in the host system.
-4. Copies the parameter files used as templates to run ProteoSeeker in the image.
+4. Copies the parameter files used as templates to run ProteoSeeker in the volume.
 
 ~~~bash
 sudo ./installation/docker_vol_setup.sh
