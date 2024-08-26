@@ -746,7 +746,7 @@ conda deactivate
 protein_db_path="/.../ProteoSeeker-main/nr_database/nr"
 
 ### 3.4.1 Utilizing Phobius
-<p align="justify">When ProteoSeeker is run by the command-line, in order to utilize Phobius, you should download and extract Phobius in a directory and modify the value of "phobius_path" in the parameter file or the value of the corresponding option of "proteoseeker.py" to the Phobius directory.</p>
+<p align="justify">When ProteoSeeker is run by the command-line, in order to utilize Phobius, you should download and extract Phobius in a directory and modify the value of "phobius_path" in the parameter file or the value of the corresponding option of "proteoseeker.py" to that of the path of the Phobius directory.</p>
 
 # 4. Test cases
 <p align="justify">All tests for the evaluation were run based on the ProteoSeeker version 1.0.0 and the tool versions described in it, which refer to the current release of ProteoSeeker. The collection dates for the databases used in the evaluation are found below. In addition, we also mention the download date of the flat file for the reviewed (Swiss-Prot) proteins of the Uniprot database, which was used to collect information about protein families, protein Pfam domains, protein names, protein lengths and their associations.</p>
