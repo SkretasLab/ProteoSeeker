@@ -718,9 +718,21 @@ Index | Parameter file | Mode | Analysis Type | Route | Input
 5 | par_tax_k_p.txt | taxonomy | - | Kraken2 | SRA or FASTQ paired-end
 6 | par_tax_mc_p.txt | taxonomy | - | COMEBin/MetaBinner: MetaBinner | SRA or FASTQ paired-end
 
+<p align="justify">From the main directory of ProteoSeeker, where the template parameter files should be located (after their creation from the "parameter_files.sh" Bash script), run any of them by using the comands below:</p>
+
 ~~~bash
 conda activate ps_env
-python proteoseeker.py -pfp parameter_file.txt
+python proteoseeker.py -pfp par_seek_p.txt
+or
+python proteoseeker.py -pfp par_seek_c.txt
+or
+python proteoseeker.py -pfp par_seek_tax_k_p.txt
+or
+python proteoseeker.py -pfp par_seek_tax_mc_p.txt
+or
+python proteoseeker.py -pfp par_tax_k_p.txt
+or
+python proteoseeker.py -pfp par_tax_mc_p.txt
 conda deactivate
 ~~~
 
