@@ -810,7 +810,7 @@ conda activate ps_env
 conda deactivate
 ~~~
 
-5. <p align="justify">To extract the statistics from the results of ProteoSeeker for the taxonomy evaluation all the methods from at least one sample must have run. The Bash script will analyze and provide output (plots, statistics etc.) for any number of samples analyzed based on all methods. To run the script go to the directory "tests/tax_results_analysis" and run the following:</p>
+5. <p align="justify">To extract the statistics from the results of ProteoSeeker for the taxonomy evaluation all the taxonomy methods for at least one sample must have been analyzed. The Bash script will analyze and provide the output (plots, statistics etc.) for any number of samples analyzed based on all taxonomy methods. To run the script go to the directory "tests/tax_results_analysis" and run the following:</p>
 
 ~~~bash
 ./analyze_tax_results.sh
