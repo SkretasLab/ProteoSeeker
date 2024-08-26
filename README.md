@@ -788,6 +788,7 @@ python tax_par_files.py
 <p align="justify">At first, run the following Bash script from the main directory of ProteoSeeker, to set up paths related to the conda installation in the parameter files described below.</p>
 
 ~~~bash
+ chmod -R 755 parameter_files/sra_process
 ./parameter_files/sra_process/set_conda_paths.sh
 ~~~
 
