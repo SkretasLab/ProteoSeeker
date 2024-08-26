@@ -798,12 +798,12 @@ conda deactivate
 
 ~~~bash
 conda activate ps_env
-./taxonomy_tests/sra_process/run_1_all.sh
-./taxonomy_tests/sra_process/run_5_kraken.sh
-./taxonomy_tests/sra_process/run_5_metabinner.sh
-./taxonomy_tests/sra_process/run_9_kraken.sh
-./taxonomy_tests/sra_process/run_9_comebin.sh
-./taxonomy_tests/sra_process/run_11_all.sh
+./parameter_files/run_1_all.sh
+./parameter_files/run_5_kraken.sh
+./parameter_files/run_5_metabinner.sh
+./parameter_files/run_9_kraken.sh
+./parameter_files/run_9_comebin.sh
+./parameter_files/run_11_all.sh
 conda deactivate
 ~~~
 
