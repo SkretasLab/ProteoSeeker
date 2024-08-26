@@ -777,9 +777,10 @@ KRAKEN_72_DB_PATH=""
 PROTEIN_DB_PATH="${PS_PATH}/parameter_files/docker/nr_part.fasta"
 ~~~
 
-2. <p align="justify">Move in the "parameter_files" directory and run the following script which will create the parameter files needed to run the taxonomy analyses. It will also create Bash scripts which automate the whole process of calling ProteoSeeker for each analysis and collecting the output specifically associated with the taxonomy analysis in a separate directory than the output directory used to collect all of the results. Before creating the parameter files one can modify the "par_demo.txt" file which is used as the basis to create all parameter files. To perform the analysis based on identical factors regarding the runs of ProteoSeeker as the ones used in the taxonomy evaluation of [manuscript under review] you should provide the name of an environment where COMEBin is able to run with a GPU at the option "comebin_env" and the path of the parent directory of "run_comebin.sh" at the option "comebin_bin_path", set the option "kraken_memory_mapping" equal to False and set "thread_num" equal to 24. If none of these modifications are made the results of the tests compared to the results from the evaluation described in the publication will be identical. These modifications were done to the parameter files to allow for any user without a GPU or with low RAM or few CPUs available to run the evaluation.</p>
+2. <p align="justify">Move in the "parameter_files" directory, give the proper permissions to the "setup.sh" Bash script and run the following Python script which will create the parameter files needed to run the taxonomy analyses. It will also create Bash scripts which automate the whole process of calling ProteoSeeker for each analysis and collecting the output specifically associated with the taxonomy analysis in a separate directory than the output directory used to collect all of the results. Before creating the parameter files one can modify the "par_demo.txt" file which is used as the basis to create all parameter files. To perform the analysis based on identical factors regarding the runs of ProteoSeeker as the ones used in the taxonomy evaluation of [manuscript under review] you should provide the name of an environment where COMEBin is able to run with a GPU at the option "comebin_env" and the path of the parent directory of "run_comebin.sh" at the option "comebin_bin_path", set the option "kraken_memory_mapping" equal to False and set "thread_num" equal to 24. If none of these modifications are made the results of the tests compared to the results from the evaluation described in the publication will be identical. These modifications were done to the parameter files to allow for any user without a GPU or with low RAM or few CPUs available to run the evaluation.</p>
 
 ~~~bash
+chmod 755 setup.sh
 python tax_par_files.py
 ~~~
 
@@ -788,7 +789,7 @@ python tax_par_files.py
 <p align="justify">From the main directory of ProteoSeeker, at first, give the proper permissions to the "sra_process" directory and then run the following Bash script, to set up paths related to the conda installation in the parameter files described below.</p>
 
 ~~~bash
- chmod -R 755 parameter_files/sra_process
+chmod -R 755 parameter_files/sra_process
 ./parameter_files/sra_process/set_sra_par_paths.sh
 ~~~
 
