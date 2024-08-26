@@ -11,7 +11,7 @@ profiles_phylo_path=""
 profiles_broad_path="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/pfam_database/Pfam-A.hmm"
 swissprot_path="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/swissprot_database/swissprot"
 motifs_path="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/motifs.txt"
-output_path="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/parameter_files/samples_sra/sample_17_sra"
+output_path="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/results/samples_sra/sample_17_sra"
 
 #---------Protein family options---------
 family_code=""
