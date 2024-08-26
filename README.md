@@ -741,15 +741,9 @@ conda deactivate
 1. seek_route="2" or seek_route="3"
 2. create_nr_db_status="" or create_nr_db_status="True"
 
-<p align="justify">Then, provide a suitable protein database. Any file with protein sequences in FASTA format can be used to run the seek mode, type 2 or type 3 analysis of ProteoSeeker. For the taxonomy mode and COMEBin/MetaBinner route of ProteoSeeker the file used as the protein database should contain headers (for its protein sequences) which contain information about the taxon/taxa associated with their protein sequences, in a style identical to the one used by the non-redundant (nr) database of NCBI or the Uniref100/90/50 databases of UniprotKB. For example, to use a protein database which is basically a small part of the nr database, that is used for testing the aforementioned functionalities of ProteoSeeker and not for an actual and full analysis by ProteoSeeker based on the protein datbase, make the following modification in one of the parameter files and use that parameter file to run ProteoSeeker.</p>
+<p align="justify">Then, provide a suitable protein database. Any file with protein sequences in FASTA format can be used to run the seek mode, type 2 or type 3 analysis of ProteoSeeker. For the taxonomy mode and COMEBin/MetaBinner route of ProteoSeeker the file used as the protein database should contain headers (for its protein sequences) which contain information about the taxon/taxa associated with their protein sequences, in a style identical to the one used by the non-redundant (nr) database of NCBI or the Uniref100/90/50 databases of UniprotKB. For example, some of the template parameter files use a protein database which is basically a small part of the nr database, that is used for testing the aforementioned functionalities of ProteoSeeker and not for an actual and full analysis by ProteoSeeker based on the protein datbase, based on the parameter below. To use another protein database modify the path below to that of your protein database.</p>
 
-protein_db_path="/home/georgios/ProteoSeeker-main/parameter_files/docker/nr_part.fasta"
-
-~~~bash
-conda activate ps_env
-python proteoseeker.py -pfp parameter_file.txt
-conda deactivate
-~~~
+protein_db_path="/home/ps_data/protein_databases/nr_part.fasta"
 
 ### 3.4.1 Utilizing Phobius
 <p align="justify">When ProteoSeeker is run by the command-line, in order to utilize Phobius, you should download and extract Phobius in a directory and modify the value of "phobius_path" in the parameter file or the value of the corresponding option of "proteoseeker.py" to the Phobius directory.</p>
