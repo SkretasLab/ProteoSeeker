@@ -816,7 +816,7 @@ conda deactivate
 ## 4.2 Seek and taxonomy modes evaluation
 <p align="justify">The seek and taxonomy mode of ProteoSeeker can be tested on specific samples which have been analyzed by our lab in the process of discovering novel enzymes with desirable characteristics. The following samples were used for these analyses: "SRR3961740", "DRR163688" and "SRR17771278".</p>
 
-1. <p align="justify">In the Bash script "setup.sh" in the directory "parameter_files", modify the paths to the Kraken2 Collection Standard-8, Standard-16, Standard databases and to the protein database, using their full paths based on your system. The variables storing these paths are the following:</p>
+1. <p align="justify">In the Bash script "setup.sh" in the directory "parameter_files", modify the paths to the Kraken2 Collection Standard-8, Standard-16, Standard databases and to the protein database, using their absolute paths based on your system. The latters paths are already set as for ProteoSeeker to be able to run properly but your modifications are advised ensuring that the paths are set correctly. The variables storing these paths are the following:</p>
 
 ~~~bash
 KRAKEN_8_DB_PATH="${PS_PATH}/ps_tools/kraken2/kraken2_databases/kraken2_8st_db"
