@@ -1,0 +1,50 @@
+#!/bin/bash
+set -e
+
+# Get the current directory
+SRA_PATH=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+PARAMETER_PATH=$(dirname "${SRA_PATH}")
+PS_PATH=$(dirname "${PARAMETER_PATH}")
+INSTALLATION_PATH="${PS_PATH}/installation"
+FIND_COND_SCRIPT="${INSTALLATION_PATH}/find_conda.sh"
+
+source "${FIND_COND_SCRIPT}"
+
+sed -i "104s|.*|conda_bin=\"${CONDA_INST_DIR}\"|" "${PARAMETER_PATH}/sra_process/par_s1_sra.txt"
+sed -i "105s|.*|conda_sh=\"${CONDA_SH_PATH}\"|" "${PARAMETER_PATH}/sra_process/par_s1_sra.txt"
+sed -i "104s|.*|conda_bin=\"${CONDA_INST_DIR}\"|" "${PARAMETER_PATH}/sra_process/par_s2_sra.txt"
+sed -i "105s|.*|conda_sh=\"${CONDA_SH_PATH}\"|" "${PARAMETER_PATH}/sra_process/par_s2_sra.txt"
+sed -i "104s|.*|conda_bin=\"${CONDA_INST_DIR}\"|" "${PARAMETER_PATH}/sra_process/par_s3_sra.txt"
+sed -i "105s|.*|conda_sh=\"${CONDA_SH_PATH}\"|" "${PARAMETER_PATH}/sra_process/par_s3_sra.txt"
+sed -i "104s|.*|conda_bin=\"${CONDA_INST_DIR}\"|" "${PARAMETER_PATH}/sra_process/par_s4_sra.txt"
+sed -i "105s|.*|conda_sh=\"${CONDA_SH_PATH}\"|" "${PARAMETER_PATH}/sra_process/par_s4_sra.txt"
+sed -i "104s|.*|conda_bin=\"${CONDA_INST_DIR}\"|" "${PARAMETER_PATH}/sra_process/par_s5_sra.txt"
+sed -i "105s|.*|conda_sh=\"${CONDA_SH_PATH}\"|" "${PARAMETER_PATH}/sra_process/par_s5_sra.txt"
+sed -i "104s|.*|conda_bin=\"${CONDA_INST_DIR}\"|" "${PARAMETER_PATH}/sra_process/par_s6_sra.txt"
+sed -i "105s|.*|conda_sh=\"${CONDA_SH_PATH}\"|" "${PARAMETER_PATH}/sra_process/par_s6_sra.txt"
+sed -i "104s|.*|conda_bin=\"${CONDA_INST_DIR}\"|" "${PARAMETER_PATH}/sra_process/par_s7_sra.txt"
+sed -i "105s|.*|conda_sh=\"${CONDA_SH_PATH}\"|" "${PARAMETER_PATH}/sra_process/par_s7_sra.txt"
+sed -i "104s|.*|conda_bin=\"${CONDA_INST_DIR}\"|" "${PARAMETER_PATH}/sra_process/par_s8_sra.txt"
+sed -i "105s|.*|conda_sh=\"${CONDA_SH_PATH}\"|" "${PARAMETER_PATH}/sra_process/par_s8_sra.txt"
+sed -i "104s|.*|conda_bin=\"${CONDA_INST_DIR}\"|" "${PARAMETER_PATH}/sra_process/par_s9_sra.txt"
+sed -i "105s|.*|conda_sh=\"${CONDA_SH_PATH}\"|" "${PARAMETER_PATH}/sra_process/par_s9_sra.txt"
+sed -i "104s|.*|conda_bin=\"${CONDA_INST_DIR}\"|" "${PARAMETER_PATH}/sra_process/par_s10_sra.txt"
+sed -i "105s|.*|conda_sh=\"${CONDA_SH_PATH}\"|" "${PARAMETER_PATH}/sra_process/par_s10_sra.txt"
+sed -i "104s|.*|conda_bin=\"${CONDA_INST_DIR}\"|" "${PARAMETER_PATH}/sra_process/par_s11_sra.txt"
+sed -i "105s|.*|conda_sh=\"${CONDA_SH_PATH}\"|" "${PARAMETER_PATH}/sra_process/par_s11_sra.txt"
+sed -i "104s|.*|conda_bin=\"${CONDA_INST_DIR}\"|" "${PARAMETER_PATH}/sra_process/par_s12_sra.txt"
+sed -i "105s|.*|conda_sh=\"${CONDA_SH_PATH}\"|" "${PARAMETER_PATH}/sra_process/par_s12_sra.txt"
+sed -i "104s|.*|conda_bin=\"${CONDA_INST_DIR}\"|" "${PARAMETER_PATH}/sra_process/par_s13_sra.txt"
+sed -i "105s|.*|conda_sh=\"${CONDA_SH_PATH}\"|" "${PARAMETER_PATH}/sra_process/par_s13_sra.txt"
+sed -i "104s|.*|conda_bin=\"${CONDA_INST_DIR}\"|" "${PARAMETER_PATH}/sra_process/par_s14_sra.txt"
+sed -i "105s|.*|conda_sh=\"${CONDA_SH_PATH}\"|" "${PARAMETER_PATH}/sra_process/par_s14_sra.txt"
+sed -i "104s|.*|conda_bin=\"${CONDA_INST_DIR}\"|" "${PARAMETER_PATH}/sra_process/par_s15_sra.txt"
+sed -i "105s|.*|conda_sh=\"${CONDA_SH_PATH}\"|" "${PARAMETER_PATH}/sra_process/par_s15_sra.txt"
+sed -i "104s|.*|conda_bin=\"${CONDA_INST_DIR}\"|" "${PARAMETER_PATH}/sra_process/par_s16_sra.txt"
+sed -i "105s|.*|conda_sh=\"${CONDA_SH_PATH}\"|" "${PARAMETER_PATH}/sra_process/par_s16_sra.txt"
+sed -i "104s|.*|conda_bin=\"${CONDA_INST_DIR}\"|" "${PARAMETER_PATH}/sra_process/par_s17_sra.txt"
+sed -i "105s|.*|conda_sh=\"${CONDA_SH_PATH}\"|" "${PARAMETER_PATH}/sra_process/par_s17_sra.txt"
+sed -i "104s|.*|conda_bin=\"${CONDA_INST_DIR}\"|" "${PARAMETER_PATH}/sra_process/par_s18_sra.txt"
+sed -i "105s|.*|conda_sh=\"${CONDA_SH_PATH}\"|" "${PARAMETER_PATH}/sra_process/par_s18_sra.txt"
+sed -i "104s|.*|conda_bin=\"${CONDA_INST_DIR}\"|" "${PARAMETER_PATH}/sra_process/par_s19_sra.txt"
+sed -i "105s|.*|conda_sh=\"${CONDA_SH_PATH}\"|" "${PARAMETER_PATH}/sra_process/par_s19_sra.txt"
