@@ -783,17 +783,17 @@ PROTEIN_DB_PATH="${PS_PATH}/parameter_files/docker/nr_part.fasta"
 python tax_par_files.py
 ~~~
 
-3. **This step can be skipped.**<p align="justify">The first parameter file run for any of the samples will collect and process the SRA file associated with that sample. This process will not be repeated for other parameter files of the same sample. Similarly, the first parameter file run for COMEBin or MetaBinner for any sample will create the protein database needed for their analyses, a process that will not be repeated for any other parameter file for an analysis of COMEBin or MetaBinner. You have the option to run each process of collecting and processing the SRA file of each sample, separately from the rest of the analysis by running the Bash scripts in the "parameter_file/sra_process" directory. For example, to run ProteoSeeker only for the SRA-related processes of samples 1, 4 or 19 or for all of the samples, run one the following:</p>
+3. **This step can be skipped.**<p align="justify">The first parameter file run for any of the samples will collect and process the SRA file associated with that sample. This process will not be repeated for other parameter files of the same sample. Similarly, the first parameter file run for COMEBin or MetaBinner for any sample will create the protein database needed for their analyses, a process that will not be repeated for any other parameter file for an analysis of COMEBin or MetaBinner. You have the option to run each process of collecting and processing the SRA file of each sample, separately from the rest of the analysis by running the Bash scripts in the "parameter_file/sra_process" directory. For example, to run ProteoSeeker only for the SRA-related processes of samples 1, 4 or 19 or for all of the samples, from the main directory or ProteoSeeker, run one the following:</p>
 
 ~~~bash
 conda activate ps_env
-python proteoseeker.py -pfp parameter_files/sra_process/run_sra_1.sh
+./parameter_files/sra_process/run_sra_1.sh
 or
-python proteoseeker.py -pfp parameter_files/sra_process/run_sra_4.sh
+./parameter_files/sra_process/run_sra_4.sh
 or
-python proteoseeker.py -pfp parameter_files/sra_process/run_sra_19.sh
+./parameter_files/sra_process/run_sra_19.sh
 or
-python proteoseeker.py -pfp parameter_files/sra_process/run_sra_all.sh
+./parameter_files/sra_process/run_sra_all.sh
 conda deactivate
 ~~~
 
