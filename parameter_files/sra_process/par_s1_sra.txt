@@ -11,7 +11,7 @@ profiles_phylo_path=""
 profiles_broad_path=""
 swissprot_path=""
 motifs_path=""
-output_path="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/results/samples_sra/sample_1_sra"
+output_path=""
 
 #---------Protein family options---------
 family_code=""
