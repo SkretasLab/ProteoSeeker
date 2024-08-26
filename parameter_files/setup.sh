@@ -15,10 +15,10 @@ PS_PATH=$(dirname "${PARAMETER_DIR}")
 RESULTS_ALL_PATH="${PS_PATH}/Benchmark"
 
 # Paths for the Kraken2 and protein databases
-KRAKEN_8_DB_PATH="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Works/Enzymes_Metagenomes/ps_tools/kraken2/kraken2_databases/kraken2_8st_db"
+KRAKEN_8_DB_PATH="${PS_PATH}/ps_tools/kraken2/kraken2_databases/kraken2_8st_db"
 KRAKEN_16_DB_PATH=""
 KRAKEN_72_DB_PATH=""
-PROTEIN_DB_PATH="/mnt/4529bb0c-30cc-4e67-8f04-e94a1b226730/Projects/NR_Database/nr.fasta"
+PROTEIN_DB_PATH="${PS_PATH}/parameter_files/docker/nr_part.fasta"
 
 # Create the directory for the main part of the results, if not created already.
 if [ ! -d "${RESULTS_ALL_PATH}" ]; then
