@@ -646,7 +646,7 @@ To:
 my $DECODEANHMM =      "$PHOBIUS_DIR/decodeanhmm.64bit";
 ~~~
 
-<p align="justify">For both cases of bind mounts and volumes, you can perform a test based on a template parameter file (located at the "parameter_files" directory in the bind mount or volume) each of which runs a different analysis. The test is selected with a number. All template parameter files are ready to be used to run ProteoSeeker by analyzing the sample with the SRA code "SRR12829170". Each parameter file is also set up to handle FASTQ paired-end input. Furthermore, the light_v1.0.0 Docker image may be used to run a container for ProteoSeeker for the Kraken2 taxonomy route only if the user provides a path to a Kraken2 database in the shared directory (bind mount or volume). The selections are described below:</p>
+<p align="justify">For both cases of bind mounts and volumes, you can perform a test based on a template parameter file (located at the "parameter_files" directory in the bind mount or volume) each of which runs a different analysis. The test is selected with a number based on one of the scripts "docker_bindmount_run_proteoseeker.sh" and "docker_vol_run_proteoseeker.sh" as described in sections "3.3.1" and "3.3.2". All template parameter files are ready to be used to run ProteoSeeker by analyzing the sample with the SRA code "SRR12829170". Each parameter file is also set up to handle FASTQ paired-end input. Furthermore, the light_v1.0.0 Docker image may be used to run a container for ProteoSeeker for the Kraken2 taxonomy route only if the user provides a path to a Kraken2 database in the shared directory (bind mount or volume). The selections are described below:</p>
 
 Selection | Mode | Analysis Type | Route | Input
 --- | --- | --- | --- | ---
