@@ -71,7 +71,7 @@
 <p align="justify">It is proposed to run ProteoSeeker in a Docker container through its image than directly through the command-line, when that is possible. Therefore, it is proposed to install Docker and download the Docker image of ProteoSeeker. Running ProteoSeeker through the command-line would be necessary to perform the tests described in the evaluation section and when the same SRA sample is to be analyzed multiple times in which case running ProteoSeeker directly through the command-line would retain the SRA file after it is downloaded and processed and there would be no need to download and process it again in future runs.</p>
 
 ## 2.1 Docker
-<p align="justify">To install ProteoSeeker from Docker Hub as a docker image, docker must be installed in your system. To install Docker in Ubuntu, follow the instructions provided by the link below:</p>
+<p align="justify">To install ProteoSeeker from Docker Hub as a Docker image, Docker must be installed in your system. To install Docker in Ubuntu, follow the instructions provided by the link below:</p>
 
 Docker engine for Ubuntu: https://docs.docker.com/engine/install/ubuntu/
 
@@ -703,7 +703,7 @@ sudo ./installation/docker_vol_setup.sh
 
 <p align="justify">In this case, the data shared between the local host and the container will be located at "/var/lib/docker/volumes/ps_vol/_data". To find the results of the run, check in the directory "/var/lib/docker/volumes/ps_vol/_data/results". Similarly, you can run ProteoSeeker based on a custom parameters file. After ProteoSeeker has terminated, the container stops and exits, hence, the results cannot be found in that container. You can also run the same command of the script by adding the "-d" option, which runs the container in the background. You can then attach to the container to observe which stage of the pipeline is currently being run. In addition, you can use "/bin/bash/" as the command to run the container in interactive mode, then run ProteoSeeker from the container (as you would directly from the command-line of the host) and then transfer the results to the host through the shared bind mount or volume.</p>
 
-### 3.3.3 Utilizing Phobius in the docker container
+### 3.3.3 Utilizing Phobius in the Docker container
 <p align="justify">The "phobius" directory in the bind mount or volume can be used to store the files of the Phobius installation. If done so, ProteoSeeker will detect and use Phobius when running in the Docker container. It is possible to store the Phobius installation in another directory and set ProteoSeeker to utilize it by modifying the value of "phobius_path" in the parameter file or by providing it as a parameter directly to "proteoseeker.py".</p>
 
 ## 3.4 Command-line
