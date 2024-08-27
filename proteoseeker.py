@@ -1923,7 +1923,7 @@ def contig_formation(contigs, file_paths, output_final_contigs, output_megahit_c
         else:
             print("\nNo files with contigs were generated from the assembly. Exiting.")
             exit()
-    # Writting the final contigs in FASTA format.
+    # Writing the final contigs in FASTA format.
     split_size = 70
     new_file_final_contigs_formated = open(output_final_contigs_formated, "w")
     with open(output_final_contigs, "r") as final_contigs_lines:
@@ -4645,7 +4645,7 @@ def tax_info_convert(bin_group_tax_dict):
 
 
 def txt_results(annotation_file_txt_name, output_path_annotation, dict_hm, dict_seqs, dict_top, dict_sp, dict_nr, dict_input_motifs, dict_genes, swiss_fams_len_comp_dict, contig_gene_dist_dict, pr_tax_info_dcit, add_type, add_info):
-    print("\nWritting the results in a TXT File...")
+    print("\nWriting the results in a TXT File...")
     # Final folder with annotation files is created.
     if os.path.exists(output_path_annotation):
         shutil.rmtree(output_path_annotation)
@@ -4776,7 +4776,7 @@ def txt_results(annotation_file_txt_name, output_path_annotation, dict_hm, dict_
 
 
 def excel_results(annotation_file_excel_name, dict_hm, dict_seqs, dict_top, dict_sp, dict_nr, dict_input_motifs, dict_genes, swiss_fams_len_comp_dict, contig_gene_dist_dict, pr_tax_info_dcit, add_type, add_info):
-    print("\nWritting the results in an EXCEL File...")
+    print("\nWriting the results in an EXCEL File...")
     total_seqs = len(dict_seqs.keys())
     if total_seqs > 1000000:
         print("\nThe number of proteins is too large to be able to write their information in an Excel file. Annotation information will not be written in an Excel file.")
@@ -4785,7 +4785,7 @@ def excel_results(annotation_file_excel_name, dict_hm, dict_seqs, dict_top, dict
     new_excel = Workbook()
     new_excel.save(annotation_file_excel_name)
     new_excel_edit = load_workbook(annotation_file_excel_name)
-    # Creating, saving and loading the new or preexisting Excel file for editing by sving the results
+    # Creating, saving and loading the new or preexisting Excel file for editing by saving the results
     sheet_edit = new_excel_edit.active
     # If the new file already exists there is no need to rewrite the headers of the columns and set their widths.
     # The indexes of the rows and columns in the excel file begin at 1.
