@@ -24,54 +24,35 @@ if [ -d "${KRAKEN_8_DB_PATH}" ]; then
     python -u "${PS_PATH}/proteoseeker.py" -pfp "${PS_PATH}/parameter_files/X/par_sX_phylo_k8.txt" &> "${PS_PATH}/results/sample_X/stdoe_sX_k8.txt"
 fi
 
+# Move 8
+mv "${K_8_PATH}" "${RESULTS_ALL_PATH}/sample_X/"
+mkdir "${K_8_PATH}"
+if [ -d "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/kraken_results" ]; then
+    cp -r "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/kraken_results" "${K_8_PATH}/"
+fi
+if [ -f "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/time_analysis.tsv" ]; then
+    cp "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/time_analysis.tsv" "${K_8_PATH}/kraken_results/"
+fi
+
 if [ -d "${K_8_PATH}" ]; then
     if [ -d "${KRAKEN_16_DB_PATH}" ]; then
         # Database: 16
         if [ ! -d "${K_16_PATH}" ]; then
             mkdir "${K_16_PATH}"
         fi
-        cp "${K_8_PATH}/log_input.txt" "${K_16_PATH}"
-        cp "${K_8_PATH}/log_output.txt" "${K_16_PATH}"
-        cp "${K_8_PATH}/identified_adapters.fa" "${K_16_PATH}"
-        cp "${K_8_PATH}/read_information.txt" "${K_16_PATH}"
-        cp -r "${K_8_PATH}/summaries_errors" "${K_16_PATH}"
-        cp -r "${K_8_PATH}/fastqc_results" "${K_16_PATH}"
-        cp -r "${K_8_PATH}/trimmed_results" "${K_16_PATH}"
-        cp -r "${K_8_PATH}/megahit_results" "${K_16_PATH}"
-        cp -r "${K_8_PATH}/contigs" "${K_16_PATH}"
-        cp -r "${K_8_PATH}/gene_results" "${K_16_PATH}"
-
-        # Move 8
-        mv "${K_8_PATH}" "${RESULTS_ALL_PATH}/sample_X/"
-        mkdir "${K_8_PATH}"
-        if [ -d "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/kraken_results" ]; then
-            cp -r "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/kraken_results" "${K_8_PATH}/"
-        fi
-        if [ -f "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/time_analysis.tsv" ]; then
-            cp "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/time_analysis.tsv" "${K_8_PATH}/kraken_results/"
-        fi
+        cp "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/log_input.txt" "${K_16_PATH}"
+        cp "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/log_output.txt" "${K_16_PATH}"
+        cp "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/identified_adapters.fa" "${K_16_PATH}"
+        cp "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/read_information.txt" "${K_16_PATH}"
+        cp -r "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/summaries_errors" "${K_16_PATH}"
+        cp -r "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/fastqc_results" "${K_16_PATH}"
+        cp -r "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/trimmed_results" "${K_16_PATH}"
+        cp -r "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/megahit_results" "${K_16_PATH}"
+        cp -r "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/contigs" "${K_16_PATH}"
+        cp -r "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/gene_results" "${K_16_PATH}"
 
         # Run 16
         python -u "${PS_PATH}/proteoseeker.py" -pfp "${PS_PATH}/parameter_files/X/par_sX_phylo_k16.txt" &> "${PS_PATH}/results/sample_X/stdoe_sX_k16.txt"
-    fi
-fi
-
-if [ -d "${K_16_PATH}" ]; then
-    if [ -d "${KRAKEN_72_DB_PATH}" ]; then
-        # Database: 72
-        if [ ! -d "${K_72_PATH}" ]; then
-            mkdir "${K_72_PATH}"
-        fi
-        cp "${K_16_PATH}/log_input.txt" "${K_72_PATH}"
-        cp "${K_16_PATH}/log_output.txt" "${K_72_PATH}"
-        cp "${K_16_PATH}/identified_adapters.fa" "${K_72_PATH}"
-        cp "${K_16_PATH}/read_information.txt" "${K_72_PATH}"
-        cp -r "${K_16_PATH}/summaries_errors" "${K_72_PATH}"
-        cp -r "${K_16_PATH}/fastqc_results" "${K_72_PATH}"
-        cp -r "${K_16_PATH}/trimmed_results" "${K_72_PATH}"
-        cp -r "${K_16_PATH}/megahit_results" "${K_72_PATH}"
-        cp -r "${K_16_PATH}/contigs" "${K_72_PATH}"
-        cp -r "${K_16_PATH}/gene_results" "${K_72_PATH}"
 
         # Move 16
         mv "${K_16_PATH}" "${RESULTS_ALL_PATH}/sample_X/"
@@ -82,6 +63,25 @@ if [ -d "${K_16_PATH}" ]; then
         if [ -f "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_16/time_analysis.tsv" ]; then
             cp "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_16/time_analysis.tsv" "${K_16_PATH}/kraken_results/"
         fi
+    fi
+fi
+
+if [ -d "${K_16_PATH}" ]; then
+    if [ -d "${KRAKEN_72_DB_PATH}" ]; then
+        # Database: 72
+        if [ ! -d "${K_72_PATH}" ]; then
+            mkdir "${K_72_PATH}"
+        fi
+        cp "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/log_input.txt" "${K_72_PATH}"
+        cp "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/log_output.txt" "${K_72_PATH}"
+        cp "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/identified_adapters.fa" "${K_72_PATH}"
+        cp "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/read_information.txt" "${K_72_PATH}"
+        cp -r "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/summaries_errors" "${K_72_PATH}"
+        cp -r "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/fastqc_results" "${K_72_PATH}"
+        cp -r "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/trimmed_results" "${K_72_PATH}"
+        cp -r "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/megahit_results" "${K_72_PATH}"
+        cp -r "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/contigs" "${K_72_PATH}"
+        cp -r "${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8/gene_results" "${K_72_PATH}"
 
         # Run 72
         python -u "${PS_PATH}/proteoseeker.py" -pfp "${PS_PATH}/parameter_files/X/par_sX_phylo_k72.txt" &> "${PS_PATH}/results/sample_X/stdoe_sX_k72.txt"
