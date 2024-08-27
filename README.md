@@ -820,7 +820,7 @@ conda activate ps_env
 conda deactivate
 ~~~
 
-<p align="justify">There is a chance for the process of writing the results in the "xlsx" file to fail and the "proteoseeker.py" program to exit, due to insufficient RAM. This is the last process of the pipeline. Even in the case of failing to write the results in the "xlsx" file the results will already be collected and written in the "txt" file. No other process of the pipeline follows writing the results of the run, therefore all the other results will properly be stored in the directory with the results of the run except of the input and output log files and the "time_analysis.tsv" file.</p>
+<p align="justify">There is a chance for the process of writing the results in the "xlsx" file to fail and the "proteoseeker.py" program to exit, due to insufficient RAM. This is the last process of the pipeline. Even in the case of failing to write the results in the "xlsx" file the results will already be collected and written in the "txt" file. No other process of the pipeline follows writing the results of the run, therefore all the other results will properly be stored in the directory with the results of the run except for the input and output log files and the "time_analysis.tsv" file.</p>
 
 5. <p align="justify">To extract the statistics from the results of ProteoSeeker for the taxonomy evaluation all the taxonomy methods for at least one sample must have been analyzed. The Bash script will analyze and provide the output (plots, statistics etc.) for any number of samples analyzed based on all taxonomy methods. To run the script go to the directory "tests/tax_results_analysis" and run the following:</p>
 
