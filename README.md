@@ -889,7 +889,7 @@ Manuscript under review
 # ProteoSeeker website
 General information about ProteoSeeker, including part of the installation and usage instructions found in this repository can be found at:
 
-https://skretaslab.gr/proteoseeke
+https://skretaslab.gr/proteoseeker
 
 # References
 [1] Anaconda Software Distribution. Computer software. Vers. 2-2.4.0. Anaconda, Nov. 2016. Web. <https://anaconda.com>.
