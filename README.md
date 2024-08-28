@@ -194,7 +194,7 @@ conda deactivate
 <p align="justify">For example, the second option in our system has the following value: "/home/compteam/anaconda3/envs/ps_comebin_gpu/bin/COMEBin"</p>
 
 ### 2.2.7 Removing installation environments, files and directories
-<p align="justify">To remove the environments, all their files and the directories which environments and directories were created during the installation of ProteoSeeker (by running the "./install.sh" script), run the Bash script below, in the installation directory from the installation directory. You can then delete the main directory of ProteoSeeker and all environments and files associated with installing ProteoSeeker will have been removed by your system. The Bash script below will also remove the environment ("ps_result_analysis") created to run the analysis of the taxonomy evaluation results.</p>
+<p align="justify">To remove the environments, all their files and the directories which environments and directories were created during the installation of ProteoSeeker (by running the "./install.sh" script), run the Bash script below, in the installation directory from the installation directory. You can then delete the main directory of ProteoSeeker and all environments and files associated with installing ProteoSeeker will have been removed by your system. The Bash script below will also remove the environment ("ps_result_analysis") created (by running the commands provided at section "4.1") to run the analysis of the taxonomy evaluation results.</p>
 
 ~~~bash
 ./remove.sh
