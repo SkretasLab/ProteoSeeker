@@ -17,7 +17,7 @@ source "${INSTALLATION_DIR}/find_conda.sh"
 source $CONDA_SH_PATH
 
 # Activate environment.
-conda activate result_analysis
+conda activate ps_result_analysis
 
 # Kraken2 8
 python ps_br_analysis.py -p "${TAX_RESULTS_DIR}" -o analysis_plots_kraken_db8 -m k8,k8_0c1,k8_1c0,k8_10,k8_100,k8_ng -t False

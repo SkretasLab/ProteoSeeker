@@ -14,8 +14,8 @@ INSTALLATION_DIR="${PS_DIR}/installation"
 source "${INSTALLATION_DIR}/find_conda.sh"
 source $CONDA_SH_PATH
 
-conda create -n result_analysis python=3.9.7 -y
-conda activate result_analysis
+conda create -n ps_result_analysis python=3.9.7 -y
+conda activate ps_result_analysis
 conda install anaconda::numpy=1.26.4 -y
 conda install anaconda::pandas=2.2.2 -y
 conda install anaconda::scikit-learn=1.5.1 -y
