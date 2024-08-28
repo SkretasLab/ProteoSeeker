@@ -853,7 +853,7 @@ conda activate ps_env
 python proteoseeker.py -pfp parameter_files/cas_als/ca_run/SRR3961740/parameters_SRR3961740_sra_dbs.txt
 python proteoseeker.py -pfp parameter_files/cas_als/ca_run/DRR163688/parameters_DRR163688_sra_dbs.txt
 python proteoseeker.py -pfp parameter_files/cas_als/al_run/SRR17771278/parameters_SRR17771278_sra_dbs.txt
-conda deactivtae
+conda deactivate
 ~~~
 
 4. <p align="justify">You can now run any of the parameter files associated to any of the samples. The latter files are located at the directories "SRR3961740", "DRR163688" and "SRR17771278". For example:</p>
