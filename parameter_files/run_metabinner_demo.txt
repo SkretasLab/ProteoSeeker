@@ -27,8 +27,14 @@ if [ -f "${PROTEIN_DB_PATH}" ]; then
     if [ -d "${K_8_PATH}" ]; then
         if [ ! -d "${M_NR_PATH}" ]; then
             mkdir "${M_NR_PATH}"
+        else
+            rm -r "${M_NR_PATH}"
+            mkdir "${M_NR_PATH}"
+        fi
+        if [ ! -d "${M_NR_PATH}/contigs" ]; then
             mkdir "${M_NR_PATH}/contigs"
         fi
+        
         cp "${K_8_PATH}/log_input.txt" "${M_NR_PATH}"
         cp "${K_8_PATH}/log_output.txt" "${M_NR_PATH}"
         cp "${K_8_PATH}/identified_adapters.fa" "${M_NR_PATH}"
