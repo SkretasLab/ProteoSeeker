@@ -793,15 +793,15 @@ chmod -R 755 parameter_files/sra_process
 ./parameter_files/sra_process/set_sra_par_paths.sh
 ~~~
 
-<p align="justify">The first parameter file run for any of the samples will collect and process the SRA file associated with that sample. This process will not be repeated for other parameter files of the same sample. Similarly, the first parameter file run for COMEBin or MetaBinner for any sample will create the protein database needed for their analyses, a process that will not be repeated for any other parameter file for an analysis of COMEBin or MetaBinner. You have the option to run each process of collecting and processing the SRA file of each sample, separately from the rest of the analysis by running the Bash scripts in the "parameter_file/sra_process" directory. <strong>Each of the latter Bash scripts should be run by the main directory of ProteoSeeker.</strong> For example, to run ProteoSeeker only for the SRA-related processes of samples 1, 4 or 19 or for all of the samples, from the main directory of ProteoSeeker, run one the following:</p>
+<p align="justify">The first parameter file run for any of the samples will collect and process the SRA file associated with that sample. This process will not be repeated for other parameter files of the same sample. Similarly, the first parameter file run for COMEBin or MetaBinner for any sample will create the protein database needed for their analyses, a process that will not be repeated for any other parameter file for an analysis of COMEBin or MetaBinner. You have the option to run each process of collecting and processing the SRA file of each sample, separately from the rest of the analysis by running the Bash scripts in the "parameter_file/sra_process" directory. <strong>Each of the latter Bash scripts should be run by the main directory of ProteoSeeker.</strong> For example, to run ProteoSeeker only for the SRA-related processes of samples 19, 4 or 1 or for all of the samples, from the main directory of ProteoSeeker, run one the following:</p>
 
 ~~~bash
 conda activate ps_env
-./parameter_files/sra_process/run_sra_1.sh
+./parameter_files/sra_process/run_sra_19.sh
 or
 ./parameter_files/sra_process/run_sra_4.sh
 or
-./parameter_files/sra_process/run_sra_19.sh
+./parameter_files/sra_process/run_sra_1.sh
 or
 ./parameter_files/sra_process/run_sra_all.sh
 conda deactivate
@@ -811,12 +811,12 @@ conda deactivate
 
 ~~~bash
 conda activate ps_env
-./parameter_files/run_1_all.sh
+./parameter_files/run_19_all.sh
 ./parameter_files/run_5_kraken.sh
 ./parameter_files/run_5_metabinner.sh
 ./parameter_files/run_9_kraken.sh
 ./parameter_files/run_9_comebin.sh
-./parameter_files/run_11_all.sh
+./parameter_files/run_8_all.sh
 conda deactivate
 ~~~
 
