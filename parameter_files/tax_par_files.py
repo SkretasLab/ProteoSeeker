@@ -184,7 +184,7 @@ def cparf():
                     if bs_key == 4:
                          line = "binning_tool=\"2\""
                 elif line == "after_gene_pred=\"\"":
-                    if bs_key in [2, 4]:
+                    if bs_key in [1, 2, 3, 4]:
                          line = "after_gene_pred=\"True\""
                 new_file.write("{}\n".format(line))
             new_file.close()
