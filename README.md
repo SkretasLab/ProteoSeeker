@@ -822,9 +822,17 @@ conda deactivate
 
 <p align="justify">There is a chance for the process of writing the results in the "xlsx" file to fail and the "proteoseeker.py" program to exit, due to insufficient RAM. This is the last process of the pipeline. Even in the case of failing to write the results in the "xlsx" file the results will already be collected and written in the "txt" file. No other process of the pipeline follows writing the results of the run, therefore all the other results will properly be stored in the directory with the results of the run except for the input and output log files and the "time_analysis.tsv" file.</p>
 
-5. <p align="justify"><strong>At first, rename the directory "results" which contains the taxonomy classification results from the taxonomy mode evaluation (based on the steps followed above) as "results_tax_eval" or copy the contents of the "results" directory to a new directory named "results_tax_eval". The "results_tax_eval" directory should contain only results generated as output from the taxonomy mode evaluation.</strong> To extract the statistics from the results of ProteoSeeker for the taxonomy evaluation all the taxonomy methods for at least one sample must have been analyzed. The Bash script will analyze and provide the output (plots, statistics etc.) for any number of samples analyzed based on all taxonomy methods. To run the script go to the directory "tests/tax_results_analysis" and run the following:</p>
+5. <p align="justify"><strong>Move to the "tests/tax_results_analysis" directory. Create the environment to run the the analysis of the results by giving the proper permissions to a Bash script and running it:</p>
 
 ~~~bash
+chmod 755 set_result_analysis_env.sh
+./set_result_analysis_env.sh
+~~~
+
+6. <p align="justify"><strong>At first, rename the directory "results" which contains the taxonomy classification results from the taxonomy mode evaluation (based on the steps followed above) as "results_tax_eval" or copy the contents of the "results" directory to a new directory named "results_tax_eval". The "results_tax_eval" directory should contain only results generated as output from the taxonomy mode evaluation.</strong> To extract the statistics from the results of ProteoSeeker for the taxonomy evaluation all the taxonomy methods for at least one sample must have been analyzed. The Bash script will analyze and provide the output (plots, statistics etc.) for any number of samples analyzed based on all taxonomy methods. To give the proper permissions to the script and run it go to the directory "tests/tax_results_analysis" and run the following:</p>
+
+~~~bash
+chmod 755 analyze_tax_results.sh
 ./analyze_tax_results.sh
 ~~~
 
