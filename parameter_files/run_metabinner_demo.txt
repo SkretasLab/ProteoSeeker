@@ -8,13 +8,21 @@ source "${PARAMETER_DIR}/setup.sh"
 
 K_8_PATH="${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8"
 M_NR_PATH="${PS_PATH}/results/sample_X/sample_X_metabinner_nr"
+M_NR_ALL_PATH="${RESULTS_ALL_PATH}/sample_X/sample_X_metabinner_nr"
 
 if [ ! -d "${PS_PATH}/results/sample_X" ]; then
-  mkdir "${PS_PATH}/results/sample_X"
+    mkdir "${PS_PATH}/results/sample_X"
 fi
 
 if [ ! -d "${RESULTS_ALL_PATH}/sample_X/" ]; then
-  mkdir "${RESULTS_ALL_PATH}/sample_X/"
+    mkdir "${RESULTS_ALL_PATH}/sample_X/"
+else
+    rm -r "${RESULTS_ALL_PATH}/sample_X/"
+    mkdir "${RESULTS_ALL_PATH}/sample_X/"
+fi
+
+if [ -d "${M_NR_ALL_PATH}" ]; then
+    rm -r "${M_NR_ALL_PATH}"
 fi
 
 # Datbase: nr
@@ -45,11 +53,11 @@ if [ -f "${PROTEIN_DB_PATH}" ]; then
         mv "${M_NR_PATH}" "${RESULTS_ALL_PATH}/sample_X/"
         mkdir "${M_NR_PATH}"
         mkdir "${M_NR_PATH}/metabinner_results"
-        if [ -f "${RESULTS_ALL_PATH}/sample_X/sample_X_metabinner_nr/metabinner_results/b_summary_info_metabinner.tsv" ]; then
-            cp "${RESULTS_ALL_PATH}/sample_X/sample_X_metabinner_nr/metabinner_results/b_summary_info_metabinner.tsv" "${M_NR_PATH}/metabinner_results/"
+        if [ -f "${M_NR_ALL_PATH}/metabinner_results/b_summary_info_metabinner.tsv" ]; then
+            cp "${M_NR_ALL_PATH}/metabinner_results/b_summary_info_metabinner.tsv" "${M_NR_PATH}/metabinner_results/"
         fi
-        if [ -f "${RESULTS_ALL_PATH}/sample_X/sample_X_metabinner_nr/time_analysis.tsv" ]; then
-            cp "${RESULTS_ALL_PATH}/sample_X/sample_X_metabinner_nr/time_analysis.tsv" "${M_NR_PATH}/metabinner_results/"
+        if [ -f "${M_NR_ALL_PATH}/time_analysis.tsv" ]; then
+            cp "${M_NR_ALL_PATH}/time_analysis.tsv" "${M_NR_PATH}/metabinner_results/"
         fi
     fi
 fi

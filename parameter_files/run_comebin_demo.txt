@@ -8,6 +8,7 @@ source "${PARAMETER_DIR}/setup.sh"
 
 K_8_PATH="${RESULTS_ALL_PATH}/sample_X/sample_X_kraken_8"
 C_NR_PATH="${PS_PATH}/results/sample_X/sample_X_comebin_nr"
+C_NR_ALL_PATH="${RESULTS_ALL_PATH}/sample_X/sample_X_comebin_nr"
 
 if [ ! -d "${PS_PATH}/results/sample_X" ]; then
     mkdir "${PS_PATH}/results/sample_X"
@@ -15,6 +16,10 @@ fi
 
 if [ ! -d "${RESULTS_ALL_PATH}/sample_X/" ]; then
     mkdir "${RESULTS_ALL_PATH}/sample_X/"
+fi
+
+if [ -d "${C_NR_ALL_PATH}" ]; then
+    rm -r "${C_NR_ALL_PATH}"
 fi
 
 # Datbase: nr
@@ -45,11 +50,11 @@ if [ -f "${PROTEIN_DB_PATH}" ]; then
         mv "${C_NR_PATH}" "${RESULTS_ALL_PATH}/sample_X/"
         mkdir "${C_NR_PATH}"
         mkdir "${C_NR_PATH}/comebin_results"
-        if [ -f "${RESULTS_ALL_PATH}/sample_X/sample_X_comebin_nr/comebin_results/b_summary_info_comebin.tsv" ]; then
-            cp "${RESULTS_ALL_PATH}/sample_X/sample_X_comebin_nr/comebin_results/b_summary_info_comebin.tsv" "${C_NR_PATH}/comebin_results/"
+        if [ -f "${C_NR_ALL_PATH}/comebin_results/b_summary_info_comebin.tsv" ]; then
+            cp "${C_NR_ALL_PATH}/comebin_results/b_summary_info_comebin.tsv" "${C_NR_PATH}/comebin_results/"
         fi
-        if [ -f "${RESULTS_ALL_PATH}/sample_X/sample_X_comebin_nr/time_analysis.tsv" ]; then
-            cp "${RESULTS_ALL_PATH}/sample_X/sample_X_comebin_nr/time_analysis.tsv" "${C_NR_PATH}/comebin_results/"
+        if [ -f "${C_NR_ALL_PATH}/time_analysis.tsv" ]; then
+            cp "${C_NR_ALL_PATH}/time_analysis.tsv" "${C_NR_PATH}/comebin_results/"
         fi
     fi
 fi
