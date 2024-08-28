@@ -1439,12 +1439,16 @@ def plot_full_group_sample_time(df_full_time_all, time_dir, stats_dir_path, time
     legend_props = FontProperties(weight='bold', size=fs_num_3)
     # Custom legend labels
     custom_labels = ["quality control", "preprcessing", "assembly", "gene prediction", "protein clustering", "binning", "taxonomy", "read alignment", "results"]
-    # Get the current legend handles and labels
+    # Get the legend handles and labels from the last axis with a plot.
     legend_mods, labels = cur_axis.get_legend_handles_labels()
-    # Update the labels with custom labels
+    # Get the last axis.
+    tsgd_keys = list(time_sample_group_dict.keys())
+    tsgd_keys_len = len(tsgd_keys) - 1
+    last_axis = axis[tsgd_keys_len]
+    # Update the labels with custom labels and use the legend from the last axis.
     for handle, new_label in zip(legend_mods, custom_labels):
         handle.set_label(new_label)
-    cur_axis.legend(handles=legend_mods, title=legend_title, loc='upper center', bbox_to_anchor=(0.5, -0.6), ncol=6, prop={'size': fs_num_3}, title_fontproperties=legend_props)
+    last_axis.legend(handles=legend_mods, title=legend_title, loc='upper center', bbox_to_anchor=(0.5, -0.6), ncol=6, prop={'size': fs_num_3}, title_fontproperties=legend_props)
     # Padding from left, bottom, right, top.
     plt.tight_layout()
     # Space between the plots of the figure.
@@ -1506,10 +1510,13 @@ def plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_d
     middle_axis = axis[2]
     # Title
     middle_axis.set_title(axis_title_label, pad=20, loc='center', fontsize=fs_num_1, fontweight='bold')
+    # Get the labels from the last axis with a plot.
+    cur_axis = axis[row_fig_index-1]
+    legend_mods, labels = cur_axis.get_legend_handles_labels()
     # Legend
     legend_title = "Taxonomy Method and Database"
     legend_props = FontProperties(weight='bold', size=fs_num_3)
-    middle_axis.legend(title=legend_title, loc='upper center', bbox_to_anchor=(0.5, -0.05), ncol=11, prop={'size': fs_num_3}, title_fontproperties=legend_props)
+    middle_axis.legend(handles=legend_mods, title=legend_title, loc='upper center', bbox_to_anchor=(0.5, -0.05), ncol=11, prop={'size': fs_num_3}, title_fontproperties=legend_props)
     # Padding from left, bottom, right, top
     plt.tight_layout()
     # Space between the subplots.
@@ -1539,10 +1546,12 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
             for mg in methods_group:
                 if mg not in method_sample_time_dict.keys():
                     method_sample_time_dict[mg] = {}
-                mg_total_time = temp_df.loc[temp_df['method'] == mg, 'total_time'].iloc[0]
-                mg_total_time = float(mg_total_time)
-                mg_total_time = round(mg_total_time, 2)
-                method_sample_time_dict[mg][key_sample] = mg_total_time
+                mg_df = temp_df.loc[temp_df['method'] == mg]
+                if not mg_df.empty:
+                    mg_total_time = mg_df['total_time'].iloc[0]
+                    mg_total_time = float(mg_total_time)
+                    mg_total_time = round(mg_total_time, 2)
+                    method_sample_time_dict[mg][key_sample] = mg_total_time
     # Create a dataframe for each method.
     # Dataframe columns:
     # sample size total_time
