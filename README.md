@@ -829,7 +829,7 @@ chmod 755 set_result_analysis_env.sh
 ./set_result_analysis_env.sh
 ~~~
 
-6. <p align="justify"><strong>At first, rename the directory "results" which contains the taxonomy classification results from the taxonomy mode evaluation (based on the steps followed above) as "results_tax_eval" or copy the contents of the "results" directory to a new directory named "results_tax_eval". The "results_tax_eval" directory should contain only results generated as output from the taxonomy mode evaluation.</strong> To extract the statistics from the results of ProteoSeeker for the taxonomy evaluation all the taxonomy methods for at least one sample must have been analyzed. The Bash script will analyze and provide the output (plots, statistics etc.) for any number of samples analyzed based on all taxonomy methods. To give the proper permissions to the script and run it go to the directory "tests/tax_results_analysis" and run the following:</p>
+6. <p align="justify"><strong>At first, rename the directory "results" which contains the taxonomy classification results from the taxonomy mode evaluation (based on the steps followed above) as "results_tax_eval" or copy the contents of the "results" directory to a new directory named "results_tax_eval". The "results_tax_eval" directory should contain only results generated as output from the taxonomy mode evaluation.</strong> To extract plots and statistics from the results of ProteoSeeker for the taxonomy evaluations run the Bash script below which will analyze and provide output (plots, statistics etc.) for any number of samples analyzed. To give the proper permissions to the script and run it go to the directory "tests/tax_results_analysis" and run the following:</p>
 
 ~~~bash
 chmod 755 analyze_tax_results.sh
