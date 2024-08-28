@@ -1535,13 +1535,14 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
     method_sample_time_dict = {}
     for key_sample in df_total_time_dict.keys():
         temp_df = df_total_time_dict[key_sample]
-        for mg in methods_group:
-            if mg not in method_sample_time_dict.keys():
-                method_sample_time_dict[mg] = {}
-            mg_total_time = temp_df.loc[temp_df['method'] == mg, 'total_time'].iloc[0]
-            mg_total_time = float(mg_total_time)
-            mg_total_time = round(mg_total_time, 2)
-            method_sample_time_dict[mg][key_sample] = mg_total_time
+        if not temp_df.empty:
+            for mg in methods_group:
+                if mg not in method_sample_time_dict.keys():
+                    method_sample_time_dict[mg] = {}
+                mg_total_time = temp_df.loc[temp_df['method'] == mg, 'total_time'].iloc[0]
+                mg_total_time = float(mg_total_time)
+                mg_total_time = round(mg_total_time, 2)
+                method_sample_time_dict[mg][key_sample] = mg_total_time
     # Create a dataframe for each method.
     # Dataframe columns:
     # sample size total_time
@@ -1567,80 +1568,81 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
     # Create the scatter plots for size vs time.
     for key_method in method_df_dict.keys():
         plot_df = method_df_dict[key_method]
-        # The current axis.
-        cur_axis = axis[row_fig_index]
-        # Color
-        cld_palette = sns.color_palette("colorblind")
-        dot_color = cld_palette[0] 
-        # Scatter plot
-        sns.scatterplot(ax=cur_axis, data=plot_df, x="size", y="total_time", color=dot_color, s=100)
-        # Regression plot
-        # Convert the dataframe columns to lists of floats.
-        x_points_pre = plot_df['size'].tolist()
-        x_points = []
-        for xpr in x_points_pre:
-            xpr = float(xpr)
-            x_points.append(xpr)
-        y_points_pre = plot_df['total_time'].tolist()
-        y_points = []
-        for ypr in y_points_pre:
-            ypr = float(ypr)
-            y_points.append(ypr)
-        # Convert the lists to numpy arrays.
-        x_points_np = np.array(x_points)
-        y_points_np = np.array(y_points)
-        # Fit a line. It is a line because it set to fit a line of the first degree which is determiend by the "1" in the polyfit function.
-        # This in turn returns two coefficients. To fit a second degree line "2" would be used. Same on for lines of a higher degree.
-        a_coef, b_coef = np.polyfit(x_points_np, y_points_np, 1)
-        cur_axis.plot(x_points_np, a_coef * x_points_np + b_coef)
-        # Calculate the predicted y values
-        y_points_pred = a_coef * x_points_np + b_coef
-        # Calculate the R-squared value
-        r_squared_value = r2_score(y_points_np, y_points_pred)
-        # Rounding to two decimals.
-        a_coef_r = round(a_coef, 2)
-        b_coef_r = round(b_coef, 2)
-        r_squared_value_r = round(r_squared_value, 2)
-        # Write the coefficients and the R^2 values in a file.
-        method_fit_path = "{}/method_{}_size_time_fit.txt".format(stats_dir_path, key_method)
-        method_fit_file = open(method_fit_path, "w")
-        method_fit_file.write("Method: {}\n".format(key_method))
-        method_fit_file.write("y = {} * x + {}\n".format(a_coef, b_coef))
-        method_fit_file.write("R^2 = {}\n".format(r_squared_value))
-        method_fit_file.write("Rounded:\n")
-        method_fit_file.write("y = {} * x + {}\n".format(a_coef_r, b_coef_r))
-        method_fit_file.write("R^2 = {}\n".format(r_squared_value_r))
-        method_fit_file.close()
-        # Set the minimum value for the x and y axis.
-        cur_axis.set_xlim(left=0)
-        cur_axis.set_ylim(bottom=0)
-        # Remove the 0.0 value from the x axis.
-        x_axis_ticks = cur_axis.get_xticks()
-        if x_axis_ticks[0] == 0.0:
-            cur_axis.set_xticks(x_axis_ticks[1:])
-        # Labels
-        x_axis_label = "Sample Size (GB)"
-        y_axis_label = "Execution Time (m)"
-        if key_method == "k8":
-            title_part = "Kraken2 db:8"
-        elif key_method == "k16":
-            title_part = "Kraken2 db:16"
-        elif key_method == "k72":
-            title_part = "Kraken2 db:72"
-        elif key_method == "cnr":
-            title_part = "COMEBin db:nr"
-        elif key_method == "mnr":
-            title_part = "MetaBinner db:nr"
-        # Place labels
-        cur_axis.set_xlabel(x_axis_label, fontsize=fs_num_2, fontweight='bold')
-        cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
-        cur_axis.set_title(title_part, pad=20, loc='center', fontsize=fs_num_1, fontweight='bold')
-        # Changing the size of the tick labels.
-        cur_axis.tick_params(axis='both', which='major', labelsize=fs_num_3)
-        # Letter
-        cur_axis.annotate(annotation_letters[row_fig_index], xy=(-0.05, 1.05), xycoords='axes fraction', fontsize=fs_num_1, fontweight='bold', ha='center', va='center')
-        # Increament the index of the plot position.
-        row_fig_index += 1
+        if not plot_df.empty:
+            # The current axis.
+            cur_axis = axis[row_fig_index]
+            # Color
+            cld_palette = sns.color_palette("colorblind")
+            dot_color = cld_palette[0] 
+            # Scatter plot
+            sns.scatterplot(ax=cur_axis, data=plot_df, x="size", y="total_time", color=dot_color, s=100)
+            # Regression plot
+            # Convert the dataframe columns to lists of floats.
+            x_points_pre = plot_df['size'].tolist()
+            x_points = []
+            for xpr in x_points_pre:
+                xpr = float(xpr)
+                x_points.append(xpr)
+            y_points_pre = plot_df['total_time'].tolist()
+            y_points = []
+            for ypr in y_points_pre:
+                ypr = float(ypr)
+                y_points.append(ypr)
+            # Convert the lists to numpy arrays.
+            x_points_np = np.array(x_points)
+            y_points_np = np.array(y_points)
+            # Fit a line. It is a line because it set to fit a line of the first degree which is determiend by the "1" in the polyfit function.
+            # This in turn returns two coefficients. To fit a second degree line "2" would be used. Same on for lines of a higher degree.
+            a_coef, b_coef = np.polyfit(x_points_np, y_points_np, 1)
+            cur_axis.plot(x_points_np, a_coef * x_points_np + b_coef)
+            # Calculate the predicted y values
+            y_points_pred = a_coef * x_points_np + b_coef
+            # Calculate the R-squared value
+            r_squared_value = r2_score(y_points_np, y_points_pred)
+            # Rounding to two decimals.
+            a_coef_r = round(a_coef, 2)
+            b_coef_r = round(b_coef, 2)
+            r_squared_value_r = round(r_squared_value, 2)
+            # Write the coefficients and the R^2 values in a file.
+            method_fit_path = "{}/method_{}_size_time_fit.txt".format(stats_dir_path, key_method)
+            method_fit_file = open(method_fit_path, "w")
+            method_fit_file.write("Method: {}\n".format(key_method))
+            method_fit_file.write("y = {} * x + {}\n".format(a_coef, b_coef))
+            method_fit_file.write("R^2 = {}\n".format(r_squared_value))
+            method_fit_file.write("Rounded:\n")
+            method_fit_file.write("y = {} * x + {}\n".format(a_coef_r, b_coef_r))
+            method_fit_file.write("R^2 = {}\n".format(r_squared_value_r))
+            method_fit_file.close()
+            # Set the minimum value for the x and y axis.
+            cur_axis.set_xlim(left=0)
+            cur_axis.set_ylim(bottom=0)
+            # Remove the 0.0 value from the x axis.
+            x_axis_ticks = cur_axis.get_xticks()
+            if x_axis_ticks[0] == 0.0:
+                cur_axis.set_xticks(x_axis_ticks[1:])
+            # Labels
+            x_axis_label = "Sample Size (GB)"
+            y_axis_label = "Execution Time (m)"
+            if key_method == "k8":
+                title_part = "Kraken2 db:8"
+            elif key_method == "k16":
+                title_part = "Kraken2 db:16"
+            elif key_method == "k72":
+                title_part = "Kraken2 db:72"
+            elif key_method == "cnr":
+                title_part = "COMEBin db:nr"
+            elif key_method == "mnr":
+                title_part = "MetaBinner db:nr"
+            # Place labels
+            cur_axis.set_xlabel(x_axis_label, fontsize=fs_num_2, fontweight='bold')
+            cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
+            cur_axis.set_title(title_part, pad=20, loc='center', fontsize=fs_num_1, fontweight='bold')
+            # Changing the size of the tick labels.
+            cur_axis.tick_params(axis='both', which='major', labelsize=fs_num_3)
+            # Letter
+            cur_axis.annotate(annotation_letters[row_fig_index], xy=(-0.05, 1.05), xycoords='axes fraction', fontsize=fs_num_1, fontweight='bold', ha='center', va='center')
+            # Increament the index of the plot position.
+            row_fig_index += 1
     # Get the axis for the middle plot
     middle_axis = axis[2]
     # Title
@@ -1666,84 +1668,85 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
     row_fig_index = 0
     # Create the scatter plots for species number vs time.
     for key_method in method_df_dict.keys():
-        plot_df = method_df_dict[key_method]  
-        # The current axis.
-        cur_axis = axis[row_fig_index]
-        # Returns a list of colors or continuous colormap defining a palette.
-        species_num = len(plot_df['species_number'].unique())
-        cld_palette = sns.color_palette("colorblind", n_colors=species_num)
-        # Plot
-        sns.scatterplot(ax=cur_axis, data=plot_df, x="species_number", y="total_time", hue="species_number", palette=cld_palette, s=100)
-        # Regression plot
-        # Convert the dataframe columns to lists of floats.
-        x_points_pre = plot_df['species_number'].tolist()
-        x_points = []
-        for xpr in x_points_pre:
-            xpr = float(xpr)
-            x_points.append(xpr)
-        y_points_pre = plot_df['total_time'].tolist()
-        y_points = []
-        for ypr in y_points_pre:
-            ypr = float(ypr)
-            y_points.append(ypr)
-        # Convert the lists to numpy arrays.
-        x_points_np = np.array(x_points)
-        y_points_np = np.array(y_points)
-        # Fit a line. It is a line because it set to fit a line of the first degree which is determiend by the "1" in the polyfit function.
-        # This in turn returns two coefficients. To fit a second degree line "2" would be used. Same on for lines of a higher degree.
-        a_coef, b_coef = np.polyfit(x_points_np, y_points_np, 1)
-        cur_axis.plot(x_points_np, a_coef * x_points_np + b_coef)
-        # Calculate the predicted y values
-        y_points_pred = a_coef * x_points_np + b_coef
-        # Calculate the R-squared value
-        r_squared_value = r2_score(y_points_np, y_points_pred)
-        # Rounding to two decimals.
-        a_coef_r = round(a_coef, 2)
-        b_coef_r = round(b_coef, 2)
-        r_squared_value_r = round(r_squared_value, 2)
-        # Write the coefficients and the R^2 values in a file.
-        method_fit_path = "{}/method_{}_species_time_fit.txt".format(stats_dir_path, key_method)
-        method_fit_file = open(method_fit_path, "w")
-        method_fit_file.write("Method: {}\n".format(key_method))
-        method_fit_file.write("y = {} * x + {}\n".format(a_coef, b_coef))
-        method_fit_file.write("R^2 = {}\n".format(r_squared_value))
-        method_fit_file.write("Rounded:\n")
-        method_fit_file.write("y = {} * x + {}\n".format(a_coef_r, b_coef_r))
-        method_fit_file.write("R^2 = {}\n".format(r_squared_value_r))
-        method_fit_file.close()
-        # Set the minimum value for the x and y axis.
-        cur_axis.set_xlim(left=0)
-        cur_axis.set_ylim(bottom=0)
-        # Remove the 0.0 value from the x axis.
-        x_axis_ticks = cur_axis.get_xticks()
-        if x_axis_ticks[0] == 0.0:
-            cur_axis.set_xticks(x_axis_ticks[1:])
-        # Labels
-        x_axis_label = "Species Number"
-        y_axis_label = "Execution Time (m)"
-        if key_method == "k8":
-            title_part = "Kraken2 db:8"
-        elif key_method == "k16":
-            title_part = "Kraken2 db:16"
-        elif key_method == "k72":
-            title_part = "Kraken2 db:72"
-        elif key_method == "cnr":
-            title_part = "COMEBin db:nr"
-        elif key_method == "mnr":
-            title_part = "MetaBinner db:nr"
-        # Place labels
-        cur_axis.set_xlabel(x_axis_label, fontsize=fs_num_2, fontweight='bold')
-        cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
-        cur_axis.set_title(title_part, pad=20, loc='center', fontsize=fs_num_1, fontweight='bold')
-        # Remove the legend, if for the last plot.
-        if row_fig_index < col_num:
-            cur_axis.legend().remove()
-        # Changing the size of the tick labels.
-        cur_axis.tick_params(axis='both', which='major', labelsize=fs_num_3)
-        # Letter
-        cur_axis.annotate(annotation_letters[row_fig_index], xy=(-0.05, 1.05), xycoords='axes fraction', fontsize=fs_num_1, fontweight='bold', ha='center', va='center')
-        # Increament the index of the plot position.
-        row_fig_index += 1
+        plot_df = method_df_dict[key_method]
+        if not plot_df.empty:
+            # The current axis.
+            cur_axis = axis[row_fig_index]
+            # Returns a list of colors or continuous colormap defining a palette.
+            species_num = len(plot_df['species_number'].unique())
+            cld_palette = sns.color_palette("colorblind", n_colors=species_num)
+            # Plot
+            sns.scatterplot(ax=cur_axis, data=plot_df, x="species_number", y="total_time", hue="species_number", palette=cld_palette, s=100)
+            # Regression plot
+            # Convert the dataframe columns to lists of floats.
+            x_points_pre = plot_df['species_number'].tolist()
+            x_points = []
+            for xpr in x_points_pre:
+                xpr = float(xpr)
+                x_points.append(xpr)
+            y_points_pre = plot_df['total_time'].tolist()
+            y_points = []
+            for ypr in y_points_pre:
+                ypr = float(ypr)
+                y_points.append(ypr)
+            # Convert the lists to numpy arrays.
+            x_points_np = np.array(x_points)
+            y_points_np = np.array(y_points)
+            # Fit a line. It is a line because it set to fit a line of the first degree which is determiend by the "1" in the polyfit function.
+            # This in turn returns two coefficients. To fit a second degree line "2" would be used. Same on for lines of a higher degree.
+            a_coef, b_coef = np.polyfit(x_points_np, y_points_np, 1)
+            cur_axis.plot(x_points_np, a_coef * x_points_np + b_coef)
+            # Calculate the predicted y values
+            y_points_pred = a_coef * x_points_np + b_coef
+            # Calculate the R-squared value
+            r_squared_value = r2_score(y_points_np, y_points_pred)
+            # Rounding to two decimals.
+            a_coef_r = round(a_coef, 2)
+            b_coef_r = round(b_coef, 2)
+            r_squared_value_r = round(r_squared_value, 2)
+            # Write the coefficients and the R^2 values in a file.
+            method_fit_path = "{}/method_{}_species_time_fit.txt".format(stats_dir_path, key_method)
+            method_fit_file = open(method_fit_path, "w")
+            method_fit_file.write("Method: {}\n".format(key_method))
+            method_fit_file.write("y = {} * x + {}\n".format(a_coef, b_coef))
+            method_fit_file.write("R^2 = {}\n".format(r_squared_value))
+            method_fit_file.write("Rounded:\n")
+            method_fit_file.write("y = {} * x + {}\n".format(a_coef_r, b_coef_r))
+            method_fit_file.write("R^2 = {}\n".format(r_squared_value_r))
+            method_fit_file.close()
+            # Set the minimum value for the x and y axis.
+            cur_axis.set_xlim(left=0)
+            cur_axis.set_ylim(bottom=0)
+            # Remove the 0.0 value from the x axis.
+            x_axis_ticks = cur_axis.get_xticks()
+            if x_axis_ticks[0] == 0.0:
+                cur_axis.set_xticks(x_axis_ticks[1:])
+            # Labels
+            x_axis_label = "Species Number"
+            y_axis_label = "Execution Time (m)"
+            if key_method == "k8":
+                title_part = "Kraken2 db:8"
+            elif key_method == "k16":
+                title_part = "Kraken2 db:16"
+            elif key_method == "k72":
+                title_part = "Kraken2 db:72"
+            elif key_method == "cnr":
+                title_part = "COMEBin db:nr"
+            elif key_method == "mnr":
+                title_part = "MetaBinner db:nr"
+            # Place labels
+            cur_axis.set_xlabel(x_axis_label, fontsize=fs_num_2, fontweight='bold')
+            cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
+            cur_axis.set_title(title_part, pad=20, loc='center', fontsize=fs_num_1, fontweight='bold')
+            # Remove the legend, if for the last plot.
+            if row_fig_index < col_num:
+                cur_axis.legend().remove()
+            # Changing the size of the tick labels.
+            cur_axis.tick_params(axis='both', which='major', labelsize=fs_num_3)
+            # Letter
+            cur_axis.annotate(annotation_letters[row_fig_index], xy=(-0.05, 1.05), xycoords='axes fraction', fontsize=fs_num_1, fontweight='bold', ha='center', va='center')
+            # Increament the index of the plot position.
+            row_fig_index += 1
     # Get the axis for the middle plot.
     middle_axis = axis[2]
     # Title
@@ -1775,86 +1778,87 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
     # Create the scatter plots for species number vs mean time for each group of species number.
     for key_method in method_df_dict.keys():
         plot_df = method_df_dict[key_method]
-        mean_plot_df = plot_df.groupby('species_number')['total_time'].mean().reset_index()
-        # The current axis.
-        cur_axis = axis[row_fig_index]
-        # Returns a list of colors or continuous colormap defining a palette.
-        species_num = len(plot_df['species_number'].unique())
-        cld_palette = sns.color_palette("colorblind", n_colors=species_num)
-        # Scatter plot
-        sns.scatterplot(ax=cur_axis, data=mean_plot_df, x="species_number", y="total_time", hue="species_number", palette=cld_palette, s=100)
-        # Regression plot
-        # Convert the dataframe columns to lists of floats.
-        # The data are extracted from the dataframe which was generated by computing the mean values of the execution times for each category of samples
-        # of species number.
-        x_points_pre = mean_plot_df['species_number'].tolist()
-        x_points = []
-        for xpr in x_points_pre:
-            xpr = float(xpr)
-            x_points.append(xpr)
-        y_points_pre = mean_plot_df['total_time'].tolist()
-        y_points = []
-        for ypr in y_points_pre:
-            ypr = float(ypr)
-            y_points.append(ypr)
-        # Convert the lists to numpy arrays.
-        x_points_np = np.array(x_points)
-        y_points_np = np.array(y_points)
-        # Fit a line. It is a line because it set to fit a line of the first degree which is determiend by the "1" in the polyfit function.
-        # This in turn returns two coefficients. To fit a second degree line "2" would be used. Same on for lines of a higher degree.
-        a_coef, b_coef = np.polyfit(x_points_np, y_points_np, 1)
-        cur_axis.plot(x_points_np, a_coef * x_points_np + b_coef)
-        # Calculate the predicted y values
-        y_points_pred = a_coef * x_points_np + b_coef
-        # Calculate the R-squared value
-        r_squared_value = r2_score(y_points_np, y_points_pred)
-        # Rounding to two decimals.
-        a_coef_r = round(a_coef, 2)
-        b_coef_r = round(b_coef, 2)
-        r_squared_value_r = round(r_squared_value, 2)
-        # Write the coefficients and the R^2 values in a file.
-        method_fit_path = "{}/method_{}_species_mean_time_fit.txt".format(stats_dir_path, key_method)
-        method_fit_file = open(method_fit_path, "w")
-        method_fit_file.write("Method: {}\n".format(key_method))
-        method_fit_file.write("y = {} * x + {}\n".format(a_coef, b_coef))
-        method_fit_file.write("R^2 = {}\n".format(r_squared_value))
-        method_fit_file.write("Rounded:\n")
-        method_fit_file.write("y = {} * x + {}\n".format(a_coef_r, b_coef_r))
-        method_fit_file.write("R^2 = {}\n".format(r_squared_value_r))
-        method_fit_file.close()
-        # Set the minimum value for the x and y axis.
-        cur_axis.set_xlim(left=0)
-        cur_axis.set_ylim(bottom=0)
-        # Remove the 0.0 value from the x axis.
-        x_axis_ticks = cur_axis.get_xticks()
-        if x_axis_ticks[0] == 0.0:
-            cur_axis.set_xticks(x_axis_ticks[1:])
-        # Labels
-        x_axis_label = "Species Number"
-        y_axis_label = "Mean Execution Time (m)"
-        if key_method == "k8":
-            title_part = "Kraken2 db:8"
-        elif key_method == "k16":
-            title_part = "Kraken2 db:16"
-        elif key_method == "k72":
-            title_part = "Kraken2 db:72"
-        elif key_method == "cnr":
-            title_part = "COMEBin db:nr"
-        elif key_method == "mnr":
-            title_part = "MetaBinner db:nr"
-        # Place labels
-        cur_axis.set_xlabel(x_axis_label, fontsize=fs_num_2, fontweight='bold')
-        cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
-        cur_axis.set_title(title_part, pad=20, loc='center', fontsize=fs_num_1, fontweight='bold')
-        # Remove the legend, if for the last plot.
-        if row_fig_index < col_num:
-            cur_axis.legend().remove()
-        # Changing the size of the tick labels.
-        cur_axis.tick_params(axis='both', which='major', labelsize=fs_num_3)
-        # Letter
-        cur_axis.annotate(annotation_letters[row_fig_index], xy=(-0.05, 1.05), xycoords='axes fraction', fontsize=fs_num_1, fontweight='bold', ha='center', va='center')
-        # Increament the index of the plot position.
-        row_fig_index += 1
+        if not plot_df.empty:
+            mean_plot_df = plot_df.groupby('species_number')['total_time'].mean().reset_index()
+            # The current axis.
+            cur_axis = axis[row_fig_index]
+            # Returns a list of colors or continuous colormap defining a palette.
+            species_num = len(plot_df['species_number'].unique())
+            cld_palette = sns.color_palette("colorblind", n_colors=species_num)
+            # Scatter plot
+            sns.scatterplot(ax=cur_axis, data=mean_plot_df, x="species_number", y="total_time", hue="species_number", palette=cld_palette, s=100)
+            # Regression plot
+            # Convert the dataframe columns to lists of floats.
+            # The data are extracted from the dataframe which was generated by computing the mean values of the execution times for each category of samples
+            # of species number.
+            x_points_pre = mean_plot_df['species_number'].tolist()
+            x_points = []
+            for xpr in x_points_pre:
+                xpr = float(xpr)
+                x_points.append(xpr)
+            y_points_pre = mean_plot_df['total_time'].tolist()
+            y_points = []
+            for ypr in y_points_pre:
+                ypr = float(ypr)
+                y_points.append(ypr)
+            # Convert the lists to numpy arrays.
+            x_points_np = np.array(x_points)
+            y_points_np = np.array(y_points)
+            # Fit a line. It is a line because it set to fit a line of the first degree which is determiend by the "1" in the polyfit function.
+            # This in turn returns two coefficients. To fit a second degree line "2" would be used. Same on for lines of a higher degree.
+            a_coef, b_coef = np.polyfit(x_points_np, y_points_np, 1)
+            cur_axis.plot(x_points_np, a_coef * x_points_np + b_coef)
+            # Calculate the predicted y values
+            y_points_pred = a_coef * x_points_np + b_coef
+            # Calculate the R-squared value
+            r_squared_value = r2_score(y_points_np, y_points_pred)
+            # Rounding to two decimals.
+            a_coef_r = round(a_coef, 2)
+            b_coef_r = round(b_coef, 2)
+            r_squared_value_r = round(r_squared_value, 2)
+            # Write the coefficients and the R^2 values in a file.
+            method_fit_path = "{}/method_{}_species_mean_time_fit.txt".format(stats_dir_path, key_method)
+            method_fit_file = open(method_fit_path, "w")
+            method_fit_file.write("Method: {}\n".format(key_method))
+            method_fit_file.write("y = {} * x + {}\n".format(a_coef, b_coef))
+            method_fit_file.write("R^2 = {}\n".format(r_squared_value))
+            method_fit_file.write("Rounded:\n")
+            method_fit_file.write("y = {} * x + {}\n".format(a_coef_r, b_coef_r))
+            method_fit_file.write("R^2 = {}\n".format(r_squared_value_r))
+            method_fit_file.close()
+            # Set the minimum value for the x and y axis.
+            cur_axis.set_xlim(left=0)
+            cur_axis.set_ylim(bottom=0)
+            # Remove the 0.0 value from the x axis.
+            x_axis_ticks = cur_axis.get_xticks()
+            if x_axis_ticks[0] == 0.0:
+                cur_axis.set_xticks(x_axis_ticks[1:])
+            # Labels
+            x_axis_label = "Species Number"
+            y_axis_label = "Mean Execution Time (m)"
+            if key_method == "k8":
+                title_part = "Kraken2 db:8"
+            elif key_method == "k16":
+                title_part = "Kraken2 db:16"
+            elif key_method == "k72":
+                title_part = "Kraken2 db:72"
+            elif key_method == "cnr":
+                title_part = "COMEBin db:nr"
+            elif key_method == "mnr":
+                title_part = "MetaBinner db:nr"
+            # Place labels
+            cur_axis.set_xlabel(x_axis_label, fontsize=fs_num_2, fontweight='bold')
+            cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
+            cur_axis.set_title(title_part, pad=20, loc='center', fontsize=fs_num_1, fontweight='bold')
+            # Remove the legend, if for the last plot.
+            if row_fig_index < col_num:
+                cur_axis.legend().remove()
+            # Changing the size of the tick labels.
+            cur_axis.tick_params(axis='both', which='major', labelsize=fs_num_3)
+            # Letter
+            cur_axis.annotate(annotation_letters[row_fig_index], xy=(-0.05, 1.05), xycoords='axes fraction', fontsize=fs_num_1, fontweight='bold', ha='center', va='center')
+            # Increament the index of the plot position.
+            row_fig_index += 1
     # Get the axis for the middle plot
     middle_axis = axis[2]
     # Title
