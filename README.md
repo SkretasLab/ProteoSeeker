@@ -886,6 +886,11 @@ python proteoseeker.py -pfp parameter_files/cas_als/al_run/SRR17771278/parameter
 # Publications
 Manuscript under review
 
+# ProteoSeeker website
+General information about ProteoSeeker, including part of the installation and usage instructions found in this repository can be found at:
+
+https://skretaslab.gr/proteoseeke
+
 # References
 [1] Anaconda Software Distribution. Computer software. Vers. 2-2.4.0. Anaconda, Nov. 2016. Web. <https://anaconda.com>.
 
