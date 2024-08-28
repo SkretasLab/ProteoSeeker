@@ -17,9 +17,6 @@ fi
 
 if [ ! -d "${RESULTS_ALL_PATH}/sample_X/" ]; then
     mkdir "${RESULTS_ALL_PATH}/sample_X/"
-else
-    rm -r "${RESULTS_ALL_PATH}/sample_X/"
-    mkdir "${RESULTS_ALL_PATH}/sample_X/"
 fi
 
 if [ -d "${K_8_ALL_PATH}" ]; then
