@@ -14,7 +14,7 @@ SWISSPROT_DIR="${PS_DIR}/swissprot_database"
 UNIREF_DBS_DIR="${PS_DIR}/uniref_db"
 
 # An array of the installation enviroments.
-install_envs=("ps_bbtools" "ps_bowtie" "ps_cd_hit" "ps_comebin" "ps_diamond" "ps_env" "ps_fastqc" "ps_fraggenescan" "ps_hmmer" "ps_install" "ps_kraken" "ps_megahit" "metabinner_env" "ps_metabinner" "ps_phobius" "ps_samtools" "ps_sra_tools" "ps_taxonkit" "ps_tmhmm")
+install_envs=("ps_bbtools" "ps_bowtie" "ps_cd_hit" "ps_comebin" "ps_diamond" "ps_env" "ps_fastqc" "ps_fraggenescan" "ps_hmmer" "ps_install" "ps_kraken" "ps_megahit" "metabinner_env" "ps_metabinner" "ps_phobius" "ps_samtools" "ps_sra_tools" "ps_taxonkit", "ps_result_analysis")
 
 # An array of the installation directories.
 install_dirs=("${PS_TOOLS_DIR}" "${TAXONOMY_DB_DIR}" "${TAXONOMY_HOME_DB_DIR}" "${PFAM_DB_DIR}" "${SWISSPROT_DIR}" "${UNIREF_DBS_DIR}")
