@@ -822,7 +822,7 @@ conda deactivate
 
 <p align="justify">There is a chance for the process of writing the results in the "xlsx" file to fail and the "proteoseeker.py" program to exit, due to insufficient RAM. This is the last process of the pipeline. Even in the case of failing to write the results in the "xlsx" file the results will already be collected and written in the "txt" file. No other process of the pipeline follows writing the results of the run, therefore all the other results will properly be stored in the directory with the results of the run except for the input and output log files and the "time_analysis.tsv" file.</p>
 
-5. <p align="justify"><strong>Move to the "tests/tax_results_analysis" directory. Create the environment to run the the analysis of the results by giving the proper permissions to a Bash script and running it:</p>
+5. <p align="justify">Move to the "tests/tax_results_analysis" directory. Create the environment to run the the analysis of the results by giving the proper permissions to a Bash script and running it:</p>
 
 ~~~bash
 chmod 755 set_result_analysis_env.sh
