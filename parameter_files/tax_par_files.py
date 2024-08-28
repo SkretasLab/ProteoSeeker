@@ -102,7 +102,7 @@ def cparf():
     for sample_id in range(1, 20):
         print("Creating par files for index {}".format(sample_id))
         # Creating the directory for the sample, overwriting it if it already exists.
-        dirpath = "{}".format(sample_id)
+        dirpath = "{}/{}".format(parameter_path, sample_id)
         if os.path.exists(dirpath):
             shutil.rmtree(dirpath)
         os.mkdir(dirpath)
@@ -195,7 +195,7 @@ def cparf():
         slash_str = "/{}/".format(i_str)
         # Creating the Bash scripts.
         # Creating the kraken2 Bash script.
-        bash_script_kraken_path = "run_{}_kraken.sh".format(sample_id)
+        bash_script_kraken_path = "{}/run_{}_kraken.sh".format(parameter_path, sample_id)
         bash_script_kraken_file = open(bash_script_kraken_path, "w")
         kraken_demo_lines = read_file(kraken_demo_path)
         for line in kraken_demo_lines:
@@ -207,7 +207,7 @@ def cparf():
         file_stats = os.stat(bash_script_kraken_path)
         os.chmod(bash_script_kraken_path, file_stats.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
         # Creating the COMEBin Bash script.
-        bash_script_comebin_path = "run_{}_comebin.sh".format(sample_id)
+        bash_script_comebin_path = "{}/run_{}_comebin.sh".format(parameter_path, sample_id)
         bash_script_comebin_file = open(bash_script_comebin_path, "w")
         comebin_demo_lines = read_file(comebin_demo_path)
         for line in comebin_demo_lines:
@@ -219,7 +219,7 @@ def cparf():
         file_stats = os.stat(bash_script_comebin_path)
         os.chmod(bash_script_comebin_path, file_stats.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
         # Creating the MetaBinner Bash script.
-        bash_script_metabinner_path = "run_{}_metabinner.sh".format(sample_id)
+        bash_script_metabinner_path = "{}/run_{}_metabinner.sh".format(parameter_path, sample_id)
         bash_script_metabinner_file = open(bash_script_metabinner_path, "w")
         metabinner_demo_lines = read_file(metabinner_demo_path)
         for line in metabinner_demo_lines:
@@ -231,7 +231,7 @@ def cparf():
         file_stats = os.stat(bash_script_metabinner_path)
         os.chmod(bash_script_metabinner_path, file_stats.st_mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
         # Creating the total Bash script.
-        bash_script_all_path = "run_{}_all.sh".format(sample_id)
+        bash_script_all_path = "{}/run_{}_all.sh".format(parameter_path, sample_id)
         bash_script_all_file = open(bash_script_all_path, "w")
         all_demo_lines = read_file(all_demo_path)
         for line in all_demo_lines:
