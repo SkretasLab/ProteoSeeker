@@ -194,7 +194,7 @@ conda deactivate
 <p align="justify">For example, the second option in our system has the following value: "/home/compteam/anaconda3/envs/ps_comebin_gpu/bin/COMEBin"</p>
 
 ### 2.2.7 Removing installation environments, files and directories
-<p align="justify">To remove the environments, all their files and the directories which environments and directories were created during the installation of ProteoSeeker (by running the "./install.sh" script), run the Bash script below, in the installation directory from the installation directory. You can then delete the main directory of ProteoSeeker and all environments and files associated with installing ProteoSeeker will have been removed by your system. The Bash script below will also remove the enviroment ("ps_result_analysis") created to run the analysis of the taxonomy evaluation results.</p>
+<p align="justify">To remove the environments, all their files and the directories which environments and directories were created during the installation of ProteoSeeker (by running the "./install.sh" script), run the Bash script below, in the installation directory from the installation directory. You can then delete the main directory of ProteoSeeker and all environments and files associated with installing ProteoSeeker will have been removed by your system. The Bash script below will also remove the environment ("ps_result_analysis") created to run the analysis of the taxonomy evaluation results.</p>
 
 ~~~bash
 ./remove.sh
@@ -751,7 +751,7 @@ protein_db_path="path_to_ProteoSeeker-main/ProteoSeeker-main/nr_database/nr"
 <p align="justify">When ProteoSeeker is run by the command-line, in order to utilize Phobius, you should download and extract Phobius in a directory and modify the value of "phobius_path" in the parameter file or the value of the corresponding option of "proteoseeker.py" to that of the path of the Phobius directory.</p>
 
 # 4. Test cases
-<p align="justify">All tests for the evaluation were run based on the ProteoSeeker version 1.0.0 and the tool versions described in it, which refer to the "v1.0.0" release of ProteoSeeker (in the current repository). The collection dates for the databases used in the evaluation can be found below. In addition, we also note the download date of the flat file of the reviewed proteins from the Swiss-Prot/UniprotKB database, which was used to collect the information about its proteins in relation to their protein families, Pfam profiles, protein names and protein lengths. <strong>All commands provided below to run the taxonomy evaluation tests require that you are in a conda enviroment which contains any installation of Python version 3.0 or higher.</strong></p>
+<p align="justify">All tests for the evaluation were run based on the ProteoSeeker version 1.0.0 and the tool versions described in it, which refer to the "v1.0.0" release of ProteoSeeker (in the current repository). The collection dates for the databases used in the evaluation can be found below. In addition, we also note the download date of the flat file of the reviewed proteins from the Swiss-Prot/UniprotKB database, which was used to collect the information about its proteins in relation to their protein families, Pfam profiles, protein names and protein lengths. <strong>All commands provided below to run the taxonomy evaluation tests require that you are in a conda environment which contains any installation of Python version 3.0 or higher.</strong></p>
 
 1. Pfam database: 29/05/2024
 2. Swiss-Prot/UniprotKB database: 29/05/2024
