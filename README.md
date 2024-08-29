@@ -837,7 +837,7 @@ chmod 755 analyze_tax_results.sh
 ~~~
 
 ## 4.2 Seek and taxonomy modes evaluation
-<p align="justify">The seek and taxonomy mode of ProteoSeeker can be tested on specific samples which have been analyzed by our lab in the process of discovering novel enzymes with desirable characteristics. The following SRA codes for the latter samples were used for these tests: "SRR3961740", "DRR163688" and "SRR17771278". For ProteoSeeker to utilize Phobius in the test runs described below you must follow the instructions for installing and using Phobius provided in section "2" about Phobius (at the last part of the section) and in section "3.4.1".</p>
+<p align="justify">The seek and taxonomy modes of ProteoSeeker can be tested on specific samples which have been analyzed by our lab in the process of discovering novel enzymes with desirable characteristics. The following SRA codes for the latter samples were used for these tests: "SRR3961740", "DRR163688" and "SRR17771278". For ProteoSeeker to utilize Phobius in the test runs described below you must follow the instructions for installing and using Phobius provided in section "2" about Phobius (at the last part of the section) and in section "3.4.1".</p>
 
 1. <p align="justify">In the Bash script "setup.sh" in the directory "parameter_files", modify the paths to the Kraken2 Collection Standard-8, Standard-16, Standard databases and to the protein database, using their absolute paths based on your system. The latter paths are already set as for ProteoSeeker to be able to run properly but your modifications are advised ensuring that the paths are set correctly. The variables storing these paths are the following:</p>
 
