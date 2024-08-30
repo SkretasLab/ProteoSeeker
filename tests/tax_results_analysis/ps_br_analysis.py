@@ -410,6 +410,9 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
     accuracy = -1
     jaccard_index = -1
 
+    # Number of decimals for each metric
+    round_dec_num = 4
+
     # Gold standard sample information
     gold_si_info = br_info_dict[sample_id]
 
@@ -469,28 +472,31 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
     # Sensitivity
     if (tp + fn) != 0:
         sensitivity =  tp / (tp + fn)
-        sensitivity = round(sensitivity, 3)
+        sensitivity = sensitivity * 100
+        sensitivity = round(sensitivity, round_dec_num)
 
     # Precision
     if (tp + fp) != 0:
         precision = tp / (tp + fp)
-        precision = round(precision, 3)
-
-    # F1 Score
-    if (2 * tp + fp + fn) != 0:
-        f1_score = (2 * tp) / (2 * tp + fp + fn)
-        f1_score = round(f1_score, 3)
+        precision = precision * 100
+        precision = round(precision, round_dec_num)
 
     # Accuracy
     if (tp + tn + fp + fn) != 0:
         accuracy = (tp + tn) / (tp + tn + fp + fn)
-        accuracy = round(accuracy, 3)
+        accuracy = accuracy * 100
+        accuracy = round(accuracy, round_dec_num)
+
+    # F1 Score
+    if (2 * tp + fp + fn) != 0:
+        f1_score = (2 * tp) / (2 * tp + fp + fn)
+        f1_score = round(f1_score, round_dec_num)
 
     # Jaccard index:
     # The true positive hits are the number of the items of the intersection of the two gruops.
     # The number of unique items of the two groups is the number of the items of their union.
     jaccard_index = tp / (tp + fp + fn)
-    jaccard_index = round(jaccard_index, 3)
+    jaccard_index = round(jaccard_index, round_dec_num)
 
     # L1 norm
     l1_norm = 0
@@ -506,7 +512,7 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
         temp_term = abs(gold_abu_prec - pred_abu_perc)
         l1_norm += temp_term
     l1_norm = l1_norm / 100
-    l1_norm = round(l1_norm, 3)
+    l1_norm = round(l1_norm, round_dec_num)
 
     # Store information in the dictionary
     val_species_num = len(gold_si_info)
@@ -646,8 +652,13 @@ def design_grouped_plots(comb_info_dict, metric_label_dict_1, legend_label_dict,
             metric_df.loc[row_index] = item
             row_index += 1
         pandas_dict[key_metric] = metric_df
-    # Creating the plots
+    # Metrics to skip.
     group_pass = ["Gold species number", "Common species (intersection)", "Unique species from both groups (union)", "Unique to gold group", "Unique to predicted group", "True Negative (TN)"]
+    # Groups of metrics based on the value range of the y axis.
+    group_0_100 = ["Sensitivity", "Specificty", "Precision", "Accuracy"]
+    group_0_1 = ["F1 score", "Jaccard Index"]
+    group_0_2 = ["L1_norm"]
+    # Creating the plots
     for key_metric in pandas_dict.keys():
         if key_metric in group_pass:
             continue
@@ -679,11 +690,21 @@ def design_grouped_plots(comb_info_dict, metric_label_dict_1, legend_label_dict,
         # Axis labels
         metric_label = metric_label_dict_1[key_metric]
         x_axis_label = "Sample ID"
-        y_axis_label = metric_label
+        if metric_label in ["Sensitivity", "Specificty", "Precision", "Accuracy"]:
+            y_axis_label = "{} (%)".format(metric_label)
+        else:
+            y_axis_label = metric_label
         cur_axis.set_xlabel(x_axis_label, fontsize=fs_num_2, fontweight='bold')
         cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
         axis_title_label = "{} vs Sample ID".format(metric_label)
         cur_axis.set_title(axis_title_label, fontsize=fs_num_1, fontweight='bold')
+        # Set the value range for the y axis.
+        if key_metric in group_0_100:
+            cur_axis.set_ylim(0, 100)
+        elif key_metric in group_0_1:
+            cur_axis.set_ylim(0, 1)
+        elif key_metric in group_0_2:
+            cur_axis.set_ylim(0, 2)
         # Changing the size of the tick labels
         cur_axis.tick_params(axis='both', which='major', labelsize=fs_num_3)
         # Layout: Padding from left, bottom, right, top
@@ -709,6 +730,10 @@ def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dic
     fs_num_3 = 20
     # Letters for annotation
     annotation_letters = list("abcdefghijklmnopqrstuvwxyz")
+    # Groups of metrics based on the value range of the y axis.
+    group_0_100 = ["Sensitivity", "Specificty", "Precision", "Accuracy"]
+    group_0_1 = ["F1 score", "Jaccard Index"]
+    group_0_2 = ["L1_norm"]
     # Creating the plots
     for key_group_metric in metric_group_dict.keys():
         cur_metric_group = metric_group_dict[key_group_metric]
@@ -725,7 +750,10 @@ def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dic
             # Labels for x axis, y axis and title.
             metric_label = metric_label_dict_1[item]
             x_axis_label = "Sample ID"
-            y_axis_label = metric_label
+            if metric_label in ["Sensitivity", "Specificty", "Precision", "Accuracy"]:
+                y_axis_label = "{} (%)".format(metric_label)
+            else:
+                y_axis_label = metric_label
             axis_title_label = "{} vs Sample ID".format(metric_label)
             # Labels
             cur_axis.set_xlabel(x_axis_label, fontsize=fs_num_2, fontweight='bold')
@@ -737,6 +765,13 @@ def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dic
             # Remove the legend, if for the last plot.
             if row_fig_index < row_num:
                 cur_axis.legend().remove()
+            # Set the value range for the y axis.
+            if item in group_0_100:
+                cur_axis.set_ylim(0, 100)
+            elif item in group_0_1:
+                cur_axis.set_ylim(0, 1)
+            elif item in group_0_2:
+                cur_axis.set_ylim(0, 2)
             # Replace the y axis ticks.
             cur_axis.set_yticks(list(cur_axis.get_yticks()))
             # Place vertical lines to divie the sample barplots.
@@ -779,6 +814,10 @@ def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_la
     fs_num_3 = 20
     # Letters for annotation
     annotation_letters = list("abcdefghijklmnopqrstuvwxyz")
+    # Groups of metrics based on the value range of the y axis.
+    group_0_100 = ["Sensitivity", "Specificty", "Precision", "Accuracy"]
+    group_0_1 = ["F1 score", "Jaccard Index"]
+    group_0_2 = ["L1_norm"]
     # Filter specific samples.
     for key_group in sample_group_dict.keys():
         sample_id_group = sample_group_dict[key_group]
@@ -807,7 +846,10 @@ def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_la
                 # Labels for x axis, y axis and title.
                 metric_label = metric_label_dict_1[item]
                 x_axis_label = "Sample ID"
-                y_axis_label = metric_label
+                if metric_label in ["Sensitivity", "Specificty", "Precision", "Accuracy"]:
+                    y_axis_label = "{} (%)".format(metric_label)
+                else:
+                    y_axis_label = metric_label
                 axis_title_label = "{} vs Sample ID for {}".format(metric_label, group_label)
                 # Labels
                 cur_axis.set_xlabel(x_axis_label, fontsize=fs_num_2, fontweight='bold')
@@ -819,6 +861,13 @@ def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_la
                 # Remove the legend, if for the last plot.
                 if row_fig_index < row_num:
                     cur_axis.legend().remove()
+                # Set the value range for the y axis.
+                if item in group_0_100:
+                    cur_axis.set_ylim(0, 100)
+                elif item in group_0_1:
+                    cur_axis.set_ylim(0, 1)
+                elif item in group_0_2:
+                    cur_axis.set_ylim(0, 2)
                 # Replace the y axis ticks.
                 cur_axis.set_yticks(list(cur_axis.get_yticks()))
                 # Place vertical lines to divie the sample barplots.
@@ -914,7 +963,7 @@ def rank_stats(pandas_dict, stats_dir_path, metric_label_dict_2):
             method_sample_rank_df.loc[row_index] = temp_list
             row_index += 1
     # Store the dataframe.
-    top_methods_tsv_path = "{}/top_methods.tsv".format(stats_dir_path)
+    top_methods_tsv_path = "{}/sample_top_methods.tsv".format(stats_dir_path)
     method_sample_rank_df.to_csv(top_methods_tsv_path, sep="\t", index=True)
 
     # Top method counting across all samples for each metric.
@@ -942,7 +991,7 @@ def rank_stats(pandas_dict, stats_dir_path, metric_label_dict_2):
     # Sort the dataframe.
     method_allsamples_rank_sorted_df = method_allsamples_rank_df.sort_values(by=['metric', 'frequency'], ascending=[True, False])
     # Store the dataframe
-    count_top_methods_tsv_path = "{}/count_top_methods.tsv".format(stats_dir_path)
+    count_top_methods_tsv_path = "{}/total_top_methods.tsv".format(stats_dir_path)
     method_allsamples_rank_sorted_df.to_csv(count_top_methods_tsv_path, sep="\t", index=True)
 
 
