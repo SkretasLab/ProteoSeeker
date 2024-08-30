@@ -469,27 +469,28 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
     # Sensitivity
     if (tp + fn) != 0:
         sensitivity =  tp / (tp + fn)
-        sensitivity = round(sensitivity, 2)
+        sensitivity = round(sensitivity, 3)
 
     # Precision
     if (tp + fp) != 0:
         precision = tp / (tp + fp)
-        precision = round(precision, 2)
+        precision = round(precision, 3)
 
     # F1 Score
     if (2 * tp + fp + fn) != 0:
         f1_score = (2 * tp) / (2 * tp + fp + fn)
-        f1_score = round(f1_score, 2)
+        f1_score = round(f1_score, 3)
 
     # Accuracy
     if (tp + tn + fp + fn) != 0:
         accuracy = (tp + tn) / (tp + tn + fp + fn)
-        accuracy = round(accuracy, 2)
+        accuracy = round(accuracy, 3)
 
     # Jaccard index:
     # The true positive hits are the number of the items of the intersection of the two gruops.
     # The number of unique items of the two groups is the number of the items of their union.
     jaccard_index = tp / (tp + fp + fn)
+    jaccard_index = round(jaccard_index, 3)
 
     # L1 norm
     l1_norm = 0
@@ -505,6 +506,7 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
         temp_term = abs(gold_abu_prec - pred_abu_perc)
         l1_norm += temp_term
     l1_norm = l1_norm / 100
+    l1_norm = round(l1_norm, 3)
 
     # Store information in the dictionary
     val_species_num = len(gold_si_info)
