@@ -1274,7 +1274,7 @@ def plot_full_sample_time(df_full_time_dict, megahit_time_dict, time_dir, stats_
         ax.axhline(y=cur_megahit_time, color='r', linestyle='--', linewidth=1)
         # Labels
         plt.xlabel('Taxonomy Route and Database', fontsize=fs_num_2, fontweight='bold')
-        plt.ylabel('Execution Time (m)', fontsize=fs_num_2, fontweight='bold')
+        plt.ylabel('Execution Time (min)', fontsize=fs_num_2, fontweight='bold')
         plt.title('Execution Time vs Taxonomy Route and Database', fontsize=fs_num_1, fontweight='bold')
         # Place the legend outside the plot
         # Custom legend labels
@@ -1324,7 +1324,7 @@ def plot_total_sample_time(df_total_time_dict, megahit_time_dict, time_dir, stat
         plt.axhline(y=cur_megahit_time, color='r', linestyle='--', linewidth=1)
         # Labels
         plt.xlabel('Taxonomy Route and Database', fontsize=fs_num_2, fontweight='bold')
-        plt.ylabel('Execution Time (m)', fontsize=fs_num_2, fontweight='bold')
+        plt.ylabel('Execution Time (min)', fontsize=fs_num_2, fontweight='bold')
         plt.title('Execution Time vs Taxonomy Route and Database', fontsize=fs_num_1, fontweight='bold')
         # Changing the size of the tick labels        
         plt.tick_params(axis='both', which='major', labelsize=fs_num_3)
@@ -1353,7 +1353,7 @@ def plot_total_all_time(total_time_all_df, time_dir, stats_dir_path):
     total_time_all_barplot._legend.remove()
     # Labels
     x_axis_label = "Sample ID"
-    y_axis_label = "Execution Time (m)"
+    y_axis_label = "Execution Time (min)"
     title_label = "Execution Time vs Sample ID"
     legend_label = "Taxonomy Route and Database"
     total_time_all_barplot.set_axis_labels(x_axis_label, y_axis_label, fontsize=fs_num_2, fontweight='bold')
@@ -1412,8 +1412,8 @@ def plot_full_group_sample_time(df_full_time_all, time_dir, stats_dir_path, time
         cur_axis.set_xticklabels([f"{sample}-{method}" for sample, method in df_time_filtered.index], rotation=45, ha="right")
         # Labels for x axis, y axis and title.
         x_axis_label = "Sample ID"
-        y_axis_label = "Execution time (m)"
-        axis_title_label = "Execution time vs Sample ID for {}".format(group_label)
+        y_axis_label = "Execution Time (min)"
+        axis_title_label = "Execution Time vs Sample ID for {}".format(group_label)
         # Labels
         cur_axis.set_xlabel(x_axis_label, fontsize=fs_num_2, fontweight='bold')
         cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
@@ -1492,8 +1492,8 @@ def plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_d
         if row_fig_index < col_num:
             cur_axis.legend().remove()
         # Labels
-        y_axis_label = "Execution time (m)"
-        axis_title_label = "Execution time per method for each group of samples"
+        y_axis_label = "Execution Time (min)"
+        axis_title_label = "Execution Time per method for each group of samples"
         cur_axis.set_xlabel(group_label, fontsize=fs_num_2, fontweight='bold')
         cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
         # Changing the size of the tick labels        
@@ -1631,7 +1631,7 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
                 cur_axis.set_xticks(x_axis_ticks[1:])
             # Labels
             x_axis_label = "Sample Size (GB)"
-            y_axis_label = "Execution Time (m)"
+            y_axis_label = "Execution Time (min)"
             if key_method == "k8":
                 title_part = "Kraken2 db:8"
             elif key_method == "k16":
@@ -1655,7 +1655,7 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
     # Get the axis for the middle plot
     middle_axis = axis[2]
     # Title
-    fig_title_label = "Sample Size vs Execution Time"
+    fig_title_label = "Execution Time vs Sample Size"
     title_pos = middle_axis.title.get_position()
     figure.text(title_pos[0], title_pos[1] - 0.04, fig_title_label, ha='center', fontsize=fs_num_1, fontweight='bold')
     # Layout
@@ -1732,7 +1732,7 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
                 cur_axis.set_xticks(x_axis_ticks[1:])
             # Labels
             x_axis_label = "Species Number"
-            y_axis_label = "Execution Time (m)"
+            y_axis_label = "Execution Time (min)"
             if key_method == "k8":
                 title_part = "Kraken2 db:8"
             elif key_method == "k16":
@@ -1759,7 +1759,7 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
     # Get the axis for the middle plot.
     middle_axis = axis[2]
     # Title
-    fig_title_label = "Species Number vs Execution Time"
+    fig_title_label = "Execution Time vs Species Number"
     title_pos = middle_axis.title.get_position()
     figure.text(title_pos[0], title_pos[1] - 0.04, fig_title_label, ha='center', fontsize=fs_num_1, fontweight='bold')
     # Legend
@@ -1844,7 +1844,7 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
                 cur_axis.set_xticks(x_axis_ticks[1:])
             # Labels
             x_axis_label = "Species Number"
-            y_axis_label = "Mean Execution Time (m)"
+            y_axis_label = "Mean Execution Time (min)"
             if key_method == "k8":
                 title_part = "Kraken2 db:8"
             elif key_method == "k16":
@@ -1871,7 +1871,7 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
     # Get the axis for the middle plot
     middle_axis = axis[2]
     # Title
-    fig_title_label = "Species number vs Mean Execution Time"
+    fig_title_label = "Mean Execution Time vs Species Number"
     title_pos = middle_axis.title.get_position()
     figure.text(title_pos[0], title_pos[1] - 0.04, fig_title_label, ha='center', fontsize=fs_num_1, fontweight='bold')
     #middle_axis.set_title(axis_title_label, pad=20, loc='center', fontsize=fs_num_1, fontweight='bold')
