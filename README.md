@@ -934,10 +934,11 @@ https://skretaslab.gr/proteoseeker
 
 # Contacts and bug reports
 Feel free to send questions or bug reports to one of the following people:
-1. Georgios Filis: filis@fleming.gr
-2. Dimitra Bezantakou: bezantakou@fleming.gr
-3. Dimitra Zarafeta: zarafeta@fleming.gr
-4. Georgios Skretas: skretas@fleming.gr
+1. ProteoSeeker Team: proteoseeker@fleming.gr
+2. Georgios Filis: filis@fleming.gr
+3. Dimitra Bezantakou: bezantakou@fleming.gr
+4. Dimitra Zarafeta: zarafeta@fleming.gr
+5. Georgios Skretas: skretas@fleming.gr
 
 # License
 This project is licensed under the GPLv3 License. See the [LICENSE](LICENSE) file for details.
