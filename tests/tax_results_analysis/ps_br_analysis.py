@@ -544,18 +544,8 @@ def write_list(path_tow, list_tow):
 
 
 def write_species(common_items, group_val_items, group_val_unique_items, group_pred_items, group_pred_unique_items, stats_dir_path, label, si):
-    # File paths
-    common_path = "{}/common_{}_sample_{}.txt".format(stats_dir_path, label, si)
-    group_val_path = "{}/val_{}_sample_{}.txt".format(stats_dir_path, label, si)
-    group_val_unique_path = "{}/val_unique_{}_sample_{}.txt".format(stats_dir_path, label, si)
-    group_pred_path = "{}/pred_{}_sample_{}.txt".format(stats_dir_path, label, si)
-    group_pred_unique_path = "{}/pred_unique_{}_sample_{}.txt".format(stats_dir_path, label, si)
+    # File path
     sample_synopsis_path = "{}/synopsis_{}_sample_{}.tsv".format(stats_dir_path, label, si)
-    write_list(common_path, common_items)
-    write_list(group_val_path, group_val_items)
-    write_list(group_val_unique_path, group_val_unique_items)
-    write_list(group_pred_path, group_pred_items)
-    write_list(group_pred_unique_path, group_pred_unique_items)
     # Dictionary with the species. It is needed to create the dataframe.
     species_dict = {
         "common_species": common_items,
@@ -605,7 +595,7 @@ def comp_stats(br_info_dict, comp_dict, comp_sole_dict, stats_dir_path, label):
     return comb_stats_dict
 
 
-def design_stacked_plots(comb_info_dict, metric_label_dict, legend_label_dict, plot_dir_parh, stats_dir_path):
+def design_grouped_plots(comb_info_dict, metric_label_dict_1, legend_label_dict, plot_dir_parh, stats_dir_path):
     print("Plotting set 1...\n")
     if os.path.exists(plot_dir_parh):
         shutil.rmtree(plot_dir_parh)
@@ -657,10 +647,13 @@ def design_stacked_plots(comb_info_dict, metric_label_dict, legend_label_dict, p
             row_index += 1
         pandas_dict[key_metric] = metric_df
     # Creating the plots
+    group_pass = ["Gold species number", "Common species (intersection)", "Unique species from both groups (union)", "Unique to gold group", "Unique to predicted group", "True Negative (TN)"]
     for key_metric in pandas_dict.keys():
+        if key_metric in group_pass:
+            continue
         df_metric = pandas_dict[key_metric]
         # File path
-        metric_label = metric_label_dict[key_metric]
+        metric_label = metric_label_dict_1[key_metric]
         metric_label_sep = metric_label.split(" ")
         metric_label_con = "_".join(metric_label_sep)
         metric_tsv_path = "{}/{}.tsv".format(stats_dir_path, metric_label_con)
@@ -684,7 +677,7 @@ def design_stacked_plots(comb_info_dict, metric_label_dict, legend_label_dict, p
                 new_legnd_label = legend_label_dict[cur_legend_label]
                 legend_text.set_text(new_legnd_label)
         # Axis labels
-        metric_label = metric_label_dict[key_metric]
+        metric_label = metric_label_dict_1[key_metric]
         x_axis_label = "Sample ID"
         y_axis_label = metric_label
         cur_axis.set_xlabel(x_axis_label, fontsize=fs_num_2, fontweight='bold')
@@ -696,7 +689,7 @@ def design_stacked_plots(comb_info_dict, metric_label_dict, legend_label_dict, p
         # Layout: Padding from left, bottom, right, top
         plt.tight_layout()
         # File paths
-        metric_label = metric_label_dict[key_metric]
+        metric_label = metric_label_dict_1[key_metric]
         metric_label_sep = metric_label.split(" ")
         metric_label_con = "_".join(metric_label_sep)
         plot_png_path = "{}/{}.png".format(plot_dir_parh, metric_label_con)
@@ -708,7 +701,7 @@ def design_stacked_plots(comb_info_dict, metric_label_dict, legend_label_dict, p
     return pandas_dict
     
 
-def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict, legend_label_dict, plot_dir_parh):
+def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict_1, legend_label_dict, plot_dir_parh):
     print("Plotting set 2...\n")
     # Font sizes
     fs_num_1 = 25
@@ -730,7 +723,7 @@ def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dic
             # Removes the right, top, left and bottom axis.
             sns.despine(ax=cur_axis, left=True)
             # Labels for x axis, y axis and title.
-            metric_label = metric_label_dict[item]
+            metric_label = metric_label_dict_1[item]
             x_axis_label = "Sample ID"
             y_axis_label = metric_label
             axis_title_label = "{} vs Sample ID".format(metric_label)
@@ -778,7 +771,7 @@ def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dic
         plt.close()
 
 
-def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict, legend_label_dict, sample_group_dict, sample_group_label_dict, plot_dir_parh):
+def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict_1, legend_label_dict, sample_group_dict, sample_group_label_dict, plot_dir_parh):
     print("Plotting set 3...\n")
     # Font sizes
     fs_num_1 = 25
@@ -812,7 +805,7 @@ def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_la
                 # Removes the right, top, left and bottom axis.
                 sns.despine(ax=cur_axis, left=True)
                 # Labels for x axis, y axis and title.
-                metric_label = metric_label_dict[item]
+                metric_label = metric_label_dict_1[item]
                 x_axis_label = "Sample ID"
                 y_axis_label = metric_label
                 axis_title_label = "{} vs Sample ID for {}".format(metric_label, group_label)
@@ -862,21 +855,26 @@ def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_la
             plt.close()
 
 
-def rank_stats(pandas_dict, stats_dir_path, metric_label_dict):
+def rank_stats(pandas_dict, stats_dir_path, metric_label_dict_2):
     print("Ranking the methods...\n")
-    # Write all computed metrics for all samples in a tsv file.
+    # A group of methods is skipped, a group which contains each method that shows higher "similarity" of the two groups while its scores is increased
+    # and a group which contains each method that shows higher "similarity" of the two groups while its scores is decreased.
+    group_pass = ["Gold species number", "Common species (intersection)", "Unique species from both groups (union)", "Unique to gold group", "Unique to predicted group", "True Negative (TN)"]
+    group_max = ["Predicted species number", "True Positive (TP)", "Sensitivity", "Specificty", "Precision", "Accuracy", "F1 score", "Jaccard Index"]
+    group_min = ["False Positive (FP)", "False Negative (FN)", "L1_norm"]
+    # Write all computed metrics for all samples in a TSV file.
     metrics_stats_path = "{}/metrics_stats.tsv".format(stats_dir_path)
     metrics_stats_file = open(metrics_stats_path, "w")
     for key_metric in pandas_dict.keys():
-        metrics_stats_file.write("{}\n".format(key_metric))
+        if key_metric in group_pass:
+            continue
+        metric_label = metric_label_dict_2[key_metric]
+        metrics_stats_file.write("{}\n".format(metric_label))
         metric_df = pandas_dict[key_metric]
         metric_df.to_csv(metrics_stats_file, sep="\t", index=False)
         metrics_stats_file.write("\n")
     metrics_stats_file.close()
     # The higher ranking methods across for each sample are identified.
-    group_pass = ["Gold species number", "True Negative (TN)"]
-    group_max = ["Predicted species number", "True Positive (TP)", "Sensitivity", "Specificty", "Precision", "Accuracy", "F1 score", "Jaccard Index"]
-    group_min = ["Common species (intersection)", "Unique species from both groups (union)", "Unique to gold group", "Unique to predicted group", "False Positive (FP)", "False Negative (FN)", "L1_norm"]
     method_sample_rank_dict = {}
     for key_metric in pandas_dict.keys():
         if key_metric in group_pass:
@@ -911,7 +909,7 @@ def rank_stats(pandas_dict, stats_dir_path, metric_label_dict):
         for key_sample in method_sample_rank_dict[key_metric].keys():
             top_methods = method_sample_rank_dict[key_metric][key_sample]
             top_methods_str = ",".join(top_methods)
-            metric_label = metric_label_dict[key_metric]
+            metric_label = metric_label_dict_2[key_metric]
             temp_list = [metric_label, key_sample, top_methods_str]
             method_sample_rank_df.loc[row_index] = temp_list
             row_index += 1
@@ -937,7 +935,7 @@ def rank_stats(pandas_dict, stats_dir_path, metric_label_dict):
     for key_metric in method_allsamples_count_dict.keys():
         for key_top_method in method_allsamples_count_dict[key_metric].keys():
             top_method_freq = method_allsamples_count_dict[key_metric][key_top_method]
-            metric_label = metric_label_dict[key_metric]
+            metric_label = metric_label_dict_2[key_metric]
             temp_list = [metric_label, key_top_method, top_method_freq]
             method_allsamples_rank_df.loc[row_index] = temp_list
             row_index += 1
@@ -2230,7 +2228,7 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         2: metric_group_2,
         3: metric_group_3
     }
-    metric_label_dict = {
+    metric_label_dict_1 = {
         "Gold species number": "Abundance of Gold Standard Species",
         "Predicted species number": "Abundance of Predicted Species",
         "Common species (intersection)": "Abundance of Common Species",
@@ -2240,6 +2238,23 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         "True Positive (TP)": "True Positive",
         "False Positive (FP)": "False Positive",
         "False Negative (FN)": "False Negative",
+        "Sensitivity": "Sensitivity",
+        "Precision": "Precision",
+        "Accuracy": "Accuracy",
+        "F1 score": "F1 Score",
+        "L1_norm": "L1 Norm",
+        "Jaccard Index": "Jaccard Index"
+    }
+    metric_label_dict_2 = {
+        "Gold species number": "Abundance of Gold Standard Species",
+        "Predicted species number": "Abundance of Predicted Species",
+        "Common species (intersection)": "Abundance of Common Species",
+        "Unique species from both groups (union)": "Abudance of Gold Standard and Predicted Species",
+        "Unique to gold group": "Abundance of Species Unique to the Gold Standard Group",
+        "Unique to predicted group": "Abundance of Species Unique to the Predicted Group",
+        "True Positive (TP)": "True Positive (Abundance of Common Species Between the Gold Standard and Predicted Groups)",
+        "False Positive (FP)": "False Positive (Abundance of Species Unique to the Predicted Group)",
+        "False Negative (FN)": "False Negative (Abundance of Species Unique to the Gold Standard Group)",
         "Sensitivity": "Sensitivity",
         "Precision": "Precision",
         "Accuracy": "Accuracy",
@@ -2312,12 +2327,12 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         12: "GC-Rich Bias"
     }
     # Plots
-    pandas_dict = design_stacked_plots(comb_info_dict, metric_label_dict, legend_label_dict, plot_dir_parh, stats_dir_path)
-    design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict, legend_label_dict, plot_dir_parh)
-    design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict, legend_label_dict, sample_group_dict, sample_group_label_dict, plot_dir_parh)
+    pandas_dict = design_grouped_plots(comb_info_dict, metric_label_dict_1, legend_label_dict, plot_dir_parh, stats_dir_path)
+    design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict_1, legend_label_dict, plot_dir_parh)
+    design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict_1, legend_label_dict, sample_group_dict, sample_group_label_dict, plot_dir_parh)
     
     # Analyze the statistics
-    rank_stats(pandas_dict, stats_dir_path, metric_label_dict)
+    rank_stats(pandas_dict, stats_dir_path, metric_label_dict_2)
 
     if time_status:
         # Time groups
