@@ -875,7 +875,7 @@ python proteoseeker.py -pfp parameter_files/cas_als/al_run/SRR17771278/parameter
 python proteoseeker.py -pfp parameter_files/cas_als/al_run/SRR17771278/parameters_SRR17771278_k8_al.txt
 ~~~
 
-5. <p align="justify">If you run all the parameter files, you can then run the "tests/seek_tax_results_analysis/analyze_seek_tax_results.sh" script in the "tests" to automatically analyze the results from these analyses for the three experimentally validated enzymes described in [manuscript under review]. The latter script uses an input file which contains information about the species of the best hit of each of the evaluated proteins against the nr database through BLASTP. The best hit is identified based on the lowest e-value among all the hits. Thus, if you run all the parameter files, you can go to the "tests/seek_tax_results_analysis" direcotry and run:</p>
+5. <p align="justify">You can then run the "tests/seek_tax_results_analysis/analyze_seek_tax_results.sh" script in the "tests" to automatically analyze the results from the seek and taxonomy evaluation tests, for any number of samples analyzed, for the three experimentally validated enzymes described in [manuscript under review]. The latter script uses an input file which contains information about the species of the best hit of each of the evaluated proteins against the nr database through BLASTP. The best hit is identified based on the lowest e-value among all the hits. Therefore, you can move to the "tests/seek_tax_results_analysis" direcotry and run:</p>
 
 ~~~bash
 ./analyze_seek_tax_results.sh
