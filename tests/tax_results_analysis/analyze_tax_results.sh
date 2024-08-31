@@ -25,11 +25,12 @@ python ps_br_analysis.py -p "${TAX_RESULTS_DIR}" -o analysis_plots_kraken_all -m
 # Kraken2 selected results and COMEBIn - nr and MetaBinner - nr results analysis
 # Top method:
 # kraken_8_100: Accuracy, F1 Score, Jaccard Index
-# kraken_8_1c0: Precision
-# kraken_72: Sensitivity
+# kraken_8_1c0: False Positive, Precision
+# kraken_16_1c0: Precision
+# kraken_72: True Positive, False Negative, Sensitivity
 # kraken_72_ng: L1 Norm
 # Selected methods: k8_100,k8_1c0,k72,k72_ng
-python ps_br_analysis.py -p "${TAX_RESULTS_DIR}" -o analysis_plots_general -m k8_100,k8_1c0,k72,k72_ng,cnr,mnr
+python ps_br_analysis.py -p "${TAX_RESULTS_DIR}" -o analysis_plots_general -m k8_100,k8_1c0,k16_1c0,k72,k72_ng,cnr,mnr
 
 # Deactivate environment.
 conda deactivate
