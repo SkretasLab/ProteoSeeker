@@ -82,7 +82,7 @@ def br_analysis(benchmark_path, benchmark_mod_path, benchmark_mod_spabu_path):
     return br_info_dict
 
 
-def crfiles(ps_dir, ps_results, analysis_results_dict, time_dir, stats_dir_path):
+def crfiles(ps_dir, ps_results, analysis_results_dict, time_dir, time_stats_dir_path):
     # Create the directory for the results.
     if os.path.exists(ps_dir):
         shutil.rmtree(ps_dir)
@@ -122,7 +122,7 @@ def crfiles(ps_dir, ps_results, analysis_results_dict, time_dir, stats_dir_path)
                                 target_dir = analysis_results_dict["k72"]
                                 method_db = "k72"
                             if kn == "time_analysis.tsv":
-                                kraken_dest_path = "{}/mdb_{}_sample_{}_{}".format(stats_dir_path, method_db, sample_id, kn)
+                                kraken_dest_path = "{}/mdb_{}_sample_{}_{}".format(time_stats_dir_path, method_db, sample_id, kn)
                             else:
                                 kraken_dest_path = "{}/sample_{}_{}".format(target_dir, sample_id, kn)
                             shutil.copyfile(kraken_source_path, kraken_dest_path)
@@ -138,7 +138,7 @@ def crfiles(ps_dir, ps_results, analysis_results_dict, time_dir, stats_dir_path)
                     metabinner_dest_path_1 = "{}/sample_{}_binphylo_freq_taxids.tsv".format(target_dir, sample_id)
                     metabinner_dest_path_2 = "{}/sample_{}_binphylo_maxfreq_taxids.tsv".format(target_dir, sample_id)
                     metabinner_dest_path_3 = "{}/sample_{}_b_summary_info_metabinner.tsv".format(target_dir, sample_id)
-                    metabinner_dest_path_4 = "{}/mdb_{}_sample_{}_time_analysis.tsv".format(stats_dir_path, method_db, sample_id)
+                    metabinner_dest_path_4 = "{}/mdb_{}_sample_{}_time_analysis.tsv".format(time_stats_dir_path, method_db, sample_id)
                     if os.path.exists(metabinner_source_path_1):
                         shutil.copyfile(metabinner_source_path_1, metabinner_dest_path_1)
                     if os.path.exists(metabinner_source_path_2):
@@ -159,7 +159,7 @@ def crfiles(ps_dir, ps_results, analysis_results_dict, time_dir, stats_dir_path)
                     comebin_dest_path_1 = "{}/sample_{}_binphylo_freq_taxids.tsv".format(target_dir, sample_id)
                     comebin_dest_path_2 = "{}/sample_{}_binphylo_maxfreq_taxids.tsv".format(target_dir, sample_id)
                     comebin_dest_path_3 = "{}/sample_{}_b_summary_info_comebin.tsv".format(target_dir, sample_id)
-                    comebin_dest_path_4 = "{}/mdb_{}_sample_{}_time_analysis.tsv".format(stats_dir_path, method_db, sample_id)
+                    comebin_dest_path_4 = "{}/mdb_{}_sample_{}_time_analysis.tsv".format(time_stats_dir_path, method_db, sample_id)
                     if os.path.exists(comebin_source_path_1):
                         shutil.copyfile(comebin_source_path_1, comebin_dest_path_1)
                     if os.path.exists(comebin_source_path_2):
@@ -411,7 +411,7 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
     jaccard_index = -1
 
     # Number of decimals for each metric
-    round_dec_num = 4
+    round_dec_num = 2
 
     # Gold standard sample information
     gold_si_info = br_info_dict[sample_id]
@@ -908,8 +908,8 @@ def rank_stats(pandas_dict, stats_dir_path, metric_label_dict_2):
     print("Ranking the methods...\n")
     # A group of methods is skipped, a group which contains each method that shows higher "similarity" of the two groups while its scores is increased
     # and a group which contains each method that shows higher "similarity" of the two groups while its scores is decreased.
-    group_pass = ["Gold species number", "Common species (intersection)", "Unique species from both groups (union)", "Unique to gold group", "Unique to predicted group", "True Negative (TN)"]
-    group_max = ["Predicted species number", "True Positive (TP)", "Sensitivity", "Specificty", "Precision", "Accuracy", "F1 score", "Jaccard Index"]
+    group_pass = ["Gold species number", "Predicted species number", "Common species (intersection)", "Unique species from both groups (union)", "Unique to gold group", "Unique to predicted group", "True Negative (TN)"]
+    group_max = ["True Positive (TP)", "Sensitivity", "Specificty", "Precision", "Accuracy", "F1 score", "Jaccard Index"]
     group_min = ["False Positive (FP)", "False Negative (FN)", "L1_norm"]
     # Write all computed metrics for all samples in a TSV file.
     metrics_stats_path = "{}/metrics_stats.tsv".format(stats_dir_path)
@@ -1002,9 +1002,9 @@ def check_add(add_item, target_num):
     return target_num
 
 
-def collect_times(stats_dir_path):
+def collect_times(time_stats_dir_path):
     pre_time_dict = {}
-    time_file_names = os.listdir(stats_dir_path)
+    time_file_names = os.listdir(time_stats_dir_path)
     for tfn in time_file_names:
         if "time_analysis" in tfn:
             tfn_spliited = tfn.split("_")
@@ -1015,7 +1015,7 @@ def collect_times(stats_dir_path):
                 pre_time_dict[sample_id] = {}
             pre_time_dict[sample_id][method_dp] = {}
             # File path
-            tfn_path = "{}/{}".format(stats_dir_path, tfn)
+            tfn_path = "{}/{}".format(time_stats_dir_path, tfn)
             # File lines
             tfn_lines = read_file(tfn_path)
             for line in tfn_lines:
@@ -1051,6 +1051,21 @@ def time_stages(time_dict):
     # CNR: After gene prediction: Add = FastQC_Initial + BBDuk + FastQc_Final + Assembly + Gene_Prediction
     # The earlier stages to be added to the other methods are taken from K8. The gene annotation time (not gene prediction time)
     # is only run by ProteoSeeker for the seek mode, thus in the taxonomy mode it does not run.
+    # The total time is computed based on the previous total plus any common stage with the Kraken8 method.
+    # For the Kraken8 method is the same as the previous total time.
+    # This total time however will not be exactly equal to the sum of the stage-specific times of the full time table for a method.
+    # Even with the stage-specific times filled by the Kraken8 method, the total time will be slightly higher because of the intermediate
+    # parts of the pipeline which are not computed by these main processes whose times are computed in the different of the full time table.
+    # ---------sample_{}_total_time.tsv---------
+    # time_tool_dict: Contains the total time of each method based on its previous total time plus the stages from Kraken8
+    # time_tool_dict -> total time converted from seconds to mins -> df_total_time_dict -> sample_{}_total_time.tsv
+    # ---------sample_{}_full_time.tsv---------
+    # time_full_dict: Contains the total time of each method based on its previous total time plus the stages from Kraken8 and each stage-specific time.
+    # time_full_dict: Then, it gets the new stage-specific times from Kraken8 for all common stages.
+    # time_full_dict: Then, its times are converted to mins and are combined (summed up) to main stages (e.g., first and second FastQC analysis to one) -> df_full_time_dict
+    # df_full_time_dict -> sample_{}_full_time
+    # Therefore, the full times are the combined (or not) times of stage-specific times. Their sum is expected not to match the total time of the method due to the
+    # presence of the intermediate processes running between the main stages in the pipeline of ProteoSeeker.
     time_tool_dict = {}
     for key_sample in time_dict.keys():
         # Information to dictionary
@@ -1063,8 +1078,7 @@ def time_stages(time_dict):
             k8_fastqc_final_time = time_dict[key_sample]["k8"]["fastqc_final_time"]
             k8_assembly_time = time_dict[key_sample]["k8"]["assembly_time"]
             k8_gene_pred_time = time_dict[key_sample]["k8"]["gene_prediction_time"]
-            k8_cd_hit_time = time_dict[key_sample]["k8"]["cd_hit_time"]
-            if (k8_fastqc_init_time == "None") or (k8_preproc_time == "None") or (k8_fastqc_final_time == "None") or (k8_assembly_time == "None") or (k8_gene_pred_time == "None") or (k8_cd_hit_time == "None"):
+            if (k8_fastqc_init_time == "None") or (k8_preproc_time == "None") or (k8_fastqc_final_time == "None") or (k8_assembly_time == "None") or (k8_gene_pred_time == "None"):
                 sum_common_times = None
             else:
                 k8_fastqc_init_time = float(k8_fastqc_init_time)
@@ -1072,14 +1086,11 @@ def time_stages(time_dict):
                 k8_fastqc_final_time = float(k8_fastqc_final_time)
                 k8_assembly_time = float(k8_assembly_time)
                 k8_gene_pred_time = float(k8_gene_pred_time)
-                k8_cd_hit_time = float(k8_cd_hit_time)
                 sum_common_times = k8_fastqc_init_time + k8_preproc_time + k8_fastqc_final_time + k8_assembly_time + k8_gene_pred_time
         # Perform the additions
         if sum_common_times is None:
-            print("Error in computing the additional times. Continuing to the next sample.\n")
-            for key_method in time_dict[key_sample].keys():
-                time_tool_dict[key_sample][key_method] = None
-            continue
+            print("Error in computing the additional times. Exiting.\n")
+            exit()
         else:
             # Add the new tool time in the dictionary which stored only tool times and also
             # change the tool time in the dicionary with all the time periods of the tool.
@@ -1100,6 +1111,8 @@ def time_stages(time_dict):
 
 
 def fill_times(time_dict, time_full_dict):
+    # Each stage-specific execution time from Kraken 8 untill the stage of gene prediction is provided to the other methods.
+    # The new sum for the total time of the method has already been computed and provided to the method in the "time_stages" function.
     for key_sample in time_dict.keys():
         if "k8" in time_dict[key_sample].keys():
             k8_fastqc_init_time = time_dict[key_sample]["k8"]["fastqc_initial_time"]
@@ -1107,7 +1120,6 @@ def fill_times(time_dict, time_full_dict):
             k8_fastqc_final_time = time_dict[key_sample]["k8"]["fastqc_final_time"]
             k8_assembly_time = time_dict[key_sample]["k8"]["assembly_time"]
             k8_gene_pred_time = time_dict[key_sample]["k8"]["gene_prediction_time"]
-            #k8_cd_hit_time = time_dict[key_sample]["k8"]["cd_hit_time"]
         for key_method in time_full_dict[key_sample].keys():
             if key_method == "k8":
                 continue
@@ -1127,7 +1139,7 @@ def convert_to_minutes(time_seconds):
     return time_minutes, time_hours
 
 
-def create_df_stacked(time_dict):
+def create_df_stacked(time_full_dict):
     # Dataframe:
     # Periods of time for processes that no place to certain methods are computed as having run 0 seconds for those methods. Processes, which take up little time are grouped together as "other processes" or something else.
     # Sample ID
@@ -1140,42 +1152,31 @@ def create_df_stacked(time_dict):
     # The only taxonomy mode does not include: gene_annotation_time, topology_time    motifs_time    family_prediction_time
     all_col_labels = ["sample", "method", "quality_control", "preprocessing", "assembly", "gene_prediction", "clustering", "binning", "taxonomy", "read_alignment", "results"]
     df_full_time_all = pd.DataFrame(columns=all_col_labels)
-    df_time_dict = {}
+    df_full_time_dict = {}
     row_index_all = 0
-    for key_sample in time_dict.keys():
+    for key_sample in time_full_dict.keys():
         # Initialize an empty Pandas dataframe.
         col_labels = ["method", "quality_control", "preprocessing", "assembly", "gene_prediction", "clustering", "binning", "taxonomy", "read_alignment", "results"]
         time_metric_df = pd.DataFrame(columns=col_labels)
         row_index = 0
-        for key_method in time_dict[key_sample].keys():
-            df_total_time_str = time_dict[key_sample][key_method]["tool_time"]
-            #df_sra_time_str = time_dict[key_sample][key_method]["sra_time"]
-            #df_dbs_time_str = time_dict[key_sample][key_method]["sra_time"]
-            df_fastqc_init_time_str = time_dict[key_sample][key_method]["fastqc_initial_time"]
-            df_preproc_time_str = time_dict[key_sample][key_method]["preprocessing_time"]
-            df_fastqc_final_time_str = time_dict[key_sample][key_method]["fastqc_final_time"]
-            df_assembly_time_str = time_dict[key_sample][key_method]["assembly_time"]
-            df_gene_pred_time_str = time_dict[key_sample][key_method]["gene_prediction_time"]
-            #df_gene_anno_time_str = time_dict[key_sample][key_method]["gene_annotation_time"]
-            df_cd_hit_time_str = time_dict[key_sample][key_method]["cd_hit_time"]
-            df_kraken_tax_time_str = time_dict[key_sample][key_method]["kraken_time"]
-            # df_kraken_tax_spec_time_str = time_dict[key_sample][key_method]["kraken_specific_time"]
-            df_cm_binning_time_str = time_dict[key_sample][key_method]["binning_time"]
-            df_bowtie_time_str = time_dict[key_sample][key_method]["bowtie_time"]
-            # df_hmmer_spec_time_str = time_dict[key_sample][key_method]["hmmer_spec_time"]
-            df_hmmer_tax_spec_time_str = time_dict[key_sample][key_method]["hmmer_spec_taxonomy_time"]
-            # df_blastp_1_time_str = time_dict[key_sample][key_method]["blastp_fpd_no_doms_time"]
-            # df_blastp_2_time_str = time_dict[key_sample][key_method]["blastp_fpd_swiss_doms_time"]
-            df_blastp_3_time_str = time_dict[key_sample][key_method]["blastp_fpd_swiss_taxonomy_time"]
-            df_cm_analysis_time_str = time_dict[key_sample][key_method]["bin_analysis_cm_time"]
-            df_cm_tax_time_str = time_dict[key_sample][key_method]["bin_taxonomy_cm_time"]
-            df_kraken_binning_time_str = time_dict[key_sample][key_method]["kraken_binning_time"]
-            # df_hmmer_broad_time_str = time_dict[key_sample][key_method]["hmmer_broad"]
-            # df_topology_time_str = time_dict[key_sample][key_method]["topology_time"]
-            # df_motifs_time_str = time_dict[key_sample][key_method]["motifs_time"]
-            # df_fam_pred_time_str = time_dict[key_sample][key_method]["family_prediction_time"]
-            df_info_time_str = time_dict[key_sample][key_method]["info_collection_time"]
-            df_results_time_str = time_dict[key_sample][key_method]["results_time"]
+        for key_method in time_full_dict[key_sample].keys():
+            df_total_time_str = time_full_dict[key_sample][key_method]["tool_time"]
+            df_fastqc_init_time_str = time_full_dict[key_sample][key_method]["fastqc_initial_time"]
+            df_preproc_time_str = time_full_dict[key_sample][key_method]["preprocessing_time"]
+            df_fastqc_final_time_str = time_full_dict[key_sample][key_method]["fastqc_final_time"]
+            df_assembly_time_str = time_full_dict[key_sample][key_method]["assembly_time"]
+            df_gene_pred_time_str = time_full_dict[key_sample][key_method]["gene_prediction_time"]
+            df_cd_hit_time_str = time_full_dict[key_sample][key_method]["cd_hit_time"]
+            df_kraken_tax_time_str = time_full_dict[key_sample][key_method]["kraken_time"]
+            df_cm_binning_time_str = time_full_dict[key_sample][key_method]["binning_time"]
+            df_bowtie_time_str = time_full_dict[key_sample][key_method]["bowtie_time"]
+            df_hmmer_tax_spec_time_str = time_full_dict[key_sample][key_method]["hmmer_spec_taxonomy_time"]
+            df_blastp_3_time_str = time_full_dict[key_sample][key_method]["blastp_fpd_swiss_taxonomy_time"]
+            df_cm_analysis_time_str = time_full_dict[key_sample][key_method]["bin_analysis_cm_time"]
+            df_cm_tax_time_str = time_full_dict[key_sample][key_method]["bin_taxonomy_cm_time"]
+            df_kraken_binning_time_str = time_full_dict[key_sample][key_method]["kraken_binning_time"]
+            df_info_time_str = time_full_dict[key_sample][key_method]["info_collection_time"]
+            df_results_time_str = time_full_dict[key_sample][key_method]["results_time"]
             # Initialize sums
             df_total_time = 0
             df_fastqc_time = 0
@@ -1207,7 +1208,7 @@ def create_df_stacked(time_dict):
             df_results_time = check_add(df_info_time_str, df_results_time)
             df_results_time = check_add(df_results_time_str, df_results_time)
             # Converting seconds to minutes.
-            df_total_time_m, df_total_time_h = convert_to_minutes(df_total_time)
+            # df_total_time_m, df_total_time_h = convert_to_minutes(df_total_time)
             df_fastqc_time_m, df_fastqc_time_h = convert_to_minutes(df_fastqc_time)
             df_preproc_time_m, df_preproc_time_h = convert_to_minutes(df_preproc_time)
             df_assembly_time_m, df_assembly_time_h = convert_to_minutes(df_assembly_time)
@@ -1239,8 +1240,8 @@ def create_df_stacked(time_dict):
         # Set the first column of the dataframe to be the indexes (labels) of the rows.
         time_metric_df.set_index('method', inplace=True)
         # Store the dataframe to a dictionary.
-        df_time_dict[key_sample] = time_metric_df
-    return df_time_dict, df_full_time_all
+        df_full_time_dict[key_sample] = time_metric_df
+    return df_full_time_dict, df_full_time_all
 
 
 def create_df_total_time(time_tool_dict):
@@ -1253,8 +1254,8 @@ def create_df_total_time(time_tool_dict):
         row_index = 0
         for key_method in time_tool_dict[key_sample].keys():
             total_time = time_tool_dict[key_sample][key_method]
-            total_time = total_time / 60
-            total_time_m = round(total_time, 2)
+            total_time_m = total_time / 60
+            total_time_m = round(total_time_m, 2)
             temp_list = [key_method, total_time_m]
             time_metric_df_temp.loc[row_index] = temp_list
             row_index += 1
@@ -1267,35 +1268,35 @@ def create_df_total_time(time_tool_dict):
     for key_sample in time_tool_dict.keys():
         for key_method in time_tool_dict[key_sample].keys():
             total_time = time_tool_dict[key_sample][key_method]
-            total_time = total_time / 60
-            total_time_m = round(total_time, 2)
+            total_time_m = total_time / 60
+            total_time_m = round(total_time_m, 2)
             key_sample_int = int(key_sample)
-            temp_list = [key_sample_int, key_method, total_time]
+            temp_list = [key_sample_int, key_method, total_time_m]
             total_time_all_df.loc[row_index] = temp_list
             row_index += 1
     return df_total_time_dict, total_time_all_df
 
 
-def count_megahit_time(df_full_time_dict):
+def count_common_time(df_full_time_dict):
     # Counter to sum the time up untill the stage of megahit.
-    megahit_time_dict = {}
+    common_time_dict = {}
     for key_sample in df_full_time_dict.keys():
         full_time_metric_df = df_full_time_dict[key_sample]
-        sums_up_to_assembly_list = full_time_metric_df.apply(lambda row: row[:"assembly"].sum(), axis=1)
-        sums_up_to_assembly_list = sums_up_to_assembly_list.tolist()
+        common_stages_sum_list = full_time_metric_df.apply(lambda row: row[:"gene_prediction"].sum(), axis=1)
+        common_stages_sum_list = common_stages_sum_list.tolist()
         # Check if all sums are the same. If not exit with error.
-        item_0 = sums_up_to_assembly_list[0]
-        for item in sums_up_to_assembly_list:
+        item_0 = common_stages_sum_list[0]
+        for item in common_stages_sum_list:
             if item_0 != item:
                 print("Error. Different sum of time up untill the megahit stage. Exiting.\n")
                 exit()
         item_0 = float(item_0)
-        sum_up_to_assembly = round(item_0, 2)
-        megahit_time_dict[key_sample] = sum_up_to_assembly
-    return megahit_time_dict
+        common_stages_sum = round(item_0, 2)
+        common_time_dict[key_sample] = common_stages_sum
+    return common_time_dict
 
 
-def plot_full_sample_time(df_full_time_dict, megahit_time_dict, time_dir, stats_dir_path):
+def plot_full_sample_time(df_full_time_dict, common_time_dict, time_dir, stats_dir_path):
     print("Full time plots for each sample...\n")
     # Font sizes
     fs_num_1 = 12
@@ -1306,7 +1307,7 @@ def plot_full_sample_time(df_full_time_dict, megahit_time_dict, time_dir, stats_
         # Get the dataframe from the dictionary.
         full_time_metric_df = df_full_time_dict[key_sample]
         # Get the time for megahit.
-        cur_megahit_time = megahit_time_dict[key_sample]
+        cur_megahit_time = common_time_dict[key_sample]
         # Create the filename.
         full_time_df_png_path = "{}/sample_{}_full_time.png".format(time_dir, key_sample)
         full_time_df_jpg_path = "{}/sample_{}_full_time.jpg".format(time_dir, key_sample)
@@ -1347,7 +1348,7 @@ def plot_full_sample_time(df_full_time_dict, megahit_time_dict, time_dir, stats_
         plt.close()
 
 
-def plot_total_sample_time(df_total_time_dict, megahit_time_dict, time_dir, stats_dir_path):
+def plot_total_sample_time(df_total_time_dict, common_time_dict, time_dir, stats_dir_path):
     print("Total time plot for each sample...\n")
     # Font sizes
     fs_num_1 = 12
@@ -1358,7 +1359,7 @@ def plot_total_sample_time(df_total_time_dict, megahit_time_dict, time_dir, stat
         # Get the dataframe from the dictionary.
         total_time_sample_df = df_total_time_dict[key_sample]
         # Get the time for megahit.
-        cur_megahit_time = megahit_time_dict[key_sample]
+        cur_megahit_time = common_time_dict[key_sample]
         # Create the filename.
         total_time_sample_df_png_path = "{}/sample_{}_total_time.png".format(time_dir, key_sample)
         total_time_sample_df_jpg_path = "{}/sample_{}_total_time.jpg".format(time_dir, key_sample)
@@ -1512,7 +1513,7 @@ def plot_full_group_sample_time(df_full_time_all, time_dir, stats_dir_path, time
     plt.close()
 
 
-def plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_dict, time_sample_group_label_dict, megahit_time_dict):
+def plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_dict, time_sample_group_label_dict):
     print("Full time plot for all methods grouped...\n")
     # Font sizes
     fs_num_1 = 30
@@ -1942,10 +1943,10 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
     plt.close()
 
 
-def time_analysis(time_dir, stats_dir_path, time_sample_group_dict, time_sample_group_label_dict, sample_size_dict, methods_time_group, sample_speciesnum_dict):
+def time_analysis(time_dir, stats_dir_path, time_stats_dir_path, time_sample_group_dict, time_sample_group_label_dict, sample_size_dict, methods_time_group, sample_speciesnum_dict):
     print("Perforing analysis of the execution time...\n")
     # Collect the time periods
-    time_dict = collect_times(stats_dir_path)
+    time_dict = collect_times(time_stats_dir_path)
 
     # Seperate the time stages
     time_full_dict, time_tool_dict = time_stages(time_dict)
@@ -1955,22 +1956,19 @@ def time_analysis(time_dir, stats_dir_path, time_sample_group_dict, time_sample_
 
     # Create the dataframe for the complete time slots.
     df_full_time_dict, df_full_time_all = create_df_stacked(time_full_dict)
-
-    # Create the dataframe for the relative time slots.
-    plain_time_metric_df = create_df_stacked(time_dict)
     
     # Create the dataframe for the total time.
     df_total_time_dict, total_time_all_df = create_df_total_time(time_tool_dict)
 
-    # Count the time up to the stage of megahit for each sample.
-    megahit_time_dict = count_megahit_time(df_full_time_dict)
+    # Count the time up to the last common stage for each sample.
+    common_time_dict = count_common_time(df_full_time_dict)
 
     # Plot the dataframe
-    plot_full_sample_time(df_full_time_dict, megahit_time_dict, time_dir, stats_dir_path)
-    plot_total_sample_time(df_total_time_dict, megahit_time_dict, time_dir, stats_dir_path)
+    plot_full_sample_time(df_full_time_dict, common_time_dict, time_dir, stats_dir_path)
+    plot_total_sample_time(df_total_time_dict, common_time_dict, time_dir, stats_dir_path)
     plot_total_all_time(total_time_all_df, time_dir, stats_dir_path)
     plot_full_group_sample_time(df_full_time_all, time_dir, stats_dir_path, time_sample_group_dict, time_sample_group_label_dict, methods_time_group)
-    plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_dict, time_sample_group_label_dict, megahit_time_dict)
+    plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_dict, time_sample_group_label_dict)
 
     # Plot total time vs size
     plot_size_species(df_total_time_dict, sample_size_dict, methods_time_group, sample_speciesnum_dict, stats_dir_path, time_dir)
@@ -1999,6 +1997,7 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     time_dir = "{}/time_info".format(ps_output_dir)
     plot_dir_parh = "{}/plots".format(ps_output_dir)
     stats_dir_path = "{}/stats".format(ps_output_dir)
+    time_stats_dir_path = "{}/time_stats".format(stats_dir_path)
     # Directories for the results
     ps_kraken_8 = "{}/kraken_8".format(ps_dir)
     ps_kraken_16 = "{}/kraken_16".format(ps_dir)
@@ -2015,10 +2014,15 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         "mnr": "{}/metabinner_nr".format(ps_dir),
     }
     
-    # Craete the statistics directory
+    # Craete the statistics directory.
     if os.path.exists(stats_dir_path):
         shutil.rmtree(stats_dir_path)
     os.mkdir(stats_dir_path)
+
+    # Create the time-statistics directory.
+    if os.path.exists(time_stats_dir_path):
+        shutil.rmtree(time_stats_dir_path)
+    os.mkdir(time_stats_dir_path)
 
     # Analyze the bencharking file.
     if benchmark_path == "":
@@ -2036,7 +2040,7 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         exit()
 
     # Copy the files with the results in the proper directories and rename them.
-    crfiles(ps_dir, ps_results, analysis_results_dict, time_dir, stats_dir_path)
+    crfiles(ps_dir, ps_results, analysis_results_dict, time_dir, time_stats_dir_path)
 
     # Collect the information from the results of ProteoSeeker
     # COMEBin/MetaBinner results
@@ -2450,7 +2454,7 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         # The time needed to filter the report/results of Kraken2 is negligent compared to the time needed for the analysis to take place. Therefore, the time of analysis for each filtering threshold
         # of the Kraken2 report is based primarily (almost completely) to the execution time of ProteoSeeker for the kraken database that the filter is based on.
         methods_time_group = ["k8", "k16", "k72", "cnr", "mnr"]
-        time_analysis(time_dir, stats_dir_path, time_sample_group_dict, time_sample_group_label_dict, sample_size_dict, methods_time_group, sample_speciesnum_dict)
+        time_analysis(time_dir, stats_dir_path, time_stats_dir_path, time_sample_group_dict, time_sample_group_label_dict, sample_size_dict, methods_time_group, sample_speciesnum_dict)
 
 
 if __name__ == "__main__":
