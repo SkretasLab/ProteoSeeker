@@ -881,8 +881,6 @@ python proteoseeker.py -pfp parameter_files/cas_als/al_run/SRR17771278/parameter
 ./analyze_seek_tax_results.sh
 ~~~
 
-<p align="justify">The Bash script "analyze_tax_results_spec.sh" can be used to run secondary analysis of different subsets of the results. This script is located also in the directory "/tests/tax_results_analysis".</p>
-
 # Publications
 Manuscript under review
 
