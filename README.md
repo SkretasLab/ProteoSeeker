@@ -931,7 +931,7 @@ https://skretaslab.gr/proteoseeker
 [20] Käll L, Krogh A, Sonnhammer EL. A combined transmembrane topology and signal peptide prediction method. J Mol Biol. 2004 May 14;338(5):1027-36. doi: 10.1016/j.jmb.2004.03.016. PMID: 15111065. 
 
 # Contacts and bug reports
-Feel free to send questions or bug reports by using one of the following e-mail addresses:
+Feel free to send questions or bug reports by using one of the following email addresses:
 1. ProteoSeeker Team: proteoseeker@fleming.gr
 2. Georgios Filis: filis@fleming.gr
 3. Dimitra Bezantakou: bezantakou@fleming.gr
