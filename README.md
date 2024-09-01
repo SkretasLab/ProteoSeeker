@@ -854,7 +854,7 @@ PROTEIN_DB_PATH="${PS_PATH}/parameter_files/docker/nr_part.fasta"
 python seek_tax_par_files.py
 ~~~
 
-3. <p align="justify">There are three samples used to test the seek and taxonomy analyses modes. For each sample, at first, you must run ProteoSeeker to download its SRA and create the filtered protein database. To do this go to the main directory and run:</p>
+3. <p align="justify">There are three samples used to test the seek and taxonomy modes. For each sample, at first, you must run ProteoSeeker to download its SRA and create the filtered protein database. To do this go to the main directory and run:</p>
 
 ~~~bash
 conda activate ps_env
