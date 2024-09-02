@@ -191,7 +191,7 @@ conda deactivate
 <p align="justify">We have observed that running COMEBin on a GPU offers a great improvement in the running time of COMEBin. To use COMEBin in an environment which allows the usage of a GPU, provide that environments's name to the default name of the environment for COMEBin and also modify the path to the COMEBin directory of the environment. These paths refer to the following options of ProteoSeeker:</p>
 
 ~~~bash
-   -sen/--comebin-env             Str -Opt: ps_comebin- The conda environment for sra tools.
+   -sen/--comebin-env             Str -Opt: ps_comebin- The conda environment for COMEBin.
                                   'None/none': To not use an environment at all.
 
    -cfp/--comebin-folder-path     Str -Opt- The path to the bin folder of COMEBin.
@@ -564,7 +564,7 @@ Options:
    -nen/--metabinner-env          Str -Opt: ps_metabinner- The conda environment for
                                   MetaBinner. 'None/none': To not use an environment at all.
 
-   -sen/--comebin-env             Str -Opt: ps_comebin- The conda environment for sra tools.
+   -sen/--comebin-env             Str -Opt: ps_comebin- The conda environment for COMEBin.
                                   'None/none': To not use an environment at all.
 
    -ien/--cdhit-env               Str -Opt: ps_cd_hit- The conda environment for CD-HIT.
@@ -576,7 +576,7 @@ Options:
    -hen/--hmmer-env               Str -Opt: ps_hmmer- The conda environment for HMMER.
                                   'None/none': To not use an environment at all.
 
-   -den/--dimaond-env             Str -Opt: ps_diamond- The conda environment for DIMAOND
+   -den/--dimaond-env             Str -Opt: ps_diamond- The conda environment for DIAMOND
                                   BLASTP. 'None/none': To not use an environment at all.
 
    -ten/--taxonkit-env            Str -Opt: ps_taxonkit- The conda environment for taxonkit.
