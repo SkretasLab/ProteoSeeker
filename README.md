@@ -25,7 +25,7 @@
 ### 1.2.1 Seek mode
 ![ProteoSeeker Seek Functionality](images/Figure_4.png)
 
-The stages of the seek mode of ProteoSeeker:
+The steps of the pipeline for the seek mode of ProteoSeeker:
 
 1. The selected protein families are determined based on their input codes. Type **1, 2, 3** analysis.
 2. The profiles and protein names associated with the selected families are collected and the seek profile database (spd) is created. Type **1, 2, 3** analysis.
