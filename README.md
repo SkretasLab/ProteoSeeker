@@ -25,7 +25,7 @@
 ### 1.2.1 Seek mode
 ![ProteoSeeker Seek Functionality](images/Figure_4.png)
 
-The stages of the seek mode of ProteoSeeker.
+The stages of the seek mode of ProteoSeeker:
 
 1. The selected protein families are determined based on their input codes. Type **1, 2, 3** analysis.
 2. The profiles and protein names associated with the selected families are collected and the seek profile database (spd) is created. Type **1, 2, 3** analysis.
@@ -44,9 +44,12 @@ The stages of the seek mode of ProteoSeeker.
 15. Annotation files are written. Type **1, 2, 3** analysis.
 
 ### 1.2.2 Taxonomy mode
-<p align="justify">The stages of the taxonomy mode of ProteoSeeker. ProteoSeeker offers two main functionalities applied through the seek mode (blue) and the taxonomy mode (green). The taxonomic analysis can be performed by either of two routes. The first one is based on Kraken2 (orange) and the second one is based on COMEBin or MetaBinner (purple). Each stage is colored based on the mode and taxonomy route it belongs to. The possible types of input for ProteoSeeker include an SRA code, reads in FASTQ files, contigs or genomes or proteins in FASTA format. If an SRA code is provided, the corresponding SRA file and FASTQ file(s) are generated.</p>
+<p align="justify">
+The taxonomic analysis can be performed by either of two routes. The first one is based on Kraken2 (orange) and the second one is based on COMEBin or MetaBinner (purple). Each stage is colored based on the mode and taxonomy route it belongs to. </p>
 
 ![ProteoSeeker Taxonomy Functionality](images/Figure_5.png)
+
+The stages of the taxonomy mode of ProteoSeeker:
 
 1. The selected protein families are determined based on their input codes.
 2. The profiles and protein names associated with the selected families are collected and the tpd is created.
