@@ -154,7 +154,7 @@ conda install conda-forge::tar
 2. Swiss-Prot/UniprotKB database: Latest - Automatic installation
 3. GTDB taxonomy taxdump files: Latest - Automatic installation
 4. Kraken 2/Bracken Refseq indexes: Collection Standard-8: Latest - Automatic installation
-5. nr database: Latest - Automatic installation
+5. nr database: Latest - Non Automatic installation
 
 ### 2.2.4 Installation
 <p align="justify">Follow the steps below to perform the following installation steps. Open a terminal in the desired directory, download the repository (or download the ZIP file of the repository and extract it in the desired installation directory) and move in the main ProteoSeeker directory. Give the proper permissions to the files of the installation directory. Add, if not present, and move to the top the conda channels of "conda-forge" and "bioconda" and set the channel priority of conda to "flexible". Then, run the installation script. The installation requires approximately 30-40 minutes to be completed.</p>
