@@ -2,7 +2,7 @@
 
 # 1. Overview
 ## 1.1 Field of utilization
-<p align="justify">ProteoSeeker is a feature-rich metagenomic analysis tool for accessible and comprehensive metagenomic exploration. It allows for the identification of novel proteins originating from metagenomes. These proteins may be part of specified protein families or/and may be subjected to a taxonomy analysis.</p>
+<p align="justify">ProteoSeeker is a feature-rich metagenomic analysis tool for accessible and comprehensive metagenomic exploration. It allows for the identification of novel proteins originating from metagenomes. These proteins may be part of specified protein families or/and may be subjected to a taxonomic analysis.</p>
 
 ![ProteoSeeker Overview](images/Figure_1.png)
 
