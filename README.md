@@ -52,10 +52,10 @@ The taxonomic analysis can be performed by either of two routes. The first one i
 The stages of the taxonomy mode of ProteoSeeker:
 
 1. The selected protein families are determined based on their input codes.
-2. The profiles and protein names associated with the selected families are collected and the tpd is created.
-3. The protein database is filtered based on the collected protein names and the tfpd is created.
+2. The profiles and protein names associated with the selected families are collected and the taxonomy profile database (tpd) is created.
+3. The protein database is filtered based on the collected protein names and the taxonomy filtered profile database (tfpd) is created.
 4. The reads of the FASTQ files undergo several quality control checks by FastQC.
-5. The reads are preprocessed by BBDuk and then are analyzed by FastQC for a second time.
+5. The reads are preprocessed by BBDuk and reanalyzed by FastQC.
 6. The preprocessed reads are assembled into contigs by Megahit.
 7. Protein coding regions (pcdrs) are predicted in the contigs by FragGeneScanRs.
 8. CD-HIT is used to reduce the redundancy of the pcdrs.
@@ -63,7 +63,7 @@ The stages of the taxonomy mode of ProteoSeeker:
 10. The contigs are binned based on MetaBinner or COMEBin.
 11. The pcdrs are screened against the tpd through HMMER.
 12. Any pcdr with at least one hit against the tpd is screened against the tfpd through DIAMOND BLASTP.
-13. Taxa are assigned to the proteins based on the assignment of taxa to the bins.
+13. Taxa are assigned to the proteins, based on the assignment of taxa to the bins.
 14. Each bin, along with any taxa assigned to it, is quantified based on the reads mapped to its contigs.
 15. Annotation files are written.
 16. Species are assigned to the reads based on Kraken2.
