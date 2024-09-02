@@ -891,7 +891,7 @@ python proteoseeker.py -pfp parameter_files/cas_als/al_run/SRR17771278/parameter
 Manuscript under review
 
 # Website
-<p align="justify">General information about ProteoSeeker, including part of the installation and usage instructions found in this repository can be found at the link below:</p>
+<p align="justify">General information about ProteoSeeker, including part of the installation and usage instructions found in this repository, can be found at the link below:</p>
 
 https://skretaslab.gr/proteoseeker
 
