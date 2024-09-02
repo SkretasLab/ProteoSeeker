@@ -19,10 +19,13 @@
 ## 1.2 Pipeline
 <p align="justify">The pipeline implemented by ProteoSeeker in the "seek" and "taxonomy" modes is illustrated in the images below. ProteoSeeker offers two main functionalities with a multitude of options, catering to both beginners and advanced users. For those unfamiliar with metagenomic analysis tools, ProteoSeeker provides pre-defined options, while more experienced users have the flexibility to modify the behavior of specific tools within the pipeline. The first functionality is the 'seek' mode, which identifies proteins that may belong to selected protein families. The second functionality is the 'taxonomy' mode, which determines the taxonomic classification of proteins discovered through sample analysis. The seek mode offers three types of analysis: 'Type 1,' 'Type 2,' and 'Type 3. The 'taxonomy' mode can be applied via two routes: the "Kraken2 route", which is based on the taxonomy classification of the reads by Kraken2, or the "COMEBin/MetaBinner route" which is based on binning the contigs through COMEBin or MetaBinner and searching for the taxonomy of the proteins, through the "taxonomy filtered protein database".</p>
 
-### 1.2.1 Seek mode
-<p align="justify">The stages of the seek mode of ProteoSeeker. ProteoSeeker offers two main functionalities applied through the seek mode (blue) and the taxonomy mode (green). Each stage is colored based on the mode it belongs to. The possible types of input for ProteoSeeker include an SRA code, reads in FASTQ files, contigs or genomes or proteins in FASTA format. If an SRA code is provided, the corresponding SRA file and FASTQ file(s) are generated.</p>
+<p align="justify"> ProteoSeeker offers two main functionalities applied through the seek mode (blue) and the taxonomy mode (green). Each stage is colored based on the mode it belongs to. The possible types of input for ProteoSeeker include an SRA code, reads in FASTQ files, contigs or genomes or proteins in FASTA format. If an SRA code is provided, the corresponding SRA file and FASTQ file(s) are generated.</p>
 
+
+### 1.2.1 Seek mode
 ![ProteoSeeker Seek Functionality](images/Figure_4.png)
+
+The stages of the seek mode of ProteoSeeker.
 
 1. The selected protein families are determined based on their input codes. Type **1, 2, 3** analysis.
 2. The profiles and protein names associated with the selected families are collected and the seek profile database (spd) is created. Type **1, 2, 3** analysis.
