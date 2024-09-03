@@ -21,7 +21,6 @@
 
 <p align="justify"> ProteoSeeker offers two main functionalities applied through the seek mode (blue) and the taxonomy mode (green). Each stage is colored based on the mode it belongs to. The taxonomic analysis can be performed by either of two routes. The first one is based on Kraken2 (orange) and the second one is based on COMEBin or MetaBinner (purple). Each stage is colored based on the mode and taxonomy route it belongs to. The possible types of input for ProteoSeeker include an SRA code, reads in FASTQ files, contigs or genomes or proteins in FASTA format. If an SRA code is provided, the corresponding SRA file and FASTQ file(s) are generated.</p>
 
-
 ### 1.2.1 Seek mode
 ![ProteoSeeker Seek Functionality](images/Figure_4.png)
 
@@ -45,7 +44,6 @@ The steps of the seek mode of ProteoSeeker:
 
 ### 1.2.2 Taxonomy mode
 <p align="justify">
-The taxonomic analysis can be performed by either of two routes. The first one is based on Kraken2 (orange) and the second one is based on COMEBin or MetaBinner (purple). Each stage is colored based on the mode and taxonomy route it belongs to. </p>
 
 ![ProteoSeeker Taxonomy Functionality](images/Figure_5.png)
 
