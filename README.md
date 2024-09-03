@@ -189,8 +189,7 @@ conda deactivate
 <p align="justify">We have observed that running COMEBin on a GPU offers a great improvement in the running time of COMEBin. To use COMEBin in an environment which allows the usage of a GPU, provide that environments's name to the default name of the environment for COMEBin and also modify the path to the COMEBin directory of the environment. These paths refer to the following options of ProteoSeeker:</p>
 
 ~~~bash
-   -sen/--comebin-env             Str -Opt: ps_comebin- The conda environment for COMEBin.
-                                  'None/none': To not use an environment at all.
+   -sen/--comebin-env             Str -Opt: ps_comebin- The conda environment for COMEBin. 'None/none': To not use an environment at all.
 
    -cfp/--comebin-folder-path     Str -Opt- The path to the bin folder of COMEBin.
 ~~~
