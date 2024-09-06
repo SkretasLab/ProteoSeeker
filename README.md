@@ -651,7 +651,7 @@ my $DECODEANHMM =      "$PHOBIUS_DIR/decodeanhmm.64bit";
 
 <p align="justify">For both cases of bind mounts and volumes, you can perform a test based on a template parameter file (located at the "parameter_files" directory in the bind mount or volume) each of which runs a different analysis. The test is selected with a number based on one of the scripts "docker_bindmount_run_proteoseeker.sh" and "docker_vol_run_proteoseeker.sh" as described in sections "3.3.1" and "3.3.2". All template parameter files are ready to be used to run ProteoSeeker by analyzing the sample with the SRA code "SRR12829170". Each parameter file is also set up to handle FASTQ paired-end input. Furthermore, the light_v1.0.0 Docker image may be used to run a container for ProteoSeeker for the Kraken2 taxonomy route only if you provide a path to a Kraken2 database in the shared directory (bind mount or volume). The selections are described below:</p>
 
-Selection | Mode | Analysis Type | Route | Input
+Selection | Mode | Analysis Type | Taxonomy Route | Input
 --- | --- | --- | --- | ---
 1 | seek & taxonomy | type 3 | Kraken2 | SRA or FASTQ paired-end
 2 | seek & taxonomy | type 3 | COMEBin/MetaBinner: MetaBinner | SRA or FASTQ paired-end
@@ -712,7 +712,7 @@ sudo ./installation/docker_vol_setup.sh
 ## 3.4 Command-line
 <p align="justify">To run ProteoSeeker through the command-line, a parameter file facilitates the process greatly. By using one of the template parameter files, you can easily customize the values for the options of ProteoSeeker and run it. To run ProteoSeeker, at first, its environment should be activated. To run ProteoSeeker by its seek mode and type 2 or 3 analysis or by its taxonomy mode and COMEBin/MetaBinner route, the user should set the path to the protein database in the parameters file or provide it as a parameter. You can run ProteoSeeker based on certain parameter files by the seek mode and type 1 analysis or by the taxonomy mode and Kraken2 route, without the need to make any modification in the parameter file or provide any other parameter. The table below links the template parameter files with the mode and analysis type or route applied by ProteoSeeker in the run. All template parameter files are ready to be used to run ProteoSeeker by analyzing the sample with the SRA code "SRR12829170". Each parameter file is also set up to handle either FASTQ paired-end input or FASTA contig(s)/genome(s) input given that the SRA code is removed from the parameter file. The template parameter files 1, 2, 3, 4 and 5 can directly be used to run ProteoSeeker without modifications, as they do not require a protein database. Parameter file 6, needs a protein database and certain modifications to be used by ProteoSeeker (as described below).</p>
 
-Index | Parameter file | Mode | Analysis Type | Route | Input
+Index | Parameter file | Mode | Analysis Type | Taxonomy Route | Input
 --- | --- | --- | --- | --- | ---
 1 | par_seek_p.txt | seek | type 1 | - | SRA or FASTQ paired-end
 2 | par_seek_c.txt | seek| type 1 | - | SRA or FASTA contigs/genome(s)
