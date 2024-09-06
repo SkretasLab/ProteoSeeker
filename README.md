@@ -191,7 +191,7 @@ conda deactivate
 ~~~bash
    -sen/--comebin-env             Str -Opt: ps_comebin- The conda environment for COMEBin. 'None/none': To not use an environment at all.
 
-   -cfp/--comebin-folder-path     Str -Opt- The path to the bin folder of COMEBin.
+   -cfp/--comebin-folder-path     Str -Opt- The path to the parent directory of "run_comebin.sh" of COMEBin.
 ~~~
 
 <p align="justify">For example, the second option in our system has the following value: "/home/compteam/anaconda3/envs/ps_comebin_gpu/bin/COMEBin"</p>
@@ -613,7 +613,7 @@ Options:
 
    -bfp/--binner-folder-path      Str -Opt- The path to the bin folder of MetaBiner.
 
-   -cfp/--comebin-folder-path     Str -Opt- The path to the bin folder of COMEBin.
+   -cfp/--comebin-folder-path     Str -Opt- The path to the parent directory of "run_comebin.sh" of COMEBin.
 
    -chp/--cd-hit-path             Str -Opt- The path to the CD-HIT executable.
 
