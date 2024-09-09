@@ -1630,7 +1630,7 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
         plot_df = method_df_dict[key_method]
         if not plot_df.empty:
             # Save the dataframe in a file.
-            size_time_tsv_path = "{}/size_time.tsv".format(time_stats_dir_path)
+            size_time_tsv_path = "{}/size_time_{}.tsv".format(time_stats_dir_path, key_method)
             plot_df.to_csv(size_time_tsv_path, sep="\t", index=True)
             # The current axis.
             cur_axis = axis[row_fig_index]
@@ -1734,7 +1734,7 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
         plot_df = method_df_dict[key_method]
         if not plot_df.empty:
             # Save the dataframe in a file.
-            species_time_tsv_path = "{}/species_time.tsv".format(time_stats_dir_path)
+            species_time_tsv_path = "{}/species_time_{}.tsv".format(time_stats_dir_path, key_method)
             plot_df.to_csv(species_time_tsv_path, sep="\t", index=True)
             # The current axis.
             cur_axis = axis[row_fig_index]
@@ -1849,7 +1849,7 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
             # Rounding the values for the mean time.
             mean_plot_df['total_time'] = mean_plot_df['total_time'].round(2)
             # Save the dataframe in a file.
-            species_meantime_tsv_path = "{}/species_meantime.tsv".format(time_stats_dir_path)
+            species_meantime_tsv_path = "{}/species_meantime_{}.tsv".format(time_stats_dir_path, key_method)
             mean_plot_df.to_csv(species_meantime_tsv_path, sep="\t", index=True)
             # The current axis.
             cur_axis = axis[row_fig_index]
