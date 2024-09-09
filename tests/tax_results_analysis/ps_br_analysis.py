@@ -232,12 +232,12 @@ def ps_comebin_analyze(ps_cmbn, filter_name):
                 if rank == "species":
                     percentage = float(line_splited[6])
                     # If the taxon ID has already been found then add its percentage to the current one.
-                    # A dictionary will hold only the species and their percentagies, which species are assigned only
+                    # A dictionary will hold only the species and their percentages, which species are assigned only
                     # as the sole species to a bin ID. If the same species is found assigned to another (new) bin:
                     # A. If it is the sole species for the new bin ID its percentage is increased by that its percentage for the new bin ID.
                     # Other taxonomy ranks predicted for the bin are not taken into consideration.
                     # B. If it is not the sole species, none of the species are collected from the new bin and its percentage is not added to its existing entry in the dictionary.
-                    # This makes sure that all the predicted species do not have a sum of percentagies above 100 % and L1 norm can be computed. The species might not add up to 100 %.
+                    # This makes sure that all the predicted species do not have a sum of percentages above 100 % and L1 norm can be computed. The species might not add up to 100 %.
                     # The remaining percentage for the "unknown" species is added as an immediate difference to the L1 norm.
                     if taxid not in cmbn_info_dict.keys():
                         cmbn_info_dict[sample_id][taxid] = percentage
@@ -282,7 +282,7 @@ def ps_comebin_analyze(ps_cmbn, filter_name):
                         sole_percentage_fl = float(sole_percentage)
                         if taxid not in cmbn_sole_info_dict[sample_id].keys():
                             cmbn_sole_info_dict[sample_id][taxid] = sole_percentage_fl
-                            # Compute the sum of the percentagies of the identifeid species.
+                            # Compute the sum of the percentages of the identified species.
                             perc_sum += sole_percentage_fl
                         else:
                             cmbn_sole_info_dict[sample_id][taxid] += sole_percentage_fl
@@ -320,12 +320,12 @@ def ps_metabinner_analyze(ps_mtbr, filter_name):
                 if rank == "species":
                     percentage = line_splited[5]
                     # If the taxon ID has already been found then add its percentage to the current one.
-                    # A dictionary will hold only the species and their percentagies, which species are assigned only
+                    # A dictionary will hold only the species and their percentages, which species are assigned only
                     # as the sole species to a bin ID. If the same species is found assigned to another (new) bin:
                     # A. If it is the sole species for the new bin ID its percentage is increased by that its percentage for the new bin ID.
                     # Other taxonomy ranks predicted for the bin are not taken into consideration.
                     # B. If it is not the sole species, none of the species are collected from the new bin and its percentage is not added to its existing entry in the dictionary.
-                    # This makes sure that all the predicted species do not have a sum of percentagies above 100 % and L1 norm can be computed. The species might not add up to 100 %.
+                    # This makes sure that all the predicted species do not have a sum of percentages above 100 % and L1 norm can be computed. The species might not add up to 100 %.
                     # The remaining percentage for the "unknown" species is added as an immediate difference to the L1 norm.
                     if taxid not in mtbr_info_dict.keys():
                         mtbr_info_dict[sample_id][taxid] = percentage
@@ -370,7 +370,7 @@ def ps_metabinner_analyze(ps_mtbr, filter_name):
                         sole_percentage_fl = float(sole_percentage)
                         if taxid not in mtbr_sole_info_dict[sample_id].keys():
                             mtbr_sole_info_dict[sample_id][taxid] = sole_percentage_fl
-                            # Compute the sum of the percentagies of the identifeid species.
+                            # Compute the sum of the percentages of the identified species.
                             perc_sum += sole_percentage_fl
                         else:
                             mtbr_sole_info_dict[sample_id][taxid] += sole_percentage_fl
@@ -392,10 +392,10 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
     # False positive = Unique to prediction - Common species
     # False negative = Unique to validation - Common species
     # Sensitivity / Recall / True positive rate = TP / (TP + FN)
-    # Specifcity = TN / (TN + FP) = 0
+    # Specificity = TN / (TN + FP) = 0
     # Precision = TP / (TP + FP)
     # F1 Score = Sorensen-Dice Index = 2 * (Precision * Sensitivity) / (Precision + Sensitivity) = 2 * TP / (2 * TP + FP + FN)
-    # L1 Norm = Sum of the absolute difference of the percentagies of each species found in both of the groups, wihtout parsing the same species more than once.
+    # L1 Norm = Sum of the absolute difference of the percentages of each species found in both of the groups, without parsing the same species more than once.
     # Accuracy = (TP + TN) / (TP + TN + FP + FN) = TP / (TP + FN)
     # Jaccard index = common_species / unique_species = TP / (TP + FP + FN)
     # Note: The results of MetaBinner and COMEBin may have more than one species for one bin.
@@ -579,7 +579,7 @@ def comp_stats(br_info_dict, comp_dict, comp_sole_dict, stats_dir_path, label):
             exit()
     sample_ids = copy.deepcopy(sample_ids_dupl)
     sample_ids = sorted(sample_ids, key=int)
-    # Create a TSV for the comp_dict, which includes the percentagies of the species.
+    # Create a TSV for the comp_dict, which includes the percentages of the species.
     if comp_sole_dict is not None:
         tsv_dict = copy.deepcopy(comp_sole_dict)
     else:
@@ -2052,25 +2052,25 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     # 1	        Micromonospora sp. WMMA2032	2039870	species	    cellular organisms;Bacteria;Terrabacteria group;Actinomycetota;Actinomycetes;Micromonosporales;Micromonosporaceae;Micromonospora;unclassified Micromonospora;Micromonospora sp. WMMA2032   1.45	                       1.46
     # 1	        Micromonospora sp. AMSO31t	2650566	species	    cellular organisms;Bacteria;Terrabacteria group;Actinomycetota;Actinomycetes;Micromonosporales;Micromonosporaceae;Micromonospora;unclassified Micromonospora;Micromonospora sp. AMSO31t	   1.45	                       1.46
     # Notes:
-    # 1. Only the taxanomy ranks of "species" are taken into account.
+    # 1. Only the taxonomy ranks of "species" are taken into account.
     # 2. More than one taxa may be associated with one bin.
     # 3. The same taxa may be associated with more than one bins.
     # 4. The taxa identified for each bin have the same percentage. The percentage is computed for the bin.
-    # 5. The percentagies of all unique bins do not necessarily add up to 100%. The might be bins which were not associated with a species. 
+    # 5. The percentages of all unique bins do not necessarily add up to 100%. The might be bins which were not associated with a species. 
     # Each bin corresponds to specific contigs. Each contig in turn corresponds to a set of reads. Hence, each bin is associated with a set
     # of read. If the bin is not associated with a species, the corresponding set of reads will not be associated with a species.
     # 6. The end result of the process is meant to be the associated of each protein with a species. Whether one protein will be associated
-    # with more than one species and whether the sum of the percentagies of all the species will be 100% is not of significance for this process
+    # with more than one species and whether the sum of the percentages of all the species will be 100% is not of significance for this process
     # and neither does it affect negatively the association process of each protein with a species.
     # Questions:
-    # 1. How many taxa will be taken into conideration from each bin?
+    # 1. How many taxa will be taken into consideration from each bin?
     # 2. Which percentage will be used for a taxa associated with more than one bin?
     # Handling:
     # 1. All taxa are taken into consideration from each bin.
-    # 2. The percentage of a taxon is computed as the sum of the percentagies of each bin associated with that taxon.
+    # 2. The percentage of a taxon is computed as the sum of the percentages of each bin associated with that taxon.
     # Observations:
     # Allowing more than one taxa to be taken into account from each bin means that the total percentage of the species will be higher than 100%.
-    # It also means that metrics which take into account the percentagies of the predicted species, such as the L1 norm should be based on the species which are sole predictions for one bin ID each.
+    # It also means that metrics which take into account the percentages of the predicted species, such as the L1 norm should be based on the species which are sole predictions for one bin ID each.
     # Kraken2
     filter_name_k_base = "_kraken_species.tsv"
     if "k8" in methods_group:
@@ -2148,7 +2148,7 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     kraken_72_ng_stats_dict = {}
     mtbr_nr_stats_dict = {}
     cmbn_nr_stats_dict = {}
-    # Compare the results of ProteoSeeker with the benchmarking dataset.
+    # Compare the results of ProteoSeeker with the benchmark dataset.
     # Kraken2
     if "k8" in methods_group:
         label = "kraken_8"
@@ -2222,42 +2222,42 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
 
     # Combine the information from all the dictionaries.
     comb_info_dict = {}
-    # Kraken unfiltered
+    # Kraken2 unfiltered
     if kraken_8_stats_dict:
         comb_info_dict["kraken_8"] = kraken_8_stats_dict
     if kraken_16_stats_dict:
         comb_info_dict["kraken_16"] = kraken_16_stats_dict
     if kraken_72_stats_dict:
         comb_info_dict["kraken_72"] = kraken_72_stats_dict
-    # Kraken 0.1%
+    # Kraken2 0.1%
     if kraken_8_0c1_stats_dict:
         comb_info_dict["kraken_8_0c1"] = kraken_8_0c1_stats_dict
     if kraken_16_0c1_stats_dict:
         comb_info_dict["kraken_16_0c1"] = kraken_16_0c1_stats_dict
     if kraken_72_0c1_stats_dict:
         comb_info_dict["kraken_72_0c1"] = kraken_72_0c1_stats_dict
-    # Kraken 1.0%
+    # Kraken2 1.0%
     if kraken_8_1c0_stats_dict:
         comb_info_dict["kraken_8_1c0"] = kraken_8_1c0_stats_dict
     if kraken_16_1c0_stats_dict:
         comb_info_dict["kraken_16_1c0"] = kraken_16_1c0_stats_dict
     if kraken_72_1c0_stats_dict:
         comb_info_dict["kraken_72_1c0"] = kraken_72_1c0_stats_dict
-    # Kraken 10
+    # Kraken2 10
     if kraken_8_10_stats_dict:
         comb_info_dict["kraken_8_10"] = kraken_8_10_stats_dict
     if kraken_16_10_stats_dict:
         comb_info_dict["kraken_16_10"] = kraken_16_10_stats_dict
     if kraken_72_10_stats_dict:
         comb_info_dict["kraken_72_10"] = kraken_72_10_stats_dict
-    # Kraken 100
+    # Kraken2 100
     if kraken_8_100_stats_dict:
         comb_info_dict["kraken_8_100"] = kraken_8_100_stats_dict
     if kraken_16_100_stats_dict:
         comb_info_dict["kraken_16_100"] = kraken_16_100_stats_dict
     if kraken_72_100_stats_dict:
         comb_info_dict["kraken_72_100"] = kraken_72_100_stats_dict
-    # Kraken non-gut
+    # Kraken2 non-gut
     if kraken_8_ng_stats_dict:
         comb_info_dict["kraken_8_ng"] = kraken_8_ng_stats_dict
     if kraken_16_ng_stats_dict:
@@ -2285,7 +2285,7 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         "Gold species number": "Abundance of Gold Standard Species",
         "Predicted species number": "Abundance of Predicted Species",
         "Common species (intersection)": "Abundance of Common Species",
-        "Unique species from both groups (union)": "Abudance of Gold Standard and Predicted Species",
+        "Unique species from both groups (union)": "Abundance of Gold Standard and Predicted Species",
         "Unique to gold group": "Abundance of Species Unique to the Gold Standard Group",
         "Unique to predicted group": "Abundance of Species Unique to the Predicted Group",
         "True Positive (TP)": "True Positive",
@@ -2302,7 +2302,7 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         "Gold species number": "Abundance of Gold Standard Species",
         "Predicted species number": "Abundance of Predicted Species",
         "Common species (intersection)": "Abundance of Common Species",
-        "Unique species from both groups (union)": "Abudance of Gold Standard and Predicted Species",
+        "Unique species from both groups (union)": "Abundance of Gold Standard and Predicted Species",
         "Unique to gold group": "Abundance of Species Unique to the Gold Standard Group",
         "Unique to predicted group": "Abundance of Species Unique to the Predicted Group",
         "True Positive (TP)": "True Positive (Abundance of Common Species Between the Gold Standard and Predicted Groups)",
@@ -2320,8 +2320,8 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         "kraken_16": "Kraken2 db:16",
         "kraken_72": "Kraken2 db:72",
         "kraken_8_0c1": "Kraken2 db:8 0.1%",
-        "kraken_16_0c1": "Kraken2 db:16",
-        "kraken_72_0c1": "Kraken2 db:72",
+        "kraken_16_0c1": "Kraken2 db:16 0.1%",
+        "kraken_72_0c1": "Kraken2 db:72 0.1%",
         "kraken_8_1c0": "Kraken2 db:8 1.0%",
         "kraken_16_1c0": "Kraken2 db:16 1.0%",
         "kraken_72_1c0": "Kraken2 db:72 1.0%",
@@ -2332,8 +2332,8 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         "kraken_16_100": "Kraken2 db:16 100",
         "kraken_72_100": "Kraken2 db:72 100",
         "kraken_8_ng": "Kraken2 db:8 non-gut",
-        "kraken_16_ng": "Kraken2 db:8 non-gut",
-        "kraken_72_ng": "Kraken2 db:8 non-gut",
+        "kraken_16_ng": "Kraken2 db:16 non-gut",
+        "kraken_72_ng": "Kraken2 db:72 non-gut",
         "comebin_nr": "COMEBin db:nr",
         "metabinner_nr": "MetaBinner db:nr"
     }
