@@ -1387,14 +1387,14 @@ def plot_total_sample_time(df_total_time_dict, common_time_dict, time_dir, stats
         plt.close()
 
 
-def plot_total_all_time(total_time_all_df, time_dir, stats_dir_path):
+def plot_total_all_time(total_time_all_df, time_dir, time_stats_dir_path):
     print("Total time plot for all samples...\n")
     # Font sizes
     fs_num_1 = 17
     fs_num_2 = 15
     fs_num_3 = 10
     # Create a grouped barplot for the total times
-    total_time_all_tsv_path = "{}/total_time_all.tsv".format(stats_dir_path)
+    total_time_all_tsv_path = "{}/total_time_all.tsv".format(time_stats_dir_path)
     # Storing the pandas dataframe as a csv.
     total_time_all_df.to_csv(total_time_all_tsv_path, sep="\t", index=False)
     # Plotting the pandas dataframe: Barplot
@@ -1424,7 +1424,7 @@ def plot_total_all_time(total_time_all_df, time_dir, stats_dir_path):
     plt.close()
 
 
-def plot_full_group_sample_time(df_full_time_all, time_dir, stats_dir_path, time_sample_group_dict, time_sample_group_label_dict, methods_group):
+def plot_full_group_sample_time(df_full_time_all, time_dir, time_stats_dir_path, time_sample_group_dict, time_sample_group_label_dict, methods_group):
     print("Full time plot for all samples grouped...\n")
     # Font sizes
     fs_num_1 = 25
@@ -1435,7 +1435,7 @@ def plot_full_group_sample_time(df_full_time_all, time_dir, stats_dir_path, time
     # The number of the methods to plot.
     methods_num = len(methods_group)
     # Save the dataframe to a CSV file.
-    full_time_sample_grouped_time_tsv_path = "{}/full_time_sample_grouped_time.tsv".format(stats_dir_path)
+    full_time_sample_grouped_time_tsv_path = "{}/full_time_sample_grouped_time.tsv".format(time_stats_dir_path)
     df_full_time_all.to_csv(full_time_sample_grouped_time_tsv_path, sep="\t", index=True)
     # Create the figure to store the subplots.
     row_num = 5
@@ -1513,7 +1513,7 @@ def plot_full_group_sample_time(df_full_time_all, time_dir, stats_dir_path, time
     plt.close()
 
 
-def plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_dict, time_sample_group_label_dict):
+def plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_dict, time_sample_group_label_dict, time_stats_dir_path):
     print("Full time plot for all methods grouped...\n")
     # Font sizes
     fs_num_1 = 30
@@ -1535,6 +1535,7 @@ def plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_d
         cur_axis = axis[row_fig_index]
         if total_time_all_filtered_df.empty:
             break
+        # Plot
         sns.barplot(ax=cur_axis, data=total_time_all_filtered_df, x="sample", y="total_time", hue="method", palette="colorblind", alpha=.6)
         # Replace the y axis ticks.
         cur_axis.set_yticks(list(cur_axis.get_yticks()))
@@ -1581,7 +1582,7 @@ def plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_d
     plt.close()
 
 
-def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sample_speciesnum_dict, stats_dir_path, time_dir):
+def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sample_speciesnum_dict, time_stats_dir_path, time_dir):
     # Font sizes
     fs_num_1 = 25
     fs_num_2 = 20
@@ -1628,6 +1629,9 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
     for key_method in method_df_dict.keys():
         plot_df = method_df_dict[key_method]
         if not plot_df.empty:
+            # Save the dataframe in a file.
+            size_time_tsv_path = "{}/size_time.tsv".format(time_stats_dir_path)
+            plot_df.to_csv(size_time_tsv_path, sep="\t", index=True)
             # The current axis.
             cur_axis = axis[row_fig_index]
             # Color
@@ -1663,7 +1667,7 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
             b_coef_r = round(b_coef, 2)
             r_squared_value_r = round(r_squared_value, 2)
             # Write the coefficients and the R^2 values in a file.
-            method_fit_path = "{}/method_{}_size_time_fit.txt".format(stats_dir_path, key_method)
+            method_fit_path = "{}/method_{}_size_time_fit.txt".format(time_stats_dir_path, key_method)
             method_fit_file = open(method_fit_path, "w")
             method_fit_file.write("Method: {}\n".format(key_method))
             method_fit_file.write("y = {} * x + {}\n".format(a_coef, b_coef))
@@ -1713,8 +1717,8 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
     # Space between the plots of the figure.
     plt.subplots_adjust(wspace=0.4)
     # File paths.
-    size_time_png_path = "{}/Size_time.png".format(time_dir)
-    size_time_jpg_path = "{}/Size_time.png".format(time_dir)
+    size_time_png_path = "{}/size_time.png".format(time_dir)
+    size_time_jpg_path = "{}/size_time.jpg".format(time_dir)
     # Saving the plots.
     figure.savefig(size_time_png_path)
     figure.savefig(size_time_jpg_path)
@@ -1729,6 +1733,9 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
     for key_method in method_df_dict.keys():
         plot_df = method_df_dict[key_method]
         if not plot_df.empty:
+            # Save the dataframe in a file.
+            species_time_tsv_path = "{}/species_time.tsv".format(time_stats_dir_path)
+            plot_df.to_csv(species_time_tsv_path, sep="\t", index=True)
             # The current axis.
             cur_axis = axis[row_fig_index]
             # Returns a list of colors or continuous colormap defining a palette.
@@ -1764,7 +1771,7 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
             b_coef_r = round(b_coef, 2)
             r_squared_value_r = round(r_squared_value, 2)
             # Write the coefficients and the R^2 values in a file.
-            method_fit_path = "{}/method_{}_species_time_fit.txt".format(stats_dir_path, key_method)
+            method_fit_path = "{}/method_{}_species_time_fit.txt".format(time_stats_dir_path, key_method)
             method_fit_file = open(method_fit_path, "w")
             method_fit_file.write("Method: {}\n".format(key_method))
             method_fit_file.write("y = {} * x + {}\n".format(a_coef, b_coef))
@@ -1822,8 +1829,8 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
     # Space between the plots of the figure.
     plt.subplots_adjust(wspace=0.4)
     # File paths
-    size_time_png_path = "{}/Species_time.png".format(time_dir)
-    size_time_jpg_path = "{}/Species_time.png".format(time_dir)
+    size_time_png_path = "{}/species_time.png".format(time_dir)
+    size_time_jpg_path = "{}/species_time.jpg".format(time_dir)
     # Saving the plots.
     figure.savefig(size_time_png_path)
     figure.savefig(size_time_jpg_path)
@@ -1839,6 +1846,11 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
         plot_df = method_df_dict[key_method]
         if not plot_df.empty:
             mean_plot_df = plot_df.groupby('species_number')['total_time'].mean().reset_index()
+            # Rounding the values for the mean time.
+            mean_plot_df['total_time'] = mean_plot_df['total_time'].round(2)
+            # Save the dataframe in a file.
+            species_meantime_tsv_path = "{}/species_meantime.tsv".format(time_stats_dir_path)
+            mean_plot_df.to_csv(species_meantime_tsv_path, sep="\t", index=True)
             # The current axis.
             cur_axis = axis[row_fig_index]
             # Returns a list of colors or continuous colormap defining a palette.
@@ -1876,7 +1888,7 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
             b_coef_r = round(b_coef, 2)
             r_squared_value_r = round(r_squared_value, 2)
             # Write the coefficients and the R^2 values in a file.
-            method_fit_path = "{}/method_{}_species_mean_time_fit.txt".format(stats_dir_path, key_method)
+            method_fit_path = "{}/method_{}_species_mean_time_fit.txt".format(time_stats_dir_path, key_method)
             method_fit_file = open(method_fit_path, "w")
             method_fit_file.write("Method: {}\n".format(key_method))
             method_fit_file.write("y = {} * x + {}\n".format(a_coef, b_coef))
@@ -1934,8 +1946,8 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
     # Space between the plots of the figure.
     plt.subplots_adjust(wspace=0.4)
     # File paths
-    size_time_png_path = "{}/Species_meantime.png".format(time_dir)
-    size_time_jpg_path = "{}/Species_meantime.png".format(time_dir)
+    size_time_png_path = "{}/species_meantime.png".format(time_dir)
+    size_time_jpg_path = "{}/species_meantime.jpg".format(time_dir)
     # Saving the plots.
     plt.savefig(size_time_png_path)
     plt.savefig(size_time_jpg_path)
@@ -1966,12 +1978,12 @@ def time_analysis(time_dir, stats_dir_path, time_stats_dir_path, time_sample_gro
     # Plot the dataframe
     plot_full_sample_time(df_full_time_dict, common_time_dict, time_dir, stats_dir_path)
     plot_total_sample_time(df_total_time_dict, common_time_dict, time_dir, stats_dir_path)
-    plot_total_all_time(total_time_all_df, time_dir, stats_dir_path)
-    plot_full_group_sample_time(df_full_time_all, time_dir, stats_dir_path, time_sample_group_dict, time_sample_group_label_dict, methods_time_group)
-    plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_dict, time_sample_group_label_dict)
+    plot_total_all_time(total_time_all_df, time_dir, time_stats_dir_path)
+    plot_full_group_sample_time(df_full_time_all, time_dir, time_stats_dir_path, time_sample_group_dict, time_sample_group_label_dict, methods_time_group)
+    plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_dict, time_sample_group_label_dict, time_stats_dir_path)
 
     # Plot total time vs size
-    plot_size_species(df_total_time_dict, sample_size_dict, methods_time_group, sample_speciesnum_dict, stats_dir_path, time_dir)
+    plot_size_species(df_total_time_dict, sample_size_dict, methods_time_group, sample_speciesnum_dict, time_stats_dir_path, time_dir)
 
 
 def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", ps_output_dir="analysis_plots_ps", methods_group="k8,k16,k72,k8_ng,k16_ng,k72_ng,cnr,mnr", time_status=True):
