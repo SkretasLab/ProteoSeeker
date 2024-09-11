@@ -624,12 +624,12 @@ def design_grouped_plots(comb_info_dict, metric_label_dict_1, legend_label_dict,
     # 1         comebin 50      0.14
     # 1         comebin 90      0.29
     # 1         comebin nr      0.06
-    # 2         kraken 8        0.09   
+    # 2         kraken 8        0.09
     # 2         kraken 16       0.19
     # 2         kraken 72       0.78
     # ...
+    # Dictionary with information for the metrics.
     metric_dict = {}
-    sns.set_theme(style="whitegrid")
     for key in comb_info_dict.keys():
         info_dict = comb_info_dict[key]
         if info_dict:
@@ -641,7 +641,7 @@ def design_grouped_plots(comb_info_dict, metric_label_dict_1, legend_label_dict,
                         metric_dict[key_metric] = [tmp_values]
                     else:
                         metric_dict[key_metric].append(tmp_values)
-    # Pandas dataframe
+    # Pandas dataframe.
     pandas_dict = {}
     for key_metric in metric_dict.keys():
         # Initialize an empty Pandas dataframe.
@@ -673,7 +673,7 @@ def design_grouped_plots(comb_info_dict, metric_label_dict_1, legend_label_dict,
         # Figure
         figure, cur_axis = plt.subplots(figsize=(20, 12))
         # Plotting the pandas dataframe: Grouped barplot
-        sns.barplot(data=df_metric, x="sample", y="value", hue="method", palette="colorblind", alpha=.6, ax=cur_axis)
+        sns.barplot(data=df_metric, x="sample", y="value", hue="method", palette="colorblind", ax=cur_axis)
         # Place vertical lines to divie the sample barplots.
         for i in range(1, 19):
             cur_axis.axvline(x=i - 0.5, color='gray', linestyle='--', linewidth=0.8)
@@ -708,7 +708,7 @@ def design_grouped_plots(comb_info_dict, metric_label_dict_1, legend_label_dict,
         # Changing the size of the tick labels
         cur_axis.tick_params(axis='both', which='major', labelsize=fs_num_3)
         # Layout: Padding from left, bottom, right, top
-        plt.tight_layout()
+        figure.tight_layout()
         # File paths
         metric_label = metric_label_dict_1[key_metric]
         metric_label_sep = metric_label.split(" ")
@@ -718,7 +718,7 @@ def design_grouped_plots(comb_info_dict, metric_label_dict_1, legend_label_dict,
         # Store the plots
         figure.savefig(plot_png_path)
         figure.savefig(plot_jpg_path)
-        plt.close()
+        plt.close(figure)
     return pandas_dict
     
 
@@ -744,7 +744,7 @@ def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dic
         for item in cur_metric_group:
             cur_axis = axis[row_fig_index]
             df_metric = pandas_dict[item]
-            sns.barplot(ax=cur_axis, data=df_metric, x="sample", y="value", hue="method", palette="colorblind", alpha=.6)
+            sns.barplot(ax=cur_axis, data=df_metric, x="sample", y="value", hue="method", palette="colorblind")
             # Removes the right, top, left and bottom axis.
             sns.despine(ax=cur_axis, left=True)
             # Labels for x axis, y axis and title.
@@ -793,9 +793,9 @@ def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dic
                 new_legnd_label = legend_label_dict[cur_legend_label]
                 legend_text.set_text(new_legnd_label)
         # Layout: Padding from left, bottom, right, top
-        plt.tight_layout()
+        figure.tight_layout()
         # Space between the plots of the figure.
-        plt.subplots_adjust(hspace=0.6)
+        figure.subplots_adjust(hspace=0.6)
         # File paths
         group_metrics_path_png = "{}/group_metrics_{}.png".format(plot_dir_parh, key_group_metric)
         group_metrics_path_jpg = "{}/group_metrics_{}.jpg".format(plot_dir_parh, key_group_metric)
@@ -803,7 +803,7 @@ def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dic
         figure.savefig(group_metrics_path_png)
         figure.savefig(group_metrics_path_jpg)
         # Closing the figure.
-        plt.close()
+        plt.close(figure)
 
 
 def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict_1, legend_label_dict, sample_group_dict, sample_group_label_dict, plot_dir_parh):
@@ -840,7 +840,7 @@ def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_la
                     break
                 # Placing the plot in the figure.
                 cur_axis = axis[row_fig_index]
-                sns.barplot(ax=cur_axis, data=df_metric_filtered, x="sample", y="value", hue="method", palette="colorblind", alpha=.6)
+                sns.barplot(ax=cur_axis, data=df_metric_filtered, x="sample", y="value", hue="method", palette="colorblind")
                 # Removes the right, top, left and bottom axis.
                 sns.despine(ax=cur_axis, left=True)
                 # Labels for x axis, y axis and title.
@@ -850,7 +850,7 @@ def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_la
                     y_axis_label = "{} (%)".format(metric_label)
                 else:
                     y_axis_label = metric_label
-                axis_title_label = "{} vs Sample ID for {}".format(metric_label, group_label)
+                axis_title_label = "{} vs Sample ID - Samples: {}".format(metric_label, group_label)
                 # Labels
                 cur_axis.set_xlabel(x_axis_label, fontsize=fs_num_2, fontweight='bold')
                 cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
@@ -891,9 +891,9 @@ def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_la
                     new_legnd_label = legend_label_dict[cur_legend_label]
                     legend_text.set_text(new_legnd_label)
             # Padding from left, bottom, right, top
-            plt.tight_layout()
+            figure.tight_layout()
             # Space between the plots of the figure.
-            plt.subplots_adjust(hspace=0.6)
+            figure.subplots_adjust(hspace=0.6)
             # File paths
             group_metrics_path_png = "{}/group_{}_metrics_{}.png".format(plot_dir_parh, group_label, key_group_metric)
             group_metrics_path_jpg = "{}/group_{}_metrics_{}.jpg".format(plot_dir_parh, group_label, key_group_metric)
@@ -901,7 +901,7 @@ def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_la
             figure.savefig(group_metrics_path_png)
             figure.savefig(group_metrics_path_jpg)
             # Closing the figure.
-            plt.close()
+            plt.close(figure)
 
 
 def rank_stats(pandas_dict, stats_dir_path, metric_label_dict_2):
@@ -1309,23 +1309,22 @@ def plot_full_sample_time(df_full_time_dict, common_time_dict, time_dir, stats_d
         # Get the time for megahit.
         cur_megahit_time = common_time_dict[key_sample]
         # Create the filename.
-        full_time_df_png_path = "{}/sample_{}_full_time.png".format(time_dir, key_sample)
-        full_time_df_jpg_path = "{}/sample_{}_full_time.jpg".format(time_dir, key_sample)
         stacked_tsv_path = "{}/sample_{}_full_time.tsv".format(stats_dir_path, key_sample)
         # Save to CSV
         full_time_metric_df.to_csv(stacked_tsv_path, sep="\t", index=True)
         # Color palette
-        cld_palette = sns.color_palette("colorblind")
+        color_num = len(full_time_metric_df.columns)
+        cld_palette = sns.color_palette("colorblind", color_num + 1)
         # Removing the 9nth color wich is a very dim yellow.
         del cld_palette[8]
         # Create the plot
         ax = full_time_metric_df.plot(kind='bar', stacked=True, color=cld_palette)
         # Place a horizontal line at the sum of time up to megahit.
-        ax.axhline(y=cur_megahit_time, color='r', linestyle='--', linewidth=1)
+        ax.axhline(y=cur_megahit_time, linewidth=0.5, color='black')
         # Labels
-        plt.xlabel('Taxonomy Route and Database', fontsize=fs_num_2, fontweight='bold')
-        plt.ylabel('Execution Time (min)', fontsize=fs_num_2, fontweight='bold')
-        plt.title('Execution Time vs Taxonomy Route and Database', fontsize=fs_num_1, fontweight='bold')
+        ax.set_xlabel('Taxonomy Route and Database', fontsize=fs_num_2, fontweight='bold')
+        ax.set_ylabel('Execution Time (min)', fontsize=fs_num_2, fontweight='bold')
+        ax.set_title('Execution Time vs Taxonomy Route and Database', fontsize=fs_num_1, fontweight='bold')
         # Place the legend outside the plot
         # Custom legend labels
         custom_labels = ["quality control", "preprcessing", "assembly", "gene prediction", "protein clustering", "binning", "taxonomy", "read alignment", "results"]
@@ -1341,6 +1340,9 @@ def plot_full_sample_time(df_full_time_dict, common_time_dict, time_dir, stats_d
         ax.tick_params(axis='both', which='major', labelsize=fs_num_3)
         # Layout
         plt.tight_layout()
+        # Image paths.
+        full_time_df_png_path = "{}/sample_{}_full_time.png".format(time_dir, key_sample)
+        full_time_df_jpg_path = "{}/sample_{}_full_time.jpg".format(time_dir, key_sample)
         # Save the plot
         plt.savefig(full_time_df_png_path)
         plt.savefig(full_time_df_jpg_path)
@@ -1361,25 +1363,27 @@ def plot_total_sample_time(df_total_time_dict, common_time_dict, time_dir, stats
         # Get the time for megahit.
         cur_megahit_time = common_time_dict[key_sample]
         # Create the filename.
-        total_time_sample_df_png_path = "{}/sample_{}_total_time.png".format(time_dir, key_sample)
-        total_time_sample_df_jpg_path = "{}/sample_{}_total_time.jpg".format(time_dir, key_sample)
         stacked_tsv_path = "{}/sample_{}_total_time.tsv".format(stats_dir_path, key_sample)
         # Save to CSV
         total_time_sample_df.to_csv(stacked_tsv_path, sep="\t", index=True)
-        # Create a new figure
-        plt.figure()
+        # Color palette
+        color_num = len(total_time_sample_df)
+        cld_palette = sns.color_palette("colorblind", color_num)
+        ax = total_time_sample_df.plot(kind='bar', x='method', y='total_time', color=cld_palette, legend=False)
         # Create the plot
-        sns.barplot(x='method', y='total_time', data=total_time_sample_df, hue="total_time", palette="colorblind", legend=False)
         # Place a horizontal line at the sum of time up to megahit.
-        plt.axhline(y=cur_megahit_time, color='r', linestyle='--', linewidth=1)
+        ax.axhline(y=cur_megahit_time, linewidth=0.5, color='black')
         # Labels
-        plt.xlabel('Taxonomy Route and Database', fontsize=fs_num_2, fontweight='bold')
-        plt.ylabel('Execution Time (min)', fontsize=fs_num_2, fontweight='bold')
-        plt.title('Execution Time vs Taxonomy Route and Database', fontsize=fs_num_1, fontweight='bold')
+        ax.set_xlabel('Taxonomy Route and Database', fontsize=fs_num_2, fontweight='bold')
+        ax.set_ylabel('Execution Time (min)', fontsize=fs_num_2, fontweight='bold')
+        ax.set_title('Execution Time vs Taxonomy Route and Database', fontsize=fs_num_1, fontweight='bold')
         # Changing the size of the tick labels        
-        plt.tick_params(axis='both', which='major', labelsize=fs_num_3)
+        ax.tick_params(axis='both', which='major', labelsize=fs_num_3)
         # Layout
         plt.tight_layout()
+        # Image paths
+        total_time_sample_df_png_path = "{}/sample_{}_total_time.png".format(time_dir, key_sample)
+        total_time_sample_df_jpg_path = "{}/sample_{}_total_time.jpg".format(time_dir, key_sample)
         # Save the plot
         plt.savefig(total_time_sample_df_png_path)
         plt.savefig(total_time_sample_df_jpg_path)
@@ -1398,7 +1402,7 @@ def plot_total_all_time(total_time_all_df, time_dir, time_stats_dir_path):
     # Storing the pandas dataframe as a csv.
     total_time_all_df.to_csv(total_time_all_tsv_path, sep="\t", index=False)
     # Plotting the pandas dataframe: Barplot
-    total_time_all_barplot = sns.catplot(data=total_time_all_df, kind="bar", x="sample", y="total_time", hue="method", palette="colorblind", alpha=.6, height=6, aspect=2)
+    total_time_all_barplot = sns.catplot(data=total_time_all_df, kind="bar", x="sample", y="total_time", hue="method", palette="colorblind", height=6, aspect=2)
     # Remove legend.
     total_time_all_barplot._legend.remove()
     # Labels
@@ -1419,12 +1423,12 @@ def plot_total_all_time(total_time_all_df, time_dir, time_stats_dir_path):
     plot_png_path = "{}/total_time_all.png".format(time_dir)
     plot_jpg_path = "{}/total_time_all.jpg".format(time_dir)
     # Saving plots
-    total_time_all_barplot.savefig(plot_png_path)
-    total_time_all_barplot.savefig(plot_jpg_path)
+    plt.savefig(plot_png_path)
+    plt.savefig(plot_jpg_path)
     plt.close()
 
 
-def plot_full_group_sample_time(df_full_time_all, time_dir, time_stats_dir_path, time_sample_group_dict, time_sample_group_label_dict, methods_group):
+def plot_full_group_sample_time(df_full_time_all, time_dir, time_stats_dir_path, time_syn_sample_group_dict, time_sample_group_label_dict, methods_group):
     print("Full time plot for all samples grouped...\n")
     # Font sizes
     fs_num_1 = 25
@@ -1438,12 +1442,12 @@ def plot_full_group_sample_time(df_full_time_all, time_dir, time_stats_dir_path,
     full_time_sample_grouped_time_tsv_path = "{}/full_time_sample_grouped_time.tsv".format(time_stats_dir_path)
     df_full_time_all.to_csv(full_time_sample_grouped_time_tsv_path, sep="\t", index=True)
     # Create the figure to store the subplots.
-    row_num = 5
-    figure, axis = plt.subplots(row_num, 1, figsize=(20, 5 * row_num)) 
+    row_num = 6
+    figure, axis = plt.subplots(row_num, 1, figsize=(20, 5 * row_num))
     row_fig_index = 0
     # Filter specific samples.
-    for key_group in time_sample_group_dict.keys():
-        sample_id_group = time_sample_group_dict[key_group]
+    for key_group in time_syn_sample_group_dict.keys():
+        sample_id_group = time_syn_sample_group_dict[key_group]
         # Group label
         group_label = time_sample_group_label_dict[key_group]
         # Filtering the dataframe.
@@ -1458,12 +1462,12 @@ def plot_full_group_sample_time(df_full_time_all, time_dir, time_stats_dir_path,
         # Removing the 9nth color wich is a very dim yellow.
         del cld_palette[8]
         # Plot
-        df_time_filtered.plot(kind='bar', stacked=True, ax=cur_axis, alpha=.6, color=cld_palette)
+        df_time_filtered.plot(kind='bar', stacked=True, ax=cur_axis, color=cld_palette)
         cur_axis.set_xticklabels([f"{sample}-{method}" for sample, method in df_time_filtered.index], rotation=45, ha="right")
         # Labels for x axis, y axis and title.
-        x_axis_label = "Sample ID"
+        x_axis_label = "Sample ID and Database"
         y_axis_label = "Execution Time (min)"
-        axis_title_label = "Execution Time vs Sample ID for {}".format(group_label)
+        axis_title_label = "Execution Time vs Sample ID - Samples: {}".format(group_label)
         # Labels
         cur_axis.set_xlabel(x_axis_label, fontsize=fs_num_2, fontweight='bold')
         cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
@@ -1481,7 +1485,7 @@ def plot_full_group_sample_time(df_full_time_all, time_dir, time_stats_dir_path,
         # Place vertical lines to divie the sample barplots.
         max_ver_line_col = len(sample_id_group) * methods_num
         for i in range(methods_num, max_ver_line_col, methods_num):
-            cur_axis.axvline(x=i - 0.5, color='gray', linestyle='--', linewidth=0.8)
+            cur_axis.axvline(x=i - 0.5, color='gray', linestyle='--', linewidth=1.5)
         # Increasing the row index that shows which subplot will be added in the figure.
         row_fig_index += 1
     # Legend
@@ -1492,7 +1496,7 @@ def plot_full_group_sample_time(df_full_time_all, time_dir, time_stats_dir_path,
     # Get the legend handles and labels from the last axis with a plot.
     legend_mods, labels = cur_axis.get_legend_handles_labels()
     # Get the last axis.
-    tsgd_keys = list(time_sample_group_dict.keys())
+    tsgd_keys = list(time_syn_sample_group_dict.keys())
     tsgd_keys_len = len(tsgd_keys) - 1
     last_axis = axis[tsgd_keys_len]
     # Update the labels with custom labels and use the legend from the last axis.
@@ -1500,9 +1504,9 @@ def plot_full_group_sample_time(df_full_time_all, time_dir, time_stats_dir_path,
         handle.set_label(new_label)
     last_axis.legend(handles=legend_mods, title=legend_title, loc='upper center', bbox_to_anchor=(0.5, -0.6), ncol=6, prop={'size': fs_num_3}, title_fontproperties=legend_props)
     # Padding from left, bottom, right, top.
-    plt.tight_layout()
+    figure.tight_layout()
     # Space between the plots of the figure.
-    plt.subplots_adjust(hspace=0.9)
+    figure.subplots_adjust(hspace=0.9)
     # File paths.
     full_time_grouped_path_png = "{}/full_time_sample_grouped.png".format(time_dir)
     full_time_grouped_path_jpg = "{}/full_time_sample_grouped.jpg".format(time_dir)
@@ -1510,43 +1514,44 @@ def plot_full_group_sample_time(df_full_time_all, time_dir, time_stats_dir_path,
     figure.savefig(full_time_grouped_path_png)
     figure.savefig(full_time_grouped_path_jpg)
     # Closing the figure.
-    plt.close()
+    plt.close(figure)
 
 
-def plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_dict, time_sample_group_label_dict, time_stats_dir_path):
+def plot_full_group_method_time(total_time_all_df, time_dir, time_syn_sample_group_dict, time_sample_group_label_dict, time_stats_dir_path):
     print("Full time plot for all methods grouped...\n")
     # Font sizes
-    fs_num_1 = 30
+    fs_num_1 = 35
     fs_num_2 = 25
     fs_num_3 = 25
     # Letters for annotation
     annotation_letters = list("abcdefghijklmnopqrstuvwxyz")
     # Create the figure to store the subplots.
-    col_num = 5
+    col_num = 6
     figure, axis = plt.subplots(1, col_num, figsize=(40, 20))
     row_fig_index = 0
     # Filter specific samples.
-    for key_group in time_sample_group_dict.keys():
-        sample_id_group = time_sample_group_dict[key_group]
-        # Group label
-        group_label = time_sample_group_label_dict[key_group]
+    for key_group in time_syn_sample_group_dict.keys():
+        sample_id_group = time_syn_sample_group_dict[key_group]
         # Filtering the dataframe.
         total_time_all_filtered_df = total_time_all_df[total_time_all_df['sample'].isin(sample_id_group)]
         cur_axis = axis[row_fig_index]
         if total_time_all_filtered_df.empty:
             break
         # Plot
-        sns.barplot(ax=cur_axis, data=total_time_all_filtered_df, x="sample", y="total_time", hue="method", palette="colorblind", alpha=.6)
+        sns.barplot(ax=cur_axis, data=total_time_all_filtered_df, x="sample", y="total_time", hue="method", palette="colorblind")
         # Replace the y axis ticks.
         cur_axis.set_yticks(list(cur_axis.get_yticks()))
         # Remove the legend, if for the last plot.
         if row_fig_index < col_num:
             cur_axis.legend().remove()
         # Labels
+        x_axis_label = "Sample ID"
         y_axis_label = "Execution Time (min)"
-        axis_title_label = "Execution Time per method for each group of samples"
-        cur_axis.set_xlabel(group_label, fontsize=fs_num_2, fontweight='bold')
+        cur_axis.set_xlabel(x_axis_label, fontsize=fs_num_2, fontweight='bold')
         cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
+        # Group label
+        group_label = time_sample_group_label_dict[key_group]
+        cur_axis.set_title(group_label, fontsize=fs_num_2, fontweight='bold')
         # Changing the size of the tick labels        
         cur_axis.tick_params(axis='both', which='major', labelsize=fs_num_3)
         # Letter
@@ -1558,20 +1563,22 @@ def plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_d
         # Row index
         row_fig_index += 1
     # Get the axis for the middle plot
-    middle_axis = axis[2]
+    middle_axis = axis[3]
     # Title
-    middle_axis.set_title(axis_title_label, pad=20, loc='center', fontsize=fs_num_1, fontweight='bold')
+    fig_title_label = "Execution Time vs Species Number"
+    title_pos = middle_axis.title.get_position()
+    figure.text(title_pos[0], title_pos[1] - 0.025, fig_title_label, ha='center', fontsize=fs_num_1, fontweight='bold')
     # Get the labels from the last axis with a plot.
     cur_axis = axis[row_fig_index-1]
     legend_mods, labels = cur_axis.get_legend_handles_labels()
     # Legend
     legend_title = "Taxonomy Method and Database"
     legend_props = FontProperties(weight='bold', size=fs_num_3)
-    middle_axis.legend(handles=legend_mods, title=legend_title, loc='upper center', bbox_to_anchor=(0.5, -0.05), ncol=11, prop={'size': fs_num_3}, title_fontproperties=legend_props)
+    middle_axis.legend(handles=legend_mods, title=legend_title, loc='upper center', bbox_to_anchor=(0.0, -0.05), ncol=11, prop={'size': fs_num_3}, title_fontproperties=legend_props)
     # Padding from left, bottom, right, top
-    plt.tight_layout()
+    figure.tight_layout(rect=[0, 0, 0.99, 0.97])
     # Space between the subplots.
-    plt.subplots_adjust(wspace=0.3)
+    figure.subplots_adjust(wspace=0.3)
     # File paths
     full_time_grouped_path_png = "{}/full_time_method_grouped.png".format(time_dir)
     full_time_grouped_path_jpg = "{}/full_time_method_grouped.jpg".format(time_dir)
@@ -1579,7 +1586,7 @@ def plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_d
     figure.savefig(full_time_grouped_path_png)
     figure.savefig(full_time_grouped_path_jpg)
     # Closing the figure.
-    plt.close()
+    plt.close(figure)
 
 
 def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sample_speciesnum_dict, time_stats_dir_path, time_dir):
@@ -1713,9 +1720,9 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
     title_pos = middle_axis.title.get_position()
     figure.text(title_pos[0], title_pos[1] - 0.04, fig_title_label, ha='center', fontsize=fs_num_1, fontweight='bold')
     # Layout
-    plt.tight_layout(rect=[0, 0, 0.99, 0.95])
+    figure.tight_layout(rect=[0, 0, 0.99, 0.95])
     # Space between the plots of the figure.
-    plt.subplots_adjust(wspace=0.4)
+    figure.subplots_adjust(wspace=0.4)
     # File paths.
     size_time_png_path = "{}/size_time.png".format(time_dir)
     size_time_jpg_path = "{}/size_time.jpg".format(time_dir)
@@ -1723,7 +1730,7 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
     figure.savefig(size_time_png_path)
     figure.savefig(size_time_jpg_path)
     # Closing the plot.
-    plt.close()
+    plt.close(figure)
     
     # Create the figure to store the subplots.
     col_num = 5
@@ -1824,10 +1831,9 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
     legend_props = FontProperties(weight='bold', size=fs_num_3)
     middle_axis.legend(title=legend_title, loc='upper center', markerscale=2, bbox_to_anchor=(0.5, -0.2), ncol=11, prop={'size': fs_num_3}, title_fontproperties=legend_props)
     # Layout
-    # plt.tight_layout()
-    plt.tight_layout(rect=[0, 0, 0.99, 0.95])
+    figure.tight_layout(rect=[0, 0, 0.99, 0.95])
     # Space between the plots of the figure.
-    plt.subplots_adjust(wspace=0.4)
+    figure.subplots_adjust(wspace=0.4)
     # File paths
     size_time_png_path = "{}/species_time.png".format(time_dir)
     size_time_jpg_path = "{}/species_time.jpg".format(time_dir)
@@ -1835,17 +1841,54 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
     figure.savefig(size_time_png_path)
     figure.savefig(size_time_jpg_path)
     # Closing the plot.
-    plt.close()
+    plt.close(figure)
 
     # Create the figure to store the subplots.
     col_num = 5
     figure, axis = plt.subplots(1, col_num, figsize=(30, 10))
     row_fig_index = 0
+    # Species that are 10 in number are divided in the following groups:
+    group_10_synthetic = ["8", "18", "19"]
+    group_10_cultured = ["2", "9", "16", "17"]
+    # Labels
+    label_dict = {
+        "10": '10',
+        "40": '40',
+        "120": '120',
+        "500": '500',
+        "1000": '1000'
+    }
+    # Label keys
+    label_keys_list = list(label_dict.keys())
     # Create the scatter plots for species number vs mean time for each group of species number.
     for key_method in method_df_dict.keys():
         plot_df = method_df_dict[key_method]
         if not plot_df.empty:
             mean_plot_df = plot_df.groupby('species_number')['total_time'].mean().reset_index()
+            # Add the labels to the DataFrame.
+            label_list = []
+            for i in range(len(mean_plot_df)):
+                species_num = mean_plot_df.iloc[i]['species_number']
+                species_num_int = int(species_num)
+                species_num_str = str(species_num_int)
+                if species_num_str in label_keys_list:
+                    cur_label = label_dict[species_num_str]
+                    label_list.append(cur_label)
+            mean_plot_df['label'] = label_list
+            # Filter DataFrame for each subgroup.
+            # Compute the mean total_time for each species_number in each subgroup.
+            syn_10_df = plot_df[plot_df['sample'].isin(group_10_synthetic)]
+            if not syn_10_df.empty:
+                mean_10_syn_df = syn_10_df.groupby('species_number')['total_time'].mean().reset_index()
+                mean_10_syn_df['label'] = "10 - Simulated"
+                # Add the dataframe to the existing one for the mean time values.
+                mean_plot_df = pd.concat([mean_plot_df, mean_10_syn_df], ignore_index=True)
+            cul_10_df = plot_df[plot_df['sample'].isin(group_10_cultured)]
+            if not cul_10_df.empty:
+                mean_10_cul_df = cul_10_df.groupby('species_number')['total_time'].mean().reset_index()
+                mean_10_cul_df['label'] = "10 - Cultured"
+                # Add the dataframe to the existing one for the mean time values.
+                mean_plot_df = pd.concat([mean_plot_df, mean_10_cul_df], ignore_index=True)
             # Rounding the values for the mean time.
             mean_plot_df['total_time'] = mean_plot_df['total_time'].round(2)
             # Save the dataframe in a file.
@@ -1854,10 +1897,10 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
             # The current axis.
             cur_axis = axis[row_fig_index]
             # Returns a list of colors or continuous colormap defining a palette.
-            species_num = len(plot_df['species_number'].unique())
-            cld_palette = sns.color_palette("colorblind", n_colors=species_num)
+            labels_num = len(mean_plot_df['label'].unique())
+            cld_palette = sns.color_palette("colorblind", n_colors=labels_num)
             # Scatter plot
-            sns.scatterplot(ax=cur_axis, data=mean_plot_df, x="species_number", y="total_time", hue="species_number", palette=cld_palette, s=100)
+            sns.scatterplot(ax=cur_axis, data=mean_plot_df, x="species_number", y="total_time", hue="label", palette=cld_palette, s=100)
             # Regression plot
             # Convert the dataframe columns to lists of floats.
             # The data are extracted from the dataframe which was generated by computing the mean values of the execution times for each category of samples
@@ -1936,27 +1979,26 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
     fig_title_label = "Mean Execution Time vs Species Number"
     title_pos = middle_axis.title.get_position()
     figure.text(title_pos[0], title_pos[1] - 0.04, fig_title_label, ha='center', fontsize=fs_num_1, fontweight='bold')
-    #middle_axis.set_title(axis_title_label, pad=20, loc='center', fontsize=fs_num_1, fontweight='bold')
     # Legend
     legend_title = "Species Number"
     legend_props = FontProperties(weight='bold', size=fs_num_3)
     middle_axis.legend(title=legend_title, loc='upper center', markerscale=2, bbox_to_anchor=(0.5, -0.2), ncol=11, prop={'size': fs_num_3}, title_fontproperties=legend_props)
     # Layout
-    plt.tight_layout(rect=[0, 0, 0.99, 0.95])
+    figure.tight_layout(rect=[0, 0, 0.99, 0.95])
     # Space between the plots of the figure.
-    plt.subplots_adjust(wspace=0.4)
+    figure.subplots_adjust(wspace=0.4)
     # File paths
     size_time_png_path = "{}/species_meantime.png".format(time_dir)
     size_time_jpg_path = "{}/species_meantime.jpg".format(time_dir)
     # Saving the plots.
-    plt.savefig(size_time_png_path)
-    plt.savefig(size_time_jpg_path)
+    figure.savefig(size_time_png_path)
+    figure.savefig(size_time_jpg_path)
     # Closing the plot.
-    plt.close()
+    plt.close(figure)
 
 
-def time_analysis(time_dir, stats_dir_path, time_stats_dir_path, time_sample_group_dict, time_sample_group_label_dict, sample_size_dict, methods_time_group, sample_speciesnum_dict):
-    print("Perforing analysis of the execution time...\n")
+def time_analysis(time_dir, stats_dir_path, time_stats_dir_path, time_syn_sample_group_dict, time_sample_group_label_dict, sample_size_dict, methods_time_group, sample_speciesnum_dict):
+    print("Performing analysis of the execution time...\n")
     # Collect the time periods
     time_dict = collect_times(time_stats_dir_path)
 
@@ -1979,8 +2021,8 @@ def time_analysis(time_dir, stats_dir_path, time_stats_dir_path, time_sample_gro
     plot_full_sample_time(df_full_time_dict, common_time_dict, time_dir, stats_dir_path)
     plot_total_sample_time(df_total_time_dict, common_time_dict, time_dir, stats_dir_path)
     plot_total_all_time(total_time_all_df, time_dir, time_stats_dir_path)
-    plot_full_group_sample_time(df_full_time_all, time_dir, time_stats_dir_path, time_sample_group_dict, time_sample_group_label_dict, methods_time_group)
-    plot_full_group_method_time(total_time_all_df, time_dir, time_sample_group_dict, time_sample_group_label_dict, time_stats_dir_path)
+    plot_full_group_sample_time(df_full_time_all, time_dir, time_stats_dir_path, time_syn_sample_group_dict, time_sample_group_label_dict, methods_time_group)
+    plot_full_group_method_time(total_time_all_df, time_dir, time_syn_sample_group_dict, time_sample_group_label_dict, time_stats_dir_path)
 
     # Plot total time vs size
     plot_size_species(df_total_time_dict, sample_size_dict, methods_time_group, sample_speciesnum_dict, time_stats_dir_path, time_dir)
@@ -2044,6 +2086,9 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     # Determine the methods for which to get statistics and plots
     methods_group = methods_group.split(",")
 
+    # Setting the grid lines.
+    sns.set_theme(style="whitegrid")
+    
     # Analyzing the benchmark dataset.
     br_info_dict = br_analysis(benchmark_path, benchmark_mod_path, benchmark_mod_spabu_path)
     
@@ -2234,46 +2279,43 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
 
     # Combine the information from all the dictionaries.
     comb_info_dict = {}
-    # Kraken2 unfiltered
+    # Kraken2 db:8 - Filters: No filter, 0.1%, 1.0%, 10, 100, non-gut
     if kraken_8_stats_dict:
         comb_info_dict["kraken_8"] = kraken_8_stats_dict
-    if kraken_16_stats_dict:
-        comb_info_dict["kraken_16"] = kraken_16_stats_dict
-    if kraken_72_stats_dict:
-        comb_info_dict["kraken_72"] = kraken_72_stats_dict
-    # Kraken2 0.1%
     if kraken_8_0c1_stats_dict:
         comb_info_dict["kraken_8_0c1"] = kraken_8_0c1_stats_dict
-    if kraken_16_0c1_stats_dict:
-        comb_info_dict["kraken_16_0c1"] = kraken_16_0c1_stats_dict
-    if kraken_72_0c1_stats_dict:
-        comb_info_dict["kraken_72_0c1"] = kraken_72_0c1_stats_dict
-    # Kraken2 1.0%
     if kraken_8_1c0_stats_dict:
         comb_info_dict["kraken_8_1c0"] = kraken_8_1c0_stats_dict
-    if kraken_16_1c0_stats_dict:
-        comb_info_dict["kraken_16_1c0"] = kraken_16_1c0_stats_dict
-    if kraken_72_1c0_stats_dict:
-        comb_info_dict["kraken_72_1c0"] = kraken_72_1c0_stats_dict
-    # Kraken2 10
     if kraken_8_10_stats_dict:
         comb_info_dict["kraken_8_10"] = kraken_8_10_stats_dict
-    if kraken_16_10_stats_dict:
-        comb_info_dict["kraken_16_10"] = kraken_16_10_stats_dict
-    if kraken_72_10_stats_dict:
-        comb_info_dict["kraken_72_10"] = kraken_72_10_stats_dict
-    # Kraken2 100
     if kraken_8_100_stats_dict:
         comb_info_dict["kraken_8_100"] = kraken_8_100_stats_dict
-    if kraken_16_100_stats_dict:
-        comb_info_dict["kraken_16_100"] = kraken_16_100_stats_dict
-    if kraken_72_100_stats_dict:
-        comb_info_dict["kraken_72_100"] = kraken_72_100_stats_dict
-    # Kraken2 non-gut
     if kraken_8_ng_stats_dict:
         comb_info_dict["kraken_8_ng"] = kraken_8_ng_stats_dict
+    # Kraken2 db:16 - Filters: No filter, 0.1%, 1.0%, 10, 100, non-gut
+    if kraken_16_stats_dict:
+        comb_info_dict["kraken_16"] = kraken_16_stats_dict
+    if kraken_16_0c1_stats_dict:
+        comb_info_dict["kraken_16_0c1"] = kraken_16_0c1_stats_dict
+    if kraken_16_1c0_stats_dict:
+        comb_info_dict["kraken_16_1c0"] = kraken_16_1c0_stats_dict
+    if kraken_16_10_stats_dict:
+        comb_info_dict["kraken_16_10"] = kraken_16_10_stats_dict
+    if kraken_16_100_stats_dict:
+        comb_info_dict["kraken_16_100"] = kraken_16_100_stats_dict
     if kraken_16_ng_stats_dict:
         comb_info_dict["kraken_16_ng"] = kraken_16_ng_stats_dict
+    # Kraken db:72 - Filters: No filter, 0.1%, 1.0%, 10, 100, non-gut
+    if kraken_72_stats_dict:
+        comb_info_dict["kraken_72"] = kraken_72_stats_dict
+    if kraken_72_0c1_stats_dict:
+        comb_info_dict["kraken_72_0c1"] = kraken_72_0c1_stats_dict
+    if kraken_72_1c0_stats_dict:
+        comb_info_dict["kraken_72_1c0"] = kraken_72_1c0_stats_dict
+    if kraken_72_10_stats_dict:
+        comb_info_dict["kraken_72_10"] = kraken_72_10_stats_dict
+    if kraken_72_100_stats_dict:
+        comb_info_dict["kraken_72_100"] = kraken_72_100_stats_dict
     if kraken_72_ng_stats_dict:
         comb_info_dict["kraken_72_ng"] = kraken_72_ng_stats_dict
     # COMEBin nr
@@ -2317,7 +2359,7 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         "Unique species from both groups (union)": "Abundance of Gold Standard and Predicted Species",
         "Unique to gold group": "Abundance of Species Unique to the Gold Standard Group",
         "Unique to predicted group": "Abundance of Species Unique to the Predicted Group",
-        "True Positive (TP)": "True Positive (Abundance of Common Species Between the Gold Standard and Predicted Groups)",
+        "True Positive (TP)": "True Positive (Abundance of Species Common to Both the Gold Standard and Predicted Groups)",
         "False Positive (FP)": "False Positive (Abundance of Species Unique to the Predicted Group)",
         "False Negative (FN)": "False Negative (Abundance of Species Unique to the Gold Standard Group)",
         "Sensitivity": "Sensitivity",
@@ -2359,7 +2401,7 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     sample_groups_7 = [3, 12, 14]
     sample_groups_8 = [2, 7, 9, 10, 11, 14, 16, 17, 19]
     sample_groups_9 = [7, 10, 11, 14, 19]
-    sample_groups_10 = [2, 16, 17]
+    sample_groups_10 = [2, 9, 16, 17]
     sample_groups_11 = [1, 5, 12, 13, 18]
     sample_groups_12 = [3, 4, 6, 8, 15]
     sample_group_dict = {
@@ -2379,17 +2421,17 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     # Group labels
     sample_group_label_dict = {
         1: "10 Species",
-        2: "10 Species - Simulated",
-        3: "10 Species - Cultured",
+        2: "10 Species and Simulated",
+        3: "10 Species and Cultured",
         4: "40 Species",
         5: "120 Species",
         6: "500 Species",
         7: "1000 Species",
-        8: "No Bias",
-        9: "No Bias - Simulated",
-        10: "No Bias - Cultured",
-        11: "AT-Rich Bias",
-        12: "GC-Rich Bias"
+        8: "Unbiased",
+        9: "Unbiased and Simulated",
+        10: "Unbiased and Cultured",
+        11: "AT-Rich Biased",
+        12: "GC-Rich Biased"
     }
     # Plots
     pandas_dict = design_grouped_plots(comb_info_dict, metric_label_dict_1, legend_label_dict, plot_dir_parh, stats_dir_path)
@@ -2401,24 +2443,27 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
 
     if time_status:
         # Time groups
-        time_sample_groups_1 = [8, 18, 19]
-        time_sample_groups_2 = [5, 6, 11]
-        time_sample_groups_3 = [7, 13, 15]
-        time_sample_groups_4 = [1, 4, 10]
-        time_sample_groups_5 = [3, 12, 14]
-        time_sample_group_dict = {
-            1: time_sample_groups_1,
-            2: time_sample_groups_2,
-            3: time_sample_groups_3,
-            4: time_sample_groups_4,
-            5: time_sample_groups_5
+        time_syn_sample_groups_1 = [8, 18, 19]
+        time_syn_sample_groups_2 = [2, 9, 16, 17]
+        time_syn_sample_groups_3 = [5, 6, 11]
+        time_syn_sample_groups_4 = [7, 13, 15]
+        time_syn_sample_groups_5 = [1, 4, 10]
+        time_syn_sample_groups_6 = [3, 12, 14]
+        time_syn_sample_group_dict = {
+            1: time_syn_sample_groups_1,
+            2: time_syn_sample_groups_2,
+            3: time_syn_sample_groups_3,
+            4: time_syn_sample_groups_4,
+            5: time_syn_sample_groups_5,
+            6: time_syn_sample_groups_6
         }
         time_sample_group_label_dict = {
-            1: "10 Species",
-            2: "40 Species",
-            3: "120 Species",
-            4: "500 Species",
-            5: "1000 Species",
+            1: "10 Species and Simulated",
+            2: "10 Species and Cultured",
+            3: "40 Species",
+            4: "120 Species",
+            5: "500 Species",
+            6: "1000 Species"
         }
         # Sample sizes
         sample_size_dict = {
@@ -2466,7 +2511,7 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         # The time needed to filter the report/results of Kraken2 is negligent compared to the time needed for the analysis to take place. Therefore, the time of analysis for each filtering threshold
         # of the Kraken2 report is based primarily (almost completely) to the execution time of ProteoSeeker for the kraken database that the filter is based on.
         methods_time_group = ["k8", "k16", "k72", "cnr", "mnr"]
-        time_analysis(time_dir, stats_dir_path, time_stats_dir_path, time_sample_group_dict, time_sample_group_label_dict, sample_size_dict, methods_time_group, sample_speciesnum_dict)
+        time_analysis(time_dir, stats_dir_path, time_stats_dir_path, time_syn_sample_group_dict, time_sample_group_label_dict, sample_size_dict, methods_time_group, sample_speciesnum_dict)
 
 
 if __name__ == "__main__":
