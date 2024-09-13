@@ -1879,14 +1879,7 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
             mean_plot_df['label'] = label_list
             # Filter DataFrame for each subgroup.
             # Compute the mean total_time for each species_number in each subgroup.
-            syn_10_df = plot_df[plot_df['sample'].isin(group_10_synthetic)]
-            if not syn_10_df.empty:
-                grouped_syn_10_df = syn_10_df.groupby('species_number')
-                ur_mean_10_syn_df = grouped_syn_10_df['total_time'].mean()
-                mean_10_syn_df = ur_mean_10_syn_df.reset_index()
-                mean_10_syn_df['label'] = "10 - Simulated"
-                # Add the dataframe to the existing one for the mean time values.
-                mean_plot_df = pd.concat([mean_plot_df, mean_10_syn_df], ignore_index=True)
+            # 10 Species - Cultured
             cul_10_df = plot_df[plot_df['sample'].isin(group_10_cultured)]
             if not cul_10_df.empty:
                 grouped_10_cul_df = cul_10_df.groupby('species_number')
@@ -1895,6 +1888,25 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
                 mean_10_cul_df['label'] = "10 - Cultured"
                 # Add the dataframe to the existing one for the mean time values.
                 mean_plot_df = pd.concat([mean_plot_df, mean_10_cul_df], ignore_index=True)
+                # Move the row to the second place.
+                last_row = mean_plot_df.iloc[-1:]
+                part_mean_plot_df = mean_plot_df.iloc[:-1]
+                ra_mean_plot_df = pd.concat([part_mean_plot_df.iloc[:1], last_row, part_mean_plot_df.iloc[1:]])
+                mean_plot_df = ra_mean_plot_df.reset_index(drop=True)
+            # 10 Species - Simulated
+            syn_10_df = plot_df[plot_df['sample'].isin(group_10_synthetic)]
+            if not syn_10_df.empty:
+                grouped_syn_10_df = syn_10_df.groupby('species_number')
+                ur_mean_10_syn_df = grouped_syn_10_df['total_time'].mean()
+                mean_10_syn_df = ur_mean_10_syn_df.reset_index()
+                mean_10_syn_df['label'] = "10 - Simulated"
+                # Add the dataframe to the existing one for the mean time values.
+                mean_plot_df = pd.concat([mean_plot_df, mean_10_syn_df], ignore_index=True)
+                # Move the row to the second place.
+                last_row = mean_plot_df.iloc[-1:]
+                part_mean_plot_df = mean_plot_df.iloc[:-1]
+                ra_mean_plot_df = pd.concat([part_mean_plot_df.iloc[:1], last_row, part_mean_plot_df.iloc[1:]])
+                mean_plot_df = ra_mean_plot_df.reset_index(drop=True)
             # Rename the column from "total_time" to "mean_time".
             mean_plot_df = mean_plot_df.rename(columns={'total_time': 'mean_time'})
             # Rounding the values for the mean time.
