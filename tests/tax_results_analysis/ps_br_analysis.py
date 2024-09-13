@@ -180,6 +180,7 @@ def ps_kraken_analyze(ps_kraken_dir, filter_name):
     # 1812480	56036	1.05
     for kf in kraken_files:
         if filter_name in kf:
+            perc_sum = 0
             kf_nosuffix = kf[:-4]
             kf_splited = kf_nosuffix.split("_")
             sample_id = int(kf_splited[1])
@@ -192,6 +193,12 @@ def ps_kraken_analyze(ps_kraken_dir, filter_name):
                 if (taxid != "Total") and (taxid != "Toal"):
                     percentage = line_splited[2]
                     kraken_info_dict[sample_id][taxid] = percentage
+                    percentage_float = float(percentage)
+                    perc_sum += percentage_float
+            perc_sum = round(perc_sum, 2)
+            perc_sum_undefined = 100 - perc_sum
+            perc_sum_undefined = round(perc_sum_undefined, 2)
+            kraken_info_dict[sample_id]["undefined"] = perc_sum_undefined
     return kraken_info_dict
 
 
@@ -288,9 +295,10 @@ def ps_comebin_analyze(ps_cmbn, filter_name):
                             cmbn_sole_info_dict[sample_id][taxid] += sole_percentage_fl
                             perc_sum += sole_percentage_fl
             perc_sum = round(perc_sum, 2)
-            perc_sum_unidentified = 100 - perc_sum
-            perc_sum_unidentified = round(perc_sum_unidentified, 2)
-            cmbn_perc_sum_dict[sample_id] = [perc_sum, perc_sum_unidentified]
+            perc_sum_undefined = 100 - perc_sum
+            perc_sum_undefined = round(perc_sum_undefined, 2)
+            cmbn_perc_sum_dict[sample_id] = [perc_sum, perc_sum_undefined]
+            cmbn_sole_info_dict[sample_id]["undefined"] = perc_sum_undefined
     return cmbn_info_dict, cmbn_sole_info_dict, cmbn_perc_sum_dict
 
 
@@ -376,9 +384,10 @@ def ps_metabinner_analyze(ps_mtbr, filter_name):
                             mtbr_sole_info_dict[sample_id][taxid] += sole_percentage_fl
                             perc_sum += sole_percentage_fl
             perc_sum = round(perc_sum, 2)
-            perc_sum_unidentified = 100 - perc_sum
-            perc_sum_unidentified = round(perc_sum_unidentified, 2)
-            mtbr_perc_sum_dict[sample_id] = [perc_sum, perc_sum_unidentified]
+            perc_sum_undefined = 100 - perc_sum
+            perc_sum_undefined = round(perc_sum_undefined, 2)
+            mtbr_perc_sum_dict[sample_id] = [perc_sum, perc_sum_undefined]
+            mtbr_sole_info_dict[sample_id]["undefined"] = perc_sum_undefined
     return mtbr_info_dict, mtbr_sole_info_dict, mtbr_perc_sum_dict
 
 
@@ -404,11 +413,12 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
     tn = 0
     fn = 0
     fp = 0
-    sensitivity = -1
-    precision = -1
-    f1_score = -1
-    accuracy = -1
-    jaccard_index = -1
+    sensitivity = 0
+    precision = 0
+    accuracy = 0
+    f1_score = 0
+    jaccard_index = 0
+    l1_norm = 0
 
     # Number of decimals for each metric
     round_dec_num = 2
@@ -426,6 +436,12 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
     else:
         target_info_dict = copy.deepcopy(pred_sole_info_dict)
     target_si_info = target_info_dict[sample_id]
+    
+    # Remove the undefined group and retain it for usage in computing the statistics.
+    undefined_perc = None
+    if "undefined" in target_si_info.keys():
+        undefined_perc = target_si_info["undefined"]
+        del target_si_info['undefined']
 
     # Create a group of all the items from gold and predicted items.
     # unique_items: Union of the species from the gold standard sample and the predicted group of species
@@ -463,6 +479,10 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
         if (item not in gold_si_info) and (item not in target_si_info):
             # In none of the groups.
             tn += 1
+    # Check for true negatives.
+    if tn != 0:
+        print("True negatives found. Exiting.")
+        exit()
 
     # Compute TP, FP, FN
     tp = len(common_items)
@@ -499,7 +519,6 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
     jaccard_index = round(jaccard_index, round_dec_num)
 
     # L1 norm
-    l1_norm = 0
     for item in unique_items:
         if item in br_info_dict[sample_id]:
             gold_abu_prec = float(br_info_dict[sample_id][item])
@@ -511,10 +530,15 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
             pred_abu_perc = 0
         temp_term = abs(gold_abu_prec - pred_abu_perc)
         l1_norm += temp_term
+    # Add the undefined group.
+    if undefined_perc is not None:
+        temp_term = abs(undefined_perc - 0)
+        l1_norm += temp_term
+    # Divide by 100 and round the L1 Norm.
     l1_norm = l1_norm / 100
     l1_norm = round(l1_norm, round_dec_num)
 
-    # Store information in the dictionary
+    # Storing information in a dictionary.
     val_species_num = len(gold_si_info)
     pred_species_num = len(target_si_info)
     unique_spec_num = len(unique_items)
@@ -534,8 +558,8 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
         "Precision": precision,
         "Accuracy": accuracy,
         "F1 score": f1_score,
-        "L1_norm": l1_norm,
-        "Jaccard Index": jaccard_index
+        "Jaccard Index": jaccard_index,
+        "L1_norm": l1_norm
     }
 
     # Write the information in a csv file.
@@ -2349,7 +2373,7 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     # Metric groups
     metric_group_1 = ["True Positive (TP)", "False Positive (FP)", "False Negative (FN)"]
     metric_group_2 = ["Sensitivity", "Precision", "Accuracy"]
-    metric_group_3 = ["F1 score", "L1_norm", "Jaccard Index"]
+    metric_group_3 = ["F1 score", "Jaccard Index", "L1_norm"]
     metric_group_dict = {
         1: metric_group_1,
         2: metric_group_2,
@@ -2369,8 +2393,8 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         "Precision": "Precision",
         "Accuracy": "Accuracy",
         "F1 score": "F1 Score",
-        "L1_norm": "L1 Norm",
-        "Jaccard Index": "Jaccard Index"
+        "Jaccard Index": "Jaccard Index",
+        "L1_norm": "L1 Norm"
     }
     metric_label_dict_2 = {
         "Gold species number": "Abundance of Gold Standard Species",
@@ -2386,8 +2410,8 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         "Precision": "Precision",
         "Accuracy": "Accuracy",
         "F1 score": "F1 Score",
-        "L1_norm": "L1 Norm",
-        "Jaccard Index": "Jaccard Index"
+        "Jaccard Index": "Jaccard Index",
+        "L1_norm": "L1 Norm"
     }
     legend_label_dict = {
         "kraken_8": "Kraken2 db:8",
