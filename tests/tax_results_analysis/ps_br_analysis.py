@@ -170,7 +170,7 @@ def crfiles(ps_dir, ps_results, analysis_results_dict, time_dir, time_stats_dir_
                         shutil.copyfile(comebin_source_path_4, comebin_dest_path_4)
 
 
-def ps_kraken_analyze(ps_kraken_dir, filter_name):
+def ps_kraken_analyze(ps_kraken_dir, filter_name, sp_dir_path, spec_label):
     kraken_info_dict = {}
     kraken_files = os.listdir(ps_kraken_dir)
     # Kraken2
@@ -196,13 +196,21 @@ def ps_kraken_analyze(ps_kraken_dir, filter_name):
                     percentage_float = float(percentage)
                     perc_sum += percentage_float
             perc_sum = round(perc_sum, 2)
-            perc_sum_undefined = 100 - perc_sum
-            perc_sum_undefined = round(perc_sum_undefined, 2)
-            kraken_info_dict[sample_id]["undefined"] = perc_sum_undefined
+            perc_sum_unclassified = 100 - perc_sum
+            perc_sum_unclassified = round(perc_sum_unclassified, 2)
+            kraken_info_dict[sample_id]["unclassified"] = perc_sum_unclassified
+    # Write the information in a file.
+    for key_sample in kraken_info_dict.keys():
+        sp_sample_method_path = "{}/sample_{}_kraken_{}.tsv".format(sp_dir_path, key_sample, spec_label)
+        sp_dir_file = open(sp_sample_method_path, "w")
+        for key_item in kraken_info_dict[key_sample].keys():
+            key_percentage = kraken_info_dict[key_sample][key_item]
+            sp_dir_file.write("{}\t{}\t{}\n".format(key_sample, key_item, key_percentage))
+    sp_dir_file.close()
     return kraken_info_dict
 
 
-def ps_comebin_analyze(ps_cmbn, filter_name):
+def ps_comebin_analyze(ps_cmbn, filter_name, sp_dir_path, spec_label):
     # bind      species_name                taxid   taxonomy_rank   lineage                                                                                                                                                                                     percentage_input_reads      percentage_preprocessed_reads
     # 0	        Cupriavidus	                106589	genus	        cellular organisms;Bacteria;Pseudomonadota;Betaproteobacteria;Burkholderiales;Burkholderiaceae;Cupriavidus                                                                                  1.48	                    1.48
     # 1	        Micromonospora krabiensis	307121	species	        cellular organisms;Bacteria;Terrabacteria group;Actinomycetota;Actinomycetes;Micromonosporales;Micromonosporaceae;Micromonospora;Micromonospora krabiensis                              	1.45	                    1.46
@@ -295,14 +303,22 @@ def ps_comebin_analyze(ps_cmbn, filter_name):
                             cmbn_sole_info_dict[sample_id][taxid] += sole_percentage_fl
                             perc_sum += sole_percentage_fl
             perc_sum = round(perc_sum, 2)
-            perc_sum_undefined = 100 - perc_sum
-            perc_sum_undefined = round(perc_sum_undefined, 2)
-            cmbn_perc_sum_dict[sample_id] = [perc_sum, perc_sum_undefined]
-            cmbn_sole_info_dict[sample_id]["undefined"] = perc_sum_undefined
+            perc_sum_unclassified = 100 - perc_sum
+            perc_sum_unclassified = round(perc_sum_unclassified, 2)
+            cmbn_perc_sum_dict[sample_id] = [perc_sum, perc_sum_unclassified]
+            cmbn_sole_info_dict[sample_id]["unclassified"] = perc_sum_unclassified
+    # Write the information in a file.
+    for key_sample in cmbn_sole_info_dict.keys():
+        sp_sample_method_path = "{}/sample_{}_comebin_{}.tsv".format(sp_dir_path, key_sample, spec_label)
+        sp_dir_file = open(sp_sample_method_path, "w")
+        for key_item in cmbn_sole_info_dict[key_sample].keys():
+            key_percentage = cmbn_sole_info_dict[key_sample][key_item]
+            sp_dir_file.write("{}\t{}\t{}\n".format(key_sample, key_item, key_percentage))
+    sp_dir_file.close()
     return cmbn_info_dict, cmbn_sole_info_dict, cmbn_perc_sum_dict
 
 
-def ps_metabinner_analyze(ps_mtbr, filter_name):
+def ps_metabinner_analyze(ps_mtbr, filter_name, sp_dir_path, spec_label):
     # MetaBinner
     # bind      species_name    taxid   taxonomy_rank   lineage     percentage_input_reads      percentage_preprocessed_reads
     # 1	Listeria monocytogenes	1639	species	cellular organisms;Bacteria;Terrabacteria group;Bacillota;Bacilli;Bacillales;Listeriaceae;Listeria;Listeria monocytogenes	9.6	10.25
@@ -384,10 +400,18 @@ def ps_metabinner_analyze(ps_mtbr, filter_name):
                             mtbr_sole_info_dict[sample_id][taxid] += sole_percentage_fl
                             perc_sum += sole_percentage_fl
             perc_sum = round(perc_sum, 2)
-            perc_sum_undefined = 100 - perc_sum
-            perc_sum_undefined = round(perc_sum_undefined, 2)
-            mtbr_perc_sum_dict[sample_id] = [perc_sum, perc_sum_undefined]
-            mtbr_sole_info_dict[sample_id]["undefined"] = perc_sum_undefined
+            perc_sum_unclassified = 100 - perc_sum
+            perc_sum_unclassified = round(perc_sum_unclassified, 2)
+            mtbr_perc_sum_dict[sample_id] = [perc_sum, perc_sum_unclassified]
+            mtbr_sole_info_dict[sample_id]["unclassified"] = perc_sum_unclassified
+    # Write the information in a file.
+    for key_sample in mtbr_sole_info_dict.keys():
+        sp_sample_method_path = "{}/sample_{}_metabinner_{}.tsv".format(sp_dir_path, key_sample, spec_label)
+        sp_dir_file = open(sp_sample_method_path, "w")
+        for key_item in mtbr_sole_info_dict[key_sample].keys():
+            key_percentage = mtbr_sole_info_dict[key_sample][key_item]
+            sp_dir_file.write("{}\t{}\t{}\n".format(key_sample, key_item, key_percentage))
+    sp_dir_file.close()
     return mtbr_info_dict, mtbr_sole_info_dict, mtbr_perc_sum_dict
 
 
@@ -437,11 +461,11 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
         target_info_dict = copy.deepcopy(pred_sole_info_dict)
     target_si_info = target_info_dict[sample_id]
     
-    # Remove the undefined group and retain it for usage in computing the statistics.
-    undefined_perc = None
-    if "undefined" in target_si_info.keys():
-        undefined_perc = target_si_info["undefined"]
-        del target_si_info['undefined']
+    # Remove the unclassified group and retain it for usage in computing the statistics.
+    unclassified_perc = None
+    if "unclassified" in target_si_info.keys():
+        unclassified_perc = target_si_info["unclassified"]
+        del target_si_info['unclassified']
 
     # Create a group of all the items from gold and predicted items.
     # unique_items: Union of the species from the gold standard sample and the predicted group of species
@@ -530,9 +554,9 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
             pred_abu_perc = 0
         temp_term = abs(gold_abu_prec - pred_abu_perc)
         l1_norm += temp_term
-    # Add the undefined group.
-    if undefined_perc is not None:
-        temp_term = abs(undefined_perc - 0)
+    # Add the unclassified group.
+    if unclassified_perc is not None:
+        temp_term = abs(unclassified_perc - 0)
         l1_norm += temp_term
     # Divide by 100 and round the L1 Norm.
     l1_norm = l1_norm / 100
@@ -2094,6 +2118,7 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     ps_dir = "{}/ps_analysis".format(ps_output_dir)
     time_dir = "{}/time_info".format(ps_output_dir)
     plot_dir_parh = "{}/plots".format(ps_output_dir)
+    sp_dir_path = "{}/sp_info".format(ps_output_dir)
     stats_dir_path = "{}/stats".format(ps_output_dir)
     time_stats_dir_path = "{}/time_stats".format(stats_dir_path)
     # Directories for the results
@@ -2111,13 +2136,18 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         "cnr": "{}/comebin_nr".format(ps_dir),
         "mnr": "{}/metabinner_nr".format(ps_dir),
     }
-    
-    # Craete the statistics directory.
+
+    # Creating the directory which will contain the species and percentagies for each method and sample..
+    if os.path.exists(sp_dir_path):
+        shutil.rmtree(sp_dir_path)
+    os.mkdir(sp_dir_path)
+
+    # Craeting the statistics directory.
     if os.path.exists(stats_dir_path):
         shutil.rmtree(stats_dir_path)
     os.mkdir(stats_dir_path)
 
-    # Create the time-statistics directory.
+    # Creating the time-statistics directory.
     if os.path.exists(time_stats_dir_path):
         shutil.rmtree(time_stats_dir_path)
     os.mkdir(time_stats_dir_path)
@@ -2174,60 +2204,80 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     # It also means that metrics which take into account the percentages of the predicted species, such as the L1 norm should be based on the species which are sole predictions for one bin ID each.
     # Kraken2
     filter_name_k_base = "_kraken_species.tsv"
-    if "k8" in methods_group:
-        kraken_8_info_dict = ps_kraken_analyze(ps_kraken_8, filter_name_k_base)
-    if "k16" in methods_group:
-        kraken_16_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_base)
-    if "k72" in methods_group:
-        kraken_72_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_base)
+    spec_label_k8 = "k8"
+    spec_label_k16 = "k16"
+    spec_label_k72 = "k72"
+    spec_label_k8_ng = "k8_ng"
+    spec_label_k16_ng = "k16_ng"
+    spec_label_k72_ng = "k72_ng"
+    spec_label_k8_0c1 = "k8_0c1"
+    spec_label_k16_0c1 = "k16_0c1"
+    spec_label_k72_0c1 = "k72_0c1"
+    spec_label_k8_1c0 = "k8_1c0"
+    spec_label_k16_1c0 = "k16_1c0"
+    spec_label_k72_1c0 = "k72_1c0"
+    spec_label_k8_10 = "k8_10"
+    spec_label_k16_10 = "k16_10"
+    spec_label_k72_10 = "k72_10"
+    spec_label_k8_100 = "k8_100"
+    spec_label_k16_100 = "k16_100"
+    spec_label_k72_100 = "k72_100"
+    spec_label_cnr = "cnr"
+    spec_label_mnr = "mnr"
+    if spec_label_k8 in methods_group:
+        kraken_8_info_dict = ps_kraken_analyze(ps_kraken_8, filter_name_k_base, sp_dir_path, spec_label_k8)
+    if spec_label_k16 in methods_group:
+        kraken_16_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_base, sp_dir_path, spec_label_k16)
+    if spec_label_k72 in methods_group:
+        kraken_72_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_base, sp_dir_path, spec_label_k72)
     # Kraken2: non-gut
     filter_name_k_f_base = "thr_-1_"
-    if "k8_ng" in methods_group:
-        kraken_8_ng_info_dict = ps_kraken_analyze(ps_kraken_8, filter_name_k_f_base)
-    if "k16_ng" in methods_group:
-        kraken_16_ng_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_f_base)
-    if "k72_ng" in methods_group:
-        kraken_72_ng_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base)
+    if spec_label_k8_ng in methods_group:
+        kraken_8_ng_info_dict = ps_kraken_analyze(ps_kraken_8, filter_name_k_f_base, sp_dir_path, spec_label_k8_ng)
+    if spec_label_k16_ng in methods_group:
+        kraken_16_ng_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_f_base, sp_dir_path, spec_label_k16_ng)
+    if spec_label_k72_ng in methods_group:
+        kraken_72_ng_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k72_ng)
     # Kraken2: 0.1%
     filter_name_k_f_base = "thr_0.1_"
-    if "k8_0c1" in methods_group:
-        kraken_8_0c1_info_dict = ps_kraken_analyze(ps_kraken_8, filter_name_k_f_base)
-    if "k16_0c1" in methods_group:
-        kraken_16_0c1_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_f_base)
-    if "k72_0c1" in methods_group:
-        kraken_72_0c1_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base)
+    if spec_label_k8_0c1 in methods_group:
+        kraken_8_0c1_info_dict = ps_kraken_analyze(ps_kraken_8, filter_name_k_f_base, sp_dir_path, spec_label_k8_0c1)
+    if spec_label_k16_0c1 in methods_group:
+        kraken_16_0c1_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_f_base, sp_dir_path, spec_label_k16_0c1)
+    if spec_label_k72_0c1 in methods_group:
+        kraken_72_0c1_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k72_0c1)
     # Kraken2: 1%
     filter_name_k_f_base = "thr_1.0_"
-    if "k8_1c0" in methods_group:
-        kraken_8_1c0_info_dict = ps_kraken_analyze(ps_kraken_8, filter_name_k_f_base)
-    if "k16_1c0" in methods_group:
-        kraken_16_1c0_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_f_base)
-    if "k72_1c0" in methods_group:
-        kraken_72_1c0_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base)
+    if spec_label_k8_1c0 in methods_group:
+        kraken_8_1c0_info_dict = ps_kraken_analyze(ps_kraken_8, filter_name_k_f_base, sp_dir_path, spec_label_k8_1c0)
+    if spec_label_k16_1c0 in methods_group:
+        kraken_16_1c0_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_f_base, sp_dir_path, spec_label_k16_1c0)
+    if spec_label_k72_1c0 in methods_group:
+        kraken_72_1c0_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k72_1c0)
     # Kraken2: 10
     filter_name_k_f_base = "thr_10_"
-    if "k8_10" in methods_group:
-        kraken_8_10_info_dict = ps_kraken_analyze(ps_kraken_8, filter_name_k_f_base)
-    if "k16_10" in methods_group:
-        kraken_16_10_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_f_base)
-    if "k72_10" in methods_group:
-        kraken_72_10_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base)
+    if spec_label_k8_10 in methods_group:
+        kraken_8_10_info_dict = ps_kraken_analyze(ps_kraken_8, filter_name_k_f_base, sp_dir_path, spec_label_k8_10)
+    if spec_label_k16_10 in methods_group:
+        kraken_16_10_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_f_base, sp_dir_path, spec_label_k16_10)
+    if spec_label_k72_10 in methods_group:
+        kraken_72_10_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k72_10)
     # Kraken2: 100
     filter_name_k_f_base = "thr_100_"
-    if "k8_100" in methods_group:
-        kraken_8_100_info_dict = ps_kraken_analyze(ps_kraken_8, filter_name_k_f_base)
-    if "k16_100" in methods_group:
-        kraken_16_100_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_f_base)
-    if "k72_100" in methods_group:
-        kraken_72_100_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base)
+    if spec_label_k8_100 in methods_group:
+        kraken_8_100_info_dict = ps_kraken_analyze(ps_kraken_8, filter_name_k_f_base, sp_dir_path, spec_label_k8_100)
+    if spec_label_k16_100 in methods_group:
+        kraken_16_100_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_f_base, sp_dir_path, spec_label_k16_100)
+    if spec_label_k72_100 in methods_group:
+        kraken_72_100_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k72_100)
     # COMEBin nr
     filter_name_c = "_b_summary_info_comebin.tsv"
-    if "cnr" in methods_group:
-        cmbn_nr_info_dict, cmbn_nr_sole_info_dict, cmbn_nr_perc_sum_dict = ps_comebin_analyze(ps_cmbn_nr, filter_name_c)
+    if spec_label_cnr in methods_group:
+        cmbn_nr_info_dict, cmbn_nr_sole_info_dict, cmbn_nr_perc_sum_dict = ps_comebin_analyze(ps_cmbn_nr, filter_name_c, sp_dir_path, spec_label_cnr)
     # MetaBinner nr
     filter_name_m =  "_b_summary_info_metabinner.tsv"
-    if "mnr" in methods_group:
-        mtbr_nr_info_dict, mtbr_nr_sole_info_dict, mtbr_nr_perc_sum_dict = ps_metabinner_analyze(ps_mtbr_nr, filter_name_m)
+    if spec_label_mnr in methods_group:
+        mtbr_nr_info_dict, mtbr_nr_sole_info_dict, mtbr_nr_perc_sum_dict = ps_metabinner_analyze(ps_mtbr_nr, filter_name_m, sp_dir_path, spec_label_mnr)
 
     kraken_8_stats_dict = {}
     kraken_16_stats_dict = {}
