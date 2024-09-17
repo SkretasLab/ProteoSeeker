@@ -1,6 +1,7 @@
 import os
 import sys
 import copy
+import math
 import shutil
 import numpy as np
 import pandas as pd
@@ -415,7 +416,7 @@ def ps_metabinner_analyze(ps_mtbr, filter_name, sp_dir_path, spec_label):
     return mtbr_info_dict, mtbr_sole_info_dict, mtbr_perc_sum_dict
 
 
-def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_dict, sample_id):
+def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_dict, sample_id, abs_stats_dict):
     # Benchmark | Sample | Result
     #    Yes    |   Yes  |   TP
     #    No     |   No   |   TN
@@ -481,6 +482,11 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
     # group_val_unique_items: Unique gold species
     # group_pred_items: Predicted species
     # group_pred_unique_items: Unique predicted species
+    # Four conditions:
+    # In both groups.
+    # In the predicted group and not in the validation group.
+    # In the validation group and not in the predicted group.
+    # In none of the groups.
     common_items = []
     group_val_items = []
     group_val_unique_items = []
@@ -488,20 +494,16 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
     group_pred_unique_items = []
     for item in unique_items:
         if (item in gold_si_info) and (item in target_si_info):
-            # In both groups.
             common_items.append(item)
             group_val_items.append(item)
             group_pred_items.append(item)
         if (item not in gold_si_info) and (item in target_si_info):
-            # In the predicted, not in the validation.
             group_pred_items.append(item)
             group_pred_unique_items.append(item)
         if (item in gold_si_info) and (item not in target_si_info):
-            # In the validation, not in the predicted.
             group_val_items.append(item)
             group_val_unique_items.append(item)
         if (item not in gold_si_info) and (item not in target_si_info):
-            # In none of the groups.
             tn += 1
     # Check for true negatives.
     if tn != 0:
@@ -543,11 +545,12 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
     jaccard_index = round(jaccard_index, round_dec_num)
 
     # L1 norm
-    for item in unique_items:
+    for item in group_val_items:
         if item in br_info_dict[sample_id]:
             gold_abu_prec = float(br_info_dict[sample_id][item])
         else:
-            gold_abu_prec = 0
+            print("Item expected to be in the validated group not found. Exiting.")
+            exit()
         if item in target_info_dict[sample_id]:
             pred_abu_perc = float(target_info_dict[sample_id][item])
         else:
@@ -568,26 +571,51 @@ def basic_stats(br_info_dict, pred_info_dict, pred_sole_info_dict, target_stats_
     unique_spec_num = len(unique_items)
     unique_val_num = len(group_val_unique_items)
     unique_pred_num = len(group_pred_unique_items)
+    if pred_species_num == 0:
+        pred_species_num = 0
+    else:
+        pred_species_num_log10 = math.log10(pred_species_num)
+        pred_species_num_log10 = round(pred_species_num_log10, 2)
+    if tp == 0:
+        tp_log10 = 0
+    else:
+        tp_log10 = math.log10(tp)
+        tp_log10 = round(tp_log10, 2)
+    if fp == 0:
+        fp_log10 = 0
+    else:
+        fp_log10 = math.log10(fp)
+        fp_log10 = round(fp_log10, 2)
+    if fn == 0:
+        fn_log10 = 0
+    else:
+        fn_log10 = math.log10(fn)
+        fn_log10 = round(fn_log10, 2)
     target_stats_dict[sample_id] = {
-        "Gold species number": val_species_num,
-        "Predicted species number": pred_species_num,
-        "Common species (intersection)": tp,
-        "Unique species from both groups (union)": unique_spec_num,
-        "Unique to gold group": unique_val_num,
-        "Unique to predicted group": unique_pred_num,
-        "True Positive (TP)": tp,
-        "False Positive (FP)": fp,
-        "False Negative (FN)": fn,
-        "Sensitivity": sensitivity,
-        "Precision": precision,
-        "Accuracy": accuracy,
-        "F1 score": f1_score,
-        "Jaccard Index": jaccard_index,
-        "L1_norm": l1_norm
+        "gold_species_number": val_species_num,
+        "predicted_species_number": [pred_species_num, pred_species_num_log10],
+        "common_species": tp,
+        "unique_species_total": unique_spec_num,
+        "unique_gold": unique_val_num,
+        "unique_predicted": unique_pred_num,
+        "true_positive": [tp, tp_log10],
+        "false_positive": [fp, fp_log10],
+        "false_negative": [fn, fn_log10],
+        "sensitivity": sensitivity,
+        "precision": precision,
+        "accuracy": accuracy,
+        "f1_score": f1_score,
+        "jaccard_index": jaccard_index,
+        "l1_norm": l1_norm
     }
-
-    # Write the information in a csv file.
-    return target_stats_dict, common_items, group_val_items, group_val_unique_items, group_pred_items, group_pred_unique_items
+    abs_stats_dict[sample_id] = {
+        "predicted_species_number": pred_species_num,
+        "true_positive": tp,
+        "false_positive": fp,
+        "false_negative": fn
+    }
+    # Return value.
+    return target_stats_dict, common_items, group_val_items, group_val_unique_items, group_pred_items, group_pred_unique_items, abs_stats_dict
 
 
 def write_list(path_tow, list_tow):
@@ -642,10 +670,23 @@ def comp_stats(br_info_dict, comp_dict, comp_sole_dict, stats_dir_path, label):
     species_rel_abu_file.close()
     # Compute sensitivity
     comb_stats_dict = {}
+    abs_stats_dict = {}
     for si in sample_ids:
         if si in comp_dict.keys():
-            comb_stats_dict, common_items, group_val_items, group_val_unique_items, group_pred_items, group_pred_unique_items = basic_stats(br_info_dict, comp_dict, comp_sole_dict, comb_stats_dict, si)
+            comb_stats_dict, common_items, group_val_items, group_val_unique_items, group_pred_items, group_pred_unique_items, abs_stats_dict = basic_stats(br_info_dict, comp_dict, comp_sole_dict, comb_stats_dict, si, abs_stats_dict)
             write_species(common_items, group_val_items, group_val_unique_items, group_pred_items, group_pred_unique_items, stats_dir_path, label, si)
+    # Write the information in a file.
+    stats_abs_path = "{}/method_{}_prspnum_tp_fp_fn.tsv".format(stats_dir_path, label)
+    stats_abs_file = open(stats_abs_path, "w")
+    stats_abs_file.write("sample id\tpredicted_species_number\ttrue_positive\tfalse_positive\tfalse_negative\n")
+    for key_sample in abs_stats_dict.keys():
+        pred_species_num = abs_stats_dict[key_sample]["predicted_species_number"]
+        tp = abs_stats_dict[key_sample]["true_positive"]
+        fp = abs_stats_dict[key_sample]["false_positive"]
+        fn = abs_stats_dict[key_sample]["false_negative"]
+        stats_abs_file.write("{}\t{}\t{}\t{}\t{}\n".format(key_sample, pred_species_num, tp, fp, fn))
+    stats_abs_file.close()
+    # Return value
     return comb_stats_dict
 
 
@@ -658,6 +699,13 @@ def design_grouped_plots(comb_info_dict, metric_label_dict_1, legend_label_dict,
     fs_num_1 = 25
     fs_num_2 = 20
     fs_num_3 = 20
+    # Metrics to skip and groups of metrics based on the value range of the y axis.
+    group_pass = ["gold_species_number", "common_species", "unique_species_total", "unique_gold", "unique_predicted", "True Negative (TN)"]
+    group_0_100 = ["sensitivity", "precision", "accuracy"]
+    group_0_1 = ["f1_score", "jaccard_index"]
+    group_0_2 = ["l1_norm"]
+    group_percentages = ["sensitivity", "precision", "accuracy"]
+    group_logs = ["predicted_species_number", "true_positive", "false_positive", "false_negative"]
     # The values of each metric are collected from each type of analysis.
     # Dataframe:
     # metric: F1
@@ -683,8 +731,13 @@ def design_grouped_plots(comb_info_dict, metric_label_dict_1, legend_label_dict,
         if info_dict:
             for key_sample in info_dict.keys():
                 for key_metric in info_dict[key_sample].keys():
-                    metric_value = info_dict[key_sample][key_metric]
-                    tmp_values = [key_sample, key, metric_value]
+                    if key_metric in group_logs:
+                        metric_value = info_dict[key_sample][key_metric][0]
+                        metric_value_log10 = info_dict[key_sample][key_metric][1]
+                        tmp_values = [key_sample, key, metric_value, metric_value_log10]
+                    else:
+                        metric_value = info_dict[key_sample][key_metric]
+                        tmp_values = [key_sample, key, metric_value]
                     if key_metric not in metric_dict.keys():
                         metric_dict[key_metric] = [tmp_values]
                     else:
@@ -692,20 +745,16 @@ def design_grouped_plots(comb_info_dict, metric_label_dict_1, legend_label_dict,
     # Pandas dataframe.
     pandas_dict = {}
     for key_metric in metric_dict.keys():
-        # Initialize an empty Pandas dataframe.
-        col_labels = ["sample", "method", "value"]
+        if key_metric in group_logs:
+            col_labels = ["sample", "method", "value", "value_log_10"]
+        else:
+            col_labels = ["sample", "method", "value"]
         metric_df = pd.DataFrame(columns=col_labels)
         row_index = 0
         for item in metric_dict[key_metric]:
             metric_df.loc[row_index] = item
             row_index += 1
         pandas_dict[key_metric] = metric_df
-    # Metrics to skip.
-    group_pass = ["Gold species number", "Common species (intersection)", "Unique species from both groups (union)", "Unique to gold group", "Unique to predicted group", "True Negative (TN)"]
-    # Groups of metrics based on the value range of the y axis.
-    group_0_100 = ["Sensitivity", "Specificty", "Precision", "Accuracy"]
-    group_0_1 = ["F1 score", "Jaccard Index"]
-    group_0_2 = ["L1_norm"]
     # Creating the plots
     for key_metric in pandas_dict.keys():
         if key_metric in group_pass:
@@ -717,11 +766,15 @@ def design_grouped_plots(comb_info_dict, metric_label_dict_1, legend_label_dict,
         metric_label_con = "_".join(metric_label_sep)
         metric_tsv_path = "{}/{}.tsv".format(stats_dir_path, metric_label_con)
         # Storing the pandas dataframe as a csv.
-        df_metric.to_csv(metric_tsv_path, sep="\t", index=False)
+        df_metric_sorted = df_metric.sort_values(by='sample')
+        df_metric_sorted.to_csv(metric_tsv_path, sep="\t", index=False)
         # Figure
         figure, cur_axis = plt.subplots(figsize=(20, 12))
         # Plotting the pandas dataframe: Grouped barplot
-        sns.barplot(data=df_metric, x="sample", y="value", hue="method", palette="colorblind", ax=cur_axis)
+        if key_metric in group_logs:
+            sns.barplot(data=df_metric, x="sample", y="value_log_10", hue="method", palette="colorblind", ax=cur_axis)
+        else:
+            sns.barplot(data=df_metric, x="sample", y="value", hue="method", palette="colorblind", ax=cur_axis)
         # Place vertical lines to divie the sample barplots.
         for i in range(1, 19):
             cur_axis.axvline(x=i - 0.5, color='gray', linestyle='--', linewidth=0.8)
@@ -738,8 +791,10 @@ def design_grouped_plots(comb_info_dict, metric_label_dict_1, legend_label_dict,
         # Axis labels
         metric_label = metric_label_dict_1[key_metric]
         x_axis_label = "Sample ID"
-        if metric_label in ["Sensitivity", "Specificty", "Precision", "Accuracy"]:
+        if key_metric in group_percentages:
             y_axis_label = "{} (%)".format(metric_label)
+        elif key_metric in group_logs:
+            y_axis_label = r'{} (log$_{{10}}$)'.format(metric_label)
         else:
             y_axis_label = metric_label
         cur_axis.set_xlabel(x_axis_label, fontsize=fs_num_2, fontweight='bold')
@@ -779,9 +834,11 @@ def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dic
     # Letters for annotation
     annotation_letters = list("abcdefghijklmnopqrstuvwxyz")
     # Groups of metrics based on the value range of the y axis.
-    group_0_100 = ["Sensitivity", "Specificty", "Precision", "Accuracy"]
-    group_0_1 = ["F1 score", "Jaccard Index"]
-    group_0_2 = ["L1_norm"]
+    group_0_100 = ["sensitivity", "precision", "accuracy"]
+    group_0_1 = ["f1_score", "jaccard_index"]
+    group_0_2 = ["l1_norm"]
+    group_percentages = ["sensitivity", "precision", "accuracy"]
+    group_logs = ["predicted_species_number", "true_positive", "false_positive", "false_negative"]
     # Creating the plots
     for key_group_metric in metric_group_dict.keys():
         cur_metric_group = metric_group_dict[key_group_metric]
@@ -792,14 +849,19 @@ def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dic
         for item in cur_metric_group:
             cur_axis = axis[row_fig_index]
             df_metric = pandas_dict[item]
-            sns.barplot(ax=cur_axis, data=df_metric, x="sample", y="value", hue="method", palette="colorblind")
+            if item in group_logs:
+                sns.barplot(ax=cur_axis, data=df_metric, x="sample", y="value_log_10", hue="method", palette="colorblind")
+            else:
+                sns.barplot(ax=cur_axis, data=df_metric, x="sample", y="value", hue="method", palette="colorblind")
             # Removes the right, top, left and bottom axis.
             sns.despine(ax=cur_axis, left=True)
             # Labels for x axis, y axis and title.
             metric_label = metric_label_dict_1[item]
             x_axis_label = "Sample ID"
-            if metric_label in ["Sensitivity", "Specificty", "Precision", "Accuracy"]:
+            if item in group_percentages:
                 y_axis_label = "{} (%)".format(metric_label)
+            elif item in group_logs:
+                y_axis_label = r'{} (log$_{{10}}$)'.format(metric_label)
             else:
                 y_axis_label = metric_label
             axis_title_label = "{} vs Sample ID".format(metric_label)
@@ -863,9 +925,11 @@ def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_la
     # Letters for annotation
     annotation_letters = list("abcdefghijklmnopqrstuvwxyz")
     # Groups of metrics based on the value range of the y axis.
-    group_0_100 = ["Sensitivity", "Specificty", "Precision", "Accuracy"]
-    group_0_1 = ["F1 score", "Jaccard Index"]
-    group_0_2 = ["L1_norm"]
+    group_0_100 = ["sensitivity", "precision", "accuracy"]
+    group_0_1 = ["f1_score", "jaccard_index"]
+    group_0_2 = ["l1_norm"]
+    group_percentages = ["sensitivity", "precision", "accuracy"]
+    group_logs = ["predicted_species_number", "true_positive", "false_positive", "false_negative"]
     # Filter specific samples.
     for key_group in sample_group_dict.keys():
         sample_id_group = sample_group_dict[key_group]
@@ -888,14 +952,19 @@ def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_la
                     break
                 # Placing the plot in the figure.
                 cur_axis = axis[row_fig_index]
-                sns.barplot(ax=cur_axis, data=df_metric_filtered, x="sample", y="value", hue="method", palette="colorblind")
+                if item in group_logs:
+                    sns.barplot(ax=cur_axis, data=df_metric_filtered, x="sample", y="value_log_10", hue="method", palette="colorblind")
+                else:
+                    sns.barplot(ax=cur_axis, data=df_metric_filtered, x="sample", y="value", hue="method", palette="colorblind")
                 # Removes the right, top, left and bottom axis.
                 sns.despine(ax=cur_axis, left=True)
                 # Labels for x axis, y axis and title.
                 metric_label = metric_label_dict_1[item]
                 x_axis_label = "Sample ID"
-                if metric_label in ["Sensitivity", "Specificty", "Precision", "Accuracy"]:
+                if item in group_percentages:
                     y_axis_label = "{} (%)".format(metric_label)
+                elif item in group_logs:
+                    y_axis_label = r'{} (log$_{{10}}$)'.format(metric_label)
                 else:
                     y_axis_label = metric_label
                 axis_title_label = "{} vs Sample ID - Samples: {}".format(metric_label, group_label)
@@ -952,25 +1021,26 @@ def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_la
             plt.close(figure)
 
 
-def rank_stats(pandas_dict, stats_dir_path, metric_label_dict_2):
+def rank_stats(pandas_dict, stats_dir_path, metric_label_dict_1, metric_label_dict_2):
     print("Ranking the methods...\n")
     # A group of methods is skipped, a group which contains each method that shows higher "similarity" of the two groups while its scores is increased
     # and a group which contains each method that shows higher "similarity" of the two groups while its scores is decreased.
-    group_pass = ["Gold species number", "Predicted species number", "Common species (intersection)", "Unique species from both groups (union)", "Unique to gold group", "Unique to predicted group", "True Negative (TN)"]
-    group_max = ["True Positive (TP)", "Sensitivity", "Specificty", "Precision", "Accuracy", "F1 score", "Jaccard Index"]
-    group_min = ["False Positive (FP)", "False Negative (FN)", "L1_norm"]
+    group_pass = ["gold_species_number", "predicted_species_number", "common_species", "unique_species_total", "unique_gold", "unique_predicted", "True Negative (TN)"]
+    group_max = ["true_positive", "sensitivity", "precision", "accuracy", "f1_score", "jaccard_index"]
+    group_min = ["false_positive", "false_negative", "l1_norm"]
     # Write all computed metrics for all samples in a TSV file.
-    metrics_stats_path = "{}/metrics_stats.tsv".format(stats_dir_path)
-    metrics_stats_file = open(metrics_stats_path, "w")
+    all_metrics_path = "{}/all_metrics.tsv".format(stats_dir_path)
+    all_metrics_file = open(all_metrics_path, "w")
     for key_metric in pandas_dict.keys():
         if key_metric in group_pass:
             continue
         metric_label = metric_label_dict_2[key_metric]
-        metrics_stats_file.write("{}\n".format(metric_label))
+        all_metrics_file.write("{}\n".format(metric_label))
         metric_df = pandas_dict[key_metric]
-        metric_df.to_csv(metrics_stats_file, sep="\t", index=False)
-        metrics_stats_file.write("\n")
-    metrics_stats_file.close()
+        metric_df_sorted = metric_df.sort_values(by='sample')
+        metric_df_sorted.to_csv(all_metrics_file, sep="\t", index=False)
+        all_metrics_file.write("\n")
+    all_metrics_file.close()
     # The higher ranking methods across for each sample are identified.
     method_sample_rank_dict = {}
     for key_metric in pandas_dict.keys():
@@ -978,6 +1048,13 @@ def rank_stats(pandas_dict, stats_dir_path, metric_label_dict_2):
             continue
         metric_df = pandas_dict[key_metric]
         method_sample_rank_dict[key_metric] = {}
+        # Label and file path.
+        filename_metric_label = metric_label_dict_1[key_metric]
+        filename_metric_label_sep = filename_metric_label.split(" ")
+        filename_metric_label_con = "_".join(filename_metric_label_sep)
+        sorted_df_tsv_path ="{}/{}_sorted.tsv".format(stats_dir_path, filename_metric_label_con)
+        sorted_df_tsv_file = open(sorted_df_tsv_path, "w")
+        first_metric = True
         for sample_id in range(1, 20):
             sample_id_list = [sample_id]
             # Isolating the value from the sample column.
@@ -996,8 +1073,15 @@ def rank_stats(pandas_dict, stats_dir_path, metric_label_dict_2):
                 print("Metric was not found in the groups of determined lowest or highest value metrics. Exiting.\n")
                 exit()
             max_val_methods = df_sorted[df_sorted['value'] == val_best]['method'].tolist()
+            if first_metric:
+                df_sorted.to_csv(sorted_df_tsv_file, sep="\t", index=False)
+                first_metric = False
+            else:
+                df_sorted.to_csv(sorted_df_tsv_file, sep="\t", header=False, index=False)
+            sorted_df_tsv_file.write("\n")
             # Add each method to the current metric.
             method_sample_rank_dict[key_metric][sample_id] = max_val_methods
+    sorted_df_tsv_file.close()
     # Convert the dictionary to a dataframe.
     col_labels = ["metric", "sample", "top_methods"]
     method_sample_rank_df = pd.DataFrame(columns=col_labels)
@@ -1012,8 +1096,7 @@ def rank_stats(pandas_dict, stats_dir_path, metric_label_dict_2):
             row_index += 1
     # Store the dataframe.
     top_methods_tsv_path = "{}/sample_top_methods.tsv".format(stats_dir_path)
-    method_sample_rank_df.to_csv(top_methods_tsv_path, sep="\t", index=True)
-
+    method_sample_rank_df.to_csv(top_methods_tsv_path, sep="\t", index=False)
     # Top method counting across all samples for each metric.
     method_allsamples_count_dict = {}
     for key_metric in method_sample_rank_dict.keys():
@@ -1040,7 +1123,7 @@ def rank_stats(pandas_dict, stats_dir_path, metric_label_dict_2):
     method_allsamples_rank_sorted_df = method_allsamples_rank_df.sort_values(by=['metric', 'frequency'], ascending=[True, False])
     # Store the dataframe
     count_top_methods_tsv_path = "{}/total_top_methods.tsv".format(stats_dir_path)
-    method_allsamples_rank_sorted_df.to_csv(count_top_methods_tsv_path, sep="\t", index=True)
+    method_allsamples_rank_sorted_df.to_csv(count_top_methods_tsv_path, sep="\t", index=False)
 
 
 def check_add(add_item, target_num):
@@ -1344,7 +1427,7 @@ def count_common_time(df_full_time_dict):
     return common_time_dict
 
 
-def plot_full_sample_time(df_full_time_dict, common_time_dict, time_dir, stats_dir_path):
+def plot_full_sample_time(df_full_time_dict, common_time_dict, time_dir, time_stats_dir_path):
     print("Full time plots for each sample...\n")
     # Font sizes
     fs_num_1 = 12
@@ -1357,9 +1440,9 @@ def plot_full_sample_time(df_full_time_dict, common_time_dict, time_dir, stats_d
         # Get the time for megahit.
         cur_megahit_time = common_time_dict[key_sample]
         # Create the filename.
-        stacked_tsv_path = "{}/sample_{}_full_time.tsv".format(stats_dir_path, key_sample)
+        stacked_tsv_path = "{}/sample_{}_full_time.tsv".format(time_stats_dir_path, key_sample)
         # Save to CSV
-        full_time_metric_df.to_csv(stacked_tsv_path, sep="\t", index=True)
+        full_time_metric_df.to_csv(stacked_tsv_path, sep="\t")
         # Color palette
         color_num = len(full_time_metric_df.columns)
         cld_palette = sns.color_palette("colorblind", color_num + 1)
@@ -1398,7 +1481,7 @@ def plot_full_sample_time(df_full_time_dict, common_time_dict, time_dir, stats_d
         plt.close()
 
 
-def plot_total_sample_time(df_total_time_dict, common_time_dict, time_dir, stats_dir_path):
+def plot_total_sample_time(df_total_time_dict, common_time_dict, time_dir, time_stats_dir_path):
     print("Total time plot for each sample...\n")
     # Font sizes
     fs_num_1 = 12
@@ -1411,9 +1494,9 @@ def plot_total_sample_time(df_total_time_dict, common_time_dict, time_dir, stats
         # Get the time for megahit.
         cur_megahit_time = common_time_dict[key_sample]
         # Create the filename.
-        stacked_tsv_path = "{}/sample_{}_total_time.tsv".format(stats_dir_path, key_sample)
+        stacked_tsv_path = "{}/sample_{}_total_time.tsv".format(time_stats_dir_path, key_sample)
         # Save to CSV
-        total_time_sample_df.to_csv(stacked_tsv_path, sep="\t", index=True)
+        total_time_sample_df.to_csv(stacked_tsv_path, sep="\t", index=False)
         # Color palette
         color_num = len(total_time_sample_df)
         cld_palette = sns.color_palette("colorblind", color_num)
@@ -1488,7 +1571,7 @@ def plot_full_group_sample_time(df_full_time_all, time_dir, time_stats_dir_path,
     methods_num = len(methods_group)
     # Save the dataframe to a CSV file.
     full_time_sample_grouped_time_tsv_path = "{}/full_time_sample_grouped_time.tsv".format(time_stats_dir_path)
-    df_full_time_all.to_csv(full_time_sample_grouped_time_tsv_path, sep="\t", index=True)
+    df_full_time_all.to_csv(full_time_sample_grouped_time_tsv_path, sep="\t", index=False)
     # Create the figure to store the subplots.
     row_num = 6
     figure, axis = plt.subplots(row_num, 1, figsize=(20, 5 * row_num))
@@ -1686,7 +1769,7 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
         if not plot_df.empty:
             # Save the dataframe in a file.
             size_time_tsv_path = "{}/size_time_{}.tsv".format(time_stats_dir_path, key_method)
-            plot_df.to_csv(size_time_tsv_path, sep="\t", index=True)
+            plot_df.to_csv(size_time_tsv_path, sep="\t", index=False)
             # The current axis.
             cur_axis = axis[row_fig_index]
             # Color
@@ -1790,7 +1873,7 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
         if not plot_df.empty:
             # Save the dataframe in a file.
             species_time_tsv_path = "{}/species_time_{}.tsv".format(time_stats_dir_path, key_method)
-            plot_df.to_csv(species_time_tsv_path, sep="\t", index=True)
+            plot_df.to_csv(species_time_tsv_path, sep="\t", index=False)
             # The current axis.
             cur_axis = axis[row_fig_index]
             # Returns a list of colors or continuous colormap defining a palette.
@@ -1961,7 +2044,7 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
             mean_plot_df['mean_time'] = mean_plot_df['mean_time'].round(2)
             # Save the dataframe in a file.
             species_meantime_tsv_path = "{}/species_meantime_{}.tsv".format(time_stats_dir_path, key_method)
-            mean_plot_df.to_csv(species_meantime_tsv_path, sep="\t", index=True)
+            mean_plot_df.to_csv(species_meantime_tsv_path, sep="\t", index=False)
             # The current axis.
             cur_axis = axis[row_fig_index]
             # Returns a list of colors or continuous colormap defining a palette.
@@ -2086,8 +2169,8 @@ def time_analysis(time_dir, stats_dir_path, time_stats_dir_path, time_syn_sample
     common_time_dict = count_common_time(df_full_time_dict)
 
     # Plot the dataframe
-    plot_full_sample_time(df_full_time_dict, common_time_dict, time_dir, stats_dir_path)
-    plot_total_sample_time(df_total_time_dict, common_time_dict, time_dir, stats_dir_path)
+    plot_full_sample_time(df_full_time_dict, common_time_dict, time_dir, time_stats_dir_path)
+    plot_total_sample_time(df_total_time_dict, common_time_dict, time_dir, time_stats_dir_path)
     plot_total_all_time(total_time_all_df, time_dir, time_stats_dir_path)
     plot_full_group_sample_time(df_full_time_all, time_dir, time_stats_dir_path, time_syn_sample_group_dict, time_sample_group_label_dict, methods_time_group)
     plot_full_group_method_time(total_time_all_df, time_dir, time_syn_sample_group_dict, time_sample_group_label_dict, time_stats_dir_path)
@@ -2421,47 +2504,47 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
 
     # Create plots
     # Metric groups
-    metric_group_1 = ["True Positive (TP)", "False Positive (FP)", "False Negative (FN)"]
-    metric_group_2 = ["Sensitivity", "Precision", "Accuracy"]
-    metric_group_3 = ["F1 score", "Jaccard Index", "L1_norm"]
+    metric_group_1 = ["true_positive", "false_positive", "false_negative"]
+    metric_group_2 = ["sensitivity", "precision", "accuracy"]
+    metric_group_3 = ["f1_score", "jaccard_index", "l1_norm"]
     metric_group_dict = {
         1: metric_group_1,
         2: metric_group_2,
         3: metric_group_3
     }
     metric_label_dict_1 = {
-        "Gold species number": "Abundance of Gold Standard Species",
-        "Predicted species number": "Abundance of Predicted Species",
-        "Common species (intersection)": "Abundance of Common Species",
-        "Unique species from both groups (union)": "Abundance of Gold Standard and Predicted Species",
-        "Unique to gold group": "Abundance of Species Unique to the Gold Standard Group",
-        "Unique to predicted group": "Abundance of Species Unique to the Predicted Group",
-        "True Positive (TP)": "True Positive",
-        "False Positive (FP)": "False Positive",
-        "False Negative (FN)": "False Negative",
-        "Sensitivity": "Sensitivity",
-        "Precision": "Precision",
-        "Accuracy": "Accuracy",
-        "F1 score": "F1 Score",
-        "Jaccard Index": "Jaccard Index",
-        "L1_norm": "L1 Norm"
+        "gold_species_number": "Abundance of Gold Standard Species",
+        "predicted_species_number": "Abundance of Predicted Species",
+        "common_species": "Abundance of Common Species",
+        "unique_species_total": "Abundance of Gold Standard and Predicted Species",
+        "unique_gold": "Abundance of Species Unique to the Gold Standard Group",
+        "unique_predicted": "Abundance of Species Unique to the Predicted Group",
+        "true_positive": "True Positive",
+        "false_positive": "False Positive",
+        "false_negative": "False Negative",
+        "sensitivity": "Sensitivity",
+        "precision": "Precision",
+        "accuracy": "Accuracy",
+        "f1_score": "F1 Score",
+        "jaccard_index": "Jaccard Index",
+        "l1_norm": "L1 Norm"
     }
     metric_label_dict_2 = {
-        "Gold species number": "Abundance of Gold Standard Species",
-        "Predicted species number": "Abundance of Predicted Species",
-        "Common species (intersection)": "Abundance of Common Species",
-        "Unique species from both groups (union)": "Abundance of Gold Standard and Predicted Species",
-        "Unique to gold group": "Abundance of Species Unique to the Gold Standard Group",
-        "Unique to predicted group": "Abundance of Species Unique to the Predicted Group",
-        "True Positive (TP)": "True Positive (Abundance of Species Common to Both the Gold Standard and Predicted Groups)",
-        "False Positive (FP)": "False Positive (Abundance of Species Unique to the Predicted Group)",
-        "False Negative (FN)": "False Negative (Abundance of Species Unique to the Gold Standard Group)",
-        "Sensitivity": "Sensitivity",
-        "Precision": "Precision",
-        "Accuracy": "Accuracy",
-        "F1 score": "F1 Score",
-        "Jaccard Index": "Jaccard Index",
-        "L1_norm": "L1 Norm"
+        "gold_species_number": "Abundance of Gold Standard Species",
+        "predicted_species_number": "Abundance of Predicted Species",
+        "common_species": "Abundance of Common Species",
+        "unique_species_total": "Abundance of Gold Standard and Predicted Species",
+        "unique_gold": "Abundance of Species Unique to the Gold Standard Group",
+        "unique_predicted": "Abundance of Species Unique to the Predicted Group",
+        "true_positive": "True Positive (Abundance of Species Common to Both the Gold Standard and Predicted Groups)",
+        "false_positive": "False Positive (Abundance of Species Unique to the Predicted Group)",
+        "false_negative": "False Negative (Abundance of Species Unique to the Gold Standard Group)",
+        "sensitivity": "Sensitivity",
+        "precision": "Precision",
+        "accuracy": "Accuracy",
+        "f1_score": "F1 Score",
+        "jaccard_index": "Jaccard Index",
+        "l1_norm": "L1 Norm"
     }
     legend_label_dict = {
         "kraken_8": "Kraken2 db:8",
@@ -2533,7 +2616,7 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict_1, legend_label_dict, sample_group_dict, sample_group_label_dict, plot_dir_parh)
     
     # Analyze the statistics
-    rank_stats(pandas_dict, stats_dir_path, metric_label_dict_2)
+    rank_stats(pandas_dict, stats_dir_path, metric_label_dict_1, metric_label_dict_2)
 
     if time_status:
         # Time groups
