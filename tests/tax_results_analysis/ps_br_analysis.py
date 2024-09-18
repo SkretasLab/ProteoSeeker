@@ -172,6 +172,69 @@ def crfiles(ps_dir, ps_results, analysis_results_dict, time_dir, time_stats_dir_
                         shutil.copyfile(comebin_source_path_4, comebin_dest_path_4)
 
 
+def collect_kraken_filters(kraken_ps_dir, filter_method_label, kraken_filters_dict):
+    for i in range(1, 20):
+        i_str = str(i)
+        kraken_filters_dict[filter_method_label][i_str] = ["-", "-"]
+    kraken_filenames = os.listdir(kraken_ps_dir)
+    for kfn in kraken_filenames:
+        if "kraken_filters" in kfn:
+            kfn_splited = kfn.split("_")
+            kfn_sample_id = kfn_splited[1]
+            kfn_path = "{}/{}".format(kraken_ps_dir, kfn)
+            kfn_lines = read_file(kfn_path)
+            kraken_filter_value = None
+            shannon_index_value = None
+            for line in kfn_lines:
+                if "Filter: -2" in line:
+                    print("Reached the non-gut filter for \"-2\" selection. Exiting.")
+                    exit()
+                if "Shannon Index: " in line:
+                    line_splited_shannon = line.split("Shannon Index: ")
+                    shannon_index_value = line_splited_shannon[1]
+                    shannon_index_value = float(shannon_index_value)
+                    shannon_index_value = round(shannon_index_value, 2)
+                if "Kraken percentage filter: " in line:
+                    line_splited_kraken = line.split("Kraken percentage filter: ")
+                    kraken_filter_value = line_splited_kraken[1]
+                    break
+            if (kraken_filter_value is None) or (shannon_index_value is None):
+                print("Kraken filtering value not found. Exiting.")
+                exit()
+            kraken_filters_dict[filter_method_label][kfn_sample_id] = [shannon_index_value, kraken_filter_value]
+    return kraken_filters_dict
+
+
+def process_kraken_filter_files(ps_dir, stats_dir_path):
+    kraken_8_ps_dir = "{}/kraken_8".format(ps_dir)
+    kraken_16_ps_dir = "{}/kraken_16".format(ps_dir)
+    kraken_72_ps_dir = "{}/kraken_72".format(ps_dir)
+    kraken_filters_dict = {
+        "8": {},
+        "16": {},
+        "72": {}
+    }
+    if os.path.exists(kraken_8_ps_dir):
+        filter_method_label = "8"
+        kraken_filters_dict = collect_kraken_filters(kraken_8_ps_dir, filter_method_label, kraken_filters_dict)
+    if os.path.exists(kraken_16_ps_dir):
+        filter_method_label = "16"
+        kraken_filters_dict = collect_kraken_filters(kraken_16_ps_dir, filter_method_label, kraken_filters_dict)
+    if os.path.exists(kraken_72_ps_dir):
+        filter_method_label = "72"
+        kraken_filters_dict = collect_kraken_filters(kraken_72_ps_dir, filter_method_label, kraken_filters_dict)
+    # Storing the information in a file.
+    kraken_filters_stats_path = "{}/kraken_ng_filtering_values.tsv".format(stats_dir_path)
+    kraken_filters_stats_file = open(kraken_filters_stats_path, "w")
+    kraken_filters_stats_file.write("database\tsample\tshannon index\tnon-gut filtering value (%)\n")
+    for key_method in kraken_filters_dict.keys():
+        for key_sample in kraken_filters_dict[key_method].keys():
+            si_value = kraken_filters_dict[key_method][key_sample][0]
+            ft_value = kraken_filters_dict[key_method][key_sample][1]
+            kraken_filters_stats_file.write("{}\t{}\t{}\t{}\n".format(key_method, key_sample, si_value, ft_value))
+    kraken_filters_stats_file.close()
+    
+
 def ps_kraken_analyze(ps_kraken_dir, filter_name, sp_dir_path, spec_label):
     kraken_info_dict = {}
     unclassified_dict = {}
@@ -207,6 +270,7 @@ def ps_kraken_analyze(ps_kraken_dir, filter_name, sp_dir_path, spec_label):
     for key_sample in kraken_info_dict.keys():
         sp_sample_method_path = "{}/sample_{}_kraken_{}.tsv".format(sp_dir_path, key_sample, spec_label)
         sp_dir_file = open(sp_sample_method_path, "w")
+        sp_dir_file.write("sample\ttaxid\trelative abundance (%)\n")
         for key_item in kraken_info_dict[key_sample].keys():
             key_percentage = kraken_info_dict[key_sample][key_item]
             sp_dir_file.write("{}\t{}\t{}\n".format(key_sample, key_item, key_percentage))
@@ -318,6 +382,7 @@ def ps_comebin_analyze(ps_cmbn, filter_name, sp_dir_path, spec_label):
     for key_sample in cmbn_sole_info_dict.keys():
         sp_sample_method_path = "{}/sample_{}_comebin_{}.tsv".format(sp_dir_path, key_sample, spec_label)
         sp_dir_file = open(sp_sample_method_path, "w")
+        sp_dir_file.write("sample\ttaxid\trelative abundance (%)\n")
         for key_item in cmbn_sole_info_dict[key_sample].keys():
             key_percentage = cmbn_sole_info_dict[key_sample][key_item]
             sp_dir_file.write("{}\t{}\t{}\n".format(key_sample, key_item, key_percentage))
@@ -418,6 +483,7 @@ def ps_metabinner_analyze(ps_mtbr, filter_name, sp_dir_path, spec_label):
     for key_sample in mtbr_sole_info_dict.keys():
         sp_sample_method_path = "{}/sample_{}_metabinner_{}.tsv".format(sp_dir_path, key_sample, spec_label)
         sp_dir_file = open(sp_sample_method_path, "w")
+        sp_dir_file.write("sample\ttaxid\trelative abundance (%)\n")
         for key_item in mtbr_sole_info_dict[key_sample].keys():
             key_percentage = mtbr_sole_info_dict[key_sample][key_item]
             sp_dir_file.write("{}\t{}\t{}\n".format(key_sample, key_item, key_percentage))
@@ -671,7 +737,7 @@ def comp_stats(br_info_dict, comp_dict, comp_sole_dict, stats_dir_path, label):
         tsv_dict = copy.deepcopy(comp_dict)
     species_rel_abu_path = "{}/{}_species_rel_abu.tsv".format(stats_dir_path, label)
     species_rel_abu_file = open(species_rel_abu_path, "w")
-    species_rel_abu_file.write("sample ID\ttaxon ID\trelative abundance\n")
+    species_rel_abu_file.write("sample ID\ttaxid\trelative abundance (%)\n")
     for key_sample in tsv_dict.keys():
         for key_taxonid in tsv_dict[key_sample].keys():
             rel_abu = tsv_dict[key_sample][key_taxonid]
@@ -687,7 +753,7 @@ def comp_stats(br_info_dict, comp_dict, comp_sole_dict, stats_dir_path, label):
     return comb_stats_dict
 
 
-def design_grouped_plots(comb_info_dict, metric_label_dict_1, legend_label_dict, plot_dir_parh, stats_dir_path):
+def design_grouped_plots(comb_info_dict, metric_label_dict_1, plot_dir_parh, stats_dir_path):
     print("Plotting set 1...\n")
     if os.path.exists(plot_dir_parh):
         shutil.rmtree(plot_dir_parh)
@@ -767,12 +833,6 @@ def design_grouped_plots(comb_info_dict, metric_label_dict_1, legend_label_dict,
         legend_title = "Taxonomy Method\nand Database"
         legend_props = FontProperties(weight='bold', size=fs_num_2)
         cur_axis.legend(title=legend_title, loc='center left', bbox_to_anchor=(1, 0.5), prop={'size': fs_num_2}, title_fontproperties=legend_props)
-        # Replace the legend's labels.
-        for legend_text in cur_axis.get_legend().get_texts():
-            cur_legend_label = legend_text.get_text()
-            if cur_legend_label in legend_label_dict.keys():
-                new_legnd_label = legend_label_dict[cur_legend_label]
-                legend_text.set_text(new_legnd_label)
         # Axis labels
         metric_label = metric_label_dict_1[key_metric]
         x_axis_label = "Sample ID"
@@ -813,7 +873,7 @@ def design_grouped_plots(comb_info_dict, metric_label_dict_1, legend_label_dict,
     return pandas_dict
     
 
-def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict_1, legend_label_dict, plot_dir_parh):
+def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict_1, plot_dir_parh):
     print("Plotting set 2...\n")
     # Font sizes
     fs_num_1 = 25
@@ -883,12 +943,6 @@ def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dic
         legend_title = "Taxonomy Method and Database"
         legend_props = FontProperties(weight='bold', size=fs_num_2)
         legend_obj = cur_axis.legend(title=legend_title, loc='upper center', bbox_to_anchor=(0.5, -0.3), ncol=4, prop={'size': fs_num_2}, title_fontproperties=legend_props)
-        # Replace the legend's labels.
-        for legend_text in legend_obj.get_texts():
-            cur_legend_label = legend_text.get_text()
-            if cur_legend_label in legend_label_dict.keys():
-                new_legnd_label = legend_label_dict[cur_legend_label]
-                legend_text.set_text(new_legnd_label)
         # Layout: Padding from left, bottom, right, top
         figure.tight_layout()
         # Space between the plots of the figure.
@@ -903,7 +957,7 @@ def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dic
         plt.close(figure)
 
 
-def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict_1, legend_label_dict, sample_group_dict, sample_group_label_dict, plot_dir_parh):
+def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict_1, sample_group_dict, sample_group_label_dict, plot_dir_parh):
     print("Plotting set 3...\n")
     # Font sizes
     fs_num_1 = 25
@@ -987,12 +1041,6 @@ def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_la
             legend_title = "Taxonomy Method and Database"
             legend_props = FontProperties(weight='bold', size=fs_num_2)
             legend_obj = cur_axis.legend(title=legend_title, loc='upper center', bbox_to_anchor=(0.5, -0.3), ncol=4, prop={'size': fs_num_2}, title_fontproperties=legend_props)
-            # Replace the legend's labels.
-            for legend_text in legend_obj.get_texts():
-                cur_legend_label = legend_text.get_text()
-                if cur_legend_label in legend_label_dict.keys():
-                    new_legnd_label = legend_label_dict[cur_legend_label]
-                    legend_text.set_text(new_legnd_label)
             # Padding from left, bottom, right, top
             figure.tight_layout()
             # Space between the plots of the figure.
@@ -1399,8 +1447,13 @@ def count_common_time(df_full_time_dict):
     common_time_dict = {}
     for key_sample in df_full_time_dict.keys():
         full_time_metric_df = df_full_time_dict[key_sample]
-        common_stages_sum_list = full_time_metric_df.apply(lambda row: row[:"gene_prediction"].sum(), axis=1)
-        common_stages_sum_list = common_stages_sum_list.tolist()
+        # Retaining the columns up to the "gene_prediction" column.
+        up_to_genpred_df = full_time_metric_df.loc[:, :"gene_prediction"]
+        # Summing the values of the columns across each row and storing the results in a dataframe compomsed of one column with the headers of the
+        # columns of the "up_to_genpred_df" and one column with the sums.
+        row_sums_df = up_to_genpred_df.sum(axis=1)
+        # Converting the column with the sums to a list.
+        common_stages_sum_list = row_sums_df.tolist()
         # Check if all sums are the same. If not exit with error.
         item_0 = common_stages_sum_list[0]
         for item in common_stages_sum_list:
@@ -1408,7 +1461,9 @@ def count_common_time(df_full_time_dict):
                 print("Error. Different sum of time up untill the megahit stage. Exiting.\n")
                 exit()
         item_0 = float(item_0)
+        # Rounding the sum. 
         common_stages_sum = round(item_0, 2)
+        # This sum is stored as the common time period for a given sample.
         common_time_dict[key_sample] = common_stages_sum
     return common_time_dict
 
@@ -2134,7 +2189,7 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
     plt.close(figure)
 
 
-def time_analysis(time_dir, stats_dir_path, time_stats_dir_path, time_syn_sample_group_dict, time_sample_group_label_dict, sample_size_dict, methods_time_group, sample_speciesnum_dict):
+def time_analysis(time_dir, time_stats_dir_path, time_syn_sample_group_dict, time_sample_group_label_dict, sample_size_dict, methods_time_group, sample_speciesnum_dict):
     print("Performing analysis of the execution time...\n")
     # Collect the time periods
     time_dict = collect_times(time_stats_dir_path)
@@ -2165,7 +2220,7 @@ def time_analysis(time_dir, stats_dir_path, time_stats_dir_path, time_syn_sample
     plot_size_species(df_total_time_dict, sample_size_dict, methods_time_group, sample_speciesnum_dict, time_stats_dir_path, time_dir)
 
 
-def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", ps_output_dir="analysis_plots_ps", methods_group="k8,k16,k72,k8_ng,k16_ng,k72_ng,cnr,mnr", time_status=True):
+def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", ps_output_dir="analysis_results", methods_group="", time_status=True):
     # Check for the input files.
     if (not benchmark_path) or (not ps_results):
         print("Input file not set. Exiting.")
@@ -2241,6 +2296,9 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
 
     # Copy the files with the results in the proper directories and rename them.
     crfiles(ps_dir, ps_results, analysis_results_dict, time_dir, time_stats_dir_path)
+
+    # Collect the kraken filters.
+    process_kraken_filter_files(ps_dir, stats_dir_path)
 
     # Collect the information from the results of ProteoSeeker
     # COMEBin/MetaBinner results
@@ -2444,49 +2502,49 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     comb_info_dict = {}
     # Kraken2 db:8 - Filters: No filter, 0.1%, 1.0%, 10, 100, non-gut
     if kraken_8_stats_dict:
-        comb_info_dict["kraken_8"] = kraken_8_stats_dict
+        comb_info_dict["Kraken2 db:8"] = kraken_8_stats_dict
     if kraken_8_0c1_stats_dict:
-        comb_info_dict["kraken_8_0c1"] = kraken_8_0c1_stats_dict
+        comb_info_dict["Kraken2 db:8 0.1%"] = kraken_8_0c1_stats_dict
     if kraken_8_1c0_stats_dict:
-        comb_info_dict["kraken_8_1c0"] = kraken_8_1c0_stats_dict
+        comb_info_dict["Kraken2 db:8 1.0%"] = kraken_8_1c0_stats_dict
     if kraken_8_10_stats_dict:
-        comb_info_dict["kraken_8_10"] = kraken_8_10_stats_dict
+        comb_info_dict["Kraken2 db:8 10"] = kraken_8_10_stats_dict
     if kraken_8_100_stats_dict:
-        comb_info_dict["kraken_8_100"] = kraken_8_100_stats_dict
+        comb_info_dict["Kraken2 db:8 100"] = kraken_8_100_stats_dict
     if kraken_8_ng_stats_dict:
-        comb_info_dict["kraken_8_ng"] = kraken_8_ng_stats_dict
+        comb_info_dict["Kraken2 db:8 non-gut"] = kraken_8_ng_stats_dict
     # Kraken2 db:16 - Filters: No filter, 0.1%, 1.0%, 10, 100, non-gut
     if kraken_16_stats_dict:
-        comb_info_dict["kraken_16"] = kraken_16_stats_dict
+        comb_info_dict["Kraken2 db:16"] = kraken_16_stats_dict
     if kraken_16_0c1_stats_dict:
-        comb_info_dict["kraken_16_0c1"] = kraken_16_0c1_stats_dict
+        comb_info_dict["Kraken2 db:16 0.1%"] = kraken_16_0c1_stats_dict
     if kraken_16_1c0_stats_dict:
-        comb_info_dict["kraken_16_1c0"] = kraken_16_1c0_stats_dict
+        comb_info_dict["Kraken2 db:16 1.0%"] = kraken_16_1c0_stats_dict
     if kraken_16_10_stats_dict:
-        comb_info_dict["kraken_16_10"] = kraken_16_10_stats_dict
+        comb_info_dict["Kraken2 db:16 10"] = kraken_16_10_stats_dict
     if kraken_16_100_stats_dict:
-        comb_info_dict["kraken_16_100"] = kraken_16_100_stats_dict
+        comb_info_dict["Kraken2 db:16 100"] = kraken_16_100_stats_dict
     if kraken_16_ng_stats_dict:
-        comb_info_dict["kraken_16_ng"] = kraken_16_ng_stats_dict
+        comb_info_dict["Kraken2 db:16 non-gut"] = kraken_16_ng_stats_dict
     # Kraken db:72 - Filters: No filter, 0.1%, 1.0%, 10, 100, non-gut
     if kraken_72_stats_dict:
-        comb_info_dict["kraken_72"] = kraken_72_stats_dict
+        comb_info_dict["Kraken2 db:72"] = kraken_72_stats_dict
     if kraken_72_0c1_stats_dict:
-        comb_info_dict["kraken_72_0c1"] = kraken_72_0c1_stats_dict
+        comb_info_dict["Kraken2 db:72 0.1%"] = kraken_72_0c1_stats_dict
     if kraken_72_1c0_stats_dict:
-        comb_info_dict["kraken_72_1c0"] = kraken_72_1c0_stats_dict
+        comb_info_dict["Kraken2 db:72 1.0%"] = kraken_72_1c0_stats_dict
     if kraken_72_10_stats_dict:
-        comb_info_dict["kraken_72_10"] = kraken_72_10_stats_dict
+        comb_info_dict["Kraken2 db:72 10"] = kraken_72_10_stats_dict
     if kraken_72_100_stats_dict:
-        comb_info_dict["kraken_72_100"] = kraken_72_100_stats_dict
+        comb_info_dict["Kraken2 db:72 100"] = kraken_72_100_stats_dict
     if kraken_72_ng_stats_dict:
-        comb_info_dict["kraken_72_ng"] = kraken_72_ng_stats_dict
+        comb_info_dict["Kraken2 db:72 non-gut"] = kraken_72_ng_stats_dict
     # COMEBin nr
     if cmbn_nr_stats_dict:
-        comb_info_dict["comebin_nr"] = cmbn_nr_stats_dict
+        comb_info_dict["COMEBin db:nr"] = cmbn_nr_stats_dict
     # MetaBinner nr
     if mtbr_nr_stats_dict:
-        comb_info_dict["metabinner_nr"] = mtbr_nr_stats_dict
+        comb_info_dict["MetaBinner db:nr"] = mtbr_nr_stats_dict
 
     # Create plots.
     # Metric groups.
@@ -2532,28 +2590,6 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         "jaccard_index": "Jaccard Index",
         "l1_norm": "L1 Norm"
     }
-    legend_label_dict = {
-        "kraken_8": "Kraken2 db:8",
-        "kraken_16": "Kraken2 db:16",
-        "kraken_72": "Kraken2 db:72",
-        "kraken_8_0c1": "Kraken2 db:8 0.1%",
-        "kraken_16_0c1": "Kraken2 db:16 0.1%",
-        "kraken_72_0c1": "Kraken2 db:72 0.1%",
-        "kraken_8_1c0": "Kraken2 db:8 1.0%",
-        "kraken_16_1c0": "Kraken2 db:16 1.0%",
-        "kraken_72_1c0": "Kraken2 db:72 1.0%",
-        "kraken_8_10": "Kraken2 db:8 10",
-        "kraken_16_10": "Kraken2 db:16 10",
-        "kraken_72_10": "Kraken2 db:72 10",
-        "kraken_8_100": "Kraken2 db:8 100",
-        "kraken_16_100": "Kraken2 db:16 100",
-        "kraken_72_100": "Kraken2 db:72 100",
-        "kraken_8_ng": "Kraken2 db:8 non-gut",
-        "kraken_16_ng": "Kraken2 db:16 non-gut",
-        "kraken_72_ng": "Kraken2 db:72 non-gut",
-        "comebin_nr": "COMEBin db:nr",
-        "metabinner_nr": "MetaBinner db:nr"
-    }
     # Sample groups.
     sample_groups_1 = [2, 8, 9, 16, 17, 18, 19]
     sample_groups_2 = [8, 18, 19]
@@ -2597,9 +2633,9 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         12: "GC-Rich Biased"
     }
     # Plots.
-    pandas_dict = design_grouped_plots(comb_info_dict, metric_label_dict_1, legend_label_dict, plot_dir_parh, stats_dir_path)
-    design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict_1, legend_label_dict, plot_dir_parh)
-    design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict_1, legend_label_dict, sample_group_dict, sample_group_label_dict, plot_dir_parh)
+    pandas_dict = design_grouped_plots(comb_info_dict, metric_label_dict_1, plot_dir_parh, stats_dir_path)
+    design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict_1, plot_dir_parh)
+    design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict_1, sample_group_dict, sample_group_label_dict, plot_dir_parh)
     
     # Analyze the statistics.
     rank_stats(pandas_dict, stats_dir_path, metric_label_dict_1, metric_label_dict_2)
@@ -2673,7 +2709,7 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         # The time needed to filter the report/results of Kraken2 is negligent compared to the time needed for the analysis to take place. Therefore, the time of analysis for each filtering threshold
         # of the Kraken2 report is based primarily (almost completely) to the execution time of ProteoSeeker for the kraken database that the filter is based on.
         methods_time_group = ["k8", "k16", "k72", "cnr", "mnr"]
-        time_analysis(time_dir, stats_dir_path, time_stats_dir_path, time_syn_sample_group_dict, time_sample_group_label_dict, sample_size_dict, methods_time_group, sample_speciesnum_dict)
+        time_analysis(time_dir, time_stats_dir_path, time_syn_sample_group_dict, time_sample_group_label_dict, sample_size_dict, methods_time_group, sample_speciesnum_dict)
 
 
 if __name__ == "__main__":
