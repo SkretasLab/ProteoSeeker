@@ -61,6 +61,7 @@ The steps of the taxonomy mode of ProteoSeeker:
 9. CD-HIT is used to reduce the redundancy of the pcdrs.
     
 For the Kraken2 route:
+
 10. Species are assigned to the reads based on Kraken2.
 11. Bowtie2 maps the reads to the contigs.
 12. Through the read-contig mapping, each species is quantified for each contig. Species are assigned to the contigs.
@@ -70,6 +71,7 @@ For the Kraken2 route:
 16. Annotation files are generated.
 
 COMEBin/MetaBinner route:
+
 10. The contigs are binned based on MetaBinner or COMEBin.
 11. Bowtie2 maps the reads to the contigs.
 12. The pcdrs are screened against the tpd through HMMER.
