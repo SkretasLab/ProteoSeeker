@@ -107,7 +107,7 @@ sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
 ## 2.2 Source code
 ### 2.2.1 Prerequisites
 #### a. Anaconda
-<p align="justify">To install ProteoSeeker from source code, conda, from Anaconda, must be installed and activated in your system. Instructions for the installation of Anaconda in Linux are provided in the following link:</p>
+<p align="justify">To install ProteoSeeker from source code, conda, from Anaconda, must be installed and activated in your system. Instructions for the installation of Anaconda in Linux are provided through the following link:</p>
 
 Anaconda for Linux: https://docs.anaconda.com/free/anaconda/install/linux/
 
