@@ -67,7 +67,7 @@ For the Kraken2 route:
 12. Through the read-contig mapping, each species is quantified for each contig. Species are assigned to the contigs.
 13. The contigs are binned based on their species.
 14. Species are assigned to the bins.
-15. Species are assigned to the proteins of the bins.
+15. Species are assigned to the genes and proteins of the bins.
 16. Annotation files are generated.
 
 For the COMEBin/MetaBinner route:
@@ -76,7 +76,7 @@ For the COMEBin/MetaBinner route:
 11. Bowtie2 maps the reads to the contigs.
 12. The pcdrs are screened against the tpd through HMMER.
 13. Any pcdr with at least one hit against the tpd is screened against the tfpd through DIAMOND BLASTP.
-14. Taxa are assigned to the proteins, based on the assignment of taxa to the bins.
+14. Taxa are assigned to the bins and to their genes and proteins.
 15. Each bin, along with any taxa assigned to it, is quantified based on the reads mapped to its contigs.
 16. Annotation files are generated.
 
