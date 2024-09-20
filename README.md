@@ -70,7 +70,7 @@ For the Kraken2 route:
 15. Species are assigned to the proteins of the bins.
 16. Annotation files are generated.
 
-COMEBin/MetaBinner route:
+For the COMEBin/MetaBinner route:
 
 10. The contigs are binned based on MetaBinner or COMEBin.
 11. Bowtie2 maps the reads to the contigs.
