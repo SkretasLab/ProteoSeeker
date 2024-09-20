@@ -26,21 +26,22 @@
 
 The steps of the seek mode of ProteoSeeker:
 
-1. The selected protein families are determined based on their input codes. Type **1, 2, 3** analysis.
-2. The profiles and protein names associated with the selected families are collected and the seek profile database (spd) is created. Type **1, 2, 3** analysis.
-3. The protein database is filtered based on the collected protein names and the seek filtered protein database (sfpd) is created. Type **2, 3** analysis.
-4. The reads in the FASTQ files undergo several quality control checks by FastQC. Type **1, 2, 3** analysis.
-5. The reads are preprocessed by BBDuk and reanalyzed by FastQC. Type **1, 2, 3** analysis.
-6. The preprocessed reads are assembled into contigs by Megahit. Type **1, 2, 3** analysis.
-7. Protein coding regions (pcdrs) are predicted in the contigs by FragGeneScanRs. Type **1, 2, 3** analysis.
-8. CD-HIT is used to reduce the redundancy of the pcdrs. Type **1, 2, 3** analysis.
-9. The pcdrs are screened against the spd through HMMER. Any pcdr with at least one hit from this screening is retained (set 1). Type **1, 2, 3** analysis.
-10. The rest of the pcdrs are screened against the sfpd through DIAMOND BLASTP, retaining only those with at least one hit with an e-value lower than the threshold (set 2). In addition, set 1, if not empty, is screened against the Swiss-Prot protein database through DIAMOND BLASTP. Type **2, 3** analysis.
-11. Both sets are screened against all the profiles of the Pfam database through HMMER. Type **1, 2, 3** analysis.
-12. Topology prediction is performed by Phobius. Type **1, 2, 3** analysis.
-13. Motifs provided by the user are screened against each protein. Type **1, 2, 3** analysis.
-14. The protein family of each protein is predicted. Type **1, 2, 3** analysis.
-15. Annotation files are written. Type **1, 2, 3** analysis.
+1. The selected protein families are determined based on their input codes and their profiles are collected. Type **1, 2, 3** analysis.
+2. The profile database is created. Type **1, 2, 3** analysis.
+3. The protein names associated with the selected families are collected. Type **1, 2, 3** analysis.
+4. The protein database is filtered based on the collected protein names and the seek filtered protein database (sfpd) is created. Type **2, 3** analysis.
+5. The reads in the FASTQ files undergo several quality control checks by FastQC. Type **1, 2, 3** analysis.
+6. The reads are preprocessed by BBDuk and reanalyzed by FastQC. Type **1, 2, 3** analysis.
+7. The preprocessed reads are assembled into contigs by Megahit. Type **1, 2, 3** analysis.
+8. Protein coding regions (pcdrs) are predicted in the contigs by FragGeneScanRs. Type **1, 2, 3** analysis.
+9. CD-HIT is used to reduce the redundancy of the pcdrs. Type **1, 2, 3** analysis.
+10. The pcdrs are screened against the spd through HMMER. Any pcdr with at least one hit from this screening is retained (set 1). Type **1, 2, 3** analysis.
+11. The rest of the pcdrs are screened against the sfpd through DIAMOND BLASTP, retaining only those with at least one hit with an e-value lower than the threshold (set 2). In addition, set 1, if not empty, is screened against the Swiss-Prot protein database through DIAMOND BLASTP. Type **2, 3** analysis.
+12. Both sets are screened against all the profiles of the Pfam database through HMMER. Type **1, 2, 3** analysis.
+13. Topology prediction is performed by Phobius. Type **1, 2, 3** analysis.
+14. Motifs provided by the user are screened against each protein. Type **1, 2, 3** analysis.
+15. The protein family of each protein is predicted. Type **1, 2, 3** analysis.
+16. Annotation files are written. Type **1, 2, 3** analysis.
 
 ### 1.2.2 Taxonomy mode
 <p align="justify">
@@ -49,27 +50,31 @@ The steps of the seek mode of ProteoSeeker:
 
 The steps of the taxonomy mode of ProteoSeeker:
 
-1. The selected protein families are determined based on their input codes.
-2. The profiles and protein names associated with the selected families are collected and the taxonomy profile database (tpd) is created.
-3. The protein database is filtered based on the collected protein names and the taxonomy filtered profile database (tfpd) is created.
-4. The reads of the FASTQ files undergo several quality control checks by FastQC.
-5. The reads are preprocessed by BBDuk and reanalyzed by FastQC.
-6. The preprocessed reads are assembled into contigs by Megahit.
-7. Protein coding regions (pcdrs) are predicted in the contigs by FragGeneScanRs.
-8. CD-HIT is used to reduce the redundancy of the pcdrs.
-9. Bowtie2 maps the reads to the contigs.
+1. The selected protein families are determined based on their input codes and their profiles are colleceted.
+2. The profile database is created.
+3. The protein names associated with the selected families are collected.
+4. The protein database is filtered based on the collected protein names and the taxonomy filtered profile database (tfpd) is created.
+5. The reads of the FASTQ files undergo several quality control checks by FastQC.
+6. The reads are preprocessed by BBDuk and reanalyzed by FastQC.
+7. The preprocessed reads are assembled into contigs by Megahit.
+8. Protein coding regions (pcdrs) are predicted in the contigs by FragGeneScanRs.
+9. CD-HIT is used to reduce the redundancy of the pcdrs.
+For the Kraken2 route:
+10. Species are assigned to the reads based on Kraken2.
+11. Bowtie2 maps the reads to the contigs.
+12. Through the read-contig mapping, each species is quantified for each contig. Species are assigned to the contigs.
+13. The contigs are binned based on their species.
+14. Species are assigned to the bins.
+15. Species are assigned to the proteins of the bins.
+16. Annotation files are generated.
+COMEBin/MetaBinner route:
 10. The contigs are binned based on MetaBinner or COMEBin.
-11. The pcdrs are screened against the tpd through HMMER.
-12. Any pcdr with at least one hit against the tpd is screened against the tfpd through DIAMOND BLASTP.
-13. Taxa are assigned to the proteins, based on the assignment of taxa to the bins.
-14. Each bin, along with any taxa assigned to it, is quantified based on the reads mapped to its contigs.
-15. Annotation files are written.
-16. Species are assigned to the reads based on Kraken2.
-17. Through the read-contig mapping, each species is quantified for each contig. Species are assigned to the contigs.
-18. The contigs are binned based on their species.
-19. Species are assigned to the bins.
-20. Species are assigned to the proteins of the bins.
-21. Annotation files are written.
+11. Bowtie2 maps the reads to the contigs.
+12. The pcdrs are screened against the tpd through HMMER.
+13. Any pcdr with at least one hit against the tpd is screened against the tfpd through DIAMOND BLASTP.
+14. Taxa are assigned to the proteins, based on the assignment of taxa to the bins.
+15. Each bin, along with any taxa assigned to it, is quantified based on the reads mapped to its contigs.
+16. Annotation files are generated.
 
 # 2. Installation
 <p align="justify">It is suggested to run ProteoSeeker in a Docker container through its image, rather than directly through the command-line, when possible. Therefore, it is proposed to install Docker and download the Docker image of ProteoSeeker. Running ProteoSeeker through the command-line would be necessary to perform the tests described in the evaluation section, or when the same SRA sample needs to be analyzed multiple times in which case running ProteoSeeker directly through the command-line would retain the SRA file after it is downloaded and processed and there would be no need to download and process it again in future runs.</p>
