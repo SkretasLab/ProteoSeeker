@@ -59,6 +59,7 @@ The steps of the taxonomy mode of ProteoSeeker:
 7. The preprocessed reads are assembled into contigs by Megahit.
 8. Protein coding regions (pcdrs) are predicted in the contigs by FragGeneScanRs.
 9. CD-HIT is used to reduce the redundancy of the pcdrs.
+    
 For the Kraken2 route:
 10. Species are assigned to the reads based on Kraken2.
 11. Bowtie2 maps the reads to the contigs.
@@ -67,6 +68,7 @@ For the Kraken2 route:
 14. Species are assigned to the bins.
 15. Species are assigned to the proteins of the bins.
 16. Annotation files are generated.
+
 COMEBin/MetaBinner route:
 10. The contigs are binned based on MetaBinner or COMEBin.
 11. Bowtie2 maps the reads to the contigs.
