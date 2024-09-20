@@ -28,7 +28,7 @@ The steps of the seek mode of ProteoSeeker:
 
 1. The selected protein families are determined based on their input codes and their profiles are collected. Type **1, 2, 3** analysis.
 2. The "seek profile database" (spd) is created. Type **1, 2, 3** analysis.
-3. The protein names associated with the selected families are collected. Type **1, 2, 3** analysis.
+3. The protein names associated with the selected families are collected. Type **2, 3** analysis.
 4. The protein database is filtered based on the collected protein names and the "seek filtered protein database" (sfpd) is created. Type **2, 3** analysis.
 5. The reads in the FASTQ files undergo several quality control checks by FastQC. Type **1, 2, 3** analysis.
 6. The reads are preprocessed by BBDuk and reanalyzed by FastQC. Type **1, 2, 3** analysis.
