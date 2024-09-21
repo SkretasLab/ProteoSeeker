@@ -801,14 +801,77 @@ def design_grouped_plots(comb_info_dict, metric_label_dict_1, plot_dir_parh, sta
                         metric_dict[key_metric].append(tmp_values)
     # Pandas dataframe.
     pandas_dict = {}
+    col_labels = ["sample", "method", "value"]
     for key_metric in metric_dict.keys():
-        col_labels = ["sample", "method", "value"]
         metric_df = pd.DataFrame(columns=col_labels)
         row_index = 0
         for item in metric_dict[key_metric]:
             metric_df.loc[row_index] = item
             row_index += 1
         pandas_dict[key_metric] = metric_df
+    # Find all the different thresholds used in the analysis.
+    combination_types = []
+    for key_metric in metric_dict.keys():
+        metric_category = metric_dict[key_metric]
+        for sample_item_search in metric_category:
+            cur_combination_seach = sample_item_search[1]
+            if cur_combination_seach not in combination_types:
+                combination_types.append(cur_combination_seach)
+    # Sort the samples based on their species abundances and in turn based on their biases.
+    sab_sort_order = [19, 18, 8, 11, 5, 6, 7, 13, 15, 10, 1, 4, 14, 12, 3, 16, 17, 2, 9]
+    sample_id_label_dict = {
+        "1": "1-A",
+        "2": "2-N",
+        "3": "3-G",
+        "4": "4-G",
+        "5": "5-A",
+        "6": "6-G",
+        "7": "7-N",
+        "8": "8-G",
+        "9": "9-N",
+        "10": "10-N",
+        "11": "11-N",
+        "12": "12-A",
+        "13": "13-A",
+        "14": "14-N",
+        "15": "15-G",
+        "16": "16-N",
+        "17": "17-N",
+        "18": "18-A",
+        "19": "19-N"
+    }
+    metric_dict_sab = {}
+    for key_metric in metric_dict.keys():
+        metric_category = metric_dict[key_metric]
+        metric_dict_sab[key_metric] = []
+        # For each combination type:
+        for cmbt in combination_types:
+            for sabid in sab_sort_order:
+                # For each sample ID in the order of sample IDs:
+                # Parse all the items of the current metric until finding
+                # the item with the specific sample ID and combination type.
+                for sample_item_check in metric_category:
+                    cur_sample_id = int(sample_item_check[0])
+                    cur_combination_check = sample_item_check[1]
+                    if (sabid == cur_sample_id) and (cmbt == cur_combination_check):
+                        # Modifying the sample ID fron integer to string in the item as when plotted not to be
+                        # sorted automatically in ascending order.
+                        cur_sample_id_str = str(cur_sample_id)
+                        sample_label = sample_id_label_dict[cur_sample_id_str]
+                        sample_item_check_mod = copy.deepcopy(sample_item_check)
+                        sample_item_check_mod[0] = sample_label
+                        metric_dict_sab[key_metric].append(sample_item_check_mod)
+                        break
+    # Pandas dataframe based on the order of the samples by species abundances and bisases.
+    pandas_sab_dict = {}
+    col_labels = ["sample", "method", "value"]
+    for key_sab_metric in metric_dict_sab.keys():
+        metric_sab_df = pd.DataFrame(columns=col_labels)
+        sab_row_index = 0
+        for sab_item in metric_dict_sab[key_sab_metric]:
+            metric_sab_df.loc[sab_row_index] = sab_item
+            sab_row_index += 1
+        pandas_sab_dict[key_sab_metric] = metric_sab_df
     # Creating the plots
     for key_metric in pandas_dict.keys():
         if key_metric in group_pass:
@@ -849,12 +912,8 @@ def design_grouped_plots(comb_info_dict, metric_label_dict_1, plot_dir_parh, sta
             cur_axis.set_ylim(0, 100)
         elif key_metric in group_0_1:
             cur_axis.set_ylim(0, 1)
-        elif item in group_logs:
+        elif key_metric in group_logs:
             cur_axis.set_yscale('log')
-            y_axis_both_limits = cur_axis.get_ylim()
-            y_axis_max_limit = y_axis_both_limits[1]
-            y_axis_max_limit_mod = y_axis_max_limit / 100
-            cur_axis.set_ylim(bottom=1, top=y_axis_max_limit_mod)
             cur_axis.yaxis.set_major_formatter(ticker.FormatStrFormatter('%d'))
         # Changing the size of the tick labels
         cur_axis.tick_params(axis='both', which='major', labelsize=fs_num_3)
@@ -870,11 +929,14 @@ def design_grouped_plots(comb_info_dict, metric_label_dict_1, plot_dir_parh, sta
         figure.savefig(plot_png_path)
         figure.savefig(plot_jpg_path)
         plt.close(figure)
-    return pandas_dict
+    return pandas_dict, pandas_sab_dict
     
 
-def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict_1, plot_dir_parh):
-    print("Plotting set 2...\n")
+def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict_1, plot_dir_parh, sab_status):
+    if sab_status:
+        print("Plotting set 2 for sorted samples based on their species abundances and biases....\n")
+    else:
+        print("Plotting set 2 for sorted samples based on their sample IDs....\n")
     # Font sizes
     fs_num_1 = 25
     fs_num_2 = 20
@@ -896,7 +958,8 @@ def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dic
         for item in cur_metric_group:
             cur_axis = axis[row_fig_index]
             df_metric = pandas_dict[item]
-            sns.barplot(ax=cur_axis, data=df_metric, x="sample", y="value", hue="method", palette="colorblind")
+            # Collecting the unique values of the sample column from the dataframe.
+            sns.barplot(ax=cur_axis, data=df_metric, x="sample", y="value", hue="method", palette="colorblind", width=0.7)
             # Removes the right, top, left and bottom axis.
             sns.despine(ax=cur_axis, left=True)
             # Labels for x axis, y axis and title.
@@ -910,6 +973,8 @@ def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dic
             # Labels
             cur_axis.set_xlabel(x_axis_label, fontsize=fs_num_2, fontweight='bold')
             cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
+            # Tick label size
+            plt.xticks(fontsize=10)
             # Title
             cur_axis.set_title(axis_title_label, pad=20, loc='center', fontsize=fs_num_1, fontweight='bold')
             # Letter
@@ -924,135 +989,57 @@ def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dic
                 cur_axis.set_ylim(0, 1)
             elif item in group_logs:
                 cur_axis.set_yscale('log')
-                y_axis_both_limits = cur_axis.get_ylim()
-                y_axis_max_limit = y_axis_both_limits[1]
-                y_axis_max_limit_mod = y_axis_max_limit / 100
+                # Compute the number of digits of the maximum value. Add one, this equals x. Find
+                # the closes 10^x number.
+                max_value = df_metric['value'].max()
+                max_value_int = int(max_value)
+                max_value_str = str(max_value_int)
+                digit_num = len(max_value_str)
+                y_axis_max_limit_mod = 10**digit_num
+                # The value of 1 is 0 at log scale.
                 cur_axis.set_ylim(bottom=1, top=y_axis_max_limit_mod)
                 cur_axis.yaxis.set_major_formatter(ticker.FormatStrFormatter('%d'))
-            # Replace the y axis ticks.
-            cur_axis.set_yticks(list(cur_axis.get_yticks()))
+            # Replace the y axis ticks. Helps to rewrite ticks. For example the plot may continue on above the highest tick (tick with a value)
+            # and thus has a bit more empty space without ticks. By rewriting the ticks a new tick will be provided to the top of the empty space.
+            cur_y_ticks = cur_axis.get_yticks()
+            cur_y_ticks_list = list(cur_y_ticks)
+            cur_axis.set_yticks(cur_y_ticks_list)
             # Place vertical lines to divie the sample barplots.
             for i in range(1, 19):
-                cur_axis.axvline(x=i - 0.5, color='gray', linestyle='--', linewidth=0.8)
+                if sab_status:
+                    if i in [3, 6, 9, 12, 15, 19]:
+                        cur_axis.axvline(x=i-0.5, linewidth=3, color='black')
+                    else:
+                        cur_axis.axvline(x=i-0.5, linewidth=1, color='black')
+                else:
+                    cur_axis.axvline(x=i-0.5, linewidth=1, color='black')
             # Changing the size of the tick labels
             cur_axis.tick_params(axis='both', which='major', labelsize=fs_num_3)
             # Increasing the row index that shows which subplot will be added in the figure.
             row_fig_index += 1
+            # Add space between the barplots.
+            figure.subplots_adjust(wspace=1.0)
         # Add one legend at the bottom. Make the legend as much horizontal as possible.
         # Legend
         legend_title = "Taxonomy Method and Database"
         legend_props = FontProperties(weight='bold', size=fs_num_2)
-        legend_obj = cur_axis.legend(title=legend_title, loc='upper center', bbox_to_anchor=(0.5, -0.3), ncol=4, prop={'size': fs_num_2}, title_fontproperties=legend_props)
+        cur_axis.legend(title=legend_title, loc='upper center', bbox_to_anchor=(0.5, -0.3), ncol=4, prop={'size': fs_num_2}, title_fontproperties=legend_props)
         # Layout: Padding from left, bottom, right, top
         figure.tight_layout()
         # Space between the plots of the figure.
         figure.subplots_adjust(hspace=0.6)
         # File paths
-        group_metrics_path_png = "{}/group_metrics_{}.png".format(plot_dir_parh, key_group_metric)
-        group_metrics_path_jpg = "{}/group_metrics_{}.jpg".format(plot_dir_parh, key_group_metric)
+        if sab_status:
+            group_metrics_path_png = "{}/group_metrics_sab_{}.png".format(plot_dir_parh, key_group_metric)
+            group_metrics_path_jpg = "{}/group_metrics_sab_{}.jpg".format(plot_dir_parh, key_group_metric)
+        else:
+            group_metrics_path_png = "{}/group_metrics_{}.png".format(plot_dir_parh, key_group_metric)
+            group_metrics_path_jpg = "{}/group_metrics_{}.jpg".format(plot_dir_parh, key_group_metric)
         # Saving the figure.
         figure.savefig(group_metrics_path_png)
         figure.savefig(group_metrics_path_jpg)
         # Closing the figure.
         plt.close(figure)
-
-
-def design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict_1, sample_group_dict, sample_group_label_dict, plot_dir_parh):
-    print("Plotting set 3...\n")
-    # Font sizes
-    fs_num_1 = 25
-    fs_num_2 = 20
-    fs_num_3 = 20
-    # Letters for annotation
-    annotation_letters = list("abcdefghijklmnopqrstuvwxyz")
-    # Groups of metrics based on the value range of the y axis.
-    group_0_100 = ["sensitivity", "precision", "accuracy"]
-    group_0_1 = ["f1_score", "jaccard_index"]
-    group_percentages = ["sensitivity", "precision", "accuracy"]
-    group_logs = ["predicted_species_number", "true_positive", "false_positive", "false_negative"]
-    # Filter specific samples.
-    for key_group in sample_group_dict.keys():
-        sample_id_group = sample_group_dict[key_group]
-        # Group label
-        group_label = sample_group_label_dict[key_group]
-        for key_group_metric in metric_group_dict.keys():
-            cur_metric_group = metric_group_dict[key_group_metric]
-            row_num = len(cur_metric_group)
-            # Create the figure to store the subplots.
-            figure, axis = plt.subplots(row_num, 1, figsize=(20, 5 * row_num)) 
-            row_fig_index = 0
-            # Checks whether the dataframes for the metrics will be empty for the current sample group.
-            # If for one metric the filtered dataframe is empty then it will also be for the rest of the metrics.
-            df_empty_status = False
-            for item in cur_metric_group:
-                df_metric = pandas_dict[item]
-                df_metric_filtered = df_metric[df_metric['sample'].isin(sample_id_group)]
-                if df_metric_filtered.empty:
-                    df_empty_status = True
-                    break
-                # Placing the plot in the figure.
-                cur_axis = axis[row_fig_index]
-                sns.barplot(ax=cur_axis, data=df_metric_filtered, x="sample", y="value", hue="method", palette="colorblind")
-                # Removes the right, top, left and bottom axis.
-                sns.despine(ax=cur_axis, left=True)
-                # Labels for x axis, y axis and title.
-                metric_label = metric_label_dict_1[item]
-                x_axis_label = "Sample ID"
-                if item in group_percentages:
-                    y_axis_label = "{} (%)".format(metric_label)
-                else:
-                    y_axis_label = metric_label
-                axis_title_label = "{} vs Sample ID - Samples: {}".format(metric_label, group_label)
-                # Labels
-                cur_axis.set_xlabel(x_axis_label, fontsize=fs_num_2, fontweight='bold')
-                cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
-                # Title
-                cur_axis.set_title(axis_title_label, pad=20, loc='center', fontsize=fs_num_1, fontweight='bold')
-                # Letter
-                cur_axis.annotate(annotation_letters[row_fig_index], xy=(0.02, 1.10), xycoords='axes fraction', fontsize=fs_num_1, fontweight='bold', ha='center', va='center')
-                # Remove the legend, if for the last plot.
-                if row_fig_index < row_num:
-                    cur_axis.legend().remove()
-                # Set the value range for the y axis.
-                if item in group_0_100:
-                    cur_axis.set_ylim(0, 100)
-                elif item in group_0_1:
-                    cur_axis.set_ylim(0, 1)
-                elif item in group_logs:
-                    cur_axis.set_yscale('log')
-                    y_axis_both_limits = cur_axis.get_ylim()
-                    y_axis_max_limit = y_axis_both_limits[1]
-                    y_axis_max_limit_mod = y_axis_max_limit / 100
-                    cur_axis.set_ylim(bottom=1, top=y_axis_max_limit_mod)
-                    cur_axis.yaxis.set_major_formatter(ticker.FormatStrFormatter('%d'))
-                # Replace the y axis ticks.
-                cur_axis.set_yticks(list(cur_axis.get_yticks()))
-                # Place vertical lines to divie the sample barplots.
-                for i in range(1, len(sample_id_group)):
-                    cur_axis.axvline(x=i - 0.5, color='gray', linestyle='--', linewidth=0.8)
-                # Changing the size of the tick labels
-                cur_axis.tick_params(axis='both', which='major', labelsize=fs_num_3)
-                # Increasing the row index that shows which subplot will be added in the figure.
-                row_fig_index += 1
-            if df_empty_status:
-                break
-            # Add one legend at the bottom. Make the legend as much horizontal as possible.
-            # Legend
-            legend_title = "Taxonomy Method and Database"
-            legend_props = FontProperties(weight='bold', size=fs_num_2)
-            legend_obj = cur_axis.legend(title=legend_title, loc='upper center', bbox_to_anchor=(0.5, -0.3), ncol=4, prop={'size': fs_num_2}, title_fontproperties=legend_props)
-            # Padding from left, bottom, right, top
-            figure.tight_layout()
-            # Space between the plots of the figure.
-            figure.subplots_adjust(hspace=0.6)
-            # File paths
-            group_metrics_path_png = "{}/group_{}_metrics_{}.png".format(plot_dir_parh, group_label, key_group_metric)
-            group_metrics_path_jpg = "{}/group_{}_metrics_{}.jpg".format(plot_dir_parh, group_label, key_group_metric)
-            # Saving the figure.
-            figure.savefig(group_metrics_path_png)
-            figure.savefig(group_metrics_path_jpg)
-            # Closing the figure.
-            plt.close(figure)
 
 
 def rank_stats(pandas_dict, stats_dir_path, metric_label_dict_1, metric_label_dict_2):
@@ -1628,14 +1615,21 @@ def plot_full_group_sample_time(df_full_time_all, time_dir, time_stats_dir_path,
             break
         # Create the plot
         cur_axis = axis[row_fig_index]
-        df_time_filtered.set_index(['sample', 'method'], inplace=True)
+        # If the inplace option was set to True then the dataframe would be modified and would not return a new one.
+        df_time_indexed = df_time_filtered.set_index(['sample', 'method'])
         # Color palette
         cld_palette = sns.color_palette("colorblind")
         # Removing the 9nth color wich is a very dim yellow.
         del cld_palette[8]
         # Plot
-        df_time_filtered.plot(kind='bar', stacked=True, ax=cur_axis, color=cld_palette)
-        cur_axis.set_xticklabels([f"{sample}-{method}" for sample, method in df_time_filtered.index], rotation=45, ha="right")
+        df_time_indexed.plot(kind='bar', stacked=True, ax=cur_axis, color=cld_palette)
+        # Loop through the index of df_time_indexed.
+        x_labels = []
+        # The index has already been set above based on the two columns of sampel and method.
+        for cur_sample, cur_method in df_time_indexed.index:
+            cur_label = "{}-{}".format(cur_sample, cur_method)
+            x_labels.append(cur_label)
+        cur_axis.set_xticklabels(x_labels, rotation=45, ha="right")
         # Labels for x axis, y axis and title.
         x_axis_label = "Sample ID and Database"
         y_axis_label = "Execution Time (min)"
@@ -1652,8 +1646,11 @@ def plot_full_group_sample_time(df_full_time_all, time_dir, time_stats_dir_path,
         # Remove the legend, if for the last plot.
         if row_fig_index < row_num:
             cur_axis.legend().remove()
-        # Replace the y axis ticks.
-        cur_axis.set_yticks(list(cur_axis.get_yticks()))
+        # Replace the y axis ticks. Helps to rewrite ticks. For example the plot may continue on above the highest tick (tick with a value)
+        # and thus has a bit more empty space without ticks. By rewriting the ticks a new tick will be provided to the top of the empty space.
+        cur_y_ticks = cur_axis.get_yticks()
+        cur_y_ticks_list = list(cur_y_ticks)
+        cur_axis.set_yticks(cur_y_ticks_list)
         # Place vertical lines to divie the sample barplots.
         max_ver_line_col = len(sample_id_group) * methods_num
         for i in range(methods_num, max_ver_line_col, methods_num):
@@ -1711,8 +1708,11 @@ def plot_full_group_method_time(total_time_all_df, time_dir, time_syn_sample_gro
             break
         # Plot
         sns.barplot(ax=cur_axis, data=total_time_all_filtered_df, x="sample", y="total_time", hue="method", palette="colorblind")
-        # Replace the y axis ticks.
-        cur_axis.set_yticks(list(cur_axis.get_yticks()))
+        # Replace the y axis ticks. Helps to rewrite ticks. For example the plot may continue on above the highest tick (tick with a value)
+        # and thus has a bit more empty space without ticks. By rewriting the ticks a new tick will be provided to the top of the empty space.
+        cur_y_ticks = cur_axis.get_yticks()
+        cur_y_ticks_list = list(cur_y_ticks)
+        cur_axis.set_yticks(cur_y_ticks_list)
         # Remove the legend, if for the last plot.
         if row_fig_index < col_num:
             cur_axis.legend().remove()
@@ -2590,53 +2590,14 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         "jaccard_index": "Jaccard Index",
         "l1_norm": "L1 Norm"
     }
-    # Sample groups.
-    sample_groups_1 = [2, 8, 9, 16, 17, 18, 19]
-    sample_groups_2 = [8, 18, 19]
-    sample_groups_3 = [2, 9, 16, 17]
-    sample_groups_4 = [5, 6, 11]
-    sample_groups_5 = [7, 13, 15]
-    sample_groups_6 = [1, 4, 10]
-    sample_groups_7 = [3, 12, 14]
-    sample_groups_8 = [2, 7, 9, 10, 11, 14, 16, 17, 19]
-    sample_groups_9 = [7, 10, 11, 14, 19]
-    sample_groups_10 = [2, 9, 16, 17]
-    sample_groups_11 = [1, 5, 12, 13, 18]
-    sample_groups_12 = [3, 4, 6, 8, 15]
-    sample_group_dict = {
-        1: sample_groups_1,
-        2: sample_groups_2,
-        3: sample_groups_3,
-        4: sample_groups_4,
-        5: sample_groups_5,
-        6: sample_groups_6,
-        7: sample_groups_7,
-        8: sample_groups_8,
-        9: sample_groups_9,
-        10: sample_groups_10,
-        11: sample_groups_11,
-        12: sample_groups_12
-    }
-    # Group labels.
-    sample_group_label_dict = {
-        1: "10 Species",
-        2: "10 Species and Simulated",
-        3: "10 Species and Cultured",
-        4: "40 Species",
-        5: "120 Species",
-        6: "500 Species",
-        7: "1000 Species",
-        8: "Unbiased",
-        9: "Unbiased and Simulated",
-        10: "Unbiased and Cultured",
-        11: "AT-Rich Biased",
-        12: "GC-Rich Biased"
-    }
+
     # Plots.
-    pandas_dict = design_grouped_plots(comb_info_dict, metric_label_dict_1, plot_dir_parh, stats_dir_path)
-    design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict_1, plot_dir_parh)
-    design_metric_sample_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict_1, sample_group_dict, sample_group_label_dict, plot_dir_parh)
-    
+    pandas_dict, pandas_sab_dict = design_grouped_plots(comb_info_dict, metric_label_dict_1, plot_dir_parh, stats_dir_path)
+    sab_status = False
+    design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dict_1, plot_dir_parh, sab_status)
+    sab_status = True
+    design_metric_grouped_plots(pandas_sab_dict, metric_group_dict, metric_label_dict_1, plot_dir_parh, sab_status)
+
     # Analyze the statistics.
     rank_stats(pandas_dict, stats_dir_path, metric_label_dict_1, metric_label_dict_2)
 
