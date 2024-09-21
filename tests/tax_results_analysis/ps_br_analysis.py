@@ -969,14 +969,17 @@ def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dic
                 y_axis_label = "{} (%)".format(metric_label)
             else:
                 y_axis_label = metric_label
-            axis_title_label = "{} vs Sample ID and Bias Combinations".format(metric_label)
+            if sab_status:
+                title_label = "{} vs Sample ID and Bias Combination".format(metric_label)
+            else:
+                title_label = "{} vs Sample ID".format(metric_label)
             # Labels
             cur_axis.set_xlabel(x_axis_label, fontsize=fs_num_2, fontweight='bold')
             cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
             # Tick label size
             plt.xticks(fontsize=10)
             # Title
-            cur_axis.set_title(axis_title_label, pad=20, loc='center', fontsize=fs_num_1, fontweight='bold')
+            cur_axis.set_title(title_label, pad=20, loc='center', fontsize=fs_num_1, fontweight='bold')
             # Letter
             cur_axis.annotate(annotation_letters[row_fig_index], xy=(0.02, 1.10), xycoords='axes fraction', fontsize=fs_num_1, fontweight='bold', ha='center', va='center')
             # Remove the legend, if for the last plot.
@@ -1633,14 +1636,14 @@ def plot_full_group_sample_time(df_full_time_all, time_dir, time_stats_dir_path,
         # Labels for x axis, y axis and title.
         x_axis_label = "Sample ID and Database"
         y_axis_label = "Execution Time (min)"
-        axis_title_label = "Execution Time vs Sample ID, Taxonomy Approach and Database Combinations: {}".format(group_label)
+        axis_title_label = "{}\nExecution Time vs Sample ID, Taxonomy Approach and Database Combinations".format(group_label)
         # Labels
         cur_axis.set_xlabel(x_axis_label, fontsize=fs_num_2, fontweight='bold')
         cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
         # Title
         cur_axis.set_title(axis_title_label, pad=20, loc='center', fontsize=fs_num_1, fontweight='bold')
         # Letter
-        cur_axis.annotate(annotation_letters[row_fig_index], xy=(0.02, 1.10), xycoords='axes fraction', fontsize=fs_num_1, fontweight='bold', ha='center', va='center')
+        cur_axis.annotate(annotation_letters[row_fig_index], xy=(0.0, 1.20), xycoords='axes fraction', fontsize=fs_num_1, fontweight='bold', ha='center', va='center')
         # Changing the size of the tick labels        
         cur_axis.tick_params(axis='both', which='major', labelsize=fs_num_3)
         # Remove the legend, if for the last plot.
@@ -1671,11 +1674,11 @@ def plot_full_group_sample_time(df_full_time_all, time_dir, time_stats_dir_path,
     # Update the labels with custom labels and use the legend from the last axis.
     for handle, new_label in zip(legend_mods, custom_labels):
         handle.set_label(new_label)
-    last_axis.legend(handles=legend_mods, title=legend_title, loc='upper center', bbox_to_anchor=(0.5, -0.6), ncol=6, prop={'size': fs_num_3}, title_fontproperties=legend_props)
+    last_axis.legend(handles=legend_mods, title=legend_title, loc='upper center', bbox_to_anchor=(0.5, -1.0), ncol=6, prop={'size': fs_num_3}, title_fontproperties=legend_props)
     # Padding from left, bottom, right, top.
     figure.tight_layout()
     # Space between the plots of the figure.
-    figure.subplots_adjust(hspace=0.9)
+    figure.subplots_adjust(hspace=1.7)
     # File paths.
     full_time_grouped_path_png = "{}/full_time_sample_grouped.png".format(time_dir)
     full_time_grouped_path_jpg = "{}/full_time_sample_grouped.jpg".format(time_dir)
