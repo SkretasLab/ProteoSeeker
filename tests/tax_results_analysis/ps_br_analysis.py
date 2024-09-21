@@ -969,7 +969,7 @@ def design_metric_grouped_plots(pandas_dict, metric_group_dict, metric_label_dic
                 y_axis_label = "{} (%)".format(metric_label)
             else:
                 y_axis_label = metric_label
-            axis_title_label = "{} vs Sample ID".format(metric_label)
+            axis_title_label = "{} vs Sample ID and Bias Combinations".format(metric_label)
             # Labels
             cur_axis.set_xlabel(x_axis_label, fontsize=fs_num_2, fontweight='bold')
             cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
@@ -1633,7 +1633,7 @@ def plot_full_group_sample_time(df_full_time_all, time_dir, time_stats_dir_path,
         # Labels for x axis, y axis and title.
         x_axis_label = "Sample ID and Database"
         y_axis_label = "Execution Time (min)"
-        axis_title_label = "Execution Time vs Sample ID - Samples: {}".format(group_label)
+        axis_title_label = "Execution Time vs Sample ID, Taxonomy Approach and Database Combinations: {}".format(group_label)
         # Labels
         cur_axis.set_xlabel(x_axis_label, fontsize=fs_num_2, fontweight='bold')
         cur_axis.set_ylabel(y_axis_label, fontsize=fs_num_2, fontweight='bold')
