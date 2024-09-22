@@ -437,7 +437,7 @@ Options:
                                   length in the Kraken2 database directory provided for the
                                   Kraken2 analysis.
 
-   -bl/--bracken-level            Str -Opt: S- Specifies the taxonomic rank to analyze. Each
+   -bl/--bracken-level            Str -Opt: 'S'- Specifies the taxonomic rank to analyze. Each
                                   classification at this specified rank will receive an
                                   estimated number of reads belonging to that rank after
                                   abundance estimation. Available values for selection:
