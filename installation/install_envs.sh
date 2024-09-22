@@ -32,6 +32,10 @@ echo -e "\nInstalling Κraken2..."
 "${INSTALLATION_DIR}/kraken_install.sh" &> "${INSTALLATION_DIR}/output_errors/kraken_stdoe.txt"
 echo "Installation completed."
 
+echo -e "\nInstalling Bracken..."
+"${INSTALLATION_DIR}/bracken_install.sh" &> "${INSTALLATION_DIR}/output_errors/bracken_stdoe.txt"
+echo "Installation completed."
+
 echo -e "\nInstalling COMEBin..."
 "${INSTALLATION_DIR}/comebin_install.sh" &> "${INSTALLATION_DIR}/output_errors/comebin_stdoe.txt"
 echo "Installation completed."
