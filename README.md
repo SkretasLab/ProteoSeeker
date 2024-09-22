@@ -145,14 +145,17 @@ conda install conda-forge::tar
 11. kraken2:
     1. Conda: 2.1.3 - Used for the evaluation.
     2. Source: Branch: "v2.1.3"
+12. bracken:
+    1. Conda: 2.9 - Used for the evaluation.
+    2. Source: Branch: "v2.9"
 13. megahit: 1.2.9
 14. metabinner:
     1. Source: Branch: "master", Hash: "50a1281e8200d705a744736f23efe53c6048bbe8" - Used for the evaluation.
     2. Conda: 1.4.4
-16. sra-tools: 3.1.0
-17. taxonkit: 0.16.0
-18. csvtk: 0.30.0
-19. FragGeneScanRs: 1.1.0
+15. sra-tools: 3.1.0
+16. taxonkit: 0.16.0
+17. csvtk: 0.30.0
+18. FragGeneScanRs: 1.1.0
 
 ### 2.2.3 Databases
 <p align="justify">The latest versions of the databases 1-4 are installed automatically by ProteoSeeker. To see the datetime of their collection for the evaluation of ProteoSeeker, check the evaluation section, "4". Only the protein database (5) should be installed by you, in which case, you can use the Bash script "nr_install.sh" for installing the nr database. The latter file is located in the "installation" directory. You should be certain that the system has enough available memory space to hold the decompressed nr database which is approximately <strong>400 GB</strong>.</p>
@@ -428,6 +431,24 @@ Options:
                                   faster but is limited by the size of the RAM available at
                                   the time of the analysis.
 
+   -bl/--bracken-length           Int -Opt: 150- The ideal length of reads in the sample. The
+                                  read length based on which to get all classifications. A
+                                  kmer distribution file should exist for the selected read
+                                  length in the Kraken2 database directory provided for the
+                                  Kraken2 analysis.
+
+   -bl/--bracken-level            Str -Opt: S- Specifies the taxonomic rank to analyze. Each
+                                  classification at this specified rank will receive an
+                                  estimated number of reads belonging to that rank after
+                                  abundance estimation. Available values for selection:
+                                  'D','P','C','O','F','G','S'
+
+   -bh/--bracken-threshold        Int -Opt: 0- Specifies the minimum number of reads required
+                                  for a classification at the specified rank. Any
+                                  classifications with less than the specified threshold will
+                                  not receive additional reads from higher taxonomy levels
+                                  when distributing reads for abundance estimation.
+
 ---------General options: Binning---------
    -bt/--binning-tool             Int -Opt: 1- Determines the binning tool to be used by the
                                   functionality of taxonomy, when kraken2 is set not to be
@@ -567,6 +588,9 @@ Options:
    -ken/--kraken-env              Str -Opt: ps_kraken- The conda environment for kraken2.
                                   'None/none': To not use an environment at all.
 
+   -ren/--bracken-env             Str -Opt: ps_bracken- The conda environment for bracken.
+                                  'None/none': To not use an environment at all.
+
    -nen/--metabinner-env          Str -Opt: ps_metabinner- The conda environment for
                                   MetaBinner. 'None/none': To not use an environment at all.
 
@@ -619,6 +643,8 @@ Options:
    -mp/--megahit-path             Str -Opt- The path to the megahit executable.
 
    -kp/--kraken-path              Str -Opt- The path to the kraken executable.
+
+   -bp/--bracken-path             Str -Opt- The path to the bracken executable.
 
    -bfp/--binner-folder-path      Str -Opt- The path to the bin folder of MetaBiner.
 
