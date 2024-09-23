@@ -4,7 +4,6 @@ import sys
 import csv
 import copy
 import time
-import math
 import shutil
 import string
 import random
@@ -88,6 +87,9 @@ def help_message():
         "-km/--kraken-mode": "True/False -Opt: True- Determines whether the taxonomy functionality will be based on the taxonomy analysis applied by kraken2 (True) or not (False).",
         "-kt/--kraken-threshold": "Float/Int -Opt: 0.1- A list with read-filtering threshold for the species reported by kraken. The list should include integers of floats seperated by commads. An integer is used as an absolute read threshold and a float is used as a percentage threshold applied to the percentagies reported by kraken for each species (e.g., 100 to represent a threshold of 100 reads, 1 to represent a threshold of 1 read, 1.0 to represent a threshold of 1%, 12.5 to represent a threshold of 12.5%). In addition, the values of -1 or -2 can be provided, to automatically set the threshold. For the value of -1 the threshold is set specifically for non-gut metagenomes and for the value of -2 the threshold is set specifically for gut metagenomes. When kraken is selected a binning process takes place based on the filtered species from the results of kraken. The latter binning process is based on the filtering performed based on the first threshold value of the list (if not only one).",
         "-kmm/--kraken-memory-mapping": "True/False -Opt: True- Determines whether kraken2 will use memory mapping (True) or not (False). With memory mapping the analysis performed by kraken2 is slower but is not limited by the size of the RAM available at the time of the analysis, rather than by the free memory space of the disk. Without memory mapping the analysis performed by kraken2 is faster but is limited by the size of the RAM available at the time of the analysis.",
+        "-bl/--bracken-length": "Int -Opt: 150- The ideal length of reads in the sample. The read length based on which to get all classifications. A kmer distribution file should exist for the selected read length in the Kraken2 database directory provided for the Kraken2 analysis.",
+        "-bl/--bracken-level": "Str -Opt: 'S'- Specifies the taxonomic rank to analyze. Each classification at this specified rank will receive an estimated number of reads belonging to that rank after abundance estimation. Available values for selection: 'D','P','C','O','F','G','S'",
+        "-bh/--bracken-threshold": "Int -Opt: 10- Specifies the minimum number of reads required for a classification at the specified rank. Any classifications with less than the specified threshold will not receive additional reads from higher taxonomy levels when distributing reads for abundance estimation.",
         "-bt/--binning-tool": "Int -Opt: 1- Determines the binning tool to be used by the functionality of taxonomy, when kraken2 is set not to be used (-km False). '1': MetaBinner. '2': COMEBin.",
         "-bmr/--binning-max-ram": "Int -Opt: 4- The maximum number of GBs of RAM that may be utilized by binning.",
         "-bc/--bin-contig-len": "Int -Opt: 500- The threshold for filtering the contigs based on their lengths before binning. Any contig with length below the threshold is omitted from the binning process.",
@@ -121,6 +123,7 @@ def help_message():
         "-uen/--bbtools-env": "Str -Opt: ps_bbtools- The conda environment for bbtools. 'None/none': To not use an environment at all.",
         "-men/--megahit-env": "Str -Opt: ps_megahit- The conda environment for megahit. 'None/none': To not use an environment at all.",
         "-ken/--kraken-env": "Str -Opt: ps_kraken- The conda environment for kraken2. 'None/none': To not use an environment at all.",
+        "-ren/--bracken-env": "Str -Opt: ps_bracken- The conda environment for bracken. 'None/none': To not use an environment at all.",
         "-nen/--metabinner-env": "Str -Opt: ps_metabinner- The conda environment for MetaBinner. 'None/none': To not use an environment at all.",
         "-sen/--comebin-env": "Str -Opt: ps_comebin- The conda environment for COMEBin. 'None/none': To not use an environment at all.",
         "-ien/--cdhit-env": "Str -Opt: ps_cd_hit- The conda environment for CD-HIT. 'None/none': To not use an environment at all.",
@@ -141,6 +144,8 @@ def help_message():
         "-bdp/--bbduk-path": "Str -Opt- The path to the bbduk executable.",
         "-mp/--megahit-path": "Str -Opt- The path to the megahit executable.",
         "-kp/--kraken-path": "Str -Opt- The path to the kraken executable.",
+        "-bp/--bracken-path": "Str -Opt- The path to the bracken executable.",
+        "-ap/--alpha-diversity-path": "Str -Opt- The path to the alpha diversity executable from KrakenTools.",
         "-bfp/--binner-folder-path": "Str -Opt- The path to the bin folder of MetaBiner.",
         "-cfp/--comebin-folder-path": "Str -Opt- The path to the parent directory of \"run_comebin.sh\" of COMEBin.",
         "-chp/--cd-hit-path": "Str -Opt- The path to the CD-HIT executable.",
@@ -183,7 +188,7 @@ def help_message():
             print("---------General options: Megahit---------")
         elif key_hn == "-kl/--k-list":
             print("---------General options: Kraken---------")
-        elif key_hn == "-kmm/--kraken-memory-mapping":
+        elif key_hn == "-bh/--bracken-threshold":
             print("---------General options: Binning---------")
         elif key_hn == "-cbs/--comebin-batch-size":
             print("---------General options: CD-HIT---------")
@@ -1468,11 +1473,10 @@ def megahit(megahit_env, output_path_megahit, tr_ex_file_paths, paired_end, tr_e
     command_run(phrase_b1, phrase_b2, title_1, title_2, capture_status, shell_status, pr_status, input_log_file, output_log_file)
 
 
-def kraken_filtering(kraken_threshold, kraken_species_absab_dict, total_classified_reads_num, kraken_report_path, kraken_species_thr_path, kraken_filters_path):
-    # Write the kraken thresholds applied in a file.
-    kraken_filters_file = open(kraken_filters_path, "w")
+def bracken_filtering(kraken_threshold, krakentools_bash_script, alpha_diversity_path, alpha_diversity_version_path, alpha_diversity_stdoe_path, input_log_file, output_log_file, bracken_output_path, kraken_species_thr_path, kraken_filters_path):
     first_kt = True
     kraken_species_thr_dict = None
+    kraken_filters_file = open(kraken_filters_path, "w")
     for kt in kraken_threshold:
         kraken_species_thr_dict_temp = {}
         if "." in kt:
@@ -1480,20 +1484,52 @@ def kraken_filtering(kraken_threshold, kraken_species_absab_dict, total_classifi
         else:
             kt = int(kt)
         kraken_prop = None
-        kraken_abs = None
         shannon_index = None
         kraken_filters_file.write("Filter: {}\n".format(kt))
         # Compute the threshold, if needed.
         if kt in [-1, -2]:
-            term_sum = 0
-            for key in kraken_species_absab_dict.keys():
-                if total_classified_reads_num != 0:
-                    temp_absab = kraken_species_absab_dict[key]
-                    temp_prop = temp_absab / total_classified_reads_num
-                    if temp_prop != 0:
-                        temp_term = temp_prop * math.log(temp_prop)
-                        term_sum += temp_term
-            shannon_index = -term_sum
+            # Create the Bash script.
+            new_file_bash = open(krakentools_bash_script, "w")
+            phrase = "#!/bin/bash"
+            new_file_bash.write("{}\n".format(phrase))
+            if alpha_diversity_path:
+                phrase_1 = "python \"{}\" -f \"{}\" -a Sh &> \"{}\"".format(alpha_diversity_path, bracken_output_path, alpha_diversity_stdoe_path)
+                phrase_2 = "python \"{}\" -h > \"{}\"".format(alpha_diversity_path, alpha_diversity_version_path)
+            else:
+                phrase_1 = "alpha_diversity.py -f \"{}\" -a Sh &> \"{}\"".format(bracken_output_path, alpha_diversity_stdoe_path)
+                phrase_2 = "alpha_diversity.py -h > \"{}\"".format(alpha_diversity_version_path)
+            new_file_bash.write("{}\n".format(phrase_1))
+            new_file_bash.write("{}\n".format(phrase_2))
+            new_file_bash.close()
+            # Making the Bash script executable.
+            # Sending command to run.
+            phrase_b1 = "chmod +x {}".format(krakentools_bash_script)
+            phrase_b2 = "chmod --version"
+            title_1 = "Making a Bash script executable:"
+            title_2 = "Version of chmod:"
+            capture_status = True
+            shell_status = True
+            pr_status = False
+            command_run(phrase_b1, phrase_b2, title_1, title_2, capture_status, shell_status, pr_status, input_log_file, output_log_file)
+            # Sending command to run.
+            phrase_b1 = "bash {}".format(krakentools_bash_script)
+            phrase_b2 = "bash --version"
+            title_1 = "Running bash:"
+            title_2 = "Version of bash:"
+            capture_status = True
+            shell_status = True
+            pr_status = False
+            command_run(phrase_b1, phrase_b2, title_1, title_2, capture_status, shell_status, pr_status, input_log_file, output_log_file)
+            # Get the Shannon Index.
+            alpha_div_lines = read_file(alpha_diversity_stdoe_path)
+            shannon_line_label = "Shannon's diversity: "
+            for line in alpha_div_lines:
+                if shannon_line_label in line:
+                    line_splited = line.split(shannon_line_label)
+                    shannon_part = line_splited[1]
+                    shannon_part = shannon_part.strip()
+                    shannon_index = float(shannon_part)
+                    shannon_index = round(shannon_index, 2)
             if kt == -1:
                 if 0 <= shannon_index <= 2.5:
                     kraken_prop = 1
@@ -1508,50 +1544,42 @@ def kraken_filtering(kraken_threshold, kraken_species_absab_dict, total_classifi
                     kraken_prop = 0
             if kraken_prop is not None:
                 # Conerting kraken_prop to a percentage.
-                kraken_prop = float(kraken_prop)
-                kraken_abs = total_classified_reads_num * kraken_prop
+                kraken_prop_float = float(kraken_prop)
+                kraken_prop_perc = kraken_prop_float / 100
             # Create a list with species above the threshold.
-            if os.path.exists(kraken_report_path):
-                with open(kraken_report_path) as report_lines:
-                    for line in report_lines:
+            if os.path.exists(bracken_output_path):
+                with open(bracken_output_path) as info_lines:
+                    for line in info_lines:
                         line = line.rstrip("\n")
                         line_splited = line.split("\t")
-                        clade_type = line_splited[3]
+                        clade_type = line_splited[2]
                         if clade_type == "S":
-                            abu_perc = float(line_splited[0])
-                            taxon_count = int(line_splited[1])
-                            taxonid = int(line_splited[4])
+                            taxonid = int(line_splited[1])
+                            taxon_count = int(line_splited[5])
+                            rel_abu = float(line_splited[6])
+                            abu_perc = rel_abu * 100
                             if abu_perc >= kraken_prop:
                                 kraken_species_thr_dict_temp[taxonid] = [taxon_count, abu_perc]
             kraken_filters_file.write("Shannon Index: {}\n".format(shannon_index))
-            kraken_filters_file.write("Kraken percentage filter: {}\n".format(kraken_prop))
-            kraken_filters_file.write("Kraken absolute filter: {}\n".format(kraken_abs))
-        elif isinstance(kt, int):
-            if os.path.exists(kraken_report_path):
-                with open(kraken_report_path) as report_lines:
-                    for line in report_lines:
+            kraken_filters_file.write("Kraken percentage filter: {}% = {}\n".format(kraken_prop_float, kraken_prop_perc))
+        elif isinstance(kt, int) or isinstance(kt, float):
+            if os.path.exists(bracken_output_path):
+                with open(bracken_output_path) as info_lines:
+                    for line in info_lines:
                         line = line.rstrip("\n")
                         line_splited = line.split("\t")
-                        clade_type = line_splited[3]
+                        clade_type = line_splited[2]
                         if clade_type == "S":
-                            abu_perc = float(line_splited[0])
-                            taxon_count = int(line_splited[1])
-                            taxonid = int(line_splited[4])
-                            if taxon_count >= kt:
-                                kraken_species_thr_dict_temp[taxonid] = [taxon_count, abu_perc]
-        elif isinstance(kt, float):
-            if os.path.exists(kraken_report_path):
-                with open(kraken_report_path) as report_lines:
-                    for line in report_lines:
-                        line = line.rstrip("\n")
-                        line_splited = line.split("\t")
-                        clade_type = line_splited[3]
-                        if clade_type == "S":
-                            abu_perc = float(line_splited[0])
-                            taxon_count = int(line_splited[1])
-                            taxonid = int(line_splited[4])
-                            if abu_perc >= kt:
-                                kraken_species_thr_dict_temp[taxonid] = [taxon_count, abu_perc]
+                            taxonid = int(line_splited[1])
+                            taxon_count = int(line_splited[5])
+                            rel_abu = float(line_splited[6])
+                            abu_perc = rel_abu * 100
+                            if isinstance(kt, int):
+                                if taxon_count >= kt:
+                                    kraken_species_thr_dict_temp[taxonid] = [taxon_count, abu_perc]
+                            elif isinstance(kt, float):
+                                if abu_perc >= kt:
+                                    kraken_species_thr_dict_temp[taxonid] = [taxon_count, abu_perc]
         else:
             print("\nAn error occured when filtering the species in the kraken report. Exiting.")
             exit()
@@ -1560,14 +1588,9 @@ def kraken_filtering(kraken_threshold, kraken_species_absab_dict, total_classifi
             kraken_prop_temp = "None"
         else:
             kraken_prop_temp = round(kraken_prop, 5)
-        if kraken_abs is None:
-            kraken_abs = "None"
-            kraken_abs_temp = "None"
-        else:
-            kraken_abs_temp = round(kraken_abs, 5)
         abs_sum = 0
         perc_sum = 0
-        kraken_species_thr_path_temp = "{}_{}_{}_{}.tsv".format(kraken_species_thr_path, kt, kraken_prop_temp, kraken_abs_temp)
+        kraken_species_thr_path_temp = "{}_{}_{}.tsv".format(kraken_species_thr_path, kt, kraken_prop_temp)
         new_file_species_thr = open(kraken_species_thr_path_temp, "w")
         for key in kraken_species_thr_dict_temp.keys():
             taxon_count = kraken_species_thr_dict_temp[key][0]
@@ -1585,7 +1608,7 @@ def kraken_filtering(kraken_threshold, kraken_species_absab_dict, total_classifi
     return kraken_species_thr_dict
 
 
-def kraken(paired_end, tr_ex_file_paths_p, tr_ex_file_paths, output_path_kraken, kraken_db_path, kraken_results_path, kraken_report_path, kraken_threshold, kraken_species_path, kraken_species_thr_path, kraken_reads_path, kraken_taxname_path, conda_sh_path, kraken_env, kraken_path, kraken_bash_script, kraken_stde_path, kraken_version_path, kraken_status, kraken_memory_mapping, thread_num, time_dict, kraken_filters_path, input_log_file, output_log_file):
+def kraken(paired_end, tr_ex_file_paths_p, tr_ex_file_paths, output_path_kraken, kraken_db_path, kraken_results_path, kraken_report_path, kraken_threshold, kraken_species_path, kraken_species_thr_path, kraken_reads_path, kraken_taxname_path, conda_sh_path, kraken_env, kraken_path, kraken_bash_script, kraken_stde_path, kraken_version_path, kraken_status, kraken_memory_mapping, bracken_status, bracken_bash_script, bracken_path, bracken_env, bracken_output_path, bracken_report_path, bracken_length, bracken_level, bracken_threshold, bracken_stde_path, bracken_version_path, krakentools_bash_script, alpha_diversity_path, alpha_diversity_version_path, alpha_diversity_stdoe_path, thread_num, time_dict, kraken_filters_path, input_log_file, output_log_file):
     print("\nRunning Kraken2...")
     read_to_species_dict = {}
     taxid_to_species_dict = {}
@@ -1678,29 +1701,65 @@ def kraken(paired_end, tr_ex_file_paths_p, tr_ex_file_paths, output_path_kraken,
                     taxon_count = int(line_splited[1])
                     taxonid = int(line_splited[4])
                     kraken_species_dict[taxonid] = [taxon_count, abu_perc]
-    # Store the kraken species and their absolute abundancies.
-    kraken_species_absab_dict = {}
+    # Run Bracken to get the abundancies of the species.
+    if bracken_status:
+        # Create the Bash script.
+        new_file_bash = open(bracken_bash_script, "w")
+        phrase = "#!/bin/bash"
+        new_file_bash.write("{}\n".format(phrase))
+        if bracken_env:
+            phrase_s = "source \"{}\"".format(conda_sh_path)
+            phrase_a = "conda activate \"{}\"".format(bracken_env)
+            new_file_bash.write("{}\n".format(phrase_s))
+            new_file_bash.write("{}\n".format(phrase_a))
+        if bracken_path:
+            phrase_1 = "\"{}\" -d \"{}\" -i \"{}\" -o \"{}\" -w \"{}\" -r \"{}\" -l \"{}\" -t \"{}\" &> \"{}\"".format(bracken_path, kraken_db_path, kraken_report_path, bracken_output_path, bracken_report_path, bracken_length, bracken_level, bracken_threshold, bracken_stde_path)
+            phrase_2 = "\"{}\" -v > \"{}\"".format(bracken_path, bracken_version_path)
+        else:
+            phrase_1 = "bracken -d \"{}\" -i \"{}\" -o \"{}\" -w \"{}\" -r \"{}\" -l \"{}\" -t \"{}\" &> \"{}\"".format(kraken_db_path, kraken_report_path, bracken_output_path, bracken_report_path, bracken_length, bracken_level, bracken_threshold, bracken_stde_path)
+            phrase_2 = "bracken -v > \"{}\"".format(bracken_version_path)
+        new_file_bash.write("{}\n".format(phrase_1))
+        new_file_bash.write("{}\n".format(phrase_2))
+        if bracken_env:
+            phrase = "conda deactivate"
+            new_file_bash.write("{}\n".format(phrase))
+        new_file_bash.close()
+        # Making the Bash script executable.
+        # Sending command to run.
+        phrase_b1 = "chmod +x {}".format(bracken_bash_script)
+        phrase_b2 = "chmod --version"
+        title_1 = "Making a Bash script executable:"
+        title_2 = "Version of chmod:"
+        capture_status = True
+        shell_status = True
+        pr_status = False
+        command_run(phrase_b1, phrase_b2, title_1, title_2, capture_status, shell_status, pr_status, input_log_file, output_log_file)
+        # Sending command to run.
+        phrase_b1 = "bash {}".format(bracken_bash_script)
+        phrase_b2 = "bash --version"
+        title_1 = "Running bash:"
+        title_2 = "Version of bash:"
+        capture_status = True
+        shell_status = True
+        pr_status = False
+        command_run(phrase_b1, phrase_b2, title_1, title_2, capture_status, shell_status, pr_status, input_log_file, output_log_file)
+    # Store the bracken species and their relative abundancies.
+    kraken_species_relabu_dict = {}
     total_classified_reads_num = 0
-    if os.path.exists(kraken_report_path):
-        with open(kraken_report_path) as report_lines:
-            for line in report_lines:
+    if os.path.exists(bracken_output_path):
+        with open(bracken_output_path) as info_lines:
+            for line in info_lines:
+                line = line.rstrip()
                 line = line.rstrip("\n")
                 line_splited = line.split("\t")
-                clade_type = line_splited[3]
-                taxon_name = line_splited[5]
-                taxon_name = taxon_name.strip()
-                # The total number of classified reads belong to the root taxonomy rank. The rest of the reads belong to the
-                # unclassified reads.
-                if taxon_name == "root":
-                    taxon_count = int(line_splited[1])
-                    total_classified_reads_num = taxon_count
+                clade_type = line_splited[2]
                 if clade_type == "S":
-                    taxon_count = int(line_splited[1])
-                    taxonid = int(line_splited[4])
-                    taxon_name = line_splited[5]
-                    kraken_species_absab_dict[taxonid] = taxon_count
-    # Kraken filtering thresholds are applied.s
-    kraken_species_thr_dict = kraken_filtering(kraken_threshold, kraken_species_absab_dict, total_classified_reads_num, kraken_report_path, kraken_species_thr_path, kraken_filters_path)
+                    taxonid = int(line_splited[1])
+                    taxon_rel_abu = float(line_splited[6])
+                    kraken_species_relabu_dict[taxonid] = taxon_rel_abu
+                    total_classified_reads_num += taxon_rel_abu
+    # Kraken filtering thresholds are applied.
+    kraken_species_thr_dict = bracken_filtering(kraken_threshold, krakentools_bash_script, alpha_diversity_path, alpha_diversity_version_path, alpha_diversity_stdoe_path, input_log_file, output_log_file, bracken_output_path, kraken_species_thr_path, kraken_filters_path)
     # Check for the results
     if os.path.exists(kraken_results_path):
         with open(kraken_results_path) as results_lines:
@@ -4767,7 +4826,7 @@ def txt_results(annotation_file_txt_name, output_path_annotation, dict_hm, dict_
             for add_i in range(0, len(add_type)):
                 type_item = add_type[add_i]
                 info_item = add_info[add_i]
-                annotation_file.write("\n{}: {}".format(type_item, info_item))
+                annotation_file.write("\n{}:\n{}".format(type_item, info_item))
         # Termination symbol(s) for current protein accession.
         annotation_file.write("\n//{}\n\n\n".format(100*"-"))
     print("100%")
@@ -5220,7 +5279,7 @@ def excel_results(annotation_file_excel_name, dict_hm, dict_seqs, dict_top, dict
     new_excel_edit.save(annotation_file_excel_name)
 
 
-def enzannmtg(input_folder=None, sra_code=False, contigs=False, protein_input=False, adapters_path="adapters.fa", protein_db_path="", kraken_db_path="", profiles_path="", profiles_phylo_path="", profiles_broad_path="", swissprot_path="", motifs_path="motifs.txt", options_file_path="", output_path="", family_code=None, family_code_phylo=None, db_name="", db_name_phylo="", input_protein_names_status=False, input_protein_names=None, input_protein_names_phylo_status=False, input_protein_names_phylo=None, name_thr=0.5, seek_route=3, paired_end=True, compressed=True, create_nr_db_status=False, prefetch_size=20, adapters_status="pre", add_seek_info=True, add_taxonomy_info=True, skip_fastqc=False, bbduk_max_ram=4, clear_space=False, k_list=None, kraken_mode=True, kraken_threshold="0.1", kraken_memory_mapping=True, binning_tool=1, bin_ram_ammount=4, bin_num_contig_len=500, bin_num_kmer=4, comebin_batch_size=256, cd_hit_t=0.99, cd_hit_mem=4000, prs_source=1, genetic_code=11, val_type="--cut_ga ", second_dom_search=True, e_value_nodom_thr=1e-70, add_type=[], add_info=[], thread_num=4, pdf_threads=None, after_trimming=False, after_alignment=False, after_gene_pred=False, after_binning=False, after_db=False, after_tm=False, after_ap=False, up_to_sra=False, up_to_databases=False, up_to_trimming_com=False, up_to_trimming_uncom=False, up_to_alignment=False, sra_env="ps_sra_tools", fastqc_env="ps_fastqc", bbduk_env="ps_bbtools", megahit_env="ps_megahit", kraken_env="ps_kraken", metabinner_env="ps_metabinner", comebin_env="ps_comebin", cdhit_env="ps_cd_hit", genepred_env="", hmmer_env="ps_hmmer", diamond_env="ps_diamond", taxonkit_env="ps_taxonkit", phobius_env="ps_phobius", bowtie_env="ps_bowtie", ana_dir_path="", ana_sh_path="", prefetch_path="", vdb_validate_path="", fastq_dump_path="", fastqc_path="", gzip_path="", cat_path="", bbduk_path="", megahit_path="", kraken_path="", metabinner_bin_path="", comebin_bin_path="", fraggenescanrs_path="", hmmscan_path="", hmmpress_path="", hmmfetch_path="", diamond_path="", cd_hit_path="", taxonkit_path="", phobius_path="", bowtie_build_path="", bowtie_path="", input_command=None):
+def enzannmtg(input_folder=None, sra_code=False, contigs=False, protein_input=False, adapters_path="adapters.fa", protein_db_path="", kraken_db_path="", profiles_path="", profiles_phylo_path="", profiles_broad_path="", swissprot_path="", motifs_path="motifs.txt", options_file_path="", output_path="", family_code=None, family_code_phylo=None, db_name="", db_name_phylo="", input_protein_names_status=False, input_protein_names=None, input_protein_names_phylo_status=False, input_protein_names_phylo=None, name_thr=0.5, seek_route=3, paired_end=True, compressed=True, create_nr_db_status=False, prefetch_size=20, adapters_status="pre", add_seek_info=True, add_taxonomy_info=True, skip_fastqc=False, bbduk_max_ram=4, clear_space=False, k_list=None, kraken_mode=True, kraken_threshold="0.1", kraken_memory_mapping=True, bracken_length=150, bracken_level="S", bracken_threshold=10, binning_tool=1, bin_ram_ammount=4, bin_num_contig_len=500, bin_num_kmer=4, comebin_batch_size=256, cd_hit_t=0.99, cd_hit_mem=4000, prs_source=1, genetic_code=11, val_type="--cut_ga ", second_dom_search=True, e_value_nodom_thr=1e-70, add_type=[], add_info=[], thread_num=4, pdf_threads=None, after_trimming=False, after_alignment=False, after_gene_pred=False, after_binning=False, after_db=False, after_tm=False, after_ap=False, up_to_sra=False, up_to_databases=False, up_to_trimming_com=False, up_to_trimming_uncom=False, up_to_alignment=False, sra_env="ps_sra_tools", fastqc_env="ps_fastqc", bbduk_env="ps_bbtools", megahit_env="ps_megahit", kraken_env="ps_kraken", bracken_env="ps_bracken", metabinner_env="ps_metabinner", comebin_env="ps_comebin", cdhit_env="ps_cd_hit", genepred_env="", hmmer_env="ps_hmmer", diamond_env="ps_diamond", taxonkit_env="ps_taxonkit", phobius_env="ps_phobius", bowtie_env="ps_bowtie", ana_dir_path="", ana_sh_path="", prefetch_path="", vdb_validate_path="", fastq_dump_path="", fastqc_path="", gzip_path="", cat_path="", bbduk_path="", megahit_path="", kraken_path="", bracken_path="", alpha_diversity_path="", metabinner_bin_path="", comebin_bin_path="", fraggenescanrs_path="", hmmscan_path="", hmmpress_path="", hmmfetch_path="", diamond_path="", cd_hit_path="", taxonkit_path="", phobius_path="", bowtie_build_path="", bowtie_path="", input_command=None):
     # Start time
     start_time = time.time()
     
@@ -5376,6 +5435,12 @@ def enzannmtg(input_folder=None, sra_code=False, contigs=False, protein_input=Fa
                             kraken_memory_mapping = option_value
                             arg_str = "kraken_memory_mapping"
                             kraken_memory_mapping = check_i_value(kraken_memory_mapping, arg_str)
+                        if option_type == "bracken_length":
+                            bracken_length = int(option_value)
+                        if option_type == "bracken_level":
+                            bracken_level = option_value
+                        if option_type == "bracken_threshold":
+                            bracken_threshold = int(option_value)
                         # Binning
                         if option_type == "binning_tool":
                             binning_tool = int(option_value)                        
@@ -5492,6 +5557,10 @@ def enzannmtg(input_folder=None, sra_code=False, contigs=False, protein_input=Fa
                             kraken_env = option_value
                             if kraken_env in ["None", "none"]:
                                 kraken_env = ""
+                        if option_type == "bracken_env":
+                            bracken_env = option_value
+                            if bracken_env in ["None", "none"]:
+                                bracken_env = ""
                         if option_type == "metabinner_env":
                             metabinner_env = option_value
                             if metabinner_env in ["None", "none"]:
@@ -5551,6 +5620,10 @@ def enzannmtg(input_folder=None, sra_code=False, contigs=False, protein_input=Fa
                             megahit_path = option_value
                         if option_type == "kraken_path":
                             kraken_path = option_value
+                        if option_type == "bracken_path":
+                            bracken_path = option_value
+                        if option_type == "alpha_diversity_path":
+                            alpha_diversity_path = option_value
                         if option_type == "metabinner_bin_path":
                             metabinner_bin_path = option_value
                         if option_type == "comebin_bin_path":
@@ -5763,8 +5836,8 @@ def enzannmtg(input_folder=None, sra_code=False, contigs=False, protein_input=Fa
     mapped_reads_path = "{}/mapped_reads.sam".format(output_path_bowtie)
     # kraken2
     kraken_results_path = "{}/taxon_results.tsv".format(output_path_kraken)
-    kraken_report_path = "{}/report_info.tsv".format(output_path_kraken)
-    kraken_species_path = "{}/kraken_species.tsv".format(output_path_kraken)
+    kraken_report_path = "{}/report_info.k2report".format(output_path_kraken)
+    kraken_species_path = "{}/kraken_species.kraken".format(output_path_kraken)
     kraken_species_thr_path = "{}/kraken_species_thr".format(output_path_kraken)
     kraken_reads_path = "{}/kraken_reads.tsv".format(output_path_kraken)
     kraken_taxname_path = "{}/kraken_taxa_names.tsv".format(output_path_kraken)
@@ -5773,6 +5846,8 @@ def enzannmtg(input_folder=None, sra_code=False, contigs=False, protein_input=Fa
     binned_taxa_path = "{}/binned_taxa.txt".format(output_path_kraken)
     kraken_bin_info_path = "{}/kraken_bin_summary.txt".format(output_path_kraken)
     kraken_filters_path = "{}/kraken_filters.txt".format(output_path_kraken)
+    bracken_output_path = "{}/bracken_output.bracken".format(output_path_kraken)
+    bracken_report_path = "{}/bracken_report.breport".format(output_path_kraken)
     # Phobius paths
     phobius_input_file_name = "{}/phobius_input.txt".format(output_path_topology)
     phobius_output_file_name = "{}/phobius_results.txt".format(output_path_topology)
@@ -5809,6 +5884,8 @@ def enzannmtg(input_folder=None, sra_code=False, contigs=False, protein_input=Fa
     taxonkit_freq_line_bash_script = "{}/taxonkit_freq_lineages.sh".format(output_path_bin)
     taxonkit_maxfreq_line_bash_script = "{}/taxonkit_maxfreq_lineages.sh".format(output_path_bin)
     kraken_bash_script = "{}/kraken.sh".format(output_path_kraken)
+    bracken_bash_script = "{}/bracken.sh".format(output_path_kraken)
+    krakentools_bash_script = "{}/krakentools.sh".format(output_path_kraken)
     phobius_bash_script = "{}/phobius.sh".format(output_path_topology)
     bowtie_bash_script = "{}/bowtie.sh".format(output_path_bowtie)
     # TXT stdout and stderr
@@ -5840,6 +5917,8 @@ def enzannmtg(input_folder=None, sra_code=False, contigs=False, protein_input=Fa
     bowtie_build_stdoe_path = "{}/bowtie_build_stdoe.txt".format(output_path_bowtie)
     bowtie_stdoe_path = "{}/bowtie_stdoe.txt".format(output_path_bowtie)
     kraken_stde_path = "{}/kraken_stde.txt".format(output_path_kraken)
+    bracken_stde_path = "{}/bracken_stdoe.txt".format(output_path_kraken)
+    alpha_diversity_stdoe_path = "{}/alpha_diversity_stdoe.txt".format(output_path_kraken)
     # TXT files for versions
     fastqc_version_bt_path = "{}/fastqc_bt_version.txt".format(output_path_fastqc)
     fastqc_version_at_path = "{}/fastqc_at_version.txt".format(output_path_fastqc)
@@ -5860,6 +5939,8 @@ def enzannmtg(input_folder=None, sra_code=False, contigs=False, protein_input=Fa
     bowtie_build_version_path = "{}/bowtie_build_version.txt".format(output_path_bowtie)
     bowtie_version_path = "{}/bowtie_version.txt".format(output_path_bowtie)
     kraken_version_path = "{}/kraken_version.txt".format(output_path_kraken)
+    bracken_version_path = "{}/bracken_version.txt".format(output_path_kraken)
+    alpha_diversity_version_path = "{}/alpha_diversity_version.txt".format(output_path_kraken)
     # Time
     time_analyis_path = "{}/time_analysis.tsv".format(output_path)
 
@@ -6229,7 +6310,8 @@ def enzannmtg(input_folder=None, sra_code=False, contigs=False, protein_input=Fa
             if (not only_seek_mode) and kraken_mode:
                 start_time_kraken = time.time()
                 kraken_status = True
-                kraken_species_dict, kraken_species_thr_dict, read_to_species_dict, taxid_to_species_dict, time_dict = kraken(paired_end, tr_ex_file_paths_p, tr_ex_file_paths, output_path_kraken, kraken_db_path, kraken_results_path, kraken_report_path, kraken_threshold, kraken_species_path, kraken_species_thr_path, kraken_reads_path, kraken_taxname_path, conda_sh_path, kraken_env, kraken_path, kraken_bash_script, kraken_stde_path, kraken_version_path, kraken_status, kraken_memory_mapping, thread_num, time_dict, kraken_filters_path, input_log_file, output_log_file)
+                bracken_status = True
+                kraken_species_dict, kraken_species_thr_dict, read_to_species_dict, taxid_to_species_dict, time_dict = kraken(paired_end, tr_ex_file_paths_p, tr_ex_file_paths, output_path_kraken, kraken_db_path, kraken_results_path, kraken_report_path, kraken_threshold, kraken_species_path, kraken_species_thr_path, kraken_reads_path, kraken_taxname_path, conda_sh_path, kraken_env, kraken_path, kraken_bash_script, kraken_stde_path, kraken_version_path, kraken_status, kraken_memory_mapping, bracken_status, bracken_bash_script, bracken_path, bracken_env, bracken_output_path, bracken_report_path, bracken_length, bracken_level, bracken_threshold, bracken_stde_path, bracken_version_path, krakentools_bash_script, alpha_diversity_path, alpha_diversity_version_path, alpha_diversity_stdoe_path, thread_num, time_dict, kraken_filters_path, input_log_file, output_log_file)
                 label = "Process of kraken2:"
                 elpased_time = end_time_analysis(label, start_time_kraken, output_log_file)
                 time_dict["kraken_time"] = elpased_time
@@ -6481,6 +6563,9 @@ if __name__ == "__main__":
     arg_kraken_mode = True
     arg_kraken_threshold = "0.1"
     arg_kraken_memory_mapping = True
+    arg_bracken_length=150
+    arg_bracken_level="S"
+    arg_bracken_threshold=10
     # Binning
     arg_binning_tool = 1
     arg_bin_ram_ammount = 4
@@ -6522,6 +6607,7 @@ if __name__ == "__main__":
     arg_bbduk_env = "ps_bbtools"
     arg_megahit_env = "ps_megahit"
     arg_kraken_env = "ps_kraken"
+    arg_bracken_env = "ps_bracken"
     arg_metabinner_env = "ps_metabinner"
     arg_comebin_env = "ps_comebin"
     arg_cdhit_env = "ps_cd_hit"
@@ -6543,6 +6629,8 @@ if __name__ == "__main__":
     arg_bbduk_path = ""
     arg_megahit_path = ""
     arg_kraken_path = ""
+    arg_bracken_path = ""
+    arg_alpha_diversity_path = ""
     arg_metabinner_bin_path = ""
     arg_comebin_bin_path = ""
     arg_cd_hit_path = ""
@@ -6683,6 +6771,12 @@ if __name__ == "__main__":
                 arg_kraken_memory_mapping = sys.argv[i+1]
                 arg_str = "-kmm"
                 arg_kraken_memory_mapping = check_i_value(arg_kraken_memory_mapping, arg_str)
+            elif sys.argv[i] == "-bl" or sys.argv[i] == "--bracken-length":
+                arg_bracken_length = int(sys.argv[i+1])
+            elif sys.argv[i] == "-bv" or sys.argv[i] == "--bracken-level":
+                arg_bracken_level = sys.argv[i+1]
+            elif sys.argv[i] == "-bh" or sys.argv[i] == "--bracken-threshold":
+                arg_bracken_threshold = int(sys.argv[i+1])
             elif sys.argv[i] == "-bt" or sys.argv[i] == "--binning-tool":
                 arg_binning_tool = int(sys.argv[i+1])
             elif sys.argv[i] == "-bmr" or sys.argv[i] == "--binning-max-ram":
@@ -6790,6 +6884,10 @@ if __name__ == "__main__":
                 arg_kraken_env = sys.argv[i+1]
                 if arg_kraken_env in ["None", "none"]:
                     arg_kraken_env = ""
+            elif sys.argv[i] == "-ren" or sys.argv[i] == "--bracken-env":
+                arg_bracken_env = sys.argv[i+1]
+                if arg_bracken_env in ["None", "none"]:
+                    arg_bracken_env = ""
             elif sys.argv[i] == "-nen" or sys.argv[i] == "--metabinner-env":
                 arg_metabinner_env = sys.argv[i+1]
                 if arg_metabinner_env in ["None", "none"]:
@@ -6848,6 +6946,10 @@ if __name__ == "__main__":
                 arg_megahit_path = sys.argv[i+1]
             elif sys.argv[i] == "-kp" or sys.argv[i] == "--kraken-path":
                 arg_kraken_path = sys.argv[i+1]
+            elif sys.argv[i] == "-bp" or sys.argv[i] == "--bracken-path":
+                arg_bracken_path = sys.argv[i+1]
+            elif sys.argv[i] == "-ap" or sys.argv[i] == "--alpha-diversity-path":
+                arg_alpha_diversity_path = sys.argv[i+1]
             elif sys.argv[i] == "-bfp" or sys.argv[i] == "--binner-folder-path":
                 arg_metabinner_bin_path = sys.argv[i+1]
             elif sys.argv[i] == "-cfp" or sys.argv[i] == "--comebin-folder-path":
@@ -6876,4 +6978,4 @@ if __name__ == "__main__":
                 help_message()
                 exit()
             arg_input_command = "{} {} {}".format(arg_input_command, sys.argv[i], sys.argv[i+1])
-    enzannmtg(arg_input_folder, arg_sra_code, arg_contigs, arg_protein_input, arg_adapters_path, arg_protein_db_path, arg_kraken_db_path, arg_profiles_path, arg_profiles_phylo_path, arg_profiles_broad_path, arg_swissprot_path, arg_motifs_path, arg_options_file_path, arg_output_path, arg_family_code, arg_family_code_phylo, arg_db_name, arg_db_name_phylo, arg_input_protein_names_status, arg_input_protein_names, arg_input_protein_names_phylo_status, arg_input_protein_names_phylo, arg_name_thr, arg_seek_route, arg_paired_end, arg_compressed, arg_create_nr_db_status, arg_prefetch_size, arg_adapters_status, arg_add_seek_info, arg_add_taxonomy_info, arg_skip_fastqc, arg_bbduk_max_ram, arg_clear_space, arg_k_list, arg_kraken_mode, arg_kraken_threshold, arg_kraken_memory_mapping, arg_binning_tool, arg_bin_ram_ammount, arg_bin_num_contig_len, arg_bin_num_kmer, arg_comebin_batch_size, arg_cd_hit_t, arg_cd_hit_mem, arg_prs_source, arg_genetic_code, arg_val_type, arg_second_dom_search, arg_e_value_nodom_thr, arg_add_type, arg_add_info, arg_thread_num, arg_pdf_threads, arg_after_trimming, arg_after_alignment, arg_after_gene_pred, arg_after_binning, arg_after_db, arg_after_tm, arg_after_ap, arg_up_to_sra, arg_up_to_databases, arg_up_to_trimming_com, arg_up_to_trimming_uncom, arg_up_to_alignment, arg_sra_env, arg_fastqc_env, arg_bbduk_env, arg_megahit_env, arg_kraken_env, arg_metabinner_env, arg_comebin_env, arg_cdhit_env, arg_genepred_env, arg_hmmer_env, arg_diamond_env, arg_taxonkit_env, arg_phobius_env, arg_bowtie_env, arg_ana_dir_path, arg_ana_sh_path, arg_prefetch_path, arg_vdb_validate_path, arg_fastq_dump_path, arg_fastqc_path, arg_gzip_path, arg_cat_path, arg_bbduk_path, arg_megahit_path, arg_kraken_path, arg_metabinner_bin_path, arg_comebin_bin_path, arg_fraggenescanrs_path, arg_hmmscan_path, arg_hmmpress_path, arg_hmmfetch_path, arg_diamond_path, arg_cd_hit_path, arg_taxonkit_path, arg_phobius_path, arg_bowtie_build_path, arg_bowtie_path, arg_input_command)
+    enzannmtg(arg_input_folder, arg_sra_code, arg_contigs, arg_protein_input, arg_adapters_path, arg_protein_db_path, arg_kraken_db_path, arg_profiles_path, arg_profiles_phylo_path, arg_profiles_broad_path, arg_swissprot_path, arg_motifs_path, arg_options_file_path, arg_output_path, arg_family_code, arg_family_code_phylo, arg_db_name, arg_db_name_phylo, arg_input_protein_names_status, arg_input_protein_names, arg_input_protein_names_phylo_status, arg_input_protein_names_phylo, arg_name_thr, arg_seek_route, arg_paired_end, arg_compressed, arg_create_nr_db_status, arg_prefetch_size, arg_adapters_status, arg_add_seek_info, arg_add_taxonomy_info, arg_skip_fastqc, arg_bbduk_max_ram, arg_clear_space, arg_k_list, arg_kraken_mode, arg_kraken_threshold, arg_kraken_memory_mapping, arg_bracken_length, arg_bracken_level, arg_bracken_threshold, arg_binning_tool, arg_bin_ram_ammount, arg_bin_num_contig_len, arg_bin_num_kmer, arg_comebin_batch_size, arg_cd_hit_t, arg_cd_hit_mem, arg_prs_source, arg_genetic_code, arg_val_type, arg_second_dom_search, arg_e_value_nodom_thr, arg_add_type, arg_add_info, arg_thread_num, arg_pdf_threads, arg_after_trimming, arg_after_alignment, arg_after_gene_pred, arg_after_binning, arg_after_db, arg_after_tm, arg_after_ap, arg_up_to_sra, arg_up_to_databases, arg_up_to_trimming_com, arg_up_to_trimming_uncom, arg_up_to_alignment, arg_sra_env, arg_fastqc_env, arg_bbduk_env, arg_megahit_env, arg_kraken_env, arg_bracken_env, arg_metabinner_env, arg_comebin_env, arg_cdhit_env, arg_genepred_env, arg_hmmer_env, arg_diamond_env, arg_taxonkit_env, arg_phobius_env, arg_bowtie_env, arg_ana_dir_path, arg_ana_sh_path, arg_prefetch_path, arg_vdb_validate_path, arg_fastq_dump_path, arg_fastqc_path, arg_gzip_path, arg_cat_path, arg_bbduk_path, arg_megahit_path, arg_kraken_path, arg_bracken_path, arg_alpha_diversity_path, arg_metabinner_bin_path, arg_comebin_bin_path, arg_fraggenescanrs_path, arg_hmmscan_path, arg_hmmpress_path, arg_hmmfetch_path, arg_diamond_path, arg_cd_hit_path, arg_taxonkit_path, arg_phobius_path, arg_bowtie_build_path, arg_bowtie_path, arg_input_command)
