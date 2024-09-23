@@ -443,7 +443,7 @@ Options:
                                   abundance estimation. Available values for selection:
                                   'D','P','C','O','F','G','S'
 
-   -bh/--bracken-threshold        Int -Opt: 0- Specifies the minimum number of reads required
+   -bh/--bracken-threshold        Int -Opt: 10- Specifies the minimum number of reads required
                                   for a classification at the specified rank. Any
                                   classifications with less than the specified threshold will
                                   not receive additional reads from higher taxonomy levels
@@ -645,6 +645,9 @@ Options:
    -kp/--kraken-path              Str -Opt- The path to the kraken executable.
 
    -bp/--bracken-path             Str -Opt- The path to the bracken executable.
+
+   -ap/--alpha-diversity-path     Str -Opt- The path to the alpha diversity executable from
+                                  KrakenTools.
 
    -bfp/--binner-folder-path      Str -Opt- The path to the bin folder of MetaBiner.
 
