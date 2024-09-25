@@ -39,7 +39,7 @@ if ! [[ $(which bracken) ]]; then
     if [ -d "${BRACKEN_GIT_DIR}" ]; then
         rm -ri "${BRACKEN_GIT_DIR}"
     fi
-    # Download the head branch of the repository.
+    # Download the branch for a specific tag of the repository.
     git clone --branch v2.9 https://github.com/jenniferlu717/Bracken.git "${BRACKEN_GIT_DIR}" 
     # Moving to the git directory for bracken and installing bracken. Then, moving back
     # to the installation directory.
