@@ -1543,9 +1543,9 @@ def bracken_filtering(kraken_threshold, krakentools_bash_script, alpha_diversity
                 elif 2.5 < shannon_index:
                     kraken_prop = 0
             if kraken_prop is not None:
-                # Conerting kraken_prop to a percentage.
                 kraken_prop_float = float(kraken_prop)
-                kraken_prop_perc = kraken_prop_float / 100
+            else:
+                kraken_prop_float = "-"
             # Create a list with species above the threshold.
             if os.path.exists(bracken_output_path):
                 with open(bracken_output_path) as info_lines:
@@ -1561,7 +1561,7 @@ def bracken_filtering(kraken_threshold, krakentools_bash_script, alpha_diversity
                             if abu_perc >= kraken_prop:
                                 kraken_species_thr_dict_temp[taxonid] = [taxon_count, abu_perc]
             kraken_filters_file.write("Shannon Index: {}\n".format(shannon_index))
-            kraken_filters_file.write("Kraken percentage filter: {}% = {}\n".format(kraken_prop_float, kraken_prop_perc))
+            kraken_filters_file.write("Kraken percentage filter: {}%\n".format(kraken_prop_float))
         elif isinstance(kt, int) or isinstance(kt, float):
             if os.path.exists(bracken_output_path):
                 with open(bracken_output_path) as info_lines:
@@ -1621,6 +1621,9 @@ def kraken(paired_end, tr_ex_file_paths_p, tr_ex_file_paths, output_path_kraken,
         if os.path.exists(output_path_kraken):
             shutil.rmtree(output_path_kraken)
         os.mkdir(output_path_kraken)
+        # If the option "--output" is not provided to Kraken2, then the information that would be stored in the
+        # file provided to that option will be printed in the standard output and should be caught by redirection
+        # for stdout (">").
         # Create the Bash script.
         new_file_bash = open(kraken_bash_script, "w")
         phrase = "#!/bin/bash"
@@ -1688,19 +1691,6 @@ def kraken(paired_end, tr_ex_file_paths_p, tr_ex_file_paths, output_path_kraken,
     label = "Process of kraken2 process (specific):"
     elpased_time = end_time_analysis(label, start_time_kraken_spec, output_log_file)
     time_dict["kraken_specific_time"] = elpased_time
-    # Store the kraken species and their percs abundancies.
-    kraken_species_dict = {}
-    if os.path.exists(kraken_report_path):
-        with open(kraken_report_path) as report_lines:
-            for line in report_lines:
-                line = line.rstrip("\n")
-                line_splited = line.split("\t")
-                clade_type = line_splited[3]
-                if clade_type == "S":
-                    abu_perc = float(line_splited[0])
-                    taxon_count = int(line_splited[1])
-                    taxonid = int(line_splited[4])
-                    kraken_species_dict[taxonid] = [taxon_count, abu_perc]
     # Run Bracken to get the abundancies of the species.
     if bracken_status:
         # Create the Bash script.
@@ -1743,21 +1733,19 @@ def kraken(paired_end, tr_ex_file_paths_p, tr_ex_file_paths, output_path_kraken,
         shell_status = True
         pr_status = False
         command_run(phrase_b1, phrase_b2, title_1, title_2, capture_status, shell_status, pr_status, input_log_file, output_log_file)
-    # Store the bracken species and their relative abundancies.
-    kraken_species_relabu_dict = {}
-    total_classified_reads_num = 0
+    # Store the kraken species and their percs abundancies.
+    kraken_species_dict = {}
     if os.path.exists(bracken_output_path):
-        with open(bracken_output_path) as info_lines:
-            for line in info_lines:
-                line = line.rstrip()
+        with open(bracken_output_path) as report_lines:
+            for line in report_lines:
                 line = line.rstrip("\n")
                 line_splited = line.split("\t")
                 clade_type = line_splited[2]
                 if clade_type == "S":
                     taxonid = int(line_splited[1])
-                    taxon_rel_abu = float(line_splited[6])
-                    kraken_species_relabu_dict[taxonid] = taxon_rel_abu
-                    total_classified_reads_num += taxon_rel_abu
+                    taxon_count = int(line_splited[5])
+                    rel_abu = float(line_splited[6])
+                    kraken_species_dict[taxonid] = [taxon_count, rel_abu]
     # Kraken filtering thresholds are applied.
     kraken_species_thr_dict = bracken_filtering(kraken_threshold, krakentools_bash_script, alpha_diversity_path, alpha_diversity_version_path, alpha_diversity_stdoe_path, input_log_file, output_log_file, bracken_output_path, kraken_species_thr_path, kraken_filters_path)
     # Check for the results
@@ -1779,6 +1767,10 @@ def kraken(paired_end, tr_ex_file_paths_p, tr_ex_file_paths, output_path_kraken,
                             # The read_to_species_dict is based on the dictionary (kraken_species_thr_dict) returned by the
                             # filtering which is the one generated by the first filter applied to the species of the kraken report.
                             # The binning based on the taxonomy assignment of kraken is based on the read_to_species_dict dictionary.
+                            # Thus the binning process is based on the information for the associations of reads and species which species
+                            # were classified and were above the set threshold of the first filtering threshold used by ProteoSeeker.
+                            # Each read has a list as a value which contains the taxid associated with the read and whether or not the
+                            # taxid passed the filtering threshold (1) or not (0).
                             read_to_species_dict[read_id] = [taxonid, 0]
                             if taxonid in kraken_species_thr_dict.keys():
                                 read_to_species_dict[read_id][1] = 1
@@ -4164,7 +4156,7 @@ def kraken_binning(kraken_mode, contigs_to_reads_dict, read_to_species_dict, tax
                     line = line.rstrip("\n")
                     line_splited = line.split("\t")
                     read_id = line_splited[0]
-                    taxonid = line_splited[1]
+                    taxonid = int(line_splited[1])
                     thr_state = line_splited[2]
                     read_to_species_dict[read_id] = [taxonid, thr_state]
         # Contig -> Read -> Species -> Thr state
@@ -5835,9 +5827,9 @@ def enzannmtg(input_folder=None, sra_code=False, contigs=False, protein_input=Fa
     bowtie_stats_path = "{}/bowtie_stats.txt".format(output_path_bowtie)
     mapped_reads_path = "{}/mapped_reads.sam".format(output_path_bowtie)
     # kraken2
-    kraken_results_path = "{}/taxon_results.tsv".format(output_path_kraken)
+    kraken_results_path = "{}/taxon_results.kraken2".format(output_path_kraken)
     kraken_report_path = "{}/report_info.k2report".format(output_path_kraken)
-    kraken_species_path = "{}/kraken_species.kraken".format(output_path_kraken)
+    kraken_species_path = "{}/kraken_species.txt".format(output_path_kraken)
     kraken_species_thr_path = "{}/kraken_species_thr".format(output_path_kraken)
     kraken_reads_path = "{}/kraken_reads.tsv".format(output_path_kraken)
     kraken_taxname_path = "{}/kraken_taxa_names.tsv".format(output_path_kraken)
