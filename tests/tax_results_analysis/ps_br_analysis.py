@@ -190,25 +190,34 @@ def collect_kraken_filters(kraken_ps_dir, filter_method_label, kraken_filters_di
             kfn_sample_id = kfn_splited[1]
             kfn_path = "{}/{}".format(kraken_ps_dir, kfn)
             kfn_lines = read_file(kfn_path)
-            kraken_filter_value = None
+            non_gut_status = False
+            status_found = False
+            kraken_filter_value_non_gut = None
+            kraken_filter_value_gut = None
             shannon_index_value = None
             for line in kfn_lines:
+                if "Filter: -1" in line:
+                    non_gut_status = True
+                    status_found = True
                 if "Filter: -2" in line:
-                    print("Reached the non-gut filter for \"-2\" selection. Exiting.")
-                    exit()
+                    non_gut_status = False
+                    status_found = True
                 if "Shannon Index: " in line:
                     line_splited_shannon = line.split("Shannon Index: ")
                     shannon_index_value = line_splited_shannon[1]
                     shannon_index_value = float(shannon_index_value)
                     shannon_index_value = round(shannon_index_value, 2)
                 if "Kraken percentage filter: " in line:
+                    if not status_found:
+                        print("Error. Unknown non-gut or gut filtering value found. Exiting.")
+                        exit()
                     line_splited_kraken = line.split("Kraken percentage filter: ")
-                    kraken_filter_value = line_splited_kraken[1]
-                    break
-            if (kraken_filter_value is None) or (shannon_index_value is None):
-                print("Kraken filtering value not found. Exiting.")
-                exit()
-            kraken_filters_dict[filter_method_label][kfn_sample_id] = [shannon_index_value, kraken_filter_value]
+                    if non_gut_status:
+                        kraken_filter_value_non_gut = line_splited_kraken[1]
+                    else:
+                        kraken_filter_value_gut = line_splited_kraken[1]
+                    status_found = False
+            kraken_filters_dict[filter_method_label][kfn_sample_id] = [shannon_index_value, kraken_filter_value_non_gut, kraken_filter_value_gut]
     return kraken_filters_dict
 
 
@@ -233,12 +242,13 @@ def process_kraken_filter_files(ps_dir, stats_dir_path):
     # Storing the information in a file.
     kraken_filters_stats_path = "{}/kraken_ng_filtering_values.tsv".format(stats_dir_path)
     kraken_filters_stats_file = open(kraken_filters_stats_path, "w")
-    kraken_filters_stats_file.write("database\tsample\tshannon index\tnon-gut filtering value (%)\n")
+    kraken_filters_stats_file.write("database\tsample\tshannon index\tnon-gut filtering value (%)\tgut filtering value (%)\n")
     for key_method in kraken_filters_dict.keys():
         for key_sample in kraken_filters_dict[key_method].keys():
             si_value = kraken_filters_dict[key_method][key_sample][0]
-            ft_value = kraken_filters_dict[key_method][key_sample][1]
-            kraken_filters_stats_file.write("{}\t{}\t{}\t{}\n".format(key_method, key_sample, si_value, ft_value))
+            ft_non_gut_value = kraken_filters_dict[key_method][key_sample][1]
+            ft_gut_value = kraken_filters_dict[key_method][key_sample][2]
+            kraken_filters_stats_file.write("{}\t{}\t{}\t{}\t{}\n".format(key_method, key_sample, si_value, ft_non_gut_value, ft_gut_value))
     kraken_filters_stats_file.close()
     
 
@@ -1193,7 +1203,7 @@ def collect_times(time_stats_dir_path):
                 pre_time_dict[sample_id][method_dp][time_label] = time_period
     # Order the time dictionary.
     orderded_samples = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19"]
-    orderded_methods = ["k8", "k16", "k72", "cnr", "mnr"]
+    orderded_methods = ["k8", "k16", "k77", "cnr", "mnr"]
     time_dict = {}
     for key_sample in orderded_samples:
         for key_method_source in orderded_methods:
@@ -1264,7 +1274,7 @@ def time_stages(time_dict):
                 if key_method == "k8":
                     new_tool_time = round(tool_time, 2)
                     time_full_dict[key_sample][key_method]["tool_time"] = new_tool_time
-                elif key_method in ["k16", "k72", "cnr", "mnr"]:
+                elif key_method in ["k16", "k77", "cnr", "mnr"]:
                     new_tool_time = tool_time + sum_common_times
                     new_tool_time = round(new_tool_time, 2)
                     time_full_dict[key_sample][key_method]["tool_time"] = new_tool_time
@@ -1387,7 +1397,7 @@ def create_df_stacked(time_full_dict):
             df_results_time_m, df_results_time_h = convert_to_minutes(df_results_time)
             # Passing the information to a list.
             temp_list = [key_method, df_fastqc_time_m, df_preproc_time_m, df_assembly_time_m, df_gene_pred_time_m, df_cd_hit_time_m]
-            if key_method in ["k8", "k16", "k72"]:
+            if key_method in ["k8", "k16", "k77"]:
                 temp_list.append(df_kraken_binning_time_m)
                 temp_list.append(df_kraken_taxonomy_time_m)
             else:
@@ -1788,11 +1798,7 @@ def plot_size_species(df_total_time_dict, sample_size_dict, methods_group, sampl
         if not temp_df.empty:
             for mg in methods_group:
                 if mg not in method_sample_time_dict.keys():
-                    if mg == "k72":
-                        mg_label = "k77"
-                    else:
-                        mg_label = mg
-                    method_sample_time_dict[mg_label] = {}
+                    method_sample_time_dict[mg] = {}
                 mg_df = temp_df.loc[temp_df['method'] == mg]
                 if not mg_df.empty:
                     mg_total_time = mg_df['total_time'].iloc[0]
@@ -2380,13 +2386,15 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     spec_label_k77_g = "k77_g"
     spec_label_cnr = "cnr"
     spec_label_mnr = "mnr"
+    
     # Kraken2
     if spec_label_k8 in methods_group:
         kraken_8_info_dict = ps_kraken_analyze(ps_kraken_8, filter_name_k_base, sp_dir_path, spec_label_k8)
     if spec_label_k16 in methods_group:
         kraken_16_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_base, sp_dir_path, spec_label_k16)
     if spec_label_k77 in methods_group:
-        kraken_72_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_base, sp_dir_path, spec_label_k77)
+        kraken_77_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_base, sp_dir_path, spec_label_k77)
+
     # Kraken2: 0.01%
     filter_name_k_f_base = "thr_0.01_"
     if spec_label_k8_0c01 in methods_group:
@@ -2394,7 +2402,8 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     if spec_label_k16_0c01 in methods_group:
         kraken_16_0c01_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_f_base, sp_dir_path, spec_label_k16_0c01)
     if spec_label_k77_0c01 in methods_group:
-        kraken_72_0c01_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k77_0c01)
+        kraken_77_0c01_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k77_0c01)
+
     # Kraken2: 0.1%
     filter_name_k_f_base = "thr_0.1_"
     if spec_label_k8_0c1 in methods_group:
@@ -2402,7 +2411,8 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     if spec_label_k16_0c1 in methods_group:
         kraken_16_0c1_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_f_base, sp_dir_path, spec_label_k16_0c1)
     if spec_label_k77_0c1 in methods_group:
-        kraken_72_0c1_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k77_0c1)
+        kraken_77_0c1_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k77_0c1)
+
     # Kraken2: 1%
     filter_name_k_f_base = "thr_1.0_"
     if spec_label_k8_1c0 in methods_group:
@@ -2410,7 +2420,8 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     if spec_label_k16_1c0 in methods_group:
         kraken_16_1c0_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_f_base, sp_dir_path, spec_label_k16_1c0)
     if spec_label_k77_1c0 in methods_group:
-        kraken_72_1c0_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k77_1c0)
+        kraken_77_1c0_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k77_1c0)
+
     # Kraken2: 5%
     filter_name_k_f_base = "thr_5.0_"
     if spec_label_k8_5c0 in methods_group:
@@ -2418,7 +2429,8 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     if spec_label_k16_5c0 in methods_group:
         kraken_16_5c0_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_f_base, sp_dir_path, spec_label_k16_5c0)
     if spec_label_k77_5c0 in methods_group:
-        kraken_72_5c0_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k77_5c0)
+        kraken_77_5c0_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k77_5c0)
+
     # Kraken2: 10
     filter_name_k_f_base = "thr_10_"
     if spec_label_k8_10 in methods_group:
@@ -2426,7 +2438,8 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     if spec_label_k16_10 in methods_group:
         kraken_16_10_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_f_base, sp_dir_path, spec_label_k16_10)
     if spec_label_k77_10 in methods_group:
-        kraken_72_10_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k77_10)
+        kraken_77_10_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k77_10)
+
     # Kraken2: 100
     filter_name_k_f_base = "thr_100_"
     if spec_label_k8_100 in methods_group:
@@ -2434,7 +2447,8 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     if spec_label_k16_100 in methods_group:
         kraken_16_100_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_f_base, sp_dir_path, spec_label_k16_100)
     if spec_label_k77_100 in methods_group:
-        kraken_72_100_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k77_100)
+        kraken_77_100_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k77_100)
+
     # Kraken2: 500
     filter_name_k_f_base = "thr_500_"
     if spec_label_k8_500 in methods_group:
@@ -2442,7 +2456,8 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     if spec_label_k16_500 in methods_group:
         kraken_16_500_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_f_base, sp_dir_path, spec_label_k16_500)
     if spec_label_k77_500 in methods_group:
-        kraken_72_500_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k77_500)
+        kraken_77_500_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k77_500)
+
     # Kraken2: non-gut
     filter_name_k_f_base = "thr_-1_"
     if spec_label_k8_ng in methods_group:
@@ -2450,7 +2465,8 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     if spec_label_k16_ng in methods_group:
         kraken_16_ng_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_f_base, sp_dir_path, spec_label_k16_ng)
     if spec_label_k77_ng in methods_group:
-        kraken_72_ng_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k77_ng)
+        kraken_77_ng_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k77_ng)
+
     # Kraken2: gut
     filter_name_k_f_base = "thr_-2_"
     if spec_label_k8_g in methods_group:
@@ -2458,178 +2474,221 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     if spec_label_k16_g in methods_group:
         kraken_16_g_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_f_base, sp_dir_path, spec_label_k16_g)
     if spec_label_k77_g in methods_group:
-        kraken_72_g_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k77_g)
+        kraken_77_g_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k77_g)
+
     # COMEBin nr
     filter_name_c = "_b_summary_info_comebin.tsv"
     if spec_label_cnr in methods_group:
         cmbn_nr_info_dict, cmbn_nr_sole_info_dict, cmbn_nr_perc_sum_dict = ps_comebin_analyze(ps_cmbn_nr, filter_name_c, sp_dir_path, spec_label_cnr)
+
     # MetaBinner nr
     filter_name_m =  "_b_summary_info_metabinner.tsv"
     if spec_label_mnr in methods_group:
         mtbr_nr_info_dict, mtbr_nr_sole_info_dict, mtbr_nr_perc_sum_dict = ps_metabinner_analyze(ps_mtbr_nr, filter_name_m, sp_dir_path, spec_label_mnr)
 
+    # Dictionaries for the statistics.
     kraken_8_stats_dict = {}
     kraken_16_stats_dict = {}
-    kraken_72_stats_dict = {}
+    kraken_77_stats_dict = {}
+    kraken_8_0c01_stats_dict = {}
+    kraken_16_0c01_stats_dict = {}
+    kraken_77_0c01_stats_dict = {}
     kraken_8_0c1_stats_dict = {}
     kraken_16_0c1_stats_dict = {}
-    kraken_72_0c1_stats_dict = {}
+    kraken_77_0c1_stats_dict = {}
     kraken_8_1c0_stats_dict = {}
     kraken_16_1c0_stats_dict = {}
-    kraken_72_1c0_stats_dict = {}
+    kraken_77_1c0_stats_dict = {}
+    kraken_8_5c0_stats_dict = {}
+    kraken_16_5c0_stats_dict = {}
+    kraken_77_5c0_stats_dict = {}
     kraken_8_10_stats_dict = {}
     kraken_16_10_stats_dict = {}
-    kraken_72_10_stats_dict = {}
+    kraken_77_10_stats_dict = {}
     kraken_8_100_stats_dict = {}
     kraken_16_100_stats_dict = {}
-    kraken_72_100_stats_dict = {}
+    kraken_77_100_stats_dict = {}
+    kraken_8_500_stats_dict = {}
+    kraken_16_500_stats_dict = {}
+    kraken_77_500_stats_dict = {}
     kraken_8_ng_stats_dict = {}
     kraken_16_ng_stats_dict = {}
-    kraken_72_ng_stats_dict = {}
+    kraken_77_ng_stats_dict = {}
+    kraken_8_g_stats_dict = {}
+    kraken_16_g_stats_dict = {}
+    kraken_77_g_stats_dict = {}
     mtbr_nr_stats_dict = {}
     cmbn_nr_stats_dict = {}
+    
     # Combine the information from all the dictionaries.
     comb_info_dict = {}
-    # Kraken2
+
+    # Kraken db:8
     if spec_label_k8 in methods_group:
         label = "kraken_8"
         kraken_8_stats_dict = comp_stats(br_info_dict, kraken_8_info_dict, None, stats_dir_path, label)
         comb_info_dict["Kraken2 db:8"] = kraken_8_stats_dict
-    if spec_label_k16 in methods_group:
-        label = "kraken_16"
-        kraken_16_stats_dict = comp_stats(br_info_dict, kraken_16_info_dict, None, stats_dir_path, label)
-        comb_info_dict["Kraken2 db:16"] = kraken_16_stats_dict
-    if spec_label_k77 in methods_group:
-        label = "kraken_77"
-        kraken_72_stats_dict = comp_stats(br_info_dict, kraken_72_info_dict, None, stats_dir_path, label)
-        comb_info_dict["Kraken2 db:77"] = kraken_72_stats_dict
-    # Kraken2 0.01%
+
     if spec_label_k8_0c01 in methods_group:
         label = "kraken_8_0.01%"
         kraken_8_0c01_stats_dict = comp_stats(br_info_dict, kraken_8_0c01_info_dict, None, stats_dir_path, label)
         comb_info_dict["Kraken2 db:8 0.01%"] = kraken_8_0c01_stats_dict
-    if spec_label_k16_0c01 in methods_group:
-        label = "kraken_16_0.01%"
-        kraken_16_0c01_stats_dict = comp_stats(br_info_dict, kraken_16_0c01_info_dict, None, stats_dir_path, label)
-        comb_info_dict["Kraken2 db:16 0.01%"] = kraken_16_0c01_stats_dict
-    if spec_label_k77_0c01 in methods_group:
-        label = "kraken_77_0.01%"
-        kraken_72_0c01_stats_dict = comp_stats(br_info_dict, kraken_72_0c01_info_dict, None, stats_dir_path, label)
-        comb_info_dict["Kraken2 db:77 0.01%"] = kraken_72_0c01_stats_dict
-    # Kraken2 0.1%
+
     if spec_label_k8_0c1 in methods_group:
         label = "kraken_8_0.1%"
         kraken_8_0c1_stats_dict = comp_stats(br_info_dict, kraken_8_0c1_info_dict, None, stats_dir_path, label)
         comb_info_dict["Kraken2 db:8 0.1%"] = kraken_8_0c1_stats_dict
-    if spec_label_k16_0c1 in methods_group:
-        label = "kraken_16_0.1%"
-        kraken_16_0c1_stats_dict = comp_stats(br_info_dict, kraken_16_0c1_info_dict, None, stats_dir_path, label)
-        comb_info_dict["Kraken2 db:16 0.1%"] = kraken_16_0c1_stats_dict
-    if spec_label_k77_0c1 in methods_group:
-        label = "kraken_77_0.1%"
-        kraken_72_0c1_stats_dict = comp_stats(br_info_dict, kraken_72_0c1_info_dict, None, stats_dir_path, label)
-        comb_info_dict["Kraken2 db:77 0.1%"] = kraken_72_0c1_stats_dict
-    # Kraken2 1.0%
+
     if spec_label_k8_1c0 in methods_group:
         label = "kraken_8_1.0%"
         kraken_8_1c0_stats_dict = comp_stats(br_info_dict, kraken_8_1c0_info_dict, None, stats_dir_path, label)
         comb_info_dict["Kraken2 db:8 1.0%"] = kraken_8_1c0_stats_dict
-    if spec_label_k16_1c0 in methods_group:
-        label = "kraken_16_1.0%"
-        kraken_16_1c0_stats_dict = comp_stats(br_info_dict, kraken_16_1c0_info_dict, None, stats_dir_path, label)
-        comb_info_dict["Kraken2 db:16 1.0%"] = kraken_16_1c0_stats_dict
-    if spec_label_k77_1c0 in methods_group:
-        label = "kraken_77_1.0%"
-        kraken_72_1c0_stats_dict = comp_stats(br_info_dict, kraken_72_1c0_info_dict, None, stats_dir_path, label)
-        comb_info_dict["Kraken2 db:77 1.0%"] = kraken_72_1c0_stats_dict
-    # Kraken2 5.0%
+
     if spec_label_k8_5c0 in methods_group:
         label = "kraken_8_5.0%"
         kraken_8_5c0_stats_dict = comp_stats(br_info_dict, kraken_8_5c0_info_dict, None, stats_dir_path, label)
         comb_info_dict["Kraken2 db:8 5.0%"] = kraken_8_5c0_stats_dict
-    if spec_label_k16_5c0 in methods_group:
-        label = "kraken_16_5.0%"
-        kraken_16_5c0_stats_dict = comp_stats(br_info_dict, kraken_16_5c0_info_dict, None, stats_dir_path, label)
-        comb_info_dict["Kraken2 db:16 5.0%"] = kraken_16_5c0_stats_dict
-    if spec_label_k77_5c0 in methods_group:
-        label = "kraken_77_5.0%"
-        kraken_72_5c0_stats_dict = comp_stats(br_info_dict, kraken_72_5c0_info_dict, None, stats_dir_path, label)
-        comb_info_dict["Kraken2 db:77 5.0%"] = kraken_72_5c0_stats_dict
-    # Kraken2 10
+
     if spec_label_k8_10 in methods_group:
         label = "kraken_8_10"
         kraken_8_10_stats_dict = comp_stats(br_info_dict, kraken_8_10_info_dict, None, stats_dir_path, label)
         comb_info_dict["Kraken2 db:8 10"] = kraken_8_10_stats_dict
-    if spec_label_k16_10 in methods_group:
-        label = "kraken_16_10"
-        kraken_16_10_stats_dict = comp_stats(br_info_dict, kraken_16_10_info_dict, None, stats_dir_path, label)
-        comb_info_dict["Kraken2 db:16 10"] = kraken_16_10_stats_dict
-    if spec_label_k77_10 in methods_group:
-        label = "kraken_77_10"
-        kraken_72_10_stats_dict = comp_stats(br_info_dict, kraken_72_10_info_dict, None, stats_dir_path, label)
-        comb_info_dict["Kraken2 db:77 10"] = kraken_72_10_stats_dict
-    # Kraken2 100
+
     if spec_label_k8_100 in methods_group:
         label = "kraken_8_100"
         kraken_8_100_stats_dict = comp_stats(br_info_dict, kraken_8_100_info_dict, None, stats_dir_path, label)
         comb_info_dict["Kraken2 db:8 100"] = kraken_8_100_stats_dict
-    if spec_label_k16_100 in methods_group:
-        label = "kraken_16_100"
-        kraken_16_100_stats_dict = comp_stats(br_info_dict, kraken_16_100_info_dict, None, stats_dir_path, label)
-        comb_info_dict["Kraken2 db:16 100"] = kraken_16_100_stats_dict
-    if spec_label_k77_100 in methods_group:
-        label = "kraken_77_100"
-        kraken_72_100_stats_dict = comp_stats(br_info_dict, kraken_72_100_info_dict, None, stats_dir_path, label)
-        comb_info_dict["Kraken2 db:77 100"] = kraken_72_100_stats_dict
-    # Kraken2 500
+
+
     if spec_label_k8_500 in methods_group:
         label = "kraken_8_500"
         kraken_8_500_stats_dict = comp_stats(br_info_dict, kraken_8_500_info_dict, None, stats_dir_path, label)
         comb_info_dict["Kraken2 db:8 500"] = kraken_8_500_stats_dict
-    if spec_label_k16_500 in methods_group:
-        label = "kraken_16_500"
-        kraken_16_500_stats_dict = comp_stats(br_info_dict, kraken_16_500_info_dict, None, stats_dir_path, label)
-        comb_info_dict["Kraken2 db:16 500"] = kraken_16_500_stats_dict
-    if spec_label_k77_500 in methods_group:
-        label = "kraken_77_500"
-        kraken_72_500_stats_dict = comp_stats(br_info_dict, kraken_72_500_info_dict, None, stats_dir_path, label)
-        comb_info_dict["Kraken2 db:77 500"] = kraken_72_500_stats_dict
-    # Kraken2 non-gut
+
     if spec_label_k8_ng in methods_group:
         label = "kraken_8_ng"
         kraken_8_ng_stats_dict = comp_stats(br_info_dict, kraken_8_ng_info_dict, None, stats_dir_path, label)
-        comb_info_dict["a"] = kraken_8_ng_stats_dict
-    if spec_label_k16_ng in methods_group:
-        label = "kraken_16_ng"
-        kraken_16_ng_stats_dict = comp_stats(br_info_dict, kraken_16_ng_info_dict, None, stats_dir_path, label)
-        comb_info_dict["a"] = kraken_16_ng_stats_dict
-    if spec_label_k77_ng in methods_group:
-        label = "kraken_77_ng"
-        kraken_72_ng_stats_dict = comp_stats(br_info_dict, kraken_72_ng_info_dict, None, stats_dir_path, label)
-        comb_info_dict["a"] = kraken_72_ng_stats_dict
-    # Kraken2 gut
+        comb_info_dict["Kraken2 db:8 non-gut"] = kraken_8_ng_stats_dict
+
     if spec_label_k8_g in methods_group:
         label = "kraken_8_g"
         kraken_8_g_stats_dict = comp_stats(br_info_dict, kraken_8_g_info_dict, None, stats_dir_path, label)
         comb_info_dict["Kraken2 db:8 gut"] = kraken_8_g_stats_dict
+
+    # Kraken db:16
+    if spec_label_k16 in methods_group:
+        label = "kraken_16"
+        kraken_16_stats_dict = comp_stats(br_info_dict, kraken_16_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:16"] = kraken_16_stats_dict
+
+    if spec_label_k16_0c01 in methods_group:
+        label = "kraken_16_0.01%"
+        kraken_16_0c01_stats_dict = comp_stats(br_info_dict, kraken_16_0c01_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:16 0.01%"] = kraken_16_0c01_stats_dict
+
+    if spec_label_k16_0c1 in methods_group:
+        label = "kraken_16_0.1%"
+        kraken_16_0c1_stats_dict = comp_stats(br_info_dict, kraken_16_0c1_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:16 0.1%"] = kraken_16_0c1_stats_dict
+
+    if spec_label_k16_1c0 in methods_group:
+        label = "kraken_16_1.0%"
+        kraken_16_1c0_stats_dict = comp_stats(br_info_dict, kraken_16_1c0_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:16 1.0%"] = kraken_16_1c0_stats_dict
+
+    if spec_label_k16_5c0 in methods_group:
+        label = "kraken_16_5.0%"
+        kraken_16_5c0_stats_dict = comp_stats(br_info_dict, kraken_16_5c0_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:16 5.0%"] = kraken_16_5c0_stats_dict
+
+    if spec_label_k16_10 in methods_group:
+        label = "kraken_16_10"
+        kraken_16_10_stats_dict = comp_stats(br_info_dict, kraken_16_10_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:16 10"] = kraken_16_10_stats_dict
+
+    if spec_label_k16_100 in methods_group:
+        label = "kraken_16_100"
+        kraken_16_100_stats_dict = comp_stats(br_info_dict, kraken_16_100_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:16 100"] = kraken_16_100_stats_dict
+
+    if spec_label_k16_500 in methods_group:
+        label = "kraken_16_500"
+        kraken_16_500_stats_dict = comp_stats(br_info_dict, kraken_16_500_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:16 500"] = kraken_16_500_stats_dict
+
+    if spec_label_k16_ng in methods_group:
+        label = "kraken_16_ng"
+        kraken_16_ng_stats_dict = comp_stats(br_info_dict, kraken_16_ng_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:16 non-gut"] = kraken_16_ng_stats_dict
+
     if spec_label_k16_g in methods_group:
         label = "kraken_16_g"
         kraken_16_g_stats_dict = comp_stats(br_info_dict, kraken_16_g_info_dict, None, stats_dir_path, label)
         comb_info_dict["Kraken2 db:16 gut"] = kraken_16_g_stats_dict
+
+    # Kraken2 db:77
+    if spec_label_k77 in methods_group:
+        label = "kraken_77"
+        kraken_77_stats_dict = comp_stats(br_info_dict, kraken_77_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:77"] = kraken_77_stats_dict
+
+    if spec_label_k77_0c01 in methods_group:
+        label = "kraken_77_0.01%"
+        kraken_77_0c01_stats_dict = comp_stats(br_info_dict, kraken_77_0c01_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:77 0.01%"] = kraken_77_0c01_stats_dict
+
+    if spec_label_k77_0c1 in methods_group:
+        label = "kraken_77_0.1%"
+        kraken_77_0c1_stats_dict = comp_stats(br_info_dict, kraken_77_0c1_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:77 0.1%"] = kraken_77_0c1_stats_dict
+
+    if spec_label_k77_1c0 in methods_group:
+        label = "kraken_77_1.0%"
+        kraken_77_1c0_stats_dict = comp_stats(br_info_dict, kraken_77_1c0_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:77 1.0%"] = kraken_77_1c0_stats_dict
+
+    if spec_label_k77_5c0 in methods_group:
+        label = "kraken_77_5.0%"
+        kraken_77_5c0_stats_dict = comp_stats(br_info_dict, kraken_77_5c0_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:77 5.0%"] = kraken_77_5c0_stats_dict
+
+    if spec_label_k77_10 in methods_group:
+        label = "kraken_77_10"
+        kraken_77_10_stats_dict = comp_stats(br_info_dict, kraken_77_10_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:77 10"] = kraken_77_10_stats_dict
+
+    if spec_label_k77_100 in methods_group:
+        label = "kraken_77_100"
+        kraken_77_100_stats_dict = comp_stats(br_info_dict, kraken_77_100_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:77 100"] = kraken_77_100_stats_dict
+
+    if spec_label_k77_500 in methods_group:
+        label = "kraken_77_500"
+        kraken_77_500_stats_dict = comp_stats(br_info_dict, kraken_77_500_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:77 500"] = kraken_77_500_stats_dict
+
+    if spec_label_k77_ng in methods_group:
+        label = "kraken_77_ng"
+        kraken_77_ng_stats_dict = comp_stats(br_info_dict, kraken_77_ng_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:77 non-gut"] = kraken_77_ng_stats_dict
+
     if spec_label_k77_g in methods_group:
         label = "kraken_77_g"
-        kraken_72_g_stats_dict = comp_stats(br_info_dict, kraken_72_g_info_dict, None, stats_dir_path, label)
-        comb_info_dict["Kraken2 db:77 gut"] = kraken_72_g_stats_dict
-    # COMEBin
+        kraken_77_g_stats_dict = comp_stats(br_info_dict, kraken_77_g_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:77 gut"] = kraken_77_g_stats_dict
+
+    # COMEBin db:nr
     if spec_label_cnr in methods_group:
         label = "comebin_nr"
         cmbn_nr_stats_dict = comp_stats(br_info_dict, cmbn_nr_info_dict, cmbn_nr_sole_info_dict, stats_dir_path, label)
         comb_info_dict["COMEBin db:nr"] = cmbn_nr_stats_dict
-    # MetaBinner
+    
+    # MetaBinner db:nr
     if spec_label_mnr in methods_group:
         label = "metabinner_nr"
         mtbr_nr_stats_dict = comp_stats(br_info_dict, mtbr_nr_info_dict, mtbr_nr_sole_info_dict, stats_dir_path, label)
         comb_info_dict["MetaBinner db:nr"] = mtbr_nr_stats_dict
+
     print("The computation of the statistics was completed.\n")
 
     # Create plots.
@@ -2758,7 +2817,7 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         }
         # The time needed to filter the report/results of Kraken2 is negligent compared to the time needed for the analysis to take place. Therefore, the time of analysis for each filtering threshold
         # of the Kraken2 report is based primarily (almost completely) to the execution time of ProteoSeeker for the kraken database that the filter is based on.
-        methods_time_group = ["k8", "k16", "k72", "cnr", "mnr"]
+        methods_time_group = ["k8", "k16", "k77", "cnr", "mnr"]
         time_analysis(time_dir, time_stats_dir_path, time_syn_sample_group_dict, time_sample_group_label_dict, sample_size_dict, methods_time_group, sample_speciesnum_dict)
 
 
