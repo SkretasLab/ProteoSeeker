@@ -120,21 +120,36 @@ def caalstats(ps_results, blastp_info_path):
                     else:
                         sample_method_dict[sample_name][method][pr_seq_line] = pred_taxon
 
-    # Writting the results in a file.
+    # Creating a sorted dictionary.
+    method_order = ["k8", "k16", "k72", "cnr", "mnr"]
+    sample_method_dict_sorted = {}
+    for key_sample in sample_method_dict.keys():
+        sample_method_dict_sorted[key_sample] = {}
+        for mo_item in method_order:
+            for key_method in sample_method_dict[key_sample].keys():
+                if mo_item == key_method:
+                    method_value = sample_method_dict[key_sample][key_method]
+                    if mo_item == "k72":
+                        mo_item_mod = "k77"
+                    else:
+                        mo_item_mod = mo_item
+                    sample_method_dict_sorted[key_sample][mo_item_mod] = method_value
+
+    # Writing the results in a file.
     # If no taxonomy information was found for a protein in the expected sample that means that no taxon was associated with the protein
     # or the taxon was filtered out after the filtering threshold for the Kraken2 taxonomy route.
     blastp_taxa_comp_path = "results_analysis.tsv"
     blastp_taxa_comp_file = open(blastp_taxa_comp_path, "w")
     blastp_taxa_comp_file.write("sample\tmethod\tprotein\tblastp_nr_species\tpredicted_species\n")
-    for key_1 in sample_method_dict.keys():
-        for key_2 in sample_method_dict[key_1].keys():
-            if sample_method_dict[key_1][key_2]:
-                for pr_lid in sample_method_dict[key_1][key_2].keys():
+    for key_sample in sample_method_dict_sorted.keys():
+        for key_method in sample_method_dict_sorted[key_sample].keys():
+            if sample_method_dict_sorted[key_sample][key_method]:
+                for pr_lid in sample_method_dict_sorted[key_sample][key_method].keys():
                     blastp_nr_taxa = pr_blastp_nr_tax_dict[pr_lid]
-                    pred_taxa_temp = sample_method_dict[key_1][key_2][pr_lid]
+                    pred_taxa_temp = sample_method_dict_sorted[key_sample][key_method][pr_lid]
                     pred_taxa_temp = pred_taxa_temp.split("\t")
                     pred_taxa = ",".join(pred_taxa_temp)
-                    blastp_taxa_comp_file.write("{}\t{}\t{}\t{}\t{}\n".format(key_1, key_2, pr_lid, blastp_nr_taxa, pred_taxa))
+                    blastp_taxa_comp_file.write("{}\t{}\t{}\t{}\t{}\n".format(key_sample, key_method, pr_lid, blastp_nr_taxa, pred_taxa))
     blastp_taxa_comp_file.close()
 
 
