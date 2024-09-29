@@ -2489,6 +2489,9 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     spec_label_k8_500 = "k8_500"
     spec_label_k16_500 = "k16_500"
     spec_label_k77_500 = "k77_500"
+    spec_label_k8_1000 = "k8_1000"
+    spec_label_k16_1000 = "k16_1000"
+    spec_label_k77_1000 = "k77_1000"
     spec_label_k8_ng = "k8_ng"
     spec_label_k16_ng = "k16_ng"
     spec_label_k77_ng = "k77_ng"
@@ -2569,6 +2572,15 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     if spec_label_k77_500 in methods_group:
         kraken_77_500_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k77_500)
 
+    # Kraken2: 1000
+    filter_name_k_f_base = "thr_1000_"
+    if spec_label_k8_1000 in methods_group:
+        kraken_8_1000_info_dict = ps_kraken_analyze(ps_kraken_8, filter_name_k_f_base, sp_dir_path, spec_label_k8_1000)
+    if spec_label_k16_1000 in methods_group:
+        kraken_16_1000_info_dict = ps_kraken_analyze(ps_kraken_16, filter_name_k_f_base, sp_dir_path, spec_label_k16_1000)
+    if spec_label_k77_1000 in methods_group:
+        kraken_77_1000_info_dict = ps_kraken_analyze(ps_kraken_72, filter_name_k_f_base, sp_dir_path, spec_label_k77_1000)
+
     # Kraken2: non-gut
     filter_name_k_f_base = "thr_-1_"
     if spec_label_k8_ng in methods_group:
@@ -2622,6 +2634,9 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
     kraken_8_500_stats_dict = {}
     kraken_16_500_stats_dict = {}
     kraken_77_500_stats_dict = {}
+    kraken_8_1000_stats_dict = {}
+    kraken_16_1000_stats_dict = {}
+    kraken_77_1000_stats_dict = {}
     kraken_8_ng_stats_dict = {}
     kraken_16_ng_stats_dict = {}
     kraken_77_ng_stats_dict = {}
@@ -2670,11 +2685,15 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         kraken_8_100_stats_dict = comp_stats(br_info_dict, kraken_8_100_info_dict, None, stats_dir_path, label)
         comb_info_dict["Kraken2 db:8 100"] = kraken_8_100_stats_dict
 
-
     if spec_label_k8_500 in methods_group:
         label = "kraken_8_500"
         kraken_8_500_stats_dict = comp_stats(br_info_dict, kraken_8_500_info_dict, None, stats_dir_path, label)
         comb_info_dict["Kraken2 db:8 500"] = kraken_8_500_stats_dict
+
+    if spec_label_k8_1000 in methods_group:
+        label = "kraken_8_1000"
+        kraken_8_1000_stats_dict = comp_stats(br_info_dict, kraken_8_1000_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:8 1000"] = kraken_8_1000_stats_dict
 
     if spec_label_k8_ng in methods_group:
         label = "kraken_8_ng"
@@ -2727,6 +2746,11 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         kraken_16_500_stats_dict = comp_stats(br_info_dict, kraken_16_500_info_dict, None, stats_dir_path, label)
         comb_info_dict["Kraken2 db:16 500"] = kraken_16_500_stats_dict
 
+    if spec_label_k16_1000 in methods_group:
+        label = "kraken_16_1000"
+        kraken_16_1000_stats_dict = comp_stats(br_info_dict, kraken_16_1000_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:16 1000"] = kraken_16_1000_stats_dict
+
     if spec_label_k16_ng in methods_group:
         label = "kraken_16_ng"
         kraken_16_ng_stats_dict = comp_stats(br_info_dict, kraken_16_ng_info_dict, None, stats_dir_path, label)
@@ -2777,6 +2801,11 @@ def benchstats(benchmark_path="12864_2022_8803_MOESM1_ESM.txt", ps_results="", p
         label = "kraken_77_500"
         kraken_77_500_stats_dict = comp_stats(br_info_dict, kraken_77_500_info_dict, None, stats_dir_path, label)
         comb_info_dict["Kraken2 db:77 500"] = kraken_77_500_stats_dict
+
+    if spec_label_k77_1000 in methods_group:
+        label = "kraken_77_1000"
+        kraken_77_1000_stats_dict = comp_stats(br_info_dict, kraken_77_1000_info_dict, None, stats_dir_path, label)
+        comb_info_dict["Kraken2 db:77 1000"] = kraken_77_1000_stats_dict
 
     if spec_label_k77_ng in methods_group:
         label = "kraken_77_ng"
