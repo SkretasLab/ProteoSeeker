@@ -1733,7 +1733,7 @@ def kraken(paired_end, tr_ex_file_paths_p, tr_ex_file_paths, output_path_kraken,
         shell_status = True
         pr_status = False
         command_run(phrase_b1, phrase_b2, title_1, title_2, capture_status, shell_status, pr_status, input_log_file, output_log_file)
-    # Store the kraken species and their percs abundancies.
+    # Store the Kraken2 species and their relative abundances.
     kraken_species_dict = {}
     if os.path.exists(bracken_output_path):
         with open(bracken_output_path) as report_lines:
