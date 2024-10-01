@@ -14,7 +14,7 @@ def read_file(file_path):
     return lines
 
 
-def modify_par_files(target_dir, output_dict, ps_path, adapters_path, protein_db_path, pfam_path, swissprot_path, motifs_path, conda_inst_dir, conda_sh_path, mbinpath, cbinpath, fraggenescanrs_path, phobius_path, kraken_8_db_path, kraken_16_db_path, kraken_72_db_path):
+def modify_par_files(target_dir, output_dict, ps_path, adapters_path, protein_db_path, pfam_path, swissprot_path, motifs_path, conda_inst_dir, conda_sh_path, mbinpath, cbinpath, fraggenescanrs_path, phobius_path, aldiv_path, kraken_8_db_path, kraken_16_db_path, kraken_72_db_path):
     target_dir_files = os.listdir(target_dir)
     for sfn in target_dir_files:
         sfn_full_path = "{}/{}".format(target_dir, sfn)
@@ -54,6 +54,8 @@ def modify_par_files(target_dir, output_dict, ps_path, adapters_path, protein_db
                 line = "conda_bin=\"{}\"".format(conda_inst_dir)
             elif "conda_sh=" in line:
                 line = "conda_sh=\"{}\"".format(conda_sh_path)
+            elif "alpha_diversity_path=" in line:
+                line = "alpha_diversity_path=\"{}\"".format(aldiv_path)
             elif "metabinner_bin_path=" in line:
                 line = "metabinner_bin_path=\"{}\"".format(mbinpath)
             elif "comebin_bin_path=" in line:
@@ -116,6 +118,7 @@ def cparf():
     motifs_path = "{}/motifs.txt".format(ps_path)
     fraggenescanrs_path = "{}/ps_tools/fgsrs/FragGeneScanRs".format(ps_path)
     phobius_path = "{}/ps_tools/phobius_files/phobius".format(ps_path)
+    aldiv_path = "{}/KrakenTools/DiversityTools/alpha_diversity.py".format(ps_path)
 
     # Parameter lines for the seek/taxonomy analysis and the analysis run.
     # SRR3961740
@@ -131,7 +134,7 @@ def cparf():
         7: "results_ca_srr3961740_cnr",
         8: "results_ca_srr3961740_mnr"
     }
-    modify_par_files(srr3961740_dir, output_dict_srr3961740, ps_path, adapters_path, protein_db_path, pfam_path, swissprot_path, motifs_path, conda_inst_dir, conda_sh_path, mbinpath, cbinpath, fraggenescanrs_path, phobius_path, kraken_8_db_path, kraken_16_db_path, kraken_72_db_path)
+    modify_par_files(srr3961740_dir, output_dict_srr3961740, ps_path, adapters_path, protein_db_path, pfam_path, swissprot_path, motifs_path, conda_inst_dir, conda_sh_path, mbinpath, cbinpath, fraggenescanrs_path, phobius_path, aldiv_path, kraken_8_db_path, kraken_16_db_path, kraken_72_db_path)
     # Drr163688
     drr163688_dir = "{}/cas_als/ca_run/DRR163688".format(parameter_path)
     output_dict_drr163688 = {
@@ -145,7 +148,7 @@ def cparf():
         7: "results_ca_drr163688_cnr",
         8: "results_ca_drr163688_mnr"
     }
-    modify_par_files(drr163688_dir, output_dict_drr163688, ps_path, adapters_path, protein_db_path, pfam_path, swissprot_path, motifs_path, conda_inst_dir, conda_sh_path, mbinpath, cbinpath, fraggenescanrs_path, phobius_path, kraken_8_db_path, kraken_16_db_path, kraken_72_db_path)
+    modify_par_files(drr163688_dir, output_dict_drr163688, ps_path, adapters_path, protein_db_path, pfam_path, swissprot_path, motifs_path, conda_inst_dir, conda_sh_path, mbinpath, cbinpath, fraggenescanrs_path, phobius_path, aldiv_path, kraken_8_db_path, kraken_16_db_path, kraken_72_db_path)
     # SRR17771278
     srr17771278_dir = "{}/cas_als/al_run/SRR17771278".format(parameter_path)
     output_dict_srr17771278 = {
@@ -159,7 +162,7 @@ def cparf():
         7: "results_al_srr17771278_cnr",
         8: "results_al_srr17771278_mnr"
     }
-    modify_par_files(srr17771278_dir, output_dict_srr17771278, ps_path, adapters_path, protein_db_path, pfam_path, swissprot_path, motifs_path, conda_inst_dir, conda_sh_path, mbinpath, cbinpath, fraggenescanrs_path, phobius_path, kraken_8_db_path, kraken_16_db_path, kraken_72_db_path)
+    modify_par_files(srr17771278_dir, output_dict_srr17771278, ps_path, adapters_path, protein_db_path, pfam_path, swissprot_path, motifs_path, conda_inst_dir, conda_sh_path, mbinpath, cbinpath, fraggenescanrs_path, phobius_path, aldiv_path, kraken_8_db_path, kraken_16_db_path, kraken_72_db_path)
 
 
 if __name__ == "__main__":
