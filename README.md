@@ -62,7 +62,7 @@ The steps of the taxonomy mode of ProteoSeeker:
     
 For the Kraken2 route:
 
-10. Species are assigned to the reads based on Kraken2.
+10. Species are assigned to the reads based on Kraken2. Bracken provides the abundances of these species.
 11. Bowtie2 maps the reads to the contigs.
 12. Through the read-contig mapping, each species is quantified for each contig. Species are assigned to the contigs.
 13. The contigs are binned based on their species.
