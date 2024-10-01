@@ -88,6 +88,7 @@ def cparf():
     base_output_path = "{}/results".format(ps_path)
     fraggenescanrs_path = "{}/ps_tools/fgsrs/FragGeneScanRs".format(ps_path)
     phobius_path = "{}/ps_tools/phobius_files/phobius".format(ps_path)
+    alpha_diversity_path = "{}/KrakenTools/DiversityTools/alpha_diversity.py".format(ps_path)
 
     # The paths for the parameter files.
     par_demo_path = "{}/par_demo.txt".format(parameter_path)
@@ -137,6 +138,8 @@ def cparf():
                     line = "conda_bin=\"{}\"".format(conda_inst_dir)
                 elif line == "conda_sh=\"\"":
                     line = "conda_sh=\"{}\"".format(conda_sh_path)
+                elif line == "alpha_diversity_path=\"\"":
+                    line = "alpha_diversity_path=\"{}\"".format(alpha_diversity_path)
                 elif line == "metabinner_bin_path=\"\"":
                     line = "metabinner_bin_path=\"{}\"".format(mbinpath)
                 elif line == "comebin_bin_path=\"\"":
