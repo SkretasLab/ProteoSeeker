@@ -1,2 +1,2 @@
-This directory is used to contain the output and error messages from the Basc installer scripts.
+This directory is used to contain the output and error messages from the Bash installer scripts.
 
