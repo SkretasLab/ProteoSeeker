@@ -59,7 +59,7 @@ Common stages:
 6.	Bowtie2 maps the reads to the contigs.
 7.	Annotation files are generated.
 
-For the Kraken2 route:
+Kraken2 route stages:
 
 1.	Species are assigned to the reads based on Kraken2. Bracken then provides the abundances of these species.
 2.	Through the read-contig mapping, each species is quantified for each contig. Species are assigned to the contigs.
@@ -67,7 +67,7 @@ For the Kraken2 route:
 4.	Species are assigned to the bins.
 5.	Species are assigned to the genes and proteins of the bins.
 
-For the COMEBin/MetaBinner route:
+COMEBin/MetaBinner route stages:
 
 1.	The selected protein families are determined based on their input codes and their profiles are collected.
 2.	The "taxonomy profile database" (tpd) is created.
