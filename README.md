@@ -48,37 +48,36 @@ The steps of the seek mode of ProteoSeeker:
 
 ![ProteoSeeker Taxonomy Functionality](images/Figure_5.png)
 
-The steps of the taxonomy mode of ProteoSeeker:
+The steps of the taxonomy mode of ProteoSeeker based on the common, Kraken2 route-specific and COMEBin/MetaBinner route-sepcific stages of the pipeline.
 
-1. The selected protein families are determined based on their input codes and their profiles are colleceted.
-2. The "taxonomy profile database" (tpd) is created.
-3. The protein names associated with the selected families are collected.
-4. The protein database is filtered based on the collected protein names and the "taxonomy filtered protein database" (tfpd) is created.
-5. The reads of the FASTQ files undergo several quality control checks by FastQC.
-6. The reads are preprocessed by BBDuk and reanalyzed by FastQC.
-7. The preprocessed reads are assembled into contigs by Megahit.
-8. Protein coding regions (pcdrs) are predicted in the contigs by FragGeneScanRs.
-9. CD-HIT is used to reduce the redundancy of the pcdrs.
-    
+Common stages:
+1.	The reads of the FASTQ files undergo several quality control checks by FastQC.
+2.	The reads are preprocessed by BBDuk and reanalyzed by FastQC.
+3.	The preprocessed reads are assembled into contigs by Megahit.
+4.	Protein coding regions (pcdrs) are predicted in the contigs by FragGeneScanRs.
+5.	CD-HIT is used to reduce the redundancy of the pcdrs.
+6.	Bowtie2 maps the reads to the contigs.
+7.	Annotation files are generated.
+
 For the Kraken2 route:
 
-10. Species are assigned to the reads based on Kraken2. Bracken provides the abundances of these species.
-11. Bowtie2 maps the reads to the contigs.
-12. Through the read-contig mapping, each species is quantified for each contig. Species are assigned to the contigs.
-13. The contigs are binned based on their species.
-14. Species are assigned to the bins.
-15. Species are assigned to the genes and proteins of the bins.
-16. Annotation files are generated.
+1.	Species are assigned to the reads based on Kraken2. Bracken then provides the abundances of these species.
+2.	Through the read-contig mapping, each species is quantified for each contig. Species are assigned to the contigs.
+3.	The contigs are binned based on their species.
+4.	Species are assigned to the bins.
+5.	Species are assigned to the genes and proteins of the bins.
 
 For the COMEBin/MetaBinner route:
 
-10. The contigs are binned based on MetaBinner or COMEBin.
-11. Bowtie2 maps the reads to the contigs.
-12. The pcdrs are screened against the tpd through HMMER.
-13. Any pcdr with at least one hit against the tpd is screened against the tfpd through DIAMOND BLASTP.
-14. Taxa are assigned to the bins and to their genes and proteins.
-15. Each bin, along with any taxa assigned to it, is quantified based on the reads mapped to its contigs.
-16. Annotation files are generated.
+1.	The selected protein families are determined based on their input codes and their profiles are collected.
+2.	The "taxonomy profile database" (tpd) is created.
+3.	The protein names associated with the selected families are collected.
+4.	The protein database is filtered based on the collected protein names and the “taxonomy filtered protein database” (tfpd) is created.
+5.	The contigs are binned based on MetaBinner or COMEBin.
+6.	The pcdrs are screened against the tpd through HMMER.
+7.	Any pcdr with at least one hit against the tpd is screened against the tfpd through DIAMOND BLASTP.
+8.	Taxon names are converted to TaxIds, and the latter are used to query taxonomic lineages, based on TaxonKit. Taxa are assigned to the bins and to their genes and proteins.
+9.	Each bin, along with any taxa assigned to it, is quantified based on the reads mapped to its contigs.
 
 # 2. Installation
 <p align="justify">It is suggested to run ProteoSeeker in a Docker container through its image, rather than directly through the command-line, when possible. Therefore, it is proposed to install Docker and download the Docker image of ProteoSeeker. Running ProteoSeeker through the command-line would be necessary to perform the tests described in the evaluation section, or when the same SRA sample needs to be analyzed multiple times in which case running ProteoSeeker directly through the command-line would retain the SRA file after it is downloaded and processed and there would be no need to download and process it again in future runs.</p>
