@@ -88,7 +88,7 @@ def cparf():
     base_output_path = "{}/results".format(ps_path)
     fraggenescanrs_path = "{}/ps_tools/fgsrs/FragGeneScanRs".format(ps_path)
     phobius_path = "{}/ps_tools/phobius_files/phobius".format(ps_path)
-    aldiv_path = "{}/KrakenTools/DiversityTools/alpha_diversity.py".format(ps_path)
+    aldiv_path = "{}/ps_tools/KrakenTools/DiversityTools/alpha_diversity.py".format(ps_path)
 
     # The paths for the parameter files.
     par_demo_path = "{}/par_demo.txt".format(parameter_path)
