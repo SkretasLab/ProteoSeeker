@@ -51,13 +51,14 @@ The steps of the seek mode of ProteoSeeker:
 The steps of the taxonomy mode of ProteoSeeker based on the common, Kraken2 route-specific and COMEBin/MetaBinner route-sepcific stages of the pipeline.
 
 Common stages:
-1.	The reads of the FASTQ files undergo several quality control checks by FastQC.
-2.	The reads are preprocessed by BBDuk and reanalyzed by FastQC.
-3.	The preprocessed reads are assembled into contigs by Megahit.
-4.	Protein coding regions (pcdrs) are predicted in the contigs by FragGeneScanRs.
-5.	CD-HIT is used to reduce the redundancy of the pcdrs.
-6.	Bowtie2 maps the reads to the contigs.
-7.	Annotation files are generated.
+1.	The SRA file is downloaded and converted to FASTQ files.
+2.	The reads of the FASTQ files undergo several quality control checks by FastQC.
+3.	The reads are preprocessed by BBDuk and reanalyzed by FastQC.
+4.	The preprocessed reads are assembled into contigs by Megahit.
+5.	Protein coding regions (pcdrs) are predicted in the contigs by FragGeneScanRs.
+6.	CD-HIT is used to reduce the redundancy of the pcdrs.
+7.	Bowtie2 maps the reads to the contigs.
+8.	Annotation files are generated.
 
 Kraken2 route stages:
 
@@ -69,11 +70,11 @@ Kraken2 route stages:
 
 COMEBin/MetaBinner route stages:
 
-1.	The selected protein families are determined based on their input codes and their profiles are collected.
+1.	The selected “taxonomy” protein families are determined based on their input codes and their profiles are collected.
 2.	The "taxonomy profile database" (tpd) is created.
-3.	The protein names associated with the selected families are collected.
+3.	The “taxonomy” protein names associated with the selected families are collected.
 4.	The protein database is filtered based on the collected protein names and the “taxonomy filtered protein database” (tfpd) is created.
-5.	The contigs are binned based on MetaBinner or COMEBin.
+5.	The contigs are binned based on COMEBin or MetaBinner.
 6.	The pcdrs are screened against the tpd through HMMER.
 7.	Any pcdr with at least one hit against the tpd is screened against the tfpd through DIAMOND BLASTP.
 8.	Taxon names are converted to TaxIds, and the latter are used to query taxonomic lineages, based on TaxonKit. Taxa are assigned to the bins and to their genes and proteins.
