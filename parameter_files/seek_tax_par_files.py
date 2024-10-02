@@ -118,7 +118,7 @@ def cparf():
     motifs_path = "{}/motifs.txt".format(ps_path)
     fraggenescanrs_path = "{}/ps_tools/fgsrs/FragGeneScanRs".format(ps_path)
     phobius_path = "{}/ps_tools/phobius_files/phobius".format(ps_path)
-    aldiv_path = "{}/KrakenTools/DiversityTools/alpha_diversity.py".format(ps_path)
+    aldiv_path = "{}/ps_tools/KrakenTools/DiversityTools/alpha_diversity.py".format(ps_path)
 
     # Parameter lines for the seek/taxonomy analysis and the analysis run.
     # SRR3961740
