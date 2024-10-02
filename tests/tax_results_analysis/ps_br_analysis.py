@@ -182,7 +182,7 @@ def crfiles(ps_dir, ps_results, analysis_results_dict, time_dir, time_stats_dir_
 def collect_kraken_filters(kraken_ps_dir, filter_method_label, kraken_filters_dict):
     for i in range(1, 20):
         i_str = str(i)
-        kraken_filters_dict[filter_method_label][i_str] = ["-", "-"]
+        kraken_filters_dict[filter_method_label][i_str] = ["-", "-", "-"]
     kraken_filenames = os.listdir(kraken_ps_dir)
     for kfn in kraken_filenames:
         if "kraken_filters" in kfn:
