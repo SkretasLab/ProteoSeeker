@@ -40,10 +40,10 @@ def help_message():
     print("4. Description")
     print()
     print("Terminology:")
-    print("spd: seek profile database")
-    print("tpd: taxonomy profile database")
-    print("sfpd: seek filtered protein database")
-    print("tfpd: taxonomy filtered protein database")
+    print("SPD: seek profile database")
+    print("TPD: taxonomy profile database")
+    print("SFPD: seek filtered protein database")
+    print("TFPD: taxonomy filtered protein database")
     print()
     print("Options:")
     print("---------Input and output options---------")
@@ -64,17 +64,17 @@ def help_message():
         "-o/--output": "Str -Opt- Path to the output folder.",
         "-fc/--family-code": "Str -Opt- The seek protein family codes.",
         "-fct/--family-code-taxonomy": "Str -Opt- The phylo protein family codes.",
-        "-dn/--database-name": "Str -Opt- The seek profile database (spd) and seek filtered protein database name (sfdp).",
-        "-dnt/--database-name-taxonomy": "Str -Opt- The taxonomy profile database (tpd) and taxonomy filtered protein database name (tfdp).",
-        "-sns/--seek-names-status": "True/False -Opt: False- Determines whether the protein names used to filter the protein database and create the sfpd will be determined solely based on the protein names provided by the user (True) or solely based on protein names automatically identified with or without the addition protein names provided by the user (False).",
+        "-dn/--database-name": "Str -Opt- The seek profile database (SPD) and seek filtered protein database name (SFPD).",
+        "-dnt/--database-name-taxonomy": "Str -Opt- The taxonomy profile database (TPD) and taxonomy filtered protein database name (TFPD).",
+        "-sns/--seek-names-status": "True/False -Opt: False- Determines whether the protein names used to filter the protein database and create the SFPD will be determined solely based on the protein names provided by the user (True) or solely based on protein names automatically identified with or without the addition protein names provided by the user (False).",
         "-spn/--seek-protein-names": "Str -Opt- Protein names, divided by commas, given as input from the user and used to filter the seek protein database. If such protein names are indeed provided and -sns is False, then these protein names are added to the automatically identified ones. If such protein names are not provided and -sns is False, then only the aumatically identified ones are used for the filtering.",
-        "-tns/--taxonomy-names-status": "True/False -Opt: False- Determines whether the protein names used to filter the protein database and create the tfpd will be determined solely based on the protein names provided by the user (True) or solely based on protein names automatically identified with or without the addition protein names provided by the user (False).",
+        "-tns/--taxonomy-names-status": "True/False -Opt: False- Determines whether the protein names used to filter the protein database and create the TFPD will be determined solely based on the protein names provided by the user (True) or solely based on protein names automatically identified with or without the addition protein names provided by the user (False).",
         "-tpn/--taxonomy-protein-names": "Str -Opt- Protein names, divided by commas, given as input from the user and used to filter the taxonomy protein database. If such protein names are indeed provided and -tns is False, then these protein names are added to the automatically identified ones. If such protein names are not provided and -tns is False, then only the aumatically identified ones are used for the filtering.",
         "-nt/--name-threshold": "Float -Opt: 0.5- The threshold used to filter the protein names associated with each protein family. Any protein name with a frequency below this threshold is omitted.",
         "-sr/--seek-route": "Int -Opt: 3- There are three analysis modes. The analysis mode determines the type of analysis by the seek functionality. '1': The seek functionality will only search for proteins to be annotated which include at least one of the profiles of the spd. '2': The seek functionality will only search for proteins to be annotated that have at least one hit against the sfpd with a low enough e-value. '3': The seek functionality includes both types of analysis '1' and '2'.",
         "-p/--paired-end": "True/False -Opt: True- Indicates whether the files in the input folder are paired-end (True) or single-end (False) files.",
         "-k/--compressed": "True/False -Opt: True- Indicates whether the files in the input folder are compressed (True) or not (False).",
-        "-fpd/--filter-protein-database": "True/False -Opt: False- Determines whether the protein database will be filtered based on protein names to create the sfpd and tfpd.",
+        "-fpd/--filter-protein-database": "True/False -Opt: False- Determines whether the protein database will be filtered based on protein names to create the SFPD and TFPD.",
         "-ps/--preftech-size": "Int -Opt: 20- The maximum file size to download in KB (K for kilobytes, M for megabytes, G gigabytes).",
         "-as/--adapters-status": "Str -Opt: 'pre'- The following options are available: ide: Adds the overrepresented sequences identified by FastQC in the file with the adapters. 'fas': The file with the adapters will include only the overrepresented sequences identified by FastQC. 'pre': The  file with the adapters is used without any modification.",
         "-asi/--add-seek-info": "True/False -Opt: True- Determines whether the results in the TXT and the EXCEL file will only contain information for the proteins identified through the seek mode (True) or not (False). In case only the taxonomy mode is applied, this option has no effect on the results.",
@@ -2457,7 +2457,7 @@ def analyze_no_enzs(diamond_env, output_path_hmmer, output_path_blastp, prs_with
             pr_status = False
             command_run(phrase_b1, phrase_b2, title_1, title_2, capture_status, shell_status, pr_status, input_log_file, output_log_file)
         else:
-            print("\nBLASTP of the proteins without any of the seek domains was not performed against the sfpd. The sfpd ({}) was not located.".format(fpr_db_fasta))
+            print("\nBLASTP of the proteins without any of the seek domains was not performed against the SFPD. The SFPD ({}) was not located.".format(fpr_db_fasta))
         # Collect results from BLASTP in the annotation folder.
         blastp_output_info = open(blastp_info_no_doms_nr_file, "w")
         blastp_output_info.write("Protein_name\tNR_ID\tPercentage_identity\tE_value\tBitscore\n")
@@ -2476,7 +2476,7 @@ def analyze_no_enzs(diamond_env, output_path_hmmer, output_path_blastp, prs_with
                         blastp_output_info.write("{}\t{}\t{}\t{}\t{}\n".format(protein_name, uniprot_ac, percentage_identity, e_value, bitscore))
         blastp_output_info.close()
     else:
-        print("\nBLASTP of the proteins without any of the seek domains was not performed against the sfpd. The file ({}) with the proteins without any of the seek domains, was not located.".format(file_prs_seq_no_enzs_name))
+        print("\nBLASTP of the proteins without any of the seek domains was not performed against the SFPD. The file ({}) with the proteins without any of the seek domains, was not located.".format(file_prs_seq_no_enzs_name))
     # Information gathering, based on a given threshold, from the results of BLASTP of proteins without enzyme domains against the reductd nr.
     protein_ids_below_thr = []
     if os.path.exists(blastp_info_no_doms_nr_file):
@@ -2926,7 +2926,7 @@ def blastp(diamond_env, output_path_blastp, blastp_results_swissprot_file, blast
 
 
 def combine_nr(blastp_info_no_doms_below_threshold, blastp_doms_info_nr_file, blastp_info_comb_nr_file):
-    print("\nCombining predictions from the screen against the seek filtered protein database (sfpd)...")
+    print("\nCombining predictions from the screen against the seek filtered protein database (SFPD)...")
     if os.path.exists(blastp_info_no_doms_below_threshold) and os.path.exists(blastp_doms_info_nr_file):
         filenames = [blastp_info_no_doms_below_threshold, blastp_doms_info_nr_file]
     elif os.path.exists(blastp_info_no_doms_below_threshold):
