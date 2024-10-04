@@ -27,16 +27,16 @@
 The steps of the seek mode of ProteoSeeker:
 
 1. The selected protein families are determined based on their input codes and their profiles are collected. Type **1, 2, 3** analysis.
-2. The "seek profile database" (spd) is created. Type **1, 2, 3** analysis.
+2. The "seek profile database" (SPD) is created. Type **1, 2, 3** analysis.
 3. The protein names associated with the selected families are collected. Type **2, 3** analysis.
-4. The protein database is filtered based on the collected protein names and the "seek filtered protein database" (sfpd) is created. Type **2, 3** analysis.
+4. The protein database is filtered based on the collected protein names and the "seek filtered protein database" (SFPD) is created. Type **2, 3** analysis.
 5. The reads in the FASTQ files undergo several quality control checks by FastQC. Type **1, 2, 3** analysis.
 6. The reads are preprocessed by BBDuk and reanalyzed by FastQC. Type **1, 2, 3** analysis.
 7. The preprocessed reads are assembled into contigs by Megahit. Type **1, 2, 3** analysis.
 8. Protein coding regions (pcdrs) are predicted in the contigs by FragGeneScanRs. Type **1, 2, 3** analysis.
 9. CD-HIT is used to reduce the redundancy of the pcdrs. Type **1, 2, 3** analysis.
-10. The pcdrs are screened against the spd through HMMER. Any pcdr with at least one hit from this screening is retained (set 1). Type **1, 2, 3** analysis.
-11. The rest of the pcdrs are screened against the sfpd through DIAMOND BLASTP, retaining only those with at least one hit with an e-value lower than the threshold (set 2). In addition, set 1, if not empty, is screened against the Swiss-Prot protein database through DIAMOND BLASTP. Type **2, 3** analysis.
+10. The pcdrs are screened against the SPD through HMMER. Any pcdr with at least one hit from this screening is retained (set 1). Type **1, 2, 3** analysis.
+11. The rest of the pcdrs are screened against the SFPD through DIAMOND BLASTP, retaining only those with at least one hit with an e-value lower than the threshold (set 2). In addition, set 1, if not empty, is screened against the Swiss-Prot protein database through DIAMOND BLASTP. Type **2, 3** analysis.
 12. Both sets are screened against all the profiles of the Pfam database through HMMER. Type **1, 2, 3** analysis.
 13. Topology prediction is performed by Phobius. Type **1, 2, 3** analysis.
 14. Motifs provided by the user are screened against each protein. Type **1, 2, 3** analysis.
@@ -71,12 +71,12 @@ Kraken2 route stages:
 COMEBin/MetaBinner route stages:
 
 1.	The selected “taxonomy” protein families are determined based on their input codes and their profiles are collected.
-2.	The "taxonomy profile database" (tpd) is created.
+2.	The "taxonomy profile database" (TPD) is created.
 3.	The “taxonomy” protein names associated with the selected families are collected.
-4.	The protein database is filtered based on the collected protein names and the “taxonomy filtered protein database” (tfpd) is created.
+4.	The protein database is filtered based on the collected protein names and the “taxonomy filtered protein database” (TFPD) is created.
 5.	The contigs are binned based on COMEBin or MetaBinner.
-6.	The pcdrs are screened against the tpd through HMMER.
-7.	Any pcdr with at least one hit against the tpd is screened against the tfpd through DIAMOND BLASTP.
+6.	The pcdrs are screened against the TPD through HMMER.
+7.	Any pcdr with at least one hit against the TPD is screened against the TFPD through DIAMOND BLASTP.
 8.	Taxon names are converted to TaxIds, and the latter are used to query taxonomic lineages, based on TaxonKit. Taxa are assigned to the bins and to their genes and proteins.
 9.	Each bin, along with any taxa assigned to it, is quantified based on the reads mapped to its contigs.
 
@@ -242,10 +242,10 @@ Option description:
 4. Description
 
 Terminology:
-spd: seek profile database
-tpd: taxonomy profile database
-sfpd: seek filtered protein database
-tfpd: taxonomy filtered protein database
+SPD: seek profile database
+TPD: taxonomy profile database
+SFPD: seek filtered protein database
+TFPD: taxonomy filtered protein database
 
 Options:
 ---------Input and output options---------
@@ -293,14 +293,14 @@ Options:
 
    -fct/--family-code-taxonomy    Str -Opt- The phylo protein family codes.
 
-   -dn/--database-name            Str -Opt- The seek profile database (spd) and seek filtered
+   -dn/--database-name            Str -Opt- The seek profile database (SPD) and seek filtered
                                   protein database name (sfdp).
 
-   -dnt/--database-name-taxonomy  Str -Opt- The taxonomy profile database (tpd) and taxonomy
+   -dnt/--database-name-taxonomy  Str -Opt- The taxonomy profile database (TPD) and taxonomy
                                   filtered protein database name (tfdp).
 
    -sns/--seek-names-status       True/False -Opt: False- Determines whether the protein names
-                                  used to filter the protein database and create the sfpd will
+                                  used to filter the protein database and create the SFPD will
                                   be determined solely based on the protein names provided by
                                   the user (True) or solely based on protein names
                                   automatically identified with or without the addition
@@ -315,7 +315,7 @@ Options:
                                   used for the filtering.
 
    -tns/--taxonomy-names-status   True/False -Opt: False- Determines whether the protein names
-                                  used to filter the protein database and create the tfpd will
+                                  used to filter the protein database and create the TFPD will
                                   be determined solely based on the protein names provided by
                                   the user (True) or solely based on protein names
                                   automatically identified with or without the addition
@@ -338,9 +338,9 @@ Options:
                                   mode determines the type of analysis by the seek
                                   functionality. '1': The seek functionality will only search
                                   for proteins to be annotated which include at least one of
-                                  the profiles of the spd. '2': The seek functionality will
+                                  the profiles of the SPD. '2': The seek functionality will
                                   only search for proteins to be annotated that have at least
-                                  one hit against the sfpd with a low enough e-value. '3': The
+                                  one hit against the SFPD with a low enough e-value. '3': The
                                   seek functionality includes both types of analysis '1' and
                                   '2'.
 
@@ -353,7 +353,7 @@ Options:
 
    -fpd/--filter-protein-database True/False -Opt: False- Determines whether the protein
                                   database will be filtered based on protein names to create
-                                  the sfpd and tfpd.
+                                  the SFPD and TFPD.
 
    -ps/--preftech-size            Int -Opt: 20- The maximum file size to download in KB (K for
                                   kilobytes, M for megabytes, G gigabytes).
@@ -889,7 +889,7 @@ KRAKEN_72_DB_PATH=""
 PROTEIN_DB_PATH="${PS_PATH}/parameter_files/docker/nr_part.fasta"
 ~~~
 
-2. <p align="justify">Move in the "parameter_files" directory and run the following script, which will create the parameter files needed to run the seek and taxonomy analyses. Before creating the parameter files, you can modify any of the files in the "cas_als/ca_run/SRR3961740", "cas_als/ca_run/DRR163688 and "cas_als/al_run/SRR17771278" directories which are used as the basis to create the same parameter files with the right paths, according to the host system. To perform the analysis based on identical factors with the ones set for the seek and taxonomy evaluation described in the [manuscript under review], certain modifications are needed in the parameter files associated with these samples. Firstly, set an environment to use COMEBin with a GPU. Secondly, make ProteoSeeker skip the screening of proteins without any of the seek domains against the sfpd searching for hits of low enough e-value. Thirdly, do not allow memory mapping for Kraken2. Fourthly, set the number of threads equal to 24. If none of these modifications are made, the results of the evaluation regarding the three documented and studied enzymes, which are described in the [manuscript under review], will be the same. These modifications were done to the parameter files in order for any user without a GPU or with low RAM or few CPUs available to be able to run the seek and taxonomy evaluation tests and skip the screening against the sfpd as each enzyme of interest contains at least one seek domain, thus saving time on each analysis. To make these modifications, you should provide the name of an environment where COMEBin is able to run with a GPU at the option "comebin_env" and the path of the parent directory of "run_comebin.sh" at the option "comebin_bin_path", set the option "create_nr_db_status" equal to False (or provide no value) for the parameter files regarding the Kraken2 taxonomy route (meaning not the files containing the "cnr" or "mnr" or "sra_dbs" phrases in their names), set the option "kraken_memory_mapping" equal to False and set "thread_num" equal to 24.</p>
+2. <p align="justify">Move in the "parameter_files" directory and run the following script, which will create the parameter files needed to run the seek and taxonomy analyses. Before creating the parameter files, you can modify any of the files in the "cas_als/ca_run/SRR3961740", "cas_als/ca_run/DRR163688 and "cas_als/al_run/SRR17771278" directories which are used as the basis to create the same parameter files with the right paths, according to the host system. To perform the analysis based on identical factors with the ones set for the seek and taxonomy evaluation described in the [manuscript under review], certain modifications are needed in the parameter files associated with these samples. Firstly, set an environment to use COMEBin with a GPU. Secondly, make ProteoSeeker skip the screening of proteins without any of the seek domains against the SFPD searching for hits of low enough e-value. Thirdly, do not allow memory mapping for Kraken2. Fourthly, set the number of threads equal to 24. If none of these modifications are made, the results of the evaluation regarding the three documented and studied enzymes, which are described in the [manuscript under review], will be the same. These modifications were done to the parameter files in order for any user without a GPU or with low RAM or few CPUs available to be able to run the seek and taxonomy evaluation tests and skip the screening against the SFPD as each enzyme of interest contains at least one seek domain, thus saving time on each analysis. To make these modifications, you should provide the name of an environment where COMEBin is able to run with a GPU at the option "comebin_env" and the path of the parent directory of "run_comebin.sh" at the option "comebin_bin_path", set the option "create_nr_db_status" equal to False (or provide no value) for the parameter files regarding the Kraken2 taxonomy route (meaning not the files containing the "cnr" or "mnr" or "sra_dbs" phrases in their names), set the option "kraken_memory_mapping" equal to False and set "thread_num" equal to 24.</p>
 
 ~~~bash
 python seek_tax_par_files.py
