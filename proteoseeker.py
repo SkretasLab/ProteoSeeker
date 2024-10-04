@@ -4141,7 +4141,7 @@ def kraken_binning(kraken_mode, contigs_to_reads_dict, read_to_species_dict, tax
             for line in taxname_lines:
                 line = line.rstrip("\n")
                 line_splited = line.split("\t")
-                taxid = line_splited[0]
+                taxid = int(line_splited[0])
                 taxname = line_splited[1]
                 taxid_to_species_dict[taxid] = taxname
     if kraken_mode:
@@ -6973,3 +6973,4 @@ if __name__ == "__main__":
                 exit()
             arg_input_command = "{} {} {}".format(arg_input_command, sys.argv[i], sys.argv[i+1])
     enzannmtg(arg_input_folder, arg_sra_code, arg_contigs, arg_protein_input, arg_adapters_path, arg_protein_db_path, arg_kraken_db_path, arg_profiles_path, arg_profiles_phylo_path, arg_profiles_broad_path, arg_swissprot_path, arg_motifs_path, arg_options_file_path, arg_output_path, arg_family_code, arg_family_code_phylo, arg_db_name, arg_db_name_phylo, arg_input_protein_names_status, arg_input_protein_names, arg_input_protein_names_phylo_status, arg_input_protein_names_phylo, arg_name_thr, arg_seek_route, arg_paired_end, arg_compressed, arg_create_nr_db_status, arg_prefetch_size, arg_adapters_status, arg_add_seek_info, arg_add_taxonomy_info, arg_skip_fastqc, arg_bbduk_max_ram, arg_clear_space, arg_k_list, arg_kraken_mode, arg_kraken_threshold, arg_kraken_memory_mapping, arg_bracken_length, arg_bracken_level, arg_bracken_threshold, arg_binning_tool, arg_bin_ram_ammount, arg_bin_num_contig_len, arg_bin_num_kmer, arg_comebin_batch_size, arg_cd_hit_t, arg_cd_hit_mem, arg_prs_source, arg_genetic_code, arg_val_type, arg_second_dom_search, arg_e_value_nodom_thr, arg_add_type, arg_add_info, arg_thread_num, arg_pdf_threads, arg_after_trimming, arg_after_alignment, arg_after_gene_pred, arg_after_binning, arg_after_db, arg_after_tm, arg_after_ap, arg_up_to_sra, arg_up_to_databases, arg_up_to_trimming_com, arg_up_to_trimming_uncom, arg_up_to_alignment, arg_sra_env, arg_fastqc_env, arg_bbduk_env, arg_megahit_env, arg_kraken_env, arg_bracken_env, arg_metabinner_env, arg_comebin_env, arg_cdhit_env, arg_genepred_env, arg_hmmer_env, arg_diamond_env, arg_taxonkit_env, arg_phobius_env, arg_bowtie_env, arg_ana_dir_path, arg_ana_sh_path, arg_prefetch_path, arg_vdb_validate_path, arg_fastq_dump_path, arg_fastqc_path, arg_gzip_path, arg_cat_path, arg_bbduk_path, arg_megahit_path, arg_kraken_path, arg_bracken_path, arg_alpha_diversity_path, arg_metabinner_bin_path, arg_comebin_bin_path, arg_fraggenescanrs_path, arg_hmmscan_path, arg_hmmpress_path, arg_hmmfetch_path, arg_diamond_path, arg_cd_hit_path, arg_taxonkit_path, arg_phobius_path, arg_bowtie_build_path, arg_bowtie_path, arg_input_command)
+    
