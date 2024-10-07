@@ -221,7 +221,6 @@ if __name__ == "__main__":
     annotation_txt_path = ""
     cm_species_path = ""
     if len(sys.argv) > 1:
-        arg_input_command = "{}".format(sys.argv[0])
         for i in range(1, len(sys.argv), 2):
             if sys.argv[i] == "-i" or sys.argv[i] == "--input":
                 annotation_txt_path = sys.argv[i+1]
