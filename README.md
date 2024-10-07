@@ -689,15 +689,15 @@ my $DECODEANHMM =      "$PHOBIUS_DIR/decodeanhmm.64bit";
 
 <p align="justify">For both cases of bind mounts and volumes, you can perform a test based on a template parameter file (located at the "parameter_files" directory in the bind mount or volume) each of which runs a different analysis. The test is selected with a number based on one of the scripts "docker_bindmount_run_proteoseeker.sh" and "docker_vol_run_proteoseeker.sh" as described in sections "3.3.1" and "3.3.2". All template parameter files are ready to be used to run ProteoSeeker by analyzing the sample with the SRA code "SRR12829170". Each parameter file is also set up to handle FASTQ paired-end input. Furthermore, the light_v1.0.0 Docker image may be used to run a container for ProteoSeeker for the Kraken2 taxonomy route only if you provide a path to a Kraken2 database in the shared directory (bind mount or volume). The selections are described below:</p>
 
-Selection | Mode | Analysis Type | Taxonomy Route | Input
---- | --- | --- | --- | ---
-1 | seek & taxonomy | type 3 | Kraken2 | SRA or FASTQ paired-end
-2 | seek & taxonomy | type 3 | COMEBin/MetaBinner: MetaBinner | SRA or FASTQ paired-end
-3 | seek & taxonomy | type 3 | COMEBin/MetaBinner: COMEBin | SRA or FASTQ paired-end
-4 | seek | type 3 | - | SRA or FASTQ paired-end
-5 | taxonomy | - | Kraken2 | SRA or FASTQ paired-end
-6 | taxonomy | - | COMEBin/MetaBinner: MetaBinner | SRA or FASTQ paired-end
-7 | taxonomy | - | COMEBin/MetaBinner: COMEBin | SRA or FASTQ paired-end
+Selection | Parameter File | Mode | Analysis Type | Taxonomy Route | Input
+--- | --- | --- | --- | --- | ---
+1 | par_seek_tax_k_p.txt | seek & taxonomy | type 3 | Kraken2 | SRA or FASTQ paired-end
+2 | par_seek_tax_m_p.txt | seek & taxonomy | type 3 | COMEBin/MetaBinner: MetaBinner | SRA or FASTQ paired-end
+3 | par_seek_tax_c_p.txt | seek & taxonomy | type 3 | COMEBin/MetaBinner: COMEBin | SRA or FASTQ paired-end
+4 | par_seek_p.txt | seek | type 3 | - | SRA or FASTQ paired-end
+5 | par_tax_k_p.txt | taxonomy | - | Kraken2 | SRA or FASTQ paired-end
+6 | par_tax_m_p.txt | taxonomy | - | COMEBin/MetaBinner: MetaBinner | SRA or FASTQ paired-end
+7 | par_tax_c_p.txt | taxonomy | - | COMEBin/MetaBinner: COMEBin | SRA or FASTQ paired-end
 
 ### 3.3.1 Bind mount
 <p align="justify">A bind mount is a directory located in the local host and not run by Docker. The data stored in the bind mount are retained after the container is stopped or exits, may be used by different containers and are also accessible by the local host. From the main directory of ProteoSeeker run the Bash script below (should not be run with sudo) which performs the following actions:</p>
