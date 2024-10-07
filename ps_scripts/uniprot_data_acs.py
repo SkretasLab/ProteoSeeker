@@ -20,7 +20,7 @@ def help_message():
     print("uniprot_data_acs.py Version 1.0.0")
     print()
     print("Usage:")
-    print("python uniprot_data_acs.py -i <swiss_prot_file>")
+    print("python uniprot_data_acs.py -i <swiss_prot_file_path>")
     print()
     print("This tool can be used to process information from the Swiss-Prot database downloaded as a file from UniprotKB.")
     print("It outputs a series of files each containing different types of information based on the Swiss-Prot file.")
