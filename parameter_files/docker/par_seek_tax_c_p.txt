@@ -1,5 +1,5 @@
 #---------Input and output options---------
-input_folder="input"
+input_folder="/home/ps_data/input_files"
 sra_code="SRR12829170"
 contigs=""
 protein_input=""
