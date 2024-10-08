@@ -90,7 +90,7 @@ Docker engine for Ubuntu: https://docs.docker.com/engine/install/ubuntu/
 
 <p align="justify">Then, download the image of ProteoSeeker from Docker Hub. There are two versions. The "main_v1.0.0" version contains the "Kraken 2/Bracken Refseq indexes Collection Standard-8 database" while the "light_v1.0.0" version does not. Hence, the main_v1.0.0 version can be used directly to run the seek or the taxonomy mode of ProteoSeeker, specifically through the Kraken2 route. The light_v1.0.0 version can be used directly to run only the seek mode of ProteoSeeker. Neither version contains a protein database. The process of using a protein database through Docker is described below. Both versions can be modified to utilize a protein database and thus be used to run the seek mode type 2 or 3 analysis and the taxonomy mode through the COMEBin/MetaBinner route of ProteoSeeker.</p>
 
-The main_v1.0.0 version has a download size of  **12.92 GB** and decompressed has a size of **29.9 GB**. To install the main_v1.0.0 version use **one** of the following commands:
+The main_v1.0.0 version has a download size of  **13.16 GB** and decompressed has a size of **30.4 GB**. To install the main_v1.0.0 version use **one** of the following commands:
 ~~~bash
 sudo docker image pull skretaslab/proteoseeker
 or
@@ -99,7 +99,7 @@ or
 sudo docker image pull skretaslab/proteoseeker:main_v1.0.0
 ~~~
 
-The light_v1.0.0 version has a download size of  **7.42 GB** and decompressed has a size of **21.8 GB**. To install the light_v1.0.0 version use the following command:
+The light_v1.0.0 version has a download size of  **7.66 GB** and decompressed has a size of **22.3 GB**. To install the light_v1.0.0 version use the following command:
 ~~~bash
 sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
 ~~~
