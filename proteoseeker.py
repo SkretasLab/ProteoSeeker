@@ -602,10 +602,11 @@ def craete_phmm_db(family_code, family_group_name, enzyme_domains_folder, fam_nu
             new_file_dom_names = open(new_file_dom_names_name, "w")
             domains_selected = []
             for dom_code in d_unique:
-                dom_name = pfam_names_doms_dict[dom_code]
-                domains_selected.append(dom_name)
-                new_file_dom_codes.write("{}\n".format(dom_code))
-                new_file_dom_names.write("{}\n".format(dom_name))
+                if dom_code in pfam_names_doms_dict.keys():
+                    dom_name = pfam_names_doms_dict[dom_code]
+                    domains_selected.append(dom_name)
+                    new_file_dom_codes.write("{}\n".format(dom_code))
+                    new_file_dom_names.write("{}\n".format(dom_name))
             new_file_dom_codes.close()
             new_file_dom_names.close()
             # Createa a pHMM file with the corresponding profile names.
