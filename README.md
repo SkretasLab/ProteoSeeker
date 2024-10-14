@@ -807,7 +807,7 @@ conda deactivate
 <p align="justify">You can use this profile database based on its name, in this case "custom_pd", in a ProteoSeeker run by providing as that name to the "db_name" or "db_name_phylo" parameter in the parameters file, based on whether it is an SPD or TPD respectively. Similarly, can you use its name as a value to the options "-dn/--database-name" or "-dnt/--database-name-taxonomy".</p>
 
 ### 3.5.2 Filtered protein database
-A filtered protein database should be nothing more than a protein database which already contains the protein sequences you are interested in or is narrowed down to a group of proteins of interest. You can provide this database as the protein database to be filtered (protein_db_path)
+A filtered protein database may be a protein database which already contains the protein sequences you are interested in or is narrowed down to a group of proteins of interest. You can provide this database as the protein database to be filtered (parameters file: protein_db_path, command-line option: )
 
 
 # 4. Test Cases
