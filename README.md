@@ -36,7 +36,7 @@ The steps of the seek mode of ProteoSeeker:
 8. Protein coding regions (pcdrs) are predicted in the contigs by FragGeneScanRs. Type **1, 2, 3** analysis.
 9. CD-HIT is used to reduce the redundancy of the pcdrs. Type **1, 2, 3** analysis.
 10. The pcdrs are screened against the SPD through HMMER. Any pcdr with at least one hit from this screening is retained (set 1). Type **1, 2, 3** analysis.
-11. The rest of the pcdrs are screened against the SFPD through DIAMOND BLASTP, retaining only those with at least one hit with an e-value lower than the threshold (set 2). In addition, set 1, if not empty, is screened against the Swiss-Prot protein database through DIAMOND BLASTP. Type **2, 3** analysis.
+11. The rest of the pcdrs are screened against the SFPD through DIAMOND, retaining only those with at least one hit with an e-value lower than the threshold (set 2). In addition, set 1, if not empty, is screened against the Swiss-Prot protein database through DIAMOND. Type **2, 3** analysis.
 12. Both sets are screened against all the profiles of the Pfam database through HMMER. Type **1, 2, 3** analysis.
 13. Topology prediction is performed by Phobius. Type **1, 2, 3** analysis.
 14. Motifs provided by the user are screened against each protein. Type **1, 2, 3** analysis.
@@ -76,7 +76,7 @@ COMEBin/MetaBinner route stages:
 4.	The protein database is filtered based on the collected protein names and the “taxonomy filtered protein database” (TFPD) is created.
 5.	The contigs are binned based on COMEBin or MetaBinner.
 6.	The pcdrs are screened against the TPD through HMMER.
-7.	Any pcdr with at least one hit against the TPD is screened against the TFPD through DIAMOND BLASTP.
+7.	Any pcdr with at least one hit against the TPD is screened against the TFPD through DIAMOND.
 8.	Taxon names are converted to TaxIds, and the latter are used to query taxonomic lineages, based on TaxonKit. Taxa are assigned to the bins and to their genes and proteins.
 9.	Each bin, along with any taxa assigned to it, is quantified based on the reads mapped to its contigs.
 
@@ -606,8 +606,8 @@ Options:
    -hen/--hmmer-env               Str -Opt: ps_hmmer- The conda environment for HMMER.
                                   'None/none': To not use an environment at all.
 
-   -den/--dimaond-env             Str -Opt: ps_diamond- The conda environment for DIAMOND
-                                  BLASTP. 'None/none': To not use an environment at all.
+   -den/--dimaond-env             Str -Opt: ps_diamond- The conda environment for DIAMOND.
+                                  'None/none': To not use an environment at all.
 
    -ten/--taxonkit-env            Str -Opt: ps_taxonkit- The conda environment for taxonkit.
                                   'None/none': To not use an environment at all.
