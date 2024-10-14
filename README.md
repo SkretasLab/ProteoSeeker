@@ -791,6 +791,23 @@ protein_db_path="path_to_ProteoSeeker-main/ProteoSeeker-main/nr_database/nr"
 ### 3.4.1 Utilizing Phobius
 <p align="justify">When ProteoSeeker is run by the command-line, in order to utilize Phobius, you should download and extract Phobius in a directory and modify the value of "phobius_path" in the parameter file or the value of the corresponding option of "proteoseeker.py" to that of the path of the Phobius directory.</p>
 
+## 3.5 Providing a pre-built profile or filtered protein database
+### 3.5.1 Profile database
+<p align="justify">You can create your own profile or filtered protein database and provide them directly to ProteoSeeker. To create a profile database, move in the "profile_protein_dbs/profile_dbs" directory and create a new directory for your profile database with the prefix "phmm_db_", for example "phmm_db_custom_pd". Also, create a TXT file with the Pfam names of the Pfam profiles you want to add in the database. Each line of the file should include one Pfam name. Then, run the following:</p>
+
+~~~bash
+conda activate ps_hmmer
+hmmfetch -o profiles -f Pfam-A.hmm profile_names.txt
+hmmpress profiles
+conda deactivate
+~~~
+
+<p align="justify">You can use this profile database based on its name, in this case "custom_pd", in a ProteoSeeker run by providing as that name to the "db_name" or "db_name_phylo" parameter in the parameters file, based on whether it is an SPD or TPD respectively. Similarly, can you use its name as a value to the options "-dn/--database-name" or "-dnt/--database-name-taxonomy".</p>
+
+### 3.5.2 Filtered protein database
+A filtered protein database should be nothing more than a protein database which already contains the protein sequences you are interested in or is narrowed down to a group of proteins of interest. You can provide this database as the protein database to be filtered (protein_db_path)
+
+
 # 4. Test Cases
 <p align="justify">All tests for the evaluation were run based on the ProteoSeeker version 1.0.0 and the tool versions described in it, which refer to the "v1.0.0" release of ProteoSeeker (in the current repository). The collection dates for the databases used in the evaluation can be found below. In addition, we also note the download date of the flat file of the reviewed proteins from the Swiss-Prot/UniprotKB database, which was used to collect the information about its proteins in relation to their protein families, Pfam profiles, protein names and protein lengths. <strong>All commands provided below to run the taxonomy evaluation tests require that you are in a conda environment which contains any installation of Python version 3.0 or higher.</strong></p>
 
