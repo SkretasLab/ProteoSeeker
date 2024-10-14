@@ -792,8 +792,10 @@ protein_db_path="path_to_ProteoSeeker-main/ProteoSeeker-main/nr_database/nr"
 <p align="justify">When ProteoSeeker is run by the command-line, in order to utilize Phobius, you should download and extract Phobius in a directory and modify the value of "phobius_path" in the parameter file or the value of the corresponding option of "proteoseeker.py" to that of the path of the Phobius directory.</p>
 
 ## 3.5 Providing a pre-built profile or filtered protein database
+<p align="justify">You can create your own profile or filtered protein database and provide them directly to ProteoSeeker.</p>
+
 ### 3.5.1 Profile database
-<p align="justify">You can create your own profile or filtered protein database and provide them directly to ProteoSeeker. To create a profile database, move in the "profile_protein_dbs/profile_dbs" directory and create a new directory for your profile database with the prefix "phmm_db_", for example "phmm_db_custom_pd". Also, create a TXT file with the Pfam names of the Pfam profiles you want to add in the database. Each line of the file should include one Pfam name. Then, run the following:</p>
+<p align="justify">To create a profile database, move in the "profile_protein_dbs/profile_dbs" directory and create a new directory for your profile database with the prefix "phmm_db_", for example "phmm_db_custom_pd". Also, create a TXT file with the Pfam names of the Pfam profiles you want to add in the database. Each line of the file should include one Pfam name. Then, run the following:</p>
 
 ~~~bash
 conda activate ps_hmmer
