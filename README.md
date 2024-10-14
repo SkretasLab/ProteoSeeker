@@ -807,11 +807,17 @@ conda deactivate
 <p align="justify">You can use this profile database based on its name, in this case "custom_pd", in a ProteoSeeker run by providing as that name to the "db_name" or "db_name_phylo" parameter in the parameters file, based on whether it is an SPD or TPD respectively. Similarly, can you use its name as a value to the options "-dn/--database-name" or "-dnt/--database-name-taxonomy".</p>
 
 ### 3.5.2 Filtered protein database
-A filtered protein database may be a protein database which already contains the protein sequences you are interested in or is narrowed down to a group of proteins of interest. You can provide this database as the protein database to be filtered (parameters file: "protein_db_path", command-line option: "-pdp/--protein-database-path") or build the database and provide it as a pre-built database without the need for filtering and to be built. To build the database create a directory for your filtered protein database in the "profile_protein_dbs/filtered_protein_dbs" directory with the prefix "fpr_", for example "fpr_custom_fpd". Move in the latter directory and run the following:
+A filtered protein database may be a protein database which already contains the protein sequences you are interested in or is narrowed down to a group of proteins of interest. You can provide this database as the protein database to be filtered (parameters file: "protein_db_path", command-line option: "-pdp/--protein-database-path") or build the database and provide it as a pre-built database without the need for filtering and to be built. To build the database create a directory for your filtered protein database in the "profile_protein_dbs/filtered_protein_dbs" directory with the prefix "fpr_", for example "fpr_custom_fpd". Place in the latter directory your file with the protein sequences of interest in FASTA format, for example "custom_prs.fasta". Move in the latter directory and run the following:
 
 ~~~bash
-
+conda activate "ps_diamond"
+diamond makedb --threads 4 --in "profile_protein_dbs/filtered_protein_dbs/fpr_custom_fpd/custom_prs.fasta" --db "profile_protein_dbs/filtered_protein_dbs/filtered_protein_dbs/custom_prs_database"
+conda deactivate
 ~~~
+
+<p align="justify">You can use this profile database based on its name, in this case "custom_fpd", in a ProteoSeeker run by providing as that name to the "db_name" or "db_name_phylo" parameter in the parameters file, based on whether it is an SFPD or TFPD respectively. Similarly, can you use its name as a value to the options "-dn/--database-name" or "-dnt/--database-name-taxonomy".</p>
+
+<p align="justify">If you want to use a pre-built profile and filtered protein database make sure to use the same suffix name for both directories for the respective databases, for example "profile_protein_dbs/profile_dbs/phmm_db_cas" and "profile_protein_dbs/filtered_protein_dbs/fpr_cas".</p>
 
 # 4. Test Cases
 <p align="justify">All tests for the evaluation were run based on the ProteoSeeker version 1.0.0 and the tool versions described in it, which refer to the "v1.0.0" release of ProteoSeeker (in the current repository). The collection dates for the databases used in the evaluation can be found below. In addition, we also note the download date of the flat file of the reviewed proteins from the Swiss-Prot/UniprotKB database, which was used to collect the information about its proteins in relation to their protein families, Pfam profiles, protein names and protein lengths. <strong>All commands provided below to run the taxonomy evaluation tests require that you are in a conda environment which contains any installation of Python version 3.0 or higher.</strong></p>
