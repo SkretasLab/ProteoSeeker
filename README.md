@@ -795,11 +795,11 @@ protein_db_path="path_to_ProteoSeeker-main/ProteoSeeker-main/nr_database/nr"
 <p align="justify">You can create your own profile or filtered protein database and provide them directly to ProteoSeeker.</p>
 
 ### 3.5.1 Profile database
-<p align="justify">To create a profile database, move in the "profile_protein_dbs/profile_dbs" directory and create a new directory for your profile database with the prefix "phmm_db_", for example "phmm_db_custom_pd". Also, create a TXT file with the Pfam names of the Pfam profiles you want to add in the database. Each line of the file should include one Pfam name. Then, run the following:</p>
+<p align="justify">To create a profile database, move in the "profile_protein_dbs/profile_dbs" directory and create a new directory for your profile database with the prefix "phmm_db_", for example "phmm_db_custom_pd". Also, create a TXT file with the Pfam names of the Pfam profiles you want to add in the database, for example "profile_names.txt". Each line of the file should include one Pfam name. In addition, you need the "Pfam-A.hmm" database, which is downloaded when ProteoSeeker is installed and it locate at "" of the ProteoSeeker main installation directory. Then, run the following:</p>
 
 ~~~bash
 conda activate ps_hmmer
-hmmfetch -o profiles -f Pfam-A.hmm profile_names.txt
+hmmfetch -o profiles -f path_to_pfam/Pfam-A.hmm profile_names.txt
 hmmpress profiles
 conda deactivate
 ~~~
