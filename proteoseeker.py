@@ -5481,9 +5481,9 @@ def enzannmtg(input_folder=None, sra_code=False, contigs=False, protein_input=Fa
                             pdf_threads = int(option_value)
                         # Processes performed after
                         if option_type == "after_preprocessing":
-                            after_preprocessing = option_value
+                            after_trimming = option_value
                             arg_str = "-after_preprocessing"
-                            after_preprocessing = check_i_value(after_preprocessing, arg_str)
+                            after_trimming = check_i_value(after_trimming, arg_str)
                         if option_type == "after_assembly":
                             after_alignment = option_value
                             arg_str = "after_assembly"
