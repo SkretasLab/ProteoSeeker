@@ -171,7 +171,7 @@ conda install conda-forge::tar
 
 ~~~bash
 git clone https://github.com/SkretasLab/ProteoSeeker.git
-cd ProteoSeeker-1.0.0
+cd ProteoSeeker-main
 sudo chmod -R 755 installation
 cd installation
 conda config --add channels conda-forge
@@ -787,9 +787,9 @@ conda deactivate
 
 <p align="justify">Then, provide a suitable protein database. Any file with protein sequences in FASTA format can be used to run the seek mode, type 2 or type 3 analysis of ProteoSeeker. For the taxonomy mode and COMEBin/MetaBinner route of ProteoSeeker the file used as the protein database should contain headers (for its protein sequences) which contain information about the taxon/taxa associated with their protein sequences, in a style identical to the one used by the non-redundant (nr) database of NCBI or the Uniref100/90/50 databases of UniprotKB. For example, the template parameter files will contain the absolute path to the nr database, as shown below, if the latter was installed through the "nr_install.sh" Bash script. To use another protein database modify the path below to that of your protein database.</p>
 
-protein_db_path="path_to_ProteoSeeker-1.0.0/ProteoSeeker-1.0.0/nr_database/nr"
+protein_db_path="path_to_ProteoSeeker-main/ProteoSeeker-main/nr_database/nr"
 
-<p align="justify">where "path_to_ProteoSeeker-1.0.0" is the absolute path to the "ProteoSeeker-1.0.0" directory in your system.</p>
+<p align="justify">where "path_to_ProteoSeeker-main" is the absolute path to the "ProteoSeeker-main" directory in your system.</p>
 
 ### 3.4.1 Utilizing Phobius
 <p align="justify">When ProteoSeeker is run by the command-line, in order to utilize Phobius, you should download and extract Phobius in a directory and modify the value of "phobius_path" in the parameter file or the value of the corresponding option of "proteoseeker.py" to that of the path of the Phobius directory.</p>
