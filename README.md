@@ -227,10 +227,10 @@ conda deactivate
 python uniprot_data_acs.py -i <Swiss-Prot/UniprotKB_flat_file>
 ~~~
 
-<p align="justify">For the Pfam datasets, the Pfam database should already be installed in the "pfam_database" directory of the main "proteoseeker" directory. Run the command provided below. This command will generate a series of files. The files to be updated need to be replaced in the "profile_protein_dbs" directory. These files are: "prfamilies_numbered.tsv" and "prfamilies_length.tsv". For more information about the script the user can run the script with the "-h" option.</p>
+<p align="justify">For the Pfam datasets, the Pfam database should already be installed in the "pfam_database" directory of the main "proteoseeker" directory. Run the command provided below. This command will generate a series of files. The files to be updated need to be replaced in the "profile_protein_dbs" directory. These files are: "pfam_accs_names.tsv" and "profiles_lengths.tsv". For more information about the script the user can run the script with the "-h" option.</p>
 
 ~~~bash
-python uniprot_data_acs.py -i <Swiss-Prot/UniprotKB_flat_file>
+python pfam_info.py
 ~~~
 
 # 3. Use
