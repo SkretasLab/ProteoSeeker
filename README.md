@@ -220,13 +220,18 @@ conda deactivate
 
 ## 2.4 Swiss-Prot/UniprotKB and Pfam preprocessed datasets
 <p align="justify">In case the user needs to update the preprocessed files generated from processing information from the Swiss-Prot/UniprotKB flat file or the Pfam database the scripts available in the ps_scripts can be utilized.</p>
-<p align="justify">For the Swiss-Prot/UniprotKB datasets, the user should download in the "ps_scripts" directory the flat file for Swiss-Prot/UniprotKB and then run the command provided below. This command will generate a series of files. The files to be updated need to be replaced in the "profile_protein_dbs" directory. These files are: "", "", "" and "". For more information about the script the user can run the script with the "-h" option.</p>
+
+<p align="justify">For the Swiss-Prot/UniprotKB datasets, the user should download in the "ps_scripts" directory the flat file for Swiss-Prot/UniprotKB and then run the command provided below. This command will generate a series of files. The files to be updated need to be replaced in the "profile_protein_dbs" directory. These files are: "prfamilies_numbered.tsv", "prfamilies_pfamdomains.tsv" and "prfamilies_length.tsv". For more information about the script the user can run the script with the "-h" option.</p>
 
 ~~~bash
 python uniprot_data_acs.py -i <Swiss-Prot/UniprotKB_flat_file>
 ~~~
 
+<p align="justify">For the Pfam datasets, the Pfam database should already be installed in the "pfam_database" directory of the main "proteoseeker" directory. Run the command provided below. This command will generate a series of files. The files to be updated need to be replaced in the "profile_protein_dbs" directory. These files are: "prfamilies_numbered.tsv" and "prfamilies_length.tsv". For more information about the script the user can run the script with the "-h" option.</p>
 
+~~~bash
+python uniprot_data_acs.py -i <Swiss-Prot/UniprotKB_flat_file>
+~~~
 
 # 3. Use
 <p align="justify">It is suggested to run ProteoSeeker in a Docker container through its image than directly through the command-line, when that is possible. Running ProteoSeeker through the command-line would be necessary to perform the tests described in the evaluation section or when the same SRA sample is to be analyzed multiple times. In this case, running ProteoSeeker directly through the command-line would retain the SRA file after it is downloaded and processed, so there is no need to download and process it again in future runs. <strong>You should delete file "info.txt" from the "input" directory before providing input files from that directory directly to ProteoSeeker.</strong> In addition, you could optionally delete the following files: "results_demo.txt" from the "results" directory, "sra_files_demo.txt" from the "sra_files" directory, "info.txt" from the "installation/output_errors" directory, "demo_file.txt" from the "profile_protein_dbs/profile_dbs", "profile_protein_dbs/filtered_protein_dbs" directories and "demo_file.txt" from directories "1", "2", ..., "19" in the "parameter_files" directory, as they are not needed to install or run ProteoSeeker (they were needed to retain the proper structure of directories in the repository of ProteoSeeker).</p>
