@@ -218,13 +218,13 @@ conda deactivate
 ## 2.3 Phobius
 <p align="justify">For either case of installation process, in order to use the topology and signal peptide predictions provided by Phobius you must download Phobius from https://phobius.sbc.su.se/data.html. As described in section "3.4" to utilize Phobius when running ProteoSeeker through the command-line you should also provide the path to the Phobius directory in the parameter file or as a parameter through the corresponding option of "proteoseeker.py". The default path for the Phobius installation in a Docker container from the proteoseeker Docker image is already set to the phobius directory of the shared directory and you should download and copy the Phobius installation files in that directory as explained in section "3.3" below. In any other case, ProteoSeeker will run without performing topology and signal peptide predictions in its seek functionality.</p>
 
-## 2.4 Swiss-Prot/UniprotKB and Pfam preprocessed datasets
-<p align="justify">In case the user needs to update the preprocessed files generated from processing information from the Swiss-Prot/UniprotKB flat file or the Pfam database the scripts available in the ps_scripts can be utilized.</p>
+## 2.4 UniprotKB/Swiss-Prot and Pfam preprocessed datasets
+<p align="justify">In case the user needs to update the preprocessed files generated from processing information from the UniprotKB/Swiss-Prot flat file or the Pfam database the scripts available in the ps_scripts can be utilized.</p>
 
-<p align="justify">For the Swiss-Prot/UniprotKB datasets the user should download the flat file for Swiss-Prot/UniprotKB and then run the command provided below. This command will generate a series of files as output in the same directory. The files to be updated are to be replaced in the "profile_protein_dbs" directory. These files are: "prfamilies_numbered.tsv", "prfamilies_pfamdomains.tsv" and "prfamilies_length.tsv". For more information about the script the user can run the script with the "-h" option.</p>
+<p align="justify">For the Swiss-Prot/UniprotKB datasets the user should download the flat file for UniprotKB/Swiss-Prot and then run the command provided below. This command will generate a series of files as output in the same directory. The files to be updated are to be replaced in the "profile_protein_dbs" directory. These files are: "prfamilies_numbered.tsv", "prfamilies_pfamdomains.tsv" and "prfamilies_length.tsv". For more information about the script the user can run the script with the "-h" option.</p>
 
 ~~~bash
-python uniprot_data_acs.py -i <swiss-prot/uniprotkb_flat_file_path>
+python uniprot_data_acs.py -i <uniprotkb/swiss-prot_flat_file_path>
 ~~~
 
 <p align="justify">For the Pfam datasets the Pfam HMM database is needed. This database should already be installed in the "pfam_database" directory of the main "proteoseeker" directory. Run the command provided below. This command will generate a series of files as output in the same directory. The files to be updated are to be replaced in the "profile_protein_dbs" directory. These files are: "pfam_accs_names.tsv" and "profiles_lengths.tsv". For more information about the script the user can run the script with the "-h" option.</p>
