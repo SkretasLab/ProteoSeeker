@@ -220,7 +220,7 @@ conda deactivate
 
 ## 2.4 Swiss-Prot/UniprotKB and Pfam preprocessed datasets
 <p align="justify">In case the user needs to update the preprocessed files generated from processing information from the Swiss-Prot/UniprotKB flat file or the Pfam database the scripts available in the ps_scripts can be utilized.</p>
-<p align="justify">For the Swiss-Prot/UniprotKB datasets, the user should download in the "ps_scripts" directory the flat file for Swiss-Prot/UniprotKB and then run the command provided below. This command will generate a series of files. The files to be updated need to be replaced in the "" directory. These files are: "", "", "" and "". For more information about the script the user can run the script with the "-h" option.</p>
+<p align="justify">For the Swiss-Prot/UniprotKB datasets, the user should download in the "ps_scripts" directory the flat file for Swiss-Prot/UniprotKB and then run the command provided below. This command will generate a series of files. The files to be updated need to be replaced in the "profile_protein_dbs" directory. These files are: "", "", "" and "". For more information about the script the user can run the script with the "-h" option.</p>
 
 ~~~bash
 python uniprot_data_acs.py -i <Swiss-Prot/UniprotKB_flat_file>
