@@ -221,13 +221,13 @@ conda deactivate
 ## 2.4 Swiss-Prot/UniprotKB and Pfam preprocessed datasets
 <p align="justify">In case the user needs to update the preprocessed files generated from processing information from the Swiss-Prot/UniprotKB flat file or the Pfam database the scripts available in the ps_scripts can be utilized.</p>
 
-<p align="justify">For the Swiss-Prot/UniprotKB datasets, the user should download in the "ps_scripts" directory the flat file for Swiss-Prot/UniprotKB and then run the command provided below. This command will generate a series of files. The files to be updated are to be replaced in the "profile_protein_dbs" directory. These files are: "prfamilies_numbered.tsv", "prfamilies_pfamdomains.tsv" and "prfamilies_length.tsv". For more information about the script the user can run the script with the "-h" option.</p>
+<p align="justify">For the Swiss-Prot/UniprotKB datasets the user should download the flat file for Swiss-Prot/UniprotKB and then run the command provided below. This command will generate a series of files as output in the same directory. The files to be updated are to be replaced in the "profile_protein_dbs" directory. These files are: "prfamilies_numbered.tsv", "prfamilies_pfamdomains.tsv" and "prfamilies_length.tsv". For more information about the script the user can run the script with the "-h" option.</p>
 
 ~~~bash
 python uniprot_data_acs.py -i <swiss-prot/uniprotkb_flat_file_path>
 ~~~
 
-<p align="justify">For the Pfam datasets, the Pfam HMM database is needed. This datbase should already be installed in the "pfam_database" directory of the main "proteoseeker" directory. Run the command provided below. This command will generate a series of files. The files to be updated are to be replaced in the "profile_protein_dbs" directory. These files are: "pfam_accs_names.tsv" and "profiles_lengths.tsv". For more information about the script the user can run the script with the "-h" option.</p>
+<p align="justify">For the Pfam datasets the Pfam HMM database is needed. This database should already be installed in the "pfam_database" directory of the main "proteoseeker" directory. Run the command provided below. This command will generate a series of files as output in the same directory. The files to be updated are to be replaced in the "profile_protein_dbs" directory. These files are: "pfam_accs_names.tsv" and "profiles_lengths.tsv". For more information about the script the user can run the script with the "-h" option.</p>
 
 ~~~bash
 python pfam_info.py -i <pfam_hmm_file_path>
