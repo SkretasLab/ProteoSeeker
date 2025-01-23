@@ -223,7 +223,7 @@ conda deactivate
 <p align="justify">For the Swiss-Prot/UniprotKB datasets, the user should download in the "ps_scripts" directory the flat file for Swiss-Prot/UniprotKB and then run the command provided below. This command will generate a series of files. The files to be updated need to be replaced in the "" directory. These files are: "", "", "" and "". For more information about the script the user can run the script with the "-h" option.</p>
 
 ~~~bash
-python uniprot_data_acs.py -i <Swiss-Prot/UniprotKB flat file>
+python uniprot_data_acs.py -i <Swiss-Prot/UniprotKB_flat_file>
 ~~~
 
 
