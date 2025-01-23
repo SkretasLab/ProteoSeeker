@@ -215,8 +215,18 @@ conda deactivate
 ./remove.sh
 ~~~
 
-### Phobius
+## 2.3 Phobius
 <p align="justify">For either case of installation process, in order to use the topology and signal peptide predictions provided by Phobius you must download Phobius from https://phobius.sbc.su.se/data.html. As described in section "3.4" to utilize Phobius when running ProteoSeeker through the command-line you should also provide the path to the Phobius directory in the parameter file or as a parameter through the corresponding option of "proteoseeker.py". The default path for the Phobius installation in a Docker container from the proteoseeker Docker image is already set to the phobius directory of the shared directory and you should download and copy the Phobius installation files in that directory as explained in section "3.3" below. In any other case, ProteoSeeker will run without performing topology and signal peptide predictions in its seek functionality.</p>
+
+## 2.4 Swiss-Prot/UniprotKB and Pfam preprocessed datasets
+<p align="justify">In case the user needs to update the preprocessed files generated from processing information from the Swiss-Prot/UniprotKB flat file or the Pfam database the scripts available in the ps_scripts can be utilized.</p>
+<p align="justify">For the Swiss-Prot/UniprotKB datasets, the user should download in the "ps_scripts" directory the flat file for Swiss-Prot/UniprotKB and then run the following command. This command will generate a series of files. The files to be updated need to be replaced in the "" directory. These files are: "", "", "" and "".</p>
+
+~~~bash
+python .py
+~~~
+
+
 
 # 3. Use
 <p align="justify">It is suggested to run ProteoSeeker in a Docker container through its image than directly through the command-line, when that is possible. Running ProteoSeeker through the command-line would be necessary to perform the tests described in the evaluation section or when the same SRA sample is to be analyzed multiple times. In this case, running ProteoSeeker directly through the command-line would retain the SRA file after it is downloaded and processed, so there is no need to download and process it again in future runs. <strong>You should delete file "info.txt" from the "input" directory before providing input files from that directory directly to ProteoSeeker.</strong> In addition, you could optionally delete the following files: "results_demo.txt" from the "results" directory, "sra_files_demo.txt" from the "sra_files" directory, "info.txt" from the "installation/output_errors" directory, "demo_file.txt" from the "profile_protein_dbs/profile_dbs", "profile_protein_dbs/filtered_protein_dbs" directories and "demo_file.txt" from directories "1", "2", ..., "19" in the "parameter_files" directory, as they are not needed to install or run ProteoSeeker (they were needed to retain the proper structure of directories in the repository of ProteoSeeker).</p>
