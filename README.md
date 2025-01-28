@@ -130,7 +130,7 @@ conda install conda-forge::tar
 <p align="justify">In addition, the name of the custom environment must replace the name of the environment ("ps_install") in line 14 ("conda activate ps_install") in the file "install.sh". It is suggested not to perform these changes, if possible, and let the installation process handle the creation and usage of the installation environment for these packages.</p>
 
 #### b. Pipeline tools
-<p align="justify">All the tools are automatically installed by the installation process of ProteoSeeker or have already been set in the Docker image of ProteoSeeker. The specific versions of the tools included in the ProteoSeeker's installation are the ones also used for the evaluation of the "seek" and "taxonomy" modes of ProteoSeeker. For some packages more than one installation method is provided. If the first method is not successful then the next one is attempted. The versions of conda and of these tools are the following:</p>
+<p align="justify">All the tools are automatically installed by the installation process of ProteoSeeker or have already been set in the Docker image of ProteoSeeker. The specific versions of the tools included in ProteoSeeker's installation are the ones also used for the evaluation of the "seek" and "taxonomy" modes of ProteoSeeker. For some packages more than one installation method is provided. If the first method is not successful then the next one is attempted. The versions of conda and of these tools are the following:</p>
 
 1. conda 24.1.2
 2. bbmap: 39.01
