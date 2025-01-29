@@ -132,28 +132,28 @@ conda install conda-forge::tar
 #### b. Pipeline tools
 <p align="justify">All the tools are automatically installed by the installation process of ProteoSeeker or have already been set in the Docker image of ProteoSeeker. The specific versions of the tools included in ProteoSeeker's installation are the ones also used for the evaluation of the "seek" and "taxonomy" modes of ProteoSeeker. For some packages more than one installation method is provided. If the first method is not successful then the next one is attempted. The versions of conda and of these tools are the following:</p>
 
-1. conda 24.1.2
-2. bbmap: 39.01
-3. bowtie2: 2.5.3
-4. cd-hit: 4.8.1
-5. comebin:
-   1. Conda: 1.0.4 - Used for the evaluation.
-   2. Source: Branch: "1.0.4".
-8. diamond: 2.1.9
-9. fastqc 0.12.1
-10. hmmer: 3.4
-11. kraken2:
-    1. Conda: 2.1.3 - Used for the evaluation.
-    2. Source: Branch: "v2.1.3"
-12. bracken:
-    1. Conda: 2.9 - Used for the evaluation.
-    2. Source: Branch: "v2.9"
-13. megahit: 1.2.9
-14. metabinner:
-    1. Source: Branch: "master", Hash: "50a1281e8200d705a744736f23efe53c6048bbe8" - Used for the evaluation.
-    2. Conda: 1.4.4
-15. sra-tools: 3.1.0
-16. taxonkit: 0.16.0
+1. Anaconda: 24.1.2
+2. BBMap: 39.01
+3. Bowtie2: 2.5.3
+4. CD-HIT: 4.8.1
+5. COMEBin:
+   1. From conda: 1.0.4 - Used for the evaluation.
+   2. From source: Branch: "1.0.4".
+8. DIAMOND: 2.1.9
+9. FastQC 0.12.1
+10. HMMER: 3.4
+11. Kraken2:
+    1. From conda: 2.1.3 - Used for the evaluation.
+    2. From source: Branch: "v2.1.3"
+12. Bracken:
+    1. From conda: 2.9 - Used for the evaluation.
+    2. From source: Branch: "v2.9"
+13. MEGAHIT: 1.2.9
+14. MetaBinner:
+    1. From source: Branch: "master", Hash: "50a1281e8200d705a744736f23efe53c6048bbe8" - Used for the evaluation.
+    2. From conda: 1.4.4
+15. SRA Toolkit (sra-tools): 3.1.0
+16. TaxonKit: 0.16.0
 17. csvtk: 0.30.0
 18. FragGeneScanRs: 1.1.0
 
