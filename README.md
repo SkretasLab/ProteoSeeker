@@ -809,10 +809,13 @@ protein_db_path="path_to_ProteoSeeker-main/ProteoSeeker-main/nr_database/nr"
 ### 3.4.1 Utilizing Phobius
 <p align="justify">When ProteoSeeker is run by the command-line, in order to utilize Phobius, you should download and extract Phobius in a directory and modify the value of "phobius_path" in the parameter file or the value of the corresponding option of "proteoseeker.py" to that of the path of the Phobius directory.</p>
 
-## 3.5 Providing a pre-built profile or filtered protein database
+## 3.5 Running ProteoSeeker as a module
+<p align="justify">ProteoSeeker can be run as a Python module, by importing function "enzannmtg" and utilizing it in another Python script. The only requirements is for the latter script to be located at the same directory as "proteoseeker.py" and to be run in the conda enviroment "ps_env" (or any other user-defined suitable environment for running "proteoseeker.py"). The easiest way of utilizing ProteoSeeker as a module is to run it by providing as input a parameter file, similarly to ruuning it through the command-line. In this case, providing the parameter file as an input means providing as a value the path of the parameter file to the argument for the path of the parameter file in the arguments of ProteoSeeler's module. Each option of ProteoSeeker provided through the command-line is also available as an argument when utilizing ProteoSeeker as a module. The order of the options of ProteoSeeker as a command-line tool is the same as its order of arguments as a module. An example of utilizing ProteoSeeker as a module is provided based on the Python script "ps_mod.py". The latter script utilizes ProteoSeeker based on the parameter file "par_seek_tax_k_p.txt", which should be present in the same directory as "ps_mod.py" and "proteoseeker.py".</p>
+
+## 3.6 Providing a pre-built profile or filtered protein database
 <p align="justify">You can create your own profile or filtered protein database and provide them directly to ProteoSeeker.</p>
 
-### 3.5.1 Profile database
+### 3.6.1 Profile database
 <p align="justify">To create a profile database, move in the "profile_protein_dbs/profile_dbs" directory and create a new directory for your profile database with the prefix "phmm_db_", for example "phmm_db_custom_pd". Also, create a TXT file with the Pfam names of the Pfam profiles you want to add in the database, for example "profile_names.txt". Each line of the file should include one Pfam name. In addition, you need the "Pfam-A.hmm" database, which is downloaded when ProteoSeeker is installed and it is located at the "pfam_database" directory of the ProteoSeeker main installation directory. Then, move in your profile database directory (e.g., "phmm_db_custom_pd") and run the following:</p>
 
 ~~~bash
@@ -824,7 +827,7 @@ conda deactivate
 
 <p align="justify">You can use this profile database based on its name, in this case "custom_pd", in a ProteoSeeker run by providing that name to the "db_name" or "db_name_phylo" parameter in the parameters file, based on whether it is an SPD or TPD respectively. Similarly, can you use its name as a value to the options "-dn/--database-name" or "-dnt/--database-name-taxonomy".</p>
 
-### 3.5.2 Filtered protein database
+### 3.6.2 Filtered protein database
 <p align="justify">A filtered protein database may be a protein database which already contains the protein sequences you are interested in or is narrowed down to a group of proteins of interest. You can provide this database as the protein database to be filtered (parameters file: "protein_db_path", command-line option: "-pdp/--protein-database-path") or build the database and provide it as a pre-built database without the need for filtering and to be built. To build the database create a directory for your filtered protein database in the "profile_protein_dbs/filtered_protein_dbs" directory with the prefix "fpr_", for example "fpr_custom_fpd". Place in the latter directory your file with the protein sequences of interest in FASTA format, for example "custom_prs.fasta". Move in the latter directory and run the following:</p>
 
 ~~~bash
