@@ -2086,7 +2086,7 @@ def gene_annotation(output_path_genepred, output_path_genepred_ffn, output_fgs_p
                 gene_sequences_dict[key].append("YES")
             else:
                 gene_sequences_dict[key].append("NO")
-            if gene_sequences_dict[key][0][-3:] == "TAA" or gene_sequences_dict[key][0][0:3] == "TAG" or gene_sequences_dict[key][0][0:3] == "TGA":
+            if gene_sequences_dict[key][0][-3:] == "TAA" or gene_sequences_dict[key][0][-3:] == "TAG" or gene_sequences_dict[key][0][-3:] == "TGA":
                 gene_sequences_dict[key].append("YES")
             else:
                 gene_sequences_dict[key].append("NO")
