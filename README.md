@@ -971,8 +971,11 @@ python proteoseeker.py -pfp parameter_files/cas_als/al_run/SRR17771278/parameter
 ./analyze_seek_tax_results.sh
 ~~~
 
-# Publications
-Manuscript under review
+# Publication
+[https://doi.org/10.1002/advs.202414877](https://doi.org/10.1002/advs.202414877)
+
+# Citation
+G. Filis, D. Bezantakou, K. Rigkos, D. Noti, P. Saridis, D. Zarafeta, G. Skretas, ProteoSeeker: A Feature-Rich Metagenomic Analysis Tool for Accessible and Comprehensive Metagenomic Exploration. Adv. Sci. 2025, 2414877. https://doi.org/10.1002/advs.202414877
 
 # Website
 <p align="justify">General information about ProteoSeeker, including part of the installation and usage instructions found in this repository, can be found at the link below:</p>
