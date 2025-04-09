@@ -3,7 +3,7 @@
 <br>
 <br>
 
-## [<ins>Installation Summary</ins>](./install_summary.md)
+## [<ins>Installation Summary</ins>](./README.md)
 
 <br>
 <br>
