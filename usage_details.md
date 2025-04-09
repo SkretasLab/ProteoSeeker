@@ -695,85 +695,7 @@ Options:
    -bbp/--bowtie-build-path       Str -Opt- The path to the bowtie build executable.
 ~~~
 
-## 3.3 Docker
-<p align="justify">ProteoSeeker can run in a container created from its image based on a bind mount or volume. The version of Docker used to create the images and test the containers is that of "27.1.1". The bind mount or volume is primarily used to provide input files, parameter files, databases, an output directory and the phobius installation, from the host system to the container. We advise using a bind mount over a volume, due to its fewer requirements in providing the proper privileges in order to access the shared files. In both cases (bind mount and volume), the protein database provided as an example is a small part of the nr database with additions of proteins associated with RNA polymerases. It is used to test that the functionality of the seek mode through type 2 analysis and the taxonomy mode through the route of COMEBin/MetaBinner function properly in ProteoSeeker. You should provide your own protein database, ideally the decompressed nr database, in order to use properly the seek mode through the type 2 analysis and the taxonomy mode through the COMEBin/MetaBinner route of ProteoSeeker. To use any other type of analysis and route of the modes of ProteoSeeker, the protein database is not necessary. ProteoSeeker will detect and utilize Phobius for the topology prediction, if Phobius is installed in the proper directory ("phobius") of the shared directory (bind mount or volume), otherwise no topology predictions will take place for the proteins. In addition, you must modify the following line of "phobius.pl" (should be line 25) by changing the name of the file "decodeanhmm" with "decodeanhmm.64bit" for Phobius to work properly in the container:</p>
-
-Modify the line from:
-
-~~~bash
-my $DECODEANHMM =      "$PHOBIUS_DIR/decodeanhmm";
-~~~
-
-To:
-
-~~~bash
-my $DECODEANHMM =      "$PHOBIUS_DIR/decodeanhmm.64bit";
-~~~
-
-<p align="justify">For both cases of bind mounts and volumes, you can perform a test based on a template parameter file (located at the "parameter_files" directory in the bind mount or volume) each of which runs a different analysis. The test is selected with a number based on one of the scripts "docker_bindmount_run_proteoseeker.sh" and "docker_vol_run_proteoseeker.sh" as described in sections "3.3.1" and "3.3.2". All template parameter files are ready to be used to run ProteoSeeker by analyzing the sample with the SRA code "SRR12829170". Each parameter file is also set up to handle FASTQ paired-end input. Furthermore, the light_v1.0.0 Docker image may be used to run a container for ProteoSeeker for the Kraken2 taxonomy route only if you provide a path to a Kraken2 database in the shared directory (bind mount or volume). The selections are described below:</p>
-
-Selection | Parameter File | Mode | Analysis Type | Taxonomy Route | Input
---- | --- | --- | --- | --- | ---
-1 | par_seek_tax_k_p.txt | seek & taxonomy | type 3 | Kraken2 | SRA or FASTQ paired-end
-2 | par_seek_tax_m_p.txt | seek & taxonomy | type 3 | COMEBin/MetaBinner: MetaBinner | SRA or FASTQ paired-end
-3 | par_seek_tax_c_p.txt | seek & taxonomy | type 3 | COMEBin/MetaBinner: COMEBin | SRA or FASTQ paired-end
-4 | par_seek_p.txt | seek | type 3 | - | SRA or FASTQ paired-end
-5 | par_tax_k_p.txt | taxonomy | - | Kraken2 | SRA or FASTQ paired-end
-6 | par_tax_m_p.txt | taxonomy | - | COMEBin/MetaBinner: MetaBinner | SRA or FASTQ paired-end
-7 | par_tax_c_p.txt | taxonomy | - | COMEBin/MetaBinner: COMEBin | SRA or FASTQ paired-end
-
-### 3.3.1 Bind mount
-<p align="justify">A bind mount is a directory located in the local host and not run by Docker. The data stored in the bind mount are retained after the container is stopped or exits, may be used by different containers and are also accessible by the local host. From the main directory of ProteoSeeker run the Bash script below (should not be run with sudo) which performs the following actions:</p>
-
-1. Creates the "proteoseeker_bindmount" directory in the home directory of the user.
-2. Creates directories in the bind mount ("proteoseeker_bindmount") which are needed to run ProteoSeeker  and collect the results in the host system.
-3. Copies the parameter files used as templates to run ProteoSeeker in the bind mount ("proteoseeker_bindmount").
-
-~~~bash
-./installation/docker_bindmount_setup.sh
-~~~
-
-<p align="justify">Then, run ProteoSeeker in a Docker container based on one of the parameter files. The following script will run ProteoSeeker, in a Docker container of the <strong>main_v1.0.0</strong> image, in interactive mode so you can observe the stages of the pipeline being run. To run one of the commands of the file below for the light_v1.0.0 image, change "proteoseeker:main_v1.0.0" to "proteoseeker:light_v1.0.0" in the same command. The analyses to be performed by ProteoSeeker based on the template file corresponding to your selection are explained above in the table.</p>
-
-~~~bash
-./docker_bindmount_run_proteoseeker.sh
-~~~
-
-<p align="justify">You should change the permissions of the output directory in the "results" directory of the bind mount by providing read and write permissions to all its contents, because the output directory generated as output from ProteoSeeker in the Docker container (and in the bind mount) will be missing these permissions.</p>
-
-~~~bash
-sudo -E chmod -R a+rw "${HOME}/proteoseeker_bindmount/results"
-~~~
-
-<p align="justify">In this case, the output directory shared between the local host and the container will be located at "${HOME}/proteoseeker_bindmount/results". You can also run the same analysis command from the Bash script by adding the "-d" option which runs the container in the background. You can always attach to the container to monitor the progress of the pipeline. In addition, in both cases of bind mounts and volumes, you can use "/bin/bash/ as the command to run the container in interactive mode, then run ProteoSeeker from the container (as one would directly from the command-line of the host) and then transfer the results to the host through the shared bind mount or volume.</p>
-
-### 3.3.2 Volume
-<p align="justify">Volumes are completely managed by Docker. Volumes can be found in the "volumes" directory of your Docker installation (e.g., "/var/lib/docker/volumes"). The data of the volume is stored in the "_data" directory of the volume. This data is retained in the volume after the container is stopped or exits, may be used by different containers and is also accessible by the local host. Any directory or file placed in the "_data" directory will be accessible from the local host and the container to which the volume has been added. From the main directory of ProteoSeeker, run the Bash script with sudo (mandatory) which performs the following actions:</p>
-
-1. Creates the "proteoseeker_vol" Docker volume.
-2. Finds the full path of the Docker volume.
-3. Creates directories in the volume ("proteoseeker_vol") which are needed to run ProteoSeeker in the image and collect the results in the host system.
-4. Copies the parameter files used as templates to run ProteoSeeker in the Docker volume ("proteoseeker_vol").
-
-~~~bash
-sudo ./installation/docker_vol_setup.sh
-~~~
-
-<p align="justify">Then, run ProteoSeeker in a Docker container based on one of the parameter files. The following script will run ProteoSeeker, in a Docker container of the <strong>main_v1.0.0</strong> image, in interactive mode so you can observe the stages of the pipeline being run. To run one of the commands of the file below for the light_v1.0.0 image, change "proteoseeker:main_v1.0.0" to "proteoseeker:light_v1.0.0" in the same command. The analyses to be performed by ProteoSeeker based on the template file corresponding to your selection are explained above in the table.</p>
-
-~~~bash
-./docker_vol_run_proteoseeker.sh
-~~~
-
-<p align="justify">In this case, the data shared between the local host and the container will be located at "/var/lib/docker/volumes/ps_vol/_data". To find the results of the run, check in the directory "/var/lib/docker/volumes/ps_vol/_data/results". Similarly, you can run ProteoSeeker based on a custom parameters file. After ProteoSeeker has terminated, the container stops and exits, hence, the results cannot be found in that container. You can also run the same command of the script by adding the "-d" option, which runs the container in the background. You can then attach to the container to observe which stage of the pipeline is currently being run. In addition, you can use "/bin/bash/" as the command to run the container in interactive mode, then run ProteoSeeker from the container (as you would directly from the command-line of the host) and then transfer the results to the host through the shared bind mount or volume.</p>
-
-### 3.3.3 Utilizing Phobius in the Docker container
-<p align="justify">The "phobius" directory in the bind mount or volume can be used to store the files of the Phobius installation. If done so, ProteoSeeker will detect and use Phobius when running in the Docker container. It is possible to store the Phobius installation in another directory and set ProteoSeeker to utilize it by modifying the value of "phobius_path" in the parameter file or by providing it as a parameter directly to "proteoseeker.py".</p>
-
-### 3.3.4 Omitting the stages up to the preprocessing stage in the Docker container
-<p align="justify">We note that currently the "after_preprocessing" parameter in the parameters files does not affect the function of ProteoSeeker when running it through a Docker container from its Docker image. To omit the stages prior to the preprocessing stage as well as the preprocessing stage provide the value "True" to the respective option of the command-line tool of ProteoSeeker: "-afp/--after-preprocessing".</p>
-
-## 3.4 Command-line
+## 3.3 Command-line
 <p align="justify">To run ProteoSeeker through the command-line, a parameter file facilitates the process greatly. By using one of the template parameter files, you can easily customize the values for the options of ProteoSeeker and run it. To run ProteoSeeker, at first, its environment should be activated. To run ProteoSeeker by its seek mode and type 2 or 3 analysis or by its taxonomy mode and COMEBin/MetaBinner route, the user should set the path to the protein database in the parameters file or provide it as a parameter. You can run ProteoSeeker based on certain parameter files by the seek mode and type 1 analysis or by the taxonomy mode and Kraken2 route, without the need to make any modification in the parameter file or provide any other parameter. The table below links the template parameter files with the mode and analysis type or route applied by ProteoSeeker in the run. All template parameter files are ready to be used to run ProteoSeeker by analyzing the sample with the SRA code "SRR12829170". Each parameter file is also set up to handle either FASTQ paired-end input or FASTA contig(s)/genome(s) input given that the SRA code is removed from the parameter file. The template parameter files 1, 2, 3, 4 and 5 can directly be used to run ProteoSeeker without modifications, as they do not require a protein database. Parameter file 6, needs a protein database and certain modifications to be used by ProteoSeeker (as described below).</p>
 
 Index | Parameter File | Mode | Analysis Type | Taxonomy Route | Input
@@ -814,8 +736,86 @@ protein_db_path="path_to_ProteoSeeker-main/ProteoSeeker-main/nr_database/nr"
 
 <p align="justify">where "path_to_ProteoSeeker-main" is the absolute path to the "ProteoSeeker-main" directory in your system.</p>
 
-### 3.4.1 Utilizing Phobius
+### 3.3.1 Utilizing Phobius
 <p align="justify">When ProteoSeeker is run by the command-line, in order to utilize Phobius, you should download and extract Phobius in a directory and modify the value of "phobius_path" in the parameter file or the value of the corresponding option of "proteoseeker.py" to that of the path of the Phobius directory.</p>
+
+## 3.4 Docker
+<p align="justify">ProteoSeeker can run in a container created from its image based on a bind mount or volume. The version of Docker used to create the images and test the containers is that of "27.1.1". The bind mount or volume is primarily used to provide input files, parameter files, databases, an output directory and the phobius installation, from the host system to the container. We advise using a bind mount over a volume, due to its fewer requirements in providing the proper privileges in order to access the shared files. In both cases (bind mount and volume), the protein database provided as an example is a small part of the nr database with additions of proteins associated with RNA polymerases. It is used to test that the functionality of the seek mode through type 2 analysis and the taxonomy mode through the route of COMEBin/MetaBinner function properly in ProteoSeeker. You should provide your own protein database, ideally the decompressed nr database, in order to use properly the seek mode through the type 2 analysis and the taxonomy mode through the COMEBin/MetaBinner route of ProteoSeeker. To use any other type of analysis and route of the modes of ProteoSeeker, the protein database is not necessary. ProteoSeeker will detect and utilize Phobius for the topology prediction, if Phobius is installed in the proper directory ("phobius") of the shared directory (bind mount or volume), otherwise no topology predictions will take place for the proteins. In addition, you must modify the following line of "phobius.pl" (should be line 25) by changing the name of the file "decodeanhmm" with "decodeanhmm.64bit" for Phobius to work properly in the container:</p>
+
+Modify the line from:
+
+~~~bash
+my $DECODEANHMM =      "$PHOBIUS_DIR/decodeanhmm";
+~~~
+
+To:
+
+~~~bash
+my $DECODEANHMM =      "$PHOBIUS_DIR/decodeanhmm.64bit";
+~~~
+
+<p align="justify">For both cases of bind mounts and volumes, you can perform a test based on a template parameter file (located at the "parameter_files" directory in the bind mount or volume) each of which runs a different analysis. The test is selected with a number based on one of the scripts "docker_bindmount_run_proteoseeker.sh" and "docker_vol_run_proteoseeker.sh" as described in sections "3.3.1" and "3.3.2". All template parameter files are ready to be used to run ProteoSeeker by analyzing the sample with the SRA code "SRR12829170". Each parameter file is also set up to handle FASTQ paired-end input. Furthermore, the light_v1.0.0 Docker image may be used to run a container for ProteoSeeker for the Kraken2 taxonomy route only if you provide a path to a Kraken2 database in the shared directory (bind mount or volume). The selections are described below:</p>
+
+Selection | Parameter File | Mode | Analysis Type | Taxonomy Route | Input
+--- | --- | --- | --- | --- | ---
+1 | par_seek_tax_k_p.txt | seek & taxonomy | type 3 | Kraken2 | SRA or FASTQ paired-end
+2 | par_seek_tax_m_p.txt | seek & taxonomy | type 3 | COMEBin/MetaBinner: MetaBinner | SRA or FASTQ paired-end
+3 | par_seek_tax_c_p.txt | seek & taxonomy | type 3 | COMEBin/MetaBinner: COMEBin | SRA or FASTQ paired-end
+4 | par_seek_p.txt | seek | type 3 | - | SRA or FASTQ paired-end
+5 | par_tax_k_p.txt | taxonomy | - | Kraken2 | SRA or FASTQ paired-end
+6 | par_tax_m_p.txt | taxonomy | - | COMEBin/MetaBinner: MetaBinner | SRA or FASTQ paired-end
+7 | par_tax_c_p.txt | taxonomy | - | COMEBin/MetaBinner: COMEBin | SRA or FASTQ paired-end
+
+### 3.4.1 Bind mount
+<p align="justify">A bind mount is a directory located in the local host and not run by Docker. The data stored in the bind mount are retained after the container is stopped or exits, may be used by different containers and are also accessible by the local host. From the main directory of ProteoSeeker run the Bash script below (should not be run with sudo) which performs the following actions:</p>
+
+1. Creates the "proteoseeker_bindmount" directory in the home directory of the user.
+2. Creates directories in the bind mount ("proteoseeker_bindmount") which are needed to run ProteoSeeker  and collect the results in the host system.
+3. Copies the parameter files used as templates to run ProteoSeeker in the bind mount ("proteoseeker_bindmount").
+
+~~~bash
+./installation/docker_bindmount_setup.sh
+~~~
+
+<p align="justify">Then, run ProteoSeeker in a Docker container based on one of the parameter files. The following script will run ProteoSeeker, in a Docker container of the <strong>main_v1.0.0</strong> image, in interactive mode so you can observe the stages of the pipeline being run. To run one of the commands of the file below for the light_v1.0.0 image, change "proteoseeker:main_v1.0.0" to "proteoseeker:light_v1.0.0" in the same command. The analyses to be performed by ProteoSeeker based on the template file corresponding to your selection are explained above in the table.</p>
+
+~~~bash
+./docker_bindmount_run_proteoseeker.sh
+~~~
+
+<p align="justify">You should change the permissions of the output directory in the "results" directory of the bind mount by providing read and write permissions to all its contents, because the output directory generated as output from ProteoSeeker in the Docker container (and in the bind mount) will be missing these permissions.</p>
+
+~~~bash
+sudo -E chmod -R a+rw "${HOME}/proteoseeker_bindmount/results"
+~~~
+
+<p align="justify">In this case, the output directory shared between the local host and the container will be located at "${HOME}/proteoseeker_bindmount/results". You can also run the same analysis command from the Bash script by adding the "-d" option which runs the container in the background. You can always attach to the container to monitor the progress of the pipeline. In addition, in both cases of bind mounts and volumes, you can use "/bin/bash/ as the command to run the container in interactive mode, then run ProteoSeeker from the container (as one would directly from the command-line of the host) and then transfer the results to the host through the shared bind mount or volume.</p>
+
+### 3.4.2 Volume
+<p align="justify">Volumes are completely managed by Docker. Volumes can be found in the "volumes" directory of your Docker installation (e.g., "/var/lib/docker/volumes"). The data of the volume is stored in the "_data" directory of the volume. This data is retained in the volume after the container is stopped or exits, may be used by different containers and is also accessible by the local host. Any directory or file placed in the "_data" directory will be accessible from the local host and the container to which the volume has been added. From the main directory of ProteoSeeker, run the Bash script with sudo (mandatory) which performs the following actions:</p>
+
+1. Creates the "proteoseeker_vol" Docker volume.
+2. Finds the full path of the Docker volume.
+3. Creates directories in the volume ("proteoseeker_vol") which are needed to run ProteoSeeker in the image and collect the results in the host system.
+4. Copies the parameter files used as templates to run ProteoSeeker in the Docker volume ("proteoseeker_vol").
+
+~~~bash
+sudo ./installation/docker_vol_setup.sh
+~~~
+
+<p align="justify">Then, run ProteoSeeker in a Docker container based on one of the parameter files. The following script will run ProteoSeeker, in a Docker container of the <strong>main_v1.0.0</strong> image, in interactive mode so you can observe the stages of the pipeline being run. To run one of the commands of the file below for the light_v1.0.0 image, change "proteoseeker:main_v1.0.0" to "proteoseeker:light_v1.0.0" in the same command. The analyses to be performed by ProteoSeeker based on the template file corresponding to your selection are explained above in the table.</p>
+
+~~~bash
+./docker_vol_run_proteoseeker.sh
+~~~
+
+<p align="justify">In this case, the data shared between the local host and the container will be located at "/var/lib/docker/volumes/ps_vol/_data". To find the results of the run, check in the directory "/var/lib/docker/volumes/ps_vol/_data/results". Similarly, you can run ProteoSeeker based on a custom parameters file. After ProteoSeeker has terminated, the container stops and exits, hence, the results cannot be found in that container. You can also run the same command of the script by adding the "-d" option, which runs the container in the background. You can then attach to the container to observe which stage of the pipeline is currently being run. In addition, you can use "/bin/bash/" as the command to run the container in interactive mode, then run ProteoSeeker from the container (as you would directly from the command-line of the host) and then transfer the results to the host through the shared bind mount or volume.</p>
+
+### 3.4.3 Utilizing Phobius in the Docker container
+<p align="justify">The "phobius" directory in the bind mount or volume can be used to store the files of the Phobius installation. If done so, ProteoSeeker will detect and use Phobius when running in the Docker container. It is possible to store the Phobius installation in another directory and set ProteoSeeker to utilize it by modifying the value of "phobius_path" in the parameter file or by providing it as a parameter directly to "proteoseeker.py".</p>
+
+### 3.4.4 Omitting the stages up to the preprocessing stage in the Docker container
+<p align="justify">We note that currently the "after_preprocessing" parameter in the parameters files does not affect the function of ProteoSeeker when running it through a Docker container from its Docker image. To omit the stages prior to the preprocessing stage as well as the preprocessing stage provide the value "True" to the respective option of the command-line tool of ProteoSeeker: "-afp/--after-preprocessing".</p>
 
 ## 3.5 Utilizing ProteoSeeker as a module
 <p align="justify">ProteoSeeker can be run as a Python module by importing the function "enzannmtg" and utilizing it in another script. The latter script should be run in the conda environment "ps_env" or any other user-defined suitable environment for running "proteoseeker.py". The easiest way of utilizing ProteoSeeker as a module is to run it by providing as input a parameter file, similarly to running it through the command-line. In this case, providing the parameter file as an input means providing as an argument the path of the file in the corresponding parameter of ProteoSeeler's module. Each option of ProteoSeeker provided through the command-line is also available as a parameter when utilizing ProteoSeeker as a module. The order of the options of ProteoSeeker as a command-line tool is the same as the order of its parameters as a module. An example of utilizing ProteoSeeker as a module is provided based on the Python script "ps_mod.py". The latter script utilizes ProteoSeeker based on the parameter file "par_seek_tax_k_p.txt", which should be present in the same directory as "ps_mod.py". As in the case of running ProteoSeeker through the command-line, the values provided for the options/parameters of ProteoSeeker in the parameter file overshadow the arguments provided for its parameters when utilized as a module in a script.</p>
