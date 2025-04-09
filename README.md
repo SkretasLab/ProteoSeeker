@@ -1,8 +1,12 @@
 ![ProteoSeeker Logo](images/ProteoSeeker_Logo.png)
 
+<br>
+<br>
 
 ## [Installation Summary](./install_summary.md)
 
+<br>
+<br>
 
 # 1. Overview
 ## 1.1 Field of utilization
