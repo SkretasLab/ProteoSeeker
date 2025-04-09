@@ -1,6 +1,6 @@
 ![ProteoSeeker Logo](images/ProteoSeeker_Logo.png)
 
-[Installation Summary](./install_summary.md)
+<span style="font-size: 20px;">[Installation Summary](./install_summary.md)</span>
 
 # 1. Overview
 ## 1.1 Field of utilization
