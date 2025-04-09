@@ -91,29 +91,8 @@ COMEBin/MetaBinner route stages:
 # 2. Installation
 <p align="justify">It is suggested to run ProteoSeeker in a Docker container through its image, rather than directly through the command-line, when possible. Therefore, it is proposed to install Docker and download the Docker image of ProteoSeeker. Running ProteoSeeker through the command-line would be necessary to perform the tests described in the evaluation section, or when the same SRA sample needs to be analyzed multiple times in which case running ProteoSeeker directly through the command-line would retain the SRA file after it is downloaded and processed and there would be no need to download and process it again in future runs.</p>
 
-## 2.1 Docker
-<p align="justify">To install ProteoSeeker from Docker Hub as a Docker image, Docker must be installed in your system. To install Docker in Ubuntu, follow the instructions provided by the link below:</p>
-
-Docker engine for Ubuntu: https://docs.docker.com/engine/install/ubuntu/
-
-<p align="justify">Then, download the image of ProteoSeeker from Docker Hub. There are two versions. The "main_v1.0.0" version contains the "Kraken 2/Bracken Refseq indexes Collection Standard-8 database" while the "light_v1.0.0" version does not. Hence, the main_v1.0.0 version can be used directly to run the seek or the taxonomy mode of ProteoSeeker, specifically through the Kraken2 route. The light_v1.0.0 version can be used directly to run only the seek mode of ProteoSeeker. Neither version contains a protein database. The process of using a protein database through Docker is described below. Both versions can be modified to utilize a protein database and thus be used to run the seek mode type 2 or 3 analysis and the taxonomy mode through the COMEBin/MetaBinner route of ProteoSeeker.</p>
-
-The main_v1.0.0 version has a download size of  **13.16 GB** and decompressed has a size of **30.4 GB**. To install the main_v1.0.0 version use **one** of the following commands:
-~~~bash
-sudo docker image pull skretaslab/proteoseeker
-or
-sudo docker image pull skretaslab/proteoseeker:latest
-or
-sudo docker image pull skretaslab/proteoseeker:main_v1.0.0
-~~~
-
-The light_v1.0.0 version has a download size of  **7.66 GB** and decompressed has a size of **22.3 GB**. To install the light_v1.0.0 version use the following command:
-~~~bash
-sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
-~~~
-
-## 2.2 Source code
-### 2.2.1 Prerequisites
+## 2.1 Source code
+### 2.1.1 Prerequisites
 #### Anaconda
 <p align="justify">To install ProteoSeeker from source code, conda, from Anaconda, must be installed and activated in your system. Instructions for the installation of Anaconda in Linux are provided through the following link:</p>
 
@@ -122,7 +101,7 @@ Anaconda for Linux: https://docs.anaconda.com/free/anaconda/install/linux/
 #### git
 <p align="justify">Necessary to download the ProteoSeeker repository.</p>
 
-### 2.2.2 Dependencies
+### 2.1.2 Dependencies
 <p align="justify">All dependencies, except for the protein database, are automatically installed by the installation process of ProteoSeeker. You can skip this part if you want to go straight to the installation instructions, but do read the information related to the protein database (at section "2.2.3") which is not installed automatically.</p>
 
 #### git, wget, gzip, tar
@@ -165,7 +144,7 @@ conda install conda-forge::tar
 17. csvtk: 0.30.0
 18. FragGeneScanRs: 1.1.0
 
-### 2.2.3 Databases
+### 2.1.3 Databases
 <p align="justify">The latest versions of the databases 1-4 are installed automatically by ProteoSeeker. To see the datetime of their collection for the evaluation of ProteoSeeker, check the evaluation section, "4". Only the protein database (5) should be installed by you, in which case, you can use the Bash script "nr_install.sh" for installing the nr database. The latter file is located in the "installation" directory. You should be certain that the system has enough available memory space to hold the decompressed nr database which is approximately <strong>400 GB</strong>.</p>
 
 1. Pfam database: Latest - Automatic installation
@@ -174,7 +153,7 @@ conda install conda-forge::tar
 4. Kraken 2/Bracken Refseq indexes: Collection Standard-8: Latest - Automatic installation
 5. nr database: Latest - *Non-Automatic installation*
 
-### 2.2.4 Installation
+### 2.1.4 Installation process
 <p align="justify">Execute the commands below to perform the following installation steps. Open a terminal in the desired directory, clone the repository (or download the ZIP file of the repository and extract it in the desired installation directory) and move in the main ProteoSeeker directory. Give the proper permissions to the files of the installation directory. Add, if not present, and move to the top the conda channels of "conda-forge" and "bioconda" and set the channel priority of conda to "flexible". Then, run the installation script. The installation requires approximately 30-40 minutes to be completed.</p>
 
 ~~~bash
@@ -188,14 +167,42 @@ conda config --set channel_priority flexible
 ./install.sh
 ~~~
 
-### 2.2.5 Parameter files
+### 2.1.5 Removing installation environments, files and directories
+<p align="justify">To remove the environments, all their files and the directories that were created during the installation of ProteoSeeker (by running the "./install.sh" script), run the Bash script below, in the installation directory from the installation directory. You can then delete the main directory of ProteoSeeker and all environments and files associated with installing ProteoSeeker will have been removed by your system. The Bash script below will also remove the environment ("ps_result_analysis") created by running the commands provided at section "4.1" and used to run the analysis of the taxonomy evaluation results.</p>
+
+~~~bash
+./remove.sh
+~~~
+
+## 2.2 Docker
+<p align="justify">To install ProteoSeeker from Docker Hub as a Docker image, Docker must be installed in your system. To install Docker in Ubuntu, follow the instructions provided by the link below:</p>
+
+Docker engine for Ubuntu: https://docs.docker.com/engine/install/ubuntu/
+
+<p align="justify">Then, download the image of ProteoSeeker from Docker Hub. There are two versions. The "main_v1.0.0" version contains the "Kraken 2/Bracken Refseq indexes Collection Standard-8 database" while the "light_v1.0.0" version does not. Hence, the main_v1.0.0 version can be used directly to run the seek or the taxonomy mode of ProteoSeeker, specifically through the Kraken2 route. The light_v1.0.0 version can be used directly to run only the seek mode of ProteoSeeker. Neither version contains a protein database. The process of using a protein database through Docker is described below. Both versions can be modified to utilize a protein database and thus be used to run the seek mode type 2 or 3 analysis and the taxonomy mode through the COMEBin/MetaBinner route of ProteoSeeker.</p>
+
+The main_v1.0.0 version has a download size of  **13.16 GB** and decompressed has a size of **30.4 GB**. To install the main_v1.0.0 version use **one** of the following commands:
+~~~bash
+sudo docker image pull skretaslab/proteoseeker
+or
+sudo docker image pull skretaslab/proteoseeker:latest
+or
+sudo docker image pull skretaslab/proteoseeker:main_v1.0.0
+~~~
+
+The light_v1.0.0 version has a download size of  **7.66 GB** and decompressed has a size of **22.3 GB**. To install the light_v1.0.0 version use the following command:
+~~~bash
+sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
+~~~
+
+### 2.3 Parameter files
 <p align="justify">You can create a set of "template" parameter files which can be used to run the seek or the taxonomy mode or both modes of ProteoSeeker by running the following script in the installation directory from the same directory. This set of files is generated in the main directory of ProteoSeeker.</p>
 
 ~~~bash
 ./parameter_files.sh
 ~~~
 
-### 2.2.6 COMEBin - GPU
+### 2.4 COMEBin - GPU
 <p align="justify">It should be noted that COMEBin can also be installed and run on a GPU. Instructions are available at: https://github.com/ziyewang/COMEBin and also below:</p>
 
 ~~~bash
@@ -216,17 +223,10 @@ conda deactivate
 
 <p align="justify">For example, the second option in our system has the following value: "/home/compteam/anaconda3/envs/ps_comebin_gpu/bin/COMEBin"</p>
 
-### 2.2.7 Removing installation environments, files and directories
-<p align="justify">To remove the environments, all their files and the directories that were created during the installation of ProteoSeeker (by running the "./install.sh" script), run the Bash script below, in the installation directory from the installation directory. You can then delete the main directory of ProteoSeeker and all environments and files associated with installing ProteoSeeker will have been removed by your system. The Bash script below will also remove the environment ("ps_result_analysis") created by running the commands provided at section "4.1" and used to run the analysis of the taxonomy evaluation results.</p>
-
-~~~bash
-./remove.sh
-~~~
-
-## 2.3 Phobius
+## 2.5 Phobius
 <p align="justify">For either case of installation process, in order to use the topology and signal peptide predictions provided by Phobius you must download Phobius from https://phobius.sbc.su.se/data.html. As described in section "3.4" to utilize Phobius when running ProteoSeeker through the command-line you should also provide the path to the Phobius directory in the parameter file or as a parameter through the corresponding option of "proteoseeker.py". The default path for the Phobius installation in a Docker container from the proteoseeker Docker image is already set to the phobius directory of the shared directory and you should download and copy the Phobius installation files in that directory as explained in section "3.3" below. In any other case, ProteoSeeker will run without performing topology and signal peptide predictions in its seek functionality.</p>
 
-## 2.4 UniprotKB/Swiss-Prot and Pfam preprocessed datasets
+## 2.6 UniprotKB/Swiss-Prot and Pfam preprocessed datasets
 <p align="justify">In case the user needs to update the preprocessed files generated from processing information from the UniprotKB/Swiss-Prot flat file or the Pfam database the scripts available in the ps_scripts can be utilized.</p>
 
 <p align="justify">For the Swiss-Prot/UniprotKB datasets the user should download the flat file for UniprotKB/Swiss-Prot and then run the command provided below. This command will generate a series of files as output in the same directory. The files to be updated are to be replaced in the "profile_protein_dbs" directory. These files are: "prfamilies_numbered.tsv", "prfamilies_pfamdomains.tsv" and "prfamilies_length.tsv". For more information about the script the user can run the script with the "-h" option.</p>
