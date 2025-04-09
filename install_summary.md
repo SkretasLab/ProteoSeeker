@@ -54,14 +54,14 @@ conda config --set channel_priority flexible
 ./install.sh
 ~~~
 
-### 2.2.5 Parameter files
+### 2.2.3 Parameter files
 <p align="justify">You can create a set of "template" parameter files which can be used to run the seek or the taxonomy mode or both modes of ProteoSeeker by running the following script in the installation directory from the same directory. This set of files is generated in the main directory of ProteoSeeker.</p>
 
 ~~~bash
 ./parameter_files.sh
 ~~~
 
-### 2.2.6 COMEBin - GPU
+### 2.2.4 COMEBin - GPU
 <p align="justify">It should be noted that COMEBin can also be installed and run on a GPU. Instructions are available at: https://github.com/ziyewang/COMEBin and also below:</p>
 
 ~~~bash
@@ -82,7 +82,7 @@ conda deactivate
 
 <p align="justify">For example, the second option in our system has the following value: "/home/compteam/anaconda3/envs/ps_comebin_gpu/bin/COMEBin"</p>
 
-### 2.2.7 Removing installation environments, files and directories
+### 2.2.5 Removing installation environments, files and directories
 <p align="justify">To remove the environments, all their files and the directories that were created during the installation of ProteoSeeker (by running the "./install.sh" script), run the Bash script below, in the installation directory from the installation directory. You can then delete the main directory of ProteoSeeker and all environments and files associated with installing ProteoSeeker will have been removed by your system. The Bash script below will also remove the environment ("ps_result_analysis") created by running the commands provided at section "4.1" and used to run the analysis of the taxonomy evaluation results.</p>
 
 ~~~bash
