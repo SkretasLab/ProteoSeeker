@@ -3,7 +3,7 @@
 <br>
 <br>
 
-## [<ins>Usage Details</ins>](./README.md)
+## [<ins>Usage Details</ins>](./usage_details.md)
 
 <br>
 <br>
