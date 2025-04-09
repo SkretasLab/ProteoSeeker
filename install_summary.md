@@ -1,6 +1,12 @@
 ![ProteoSeeker Logo](images/ProteoSeeker_Logo.png)
 
-[Usage Details](./README.md)
+<br>
+<br>
+
+## [<ins>Usage Details</ins>](./README.md)
+
+<br>
+<br>
 
 # 1. Installation
 ## 1.1 Docker
