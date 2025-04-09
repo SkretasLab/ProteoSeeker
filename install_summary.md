@@ -10,13 +10,11 @@
 
 # 1. Installation
 ## 1.1 Docker
-<p align="justify">To install ProteoSeeker from Docker Hub as a Docker image, Docker must be installed in your system. To install Docker in Ubuntu, follow the instructions provided by the link below:</p>
+<p align="justify">To install ProteoSeeker from Docker Hub as a Docker image, Docker must be installed in your system. To install Docker in Ubuntu, follow the instructions provided by the link below. Then, download the image of ProteoSeeker from Docker Hub. There are two versions.</p>
 
 Docker engine for Ubuntu: https://docs.docker.com/engine/install/ubuntu/
 
-<p align="justify">Then, download the image of ProteoSeeker from Docker Hub. There are two versions.</p>
-
-The main_v1.0.0 version has a download size of  **13.16 GB** and decompressed has a size of **30.4 GB**. To install the main_v1.0.0 version use **one** of the following commands:
+The main_v1.0.0 version has a download size of  **13.16 GB** and decompressed has a size of **30.4 GB**:
 ~~~bash
 sudo docker image pull skretaslab/proteoseeker
 or
@@ -25,7 +23,7 @@ or
 sudo docker image pull skretaslab/proteoseeker:main_v1.0.0
 ~~~
 
-The light_v1.0.0 version has a download size of  **7.66 GB** and decompressed has a size of **22.3 GB**. To install the light_v1.0.0 version use the following command:
+The light_v1.0.0 version has a download size of  **7.66 GB** and decompressed has a size of **22.3 GB**:
 ~~~bash
 sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
 ~~~
@@ -91,21 +89,6 @@ conda deactivate
 
 ## 1.3 Phobius
 <p align="justify">For either case of installation process, in order to use the topology and signal peptide predictions provided by Phobius you must download Phobius from https://phobius.sbc.su.se/data.html. As described in section "3.4" to utilize Phobius when running ProteoSeeker through the command-line you should also provide the path to the Phobius directory in the parameter file or as a parameter through the corresponding option of "proteoseeker.py". The default path for the Phobius installation in a Docker container from the proteoseeker Docker image is already set to the phobius directory of the shared directory and you should download and copy the Phobius installation files in that directory as explained in section "3.3" below. In any other case, ProteoSeeker will run without performing topology and signal peptide predictions in its seek functionality.</p>
-
-## 1.4 UniprotKB/Swiss-Prot and Pfam preprocessed datasets
-<p align="justify">In case the user needs to update the preprocessed files generated from processing information from the UniprotKB/Swiss-Prot flat file or the Pfam database the scripts available in the ps_scripts can be utilized.</p>
-
-<p align="justify">For the Swiss-Prot/UniprotKB datasets the user should download the flat file for UniprotKB/Swiss-Prot and then run the command provided below. This command will generate a series of files as output in the same directory. The files to be updated are to be replaced in the "profile_protein_dbs" directory. These files are: "prfamilies_numbered.tsv", "prfamilies_pfamdomains.tsv" and "prfamilies_length.tsv". For more information about the script the user can run the script with the "-h" option.</p>
-
-~~~bash
-python uniprot_data_acs.py -i <uniprotkb/swiss-prot_flat_file_path>
-~~~
-
-<p align="justify">For the Pfam datasets the Pfam HMM database is needed. This database should already be installed in the "pfam_database" directory of the main "proteoseeker" directory. Run the command provided below. This command will generate a series of files as output in the same directory. The files to be updated are to be replaced in the "profile_protein_dbs" directory. These files are: "pfam_accs_names.tsv" and "profiles_lengths.tsv". For more information about the script the user can run the script with the "-h" option.</p>
-
-~~~bash
-python pfam_info.py -i <pfam_hmm_file_path>
-~~~
 
 # Publication
 [https://doi.org/10.1002/advs.202414877](https://doi.org/10.1002/advs.202414877)
