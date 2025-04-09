@@ -3,7 +3,7 @@
 <br>
 <br>
 
-## [Installation Summary](./install_summary.md)
+## [<ins>Installation Summary</ins>](./install_summary.md)
 
 <br>
 <br>
