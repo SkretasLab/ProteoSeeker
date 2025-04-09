@@ -19,7 +19,7 @@ Anaconda for Linux: https://docs.anaconda.com/free/anaconda/install/linux/
 #### git
 <p align="justify">Necessary to download the ProteoSeeker repository.</p>
 
-### 1.1.2 Installation
+### 1.1.2 Installation process
 <p align="justify">Execute the commands below to perform the following installation steps.</p>
 
 ~~~bash
@@ -47,6 +47,25 @@ conda config --set channel_priority flexible
 ./parameter_files.sh
 ~~~
 
+## 1.2 Docker
+<p align="justify">To install ProteoSeeker from Docker Hub as a Docker image, Docker must be installed in your system. To install Docker in Ubuntu, follow the instructions provided by the link below. Then, download the image of ProteoSeeker from Docker Hub. There are two versions.</p>
+
+Docker engine for Ubuntu: https://docs.docker.com/engine/install/ubuntu/
+
+The main_v1.0.0 version has a download size of  **13.16 GB** and decompressed has a size of **30.4 GB**:
+~~~bash
+sudo docker image pull skretaslab/proteoseeker
+or
+sudo docker image pull skretaslab/proteoseeker:latest
+or
+sudo docker image pull skretaslab/proteoseeker:main_v1.0.0
+~~~
+
+The light_v1.0.0 version has a download size of  **7.66 GB** and decompressed has a size of **22.3 GB**:
+~~~bash
+sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
+~~~
+
 ### 1.3 COMEBin - GPU
 <p align="justify">It should be noted that COMEBin can also be installed and run on a GPU. Instructions are available at: https://github.com/ziyewang/COMEBin and also below:</p>
 
@@ -70,25 +89,6 @@ conda deactivate
 
 ## 1.4 Phobius
 <p align="justify">For either case of installation process, in order to use the topology and signal peptide predictions provided by Phobius you must download Phobius from https://phobius.sbc.su.se/data.html. As described in section "3.4" to utilize Phobius when running ProteoSeeker through the command-line you should also provide the path to the Phobius directory in the parameter file or as a parameter through the corresponding option of "proteoseeker.py". The default path for the Phobius installation in a Docker container from the proteoseeker Docker image is already set to the phobius directory of the shared directory and you should download and copy the Phobius installation files in that directory as explained in section "3.3" below. In any other case, ProteoSeeker will run without performing topology and signal peptide predictions in its seek functionality.</p>
-
-## 2.1 Docker
-<p align="justify">To install ProteoSeeker from Docker Hub as a Docker image, Docker must be installed in your system. To install Docker in Ubuntu, follow the instructions provided by the link below. Then, download the image of ProteoSeeker from Docker Hub. There are two versions.</p>
-
-Docker engine for Ubuntu: https://docs.docker.com/engine/install/ubuntu/
-
-The main_v1.0.0 version has a download size of  **13.16 GB** and decompressed has a size of **30.4 GB**:
-~~~bash
-sudo docker image pull skretaslab/proteoseeker
-or
-sudo docker image pull skretaslab/proteoseeker:latest
-or
-sudo docker image pull skretaslab/proteoseeker:main_v1.0.0
-~~~
-
-The light_v1.0.0 version has a download size of  **7.66 GB** and decompressed has a size of **22.3 GB**:
-~~~bash
-sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
-~~~
 
 # Publication
 [https://doi.org/10.1002/advs.202414877](https://doi.org/10.1002/advs.202414877)
