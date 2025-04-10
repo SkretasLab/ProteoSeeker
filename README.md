@@ -83,7 +83,7 @@ conda deactivate
 <p align="justify">For either case of installation process, in order to use the topology and signal peptide predictions provided by Phobius you must download Phobius from https://phobius.sbc.su.se/data.html. As described in section "3.4" to utilize Phobius when running ProteoSeeker through the command-line you should also provide the path to the Phobius directory in the parameter file or as a parameter through the corresponding option of "proteoseeker.py". The default path for the Phobius installation in a Docker container from the proteoseeker Docker image is already set to the phobius directory of the shared directory and you should download and copy the Phobius installation files in that directory as explained in section "3.3" below. In any other case, ProteoSeeker will run without performing topology and signal peptide predictions in its seek functionality.</p>
 
 # Wiki
-To find details about the functions and usage of ProteoSeeker see: [<ins>Wiki</ins>](https://github.com/SkretasLab/ProteoSeeker/wiki)
+Extensive documentation on the functionality and usage of ProteoSeeker is available in its [<ins>Wiki</ins>](https://github.com/SkretasLab/ProteoSeeker/wiki)
 
 # Publication
 [https://doi.org/10.1002/advs.202414877](https://doi.org/10.1002/advs.202414877)
