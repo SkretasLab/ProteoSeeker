@@ -3,7 +3,7 @@
 <br>
 <br>
 
-## [<ins>Usage Details</ins>](./usage_details.md)
+## [<ins>Usage Details - Wiki</ins>](https://github.com/SkretasLab/ProteoSeeker/wiki)
 
 <br>
 <br>
