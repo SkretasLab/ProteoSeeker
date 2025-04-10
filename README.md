@@ -12,7 +12,7 @@ Anaconda for Linux: https://docs.anaconda.com/free/anaconda/install/linux/
 <p align="justify">Necessary to download the ProteoSeeker repository.</p>
 
 ### 1.1.2 Installation process
-<p align="justify">Execute the commands below to perform the following installation steps. The installation requires approximately <strong>15 GB</strong> of disk space and <strong>30-40 minutes</strong> to be completed.</p>
+<p align="justify">Execute the commands below to perform the following installation steps. The installation process requires approximately <strong>15 GB</strong> of disk space and <strong>30-40 minutes</strong> to be completed.</p>
 
 ~~~bash
 git clone https://github.com/SkretasLab/ProteoSeeker.git
