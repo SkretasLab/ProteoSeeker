@@ -100,7 +100,7 @@ conda_sh="/home/gfilis/anaconda3_2024_02_1/etc/profile.d/conda.sh"
 conda_bin="/home/gfilis/anaconda3_2024_02_1"
 conda_sh="/home/gfilis/anaconda3_2024_02_1/etc/profile.d/conda.sh"
 comebin_bin_path="/home/gfilis/anaconda3_2024_02_1/envs/ps_comebin/bin/COMEBin"
-x~~~
+~~~
 
 You can use these files by running ProteoSeeker from the main directory as shown below. Based on the "par_DRR083188.txt" file ProteoSeeker downloads and processes the SRA sample "DRR083188" and then analyzes it. The "par_DRR083188_sra.txt" and "par_DRR083188_run.txt" files combined apply the actions performed by the "par_DRR083188.txt" file. The "par_DRR083188_sra.txt" file is used to download and process the "DRR083188" sample. The "par_DRR083188_run.txt" file is used to run the analysis on the latter sample.
 
