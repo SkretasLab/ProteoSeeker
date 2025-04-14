@@ -1,3 +1,0 @@
-from proteoseeker import enzannmtg
-
-enzannmtg(None, False, False, False, "adapters.fa", "", "", "", "", "", "", "motifs.txt", "par_seek_tax_k_p.txt", "", None, None, "", "", False, None, False, None, 0.5, 3, True, True, False, 20, "pre", True, True, False, 4, False, None, True, "", True, 150, "S", 10, 1, 4, 500, 4, 256, 0.99, 4000, 1, 11, "--cut_ga ", True, 1e-70, [], [], 4, None, False, False, False, False, False, False, False, False, False, False, False, False, "ps_sra_tools", "ps_fastqc", "ps_bbtools", "ps_megahit", "ps_kraken", "ps_bracken", "ps_metabinner", "ps_comebin", "ps_cd_hit", "", "ps_hmmer", "ps_diamond", "ps_taxonkit", "ps_phobius", "ps_bowtie", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", None)
