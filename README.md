@@ -88,12 +88,13 @@ sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
 A simple example of running ProteoSeeker can be based on the template files "par_DRR083188.txt", "par_DRR083188_sra.txt" and "par_DRR083188_run.txt" which are already present in the "parameter_files" directory. To use these files you should change the following paths based on the specifications of your system:
 
 ~~~bash
-# Relative paths (should need no change when running ProteoSeeker from the main directory)
+# Relative paths: It should not be necessary to change these paths when running ProteoSeeker from the main directory.
 kraken_db_path="ps_tools/kraken2/kraken2_databases/kraken2_8st_db"
 profiles_broad_path="pfam_database/Pfam-A.hmm"
 swissprot_path="swissprot_database/swissprot"
 metabinner_bin_path="ps_tools/MetaBinner"
-# Full paths
+
+# Full paths:
 conda_bin="/home/gfilis/anaconda3_2024_02_1"
 conda_sh="/home/gfilis/anaconda3_2024_02_1/etc/profile.d/conda.sh"
 conda_bin="/home/gfilis/anaconda3_2024_02_1"
