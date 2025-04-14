@@ -1,5 +1,0 @@
-This directory may be used to contain the input files for ProteoSeeker.
-
-!!! IMPORTNAT !!!
-Delete this file before running ProteoSeeker with input files from this directory, otherwise ProteoSeeker will not run the analysis and exit with an error.
-
