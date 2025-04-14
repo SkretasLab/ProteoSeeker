@@ -1,1 +1,0 @@
-Used to create directory in the GitHub repository.
