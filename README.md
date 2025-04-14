@@ -89,7 +89,7 @@ sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
 
 <p align="justify">Relative paths: It should not be necessary to change these paths when running ProteoSeeker from the main directory.</p>
 
-<p align="justify">Full paths: These include the path to the directory that includes the installation files of Anaconda (e.g., its "bin" directory), the path to the "conda.sh" file and the path to the "COMEBin" directory of the COMEBin conda environment.</p>
+<p align="justify">Full paths: These paths include the path to the directory that includes the installation files of Anaconda (e.g., its "bin" directory), the path to the "conda.sh" file and the path to the "COMEBin" directory of the COMEBin conda environment.</p>
 
 ~~~bash
 # Relative paths: 
