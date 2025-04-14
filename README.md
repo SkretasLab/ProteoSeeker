@@ -88,15 +88,18 @@ sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
 A simple example of running ProteoSeeker can be based on the template files "par_DRR083188.txt", "par_DRR083188_sra.txt" and "par_DRR083188_run.txt" which are already present in the "parameter_files" directory. To use these files you should change the following paths based on the specifications of your system:
 
 ~~~bash
+# Relative paths (should need no change when running ProteoSeeker from the main directory)
 kraken_db_path="ps_tools/kraken2/kraken2_databases/kraken2_8st_db"
 profiles_broad_path="pfam_database/Pfam-A.hmm"
 swissprot_path="swissprot_database/swissprot"
+metabinner_bin_path="ps_tools/MetaBinner"
+# Full paths
 conda_bin="/home/gfilis/anaconda3_2024_02_1"
 conda_sh="/home/gfilis/anaconda3_2024_02_1/etc/profile.d/conda.sh"
-metabinner_bin_path="ps_tools/MetaBinner"
+conda_bin="/home/gfilis/anaconda3_2024_02_1"
+conda_sh="/home/gfilis/anaconda3_2024_02_1/etc/profile.d/conda.sh"
 comebin_bin_path="/home/gfilis/anaconda3_2024_02_1/envs/ps_comebin/bin/COMEBin"
-fraggenescanrs_path="ps_tools/fgsrs/FragGeneScanRs"
-~~~
+x~~~
 
 You can use these files by running ProteoSeeker from the main directory as shown below. Based on the "par_DRR083188.txt" file ProteoSeeker downloads and processes the SRA sample "DRR083188" and then analyzes it. The "par_DRR083188_sra.txt" and "par_DRR083188_run.txt" files combined apply the actions performed by the "par_DRR083188.txt" file. The "par_DRR083188_sra.txt" file is used to download and process the "DRR083188" sample. The "par_DRR083188_run.txt" file is used to run the analysis on the latter sample.
 
