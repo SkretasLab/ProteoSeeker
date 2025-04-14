@@ -85,11 +85,11 @@ sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
 <p align="justify">For either case of installation process, in order to use the topology and signal peptide predictions provided by Phobius you must download Phobius from https://phobius.sbc.su.se/data.html. As described in section "3.4" to utilize Phobius when running ProteoSeeker through the command-line you should also provide the path to the Phobius directory in the parameter file or as a parameter through the corresponding option of "proteoseeker.py". The default path for the Phobius installation in a Docker container from the proteoseeker Docker image is already set to the phobius directory of the shared directory and you should download and copy the Phobius installation files in that directory as explained in section "3.3" below. In any other case, ProteoSeeker will run without performing topology and signal peptide predictions in its seek functionality.</p>
 
 # 2. Run ProteoSeeker
-A simple example of running ProteoSeeker can be based on the template files "par_DRR083188.txt", "par_DRR083188_sra.txt" and "par_DRR083188_run.txt" which are already present in the "parameter_files" directory. To use these files you should change certain paths based on the specifications of your system. These paths are described below.
+<p align="justify">A simple example of running ProteoSeeker can be based on the template files "par_DRR083188.txt", "par_DRR083188_sra.txt" and "par_DRR083188_run.txt" which are already present in the "parameter_files" directory. To use these files you should change certain paths based on the specifications of your system. These paths are described below.</p>
 
-Relative paths: It should not be necessary to change these paths when running ProteoSeeker from the main directory.
+<p align="justify">Relative paths: It should not be necessary to change these paths when running ProteoSeeker from the main directory.</p>
 
-Full paths: These include the path to the directory that includes the installation files of Anaconda (e.g., its "bin" directory), the path to the "conda.sh" file and the path to the "COMEBin" directory of the COMEBin conda environment.
+<p align="justify">Full paths: These include the path to the directory that includes the installation files of Anaconda (e.g., its "bin" directory), the path to the "conda.sh" file and the path to the "COMEBin" directory of the COMEBin conda environment.</p>
 
 ~~~bash
 # Relative paths: 
@@ -104,7 +104,7 @@ conda_sh="/home/gfilis/anaconda3_2024_02_1/etc/profile.d/conda.sh"
 comebin_bin_path="/home/gfilis/anaconda3_2024_02_1/envs/ps_comebin/bin/COMEBin"
 ~~~
 
-You can use these files by running ProteoSeeker from the main directory as shown below. Based on the "par_DRR083188.txt" file ProteoSeeker downloads and processes the SRA sample "DRR083188" and then analyzes it. The "par_DRR083188_sra.txt" and "par_DRR083188_run.txt" files combined apply the actions performed by the "par_DRR083188.txt" file. The "par_DRR083188_sra.txt" file is used to download and process the "DRR083188" sample. The "par_DRR083188_run.txt" file is used to run the analysis on the latter sample.
+<p align="justify">You can use these files by running ProteoSeeker from the main directory as shown below. Based on the "par_DRR083188.txt" file ProteoSeeker downloads and processes the SRA sample "DRR083188" and then analyzes it. The "par_DRR083188_sra.txt" and "par_DRR083188_run.txt" files combined apply the actions performed by the "par_DRR083188.txt" file. The "par_DRR083188_sra.txt" file is used to download and process the "DRR083188" sample. The "par_DRR083188_run.txt" file is used to run the analysis on the latter sample.</p>
 
 ~~~bash
 python proteoseeker -pfp parameter_files/par_DRR083188.txt
@@ -113,7 +113,7 @@ python proteoseeker -pfp parameter_files/par_DRR083188_run.txt
 ~~~
 
 # Wiki
-Extensive documentation on the functionality and usage of ProteoSeeker is available in its [<ins>Wiki</ins>](https://github.com/SkretasLab/ProteoSeeker/wiki).
+<p align="justify">Extensive documentation on the functionality and usage of ProteoSeeker is available in its [<ins>Wiki</ins>](https://github.com/SkretasLab/ProteoSeeker/wiki).</p>
 
 # Publication
 [https://doi.org/10.1002/advs.202414877](https://doi.org/10.1002/advs.202414877)
