@@ -33,11 +33,13 @@ conda config --set channel_priority flexible
 ~~~
 
 ### 1.1.4 Parameter files
-<p align="justify">You can create a set of "template" parameter files which can be used to run the seek or the taxonomy mode or both modes of ProteoSeeker by running the following script in the installation directory from the same directory. This set of files is generated in the main directory of ProteoSeeker.</p>
+<p align="justify">You can create a set of "template" parameter files which can be used to run the seek or the taxonomy mode or both modes of ProteoSeeker by running the following script in the installation directory from the same directory. This set of files is generated in the "parameter_files" directory of ProteoSeeker.</p>
 
 ~~~bash
 ./parameter_files.sh
 ~~~
+
+<p align="justify">In addition, to facilitate further the process of running ProteoSeeker, two parameter files, "par_DRR083188_sra" and "par_DRR083188_run", are already present in the "parameter_files" directory. The latter files can easily be modified to run ProteoSeeker based on the specifications of your system and analysis.</p>
 
 ### 1.1.5 COMEBin - GPU
 <p align="justify">It should be noted that COMEBin can also be installed and run on a GPU. Instructions are available at: https://github.com/ziyewang/COMEBin and also below:</p>
@@ -81,6 +83,28 @@ sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
 
 ## 1.3 Phobius
 <p align="justify">For either case of installation process, in order to use the topology and signal peptide predictions provided by Phobius you must download Phobius from https://phobius.sbc.su.se/data.html. As described in section "3.4" to utilize Phobius when running ProteoSeeker through the command-line you should also provide the path to the Phobius directory in the parameter file or as a parameter through the corresponding option of "proteoseeker.py". The default path for the Phobius installation in a Docker container from the proteoseeker Docker image is already set to the phobius directory of the shared directory and you should download and copy the Phobius installation files in that directory as explained in section "3.3" below. In any other case, ProteoSeeker will run without performing topology and signal peptide predictions in its seek functionality.</p>
+
+# Run ProteoSeeker
+A simple example of running ProteoSeeker can be based on the template files "par_DRR083188.txt", "par_DRR083188_sra.txt" and "par_DRR083188_run.txt" which are already present in the "parameter_files" directory. To use these files you should change the following paths based on the specifications of your system:
+
+~~~bash
+kraken_db_path="ps_tools/kraken2/kraken2_databases/kraken2_8st_db"
+profiles_broad_path="pfam_database/Pfam-A.hmm"
+swissprot_path="swissprot_database/swissprot"
+conda_bin="/home/gfilis/anaconda3_2024_02_1"
+conda_sh="/home/gfilis/anaconda3_2024_02_1/etc/profile.d/conda.sh"
+metabinner_bin_path="ps_tools/MetaBinner"
+comebin_bin_path="/home/gfilis/anaconda3_2024_02_1/envs/ps_comebin/bin/COMEBin"
+fraggenescanrs_path="ps_tools/fgsrs/FragGeneScanRs"
+~~~
+
+You can use these files by running ProteoSeeker from the main directory as shown below. Based on the "par_DRR083188.txt" file ProteoSeeker downloads and processes the SRA sample "DRR083188" and then analyzes it. The "par_DRR083188_sra.txt" and "par_DRR083188_run.txt" files combined apply the actions performed by the "par_DRR083188.txt" file. The "par_DRR083188_sra.txt" file is used to download and process the "DRR083188" sample. The "par_DRR083188_run.txt" file is used to run the analysis on the latter sample.
+
+~~~bash
+python proteoseeker -pfp parameter_files/par_DRR083188.txt
+python proteoseeker -pfp parameter_files/par_DRR083188_sra.txt
+python proteoseeker -pfp parameter_files/par_DRR083188_run.txt
+~~~
 
 # Wiki
 Extensive documentation on the functionality and usage of ProteoSeeker is available in its [<ins>Wiki</ins>](https://github.com/SkretasLab/ProteoSeeker/wiki).
