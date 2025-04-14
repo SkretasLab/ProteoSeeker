@@ -1,1 +1,0 @@
-This directory "sra_files" is used to collected the SRA files downloaded by ProteoSeeker. The FASTQ files extracted from the SRA files are also stored in this directory.
