@@ -4,7 +4,7 @@ sra_code="DRR083188"
 contigs="True"
 protein_input=""
 adapters_path="adapters.fa"
-protein_db_path="other/swissprot_proteins_13_04_2025/uniprot_sprot.fasta"
+protein_db_path=""
 kraken_db_path="ps_tools/kraken2/kraken2_databases/kraken2_8st_db"
 profiles_path=""
 profiles_taxonomy_path=""
@@ -16,7 +16,7 @@ output_path="results/DRR083188_run"
 #---------Modes and Routes---------
 seek_mode="True"
 taxonomy_mode="True"
-seek_route="3"
+seek_route="1"
 taxonomy_route="2"
 
 #---------Protein family options---------
@@ -76,16 +76,16 @@ second_dom_search=""
 e_value_nodom_thr=""
 
 #---------Annotation---------
-add_type="organism	bias 	number of organisms	biosample name"
-add_info="synthetic metagenome	no 	10 	SAMN16441671"
+add_type="type 1	type 2	type 3	type 4"
+add_info="info 1	info 2	info 3	info 4"
 
 #---------Threads---------
-thread_num="6"
+thread_num="4"
 filtering_threads=""
 
 #---------Processes performed after---------
 after_preprocessing=""
-after_assembly="True"
+after_assembly=""
 after_gene_pred=""
 after_binning=""
 after_mapping=""

@@ -7,67 +7,79 @@ adapters_path="adapters.fa"
 protein_db_path=""
 kraken_db_path="ps_tools/kraken2/kraken2_databases/kraken2_8st_db"
 profiles_path=""
-profiles_phylo_path=""
+profiles_taxonomy_path=""
 profiles_broad_path="pfam_database/Pfam-A.hmm"
 swissprot_path="swissprot_database/swissprot"
 motifs_path="motifs.txt"
 output_path="results/DRR083188_sra_results"
 
+#---------Modes and Routes---------
+seek_mode=""
+taxonomy_mode=""
+seek_route=""
+taxonomy_route=""
+
 #---------Protein family options---------
-family_code="69,70,71,72,73,74,75,76,77,78,79,80,81"
-family_code_phylo=""
-db_name="AAA_ATPase"
-db_name_phylo=""
-input_protein_names_status=""
-input_protein_names=""
-input_protein_names_phylo_status=""
-input_protein_names_phylo=""
+seek_family_code=""
+taxonomy_family_code=""
+seek_db_name=""
+taxonomy_db_name=""
+input_seek_protein_names_status=""
+input_seek_protein_names=""
+input_taxonomy_protein_names_status=""
+input_taxonomy_protein_names=""
 name_threshold=""
 
-#---------General options---------
-#---Pipeline---
-seek_route="3"
-paired_end="False"
+#---------Pipeline---------
+paired_end="True"
 compressed="True"
-create_fpb_status="False"
 prefetch_size=""
 adapters_status=""
 add_seek_info=""
 add_taxonomy_info=""
-#---FastQC---
+
+#---------FastQC---------
 skip_fastqc=""
-#---BBDuk---
+
+#---------BBDuk---------
 bbduk_max_ram=""
 clear_space=""
-#---Megahit---
+
+#---------Megahit---------
 k_list=""
-#---Kraken---
-kraken_mode="False"
+
+#---------Kraken---------
 kraken_threshold=""
 kraken_memory_mapping=""
 bracken_length=""
 bracken_level=""
 bracken_threshold=""
-#---Binning---
+
+#---------Binning---------
 binning_tool=""
 binning_max_ram=""
 bin_contig_len="1000"
 bin_kmer=""
 comebin_batch_size=""
-#---CD-HIT---
+
+#---------CD-HIT---------
 cd_hit_t=""
 cd_hit_max_mem=""
-#---Gene prediction---
+
+#---------Gene prediction---------
 gene_encoding=""
 genetic_code=""
-#---HMMER---
+
+#---------HMMER---------
 val_type=""
 second_dom_search=""
 e_value_nodom_thr=""
-#---Annotation---
-add_type="organism bias  number of organisms biosample name"
-add_info="synthetic metagenome no  10  SAMN16441671"
-#---Threads---
+
+#---------Annotation---------
+add_type="type 1	type 2	type 3	type 4"
+add_info="info 1	info 2	info 3	info 4"
+
+#---------Threads---------
 thread_num="4"
 filtering_threads=""
 
@@ -76,6 +88,7 @@ after_preprocessing=""
 after_assembly=""
 after_gene_pred=""
 after_binning=""
+after_mapping=""
 after_db=""
 after_tm=""
 after_ap=""
