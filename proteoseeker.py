@@ -925,22 +925,28 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
         print("\nInformation was provided to be added in the annotation results but no type(s) was(were) provided. Exiting.")
         exit()
 
-    # Time for databases.
     # The pHMM database.
-    # Determine the protein names.
     profiles_path, analysis_fam_names, family_to_profile_seek_dict = profile_database_process.craete_phmm_db(seek_family_code, family_group_name, pr_domains_folder, fam_nums_file_name, fam_pfam_file_name, pfam_domains_names, hmmer_env, hmmfetch_path, hmmpress_path, profiles_broad_path, input_log_file, output_log_file, conda_sh_path)
-    fpd_fasta, fpd_name, fpd_folder, pr_names_dict = family_process.find_fam_names(seek_family_code, family_group_name, protein_db_path, fpd_gen_folder, fam_nums_file_name, name_thr, input_seek_protein_names_status, input_seek_protein_names, pr_names_dict, conda_sh_path)
-    # The phylo pHMM database.
-    # Determine the phylo protein names.
+
+    # Determine the seek protein names for the seek mode and seek route 2 or 3.
+    if seek_mode and (seek_route == 2 or seek_route == 3):
+        fpd_fasta, fpd_name, fpd_folder, pr_names_dict = family_process.find_fam_names(seek_family_code, family_group_name, protein_db_path, fpd_gen_folder, fam_nums_file_name, name_thr, input_seek_protein_names_status, input_seek_protein_names, pr_names_dict, conda_sh_path)
+    
+    # The taxonomy pHMM database.
     profiles_taxonomy_path, analysis_fam_names_phylo, family_to_profile_phylo_dict = profile_database_process.craete_phmm_db(taxonomy_family_code, family_group_name_phylo, pr_domains_folder, fam_nums_file_name, fam_pfam_file_name, pfam_domains_names, hmmer_env, hmmfetch_path, hmmpress_path, profiles_broad_path, input_log_file, output_log_file, conda_sh_path)
-    fpd_fasta_phylo, fpd_name_phylo, pfpd_gen_folder_phylo_name, pr_names_dict = family_process.find_fam_names(taxonomy_family_code, family_group_name_phylo, protein_db_path, fpd_gen_folder, fam_nums_file_name, name_thr, input_taxonomy_protein_names_status, input_taxonomy_protein_names, pr_names_dict, conda_sh_path)
-    # Create nr phylo db
-    start_time_dbs = time.time()
-    protein_database_process.create_pr_db(pr_names_dict, protein_db_path, diamond_db_bash_name, diamond_env, diamond_path, thread_num, pdf_threads, input_log_file, output_log_file, conda_sh_path)    
-    # Time for databases
-    label = "Process of creating the pHMM and fnr databases (including phylo):"
-    elpased_time = supportive_functions.end_time_analysis(label, start_time_dbs, output_log_file)
-    time_dict["dbs_time"] = elpased_time
+
+    # Determine the taxonomy protein names for the taxonomy mode and taxonomoy route 2.
+    if taxonomy_mode and taxonomy_route == 2:
+        fpd_fasta_phylo, fpd_name_phylo, pfpd_gen_folder_phylo_name, pr_names_dict = family_process.find_fam_names(taxonomy_family_code, family_group_name_phylo, protein_db_path, fpd_gen_folder, fam_nums_file_name, name_thr, input_taxonomy_protein_names_status, input_taxonomy_protein_names, pr_names_dict, conda_sh_path)
+    
+    # Create the filtered protein database for the seek mode and seek route 2 or 3 or the taxonomy mode and taxonomoy route 2.
+    if (seek_mode and (seek_route == 2 or seek_route == 3)) or (taxonomy_mode and taxonomy_route == 2):
+        start_time_dbs = time.time()
+        protein_database_process.create_pr_db(pr_names_dict, protein_db_path, diamond_db_bash_name, diamond_env, diamond_path, thread_num, pdf_threads, input_log_file, output_log_file, conda_sh_path)    
+        # Time for databases
+        label = "Process of creating the pHMM and fnr databases (including phylo):"
+        elpased_time = supportive_functions.end_time_analysis(label, start_time_dbs, output_log_file)
+        time_dict["dbs_time"] = elpased_time
 
     # If chosen, the analysis stops here.
     if up_to_databases:
