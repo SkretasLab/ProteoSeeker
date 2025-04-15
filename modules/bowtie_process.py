@@ -61,7 +61,7 @@ def bowtie(output_path_bowtie, paired_end, tr_ex_file_paths, tr_ex_file_paths_p,
                     phrase_3 = "\"{}\" -x \"{}\" -U \"{}\" --very-sensitive --un \"{}\" --un-conc \"{}\" --met-file \"{}\" --omit-sec-seq -S \"{}\" -p {} &> \"{}\"".format(bowtie_path, bowtie_contigs_basename, single_phrase, bowtie_single_unaligned_path, bowtie_paired_unaligned_con_path, bowtie_stats_path, mapped_reads_path, thread_num, bowtie_stdoe_path)
                     phrase_4 = "\"{}\" --version > \"{}\"".format(bowtie_path, bowtie_version_path)
                 else:
-                    phrase_3 = "bowtie2 -x \"{}\" -U \"{}\" --very-sensitive --un \"{}\" --un-conc \"{}\" --met-file \"{}\" --omit-sec-seq -S \"{}\" -p {} &> \"{}\"".format(bowtie_path, bowtie_contigs_basename, single_phrase, bowtie_single_unaligned_path, bowtie_paired_unaligned_con_path, bowtie_stats_path, mapped_reads_path, thread_num, bowtie_stdoe_path)
+                    phrase_3 = "bowtie2 -x \"{}\" -U \"{}\" --very-sensitive --un \"{}\" --un-conc \"{}\" --met-file \"{}\" --omit-sec-seq -S \"{}\" -p {} &> \"{}\"".format(bowtie_contigs_basename, single_phrase, bowtie_single_unaligned_path, bowtie_paired_unaligned_con_path, bowtie_stats_path, mapped_reads_path, thread_num, bowtie_stdoe_path)
                     phrase_4 = "bowtie2 --version > \"{}\"".format(bowtie_version_path)
             # Create the Bash script.
             # Four cases: 1: Conda environment and path needed for the script. 2: Conda environment and no path needed for the script. 3: No conda environment and path needed for the script. 4: No conda environment and no path needed for the script.
