@@ -928,6 +928,14 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
     # The pHMM database.
     profiles_path, analysis_fam_names, family_to_profile_seek_dict = profile_database_process.craete_phmm_db(seek_family_code, family_group_name, pr_domains_folder, fam_nums_file_name, fam_pfam_file_name, pfam_domains_names, hmmer_env, hmmfetch_path, hmmpress_path, profiles_broad_path, input_log_file, output_log_file, conda_sh_path)
 
+    # Initialize objects.
+    fpd_fasta_seek = ""
+    fpd_name = ""
+    fpd_folder = None
+    fpd_fasta_taxonomy = ""
+    fpd_name_taxonomy = ""
+    pfpd_gen_folder_phylo_name = None
+    
     # Determine the seek protein names for the seek mode and seek route 2 or 3.
     if seek_mode and (seek_route == 2 or seek_route == 3):
         fpd_fasta, fpd_name, fpd_folder, pr_names_dict = family_process.find_fam_names(seek_family_code, family_group_name, protein_db_path, fpd_gen_folder, fam_nums_file_name, name_thr, input_seek_protein_names_status, input_seek_protein_names, pr_names_dict, conda_sh_path)
