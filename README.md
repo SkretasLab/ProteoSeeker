@@ -85,22 +85,26 @@ sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
 <p align="justify">For either case of installation process, in order to use the topology and signal peptide predictions provided by Phobius you must download Phobius from https://phobius.sbc.su.se/data.html. As described in section "3.4" to utilize Phobius when running ProteoSeeker through the command-line you should also provide the path to the Phobius directory in the parameter file or as a parameter through the corresponding option of "proteoseeker.py". The default path for the Phobius installation in a Docker container from the proteoseeker Docker image is already set to the phobius directory of the shared directory and you should download and copy the Phobius installation files in that directory as explained in section "3.3" below. In any other case, ProteoSeeker will run without performing topology and signal peptide predictions in its seek functionality.</p>
 
 # 2. Run ProteoSeeker
-<p align="justify">A simple example of running ProteoSeeker can be based on the template files "par_DRR083188.txt", "par_DRR083188_sra.txt" and "par_DRR083188_run.txt" which are already present in the "parameter_files" directory. To use these files you should change certain paths based on the specifications of your system. These paths are described below.</p>
+<p align="justify">A simple example of running ProteoSeeker can be based on the template files "par_DRR083188.txt", "par_DRR083188_sra.txt" and "par_DRR083188_run.txt" which are already present in the "parameter_files" directory. To use these files you should change certain paths based on the specifications of your system. These paths are described below. It should not be necessary to change the relative paths when running ProteoSeeker from the main directory.</p>
 
-<p align="justify">Relative paths: It should not be necessary to change these paths when running ProteoSeeker from the main directory.</p>
-
-<p align="justify">Full paths: These paths include the path to the directory that includes the installation files of Anaconda (e.g., its "bin" directory), the path to the "conda.sh" file and the path to the "COMEBin" directory of the COMEBin conda environment (can be left empty if COMEBin is not to be used in ProteoSeeker).</p>
+- protein_db_path: Can be left empty if not applying the seek mode with the seek routes (analysis types) 2 or 3 nor applying the taxonomy mode with the taxonomy route 2 (COMEBin/MetaBinner taxonomoy route).
+- kraken_db_path: Can be left empty if not applying the taxonomy mode with the taxonomoy route 1 (Kraken taxonomy route).
+- metabinner_bin_path: Can be left empty if not applying binning tool 1 (MetaBinner) in the taxonomy route 2 of the taxonomy mode.
+- comebin_bin_path: Can be left empty if not applying binning tool 2 (COMEBin) in the taxonomy route 2 of the taxonomy mode.
+- profiles_broad_path, swissprot_path, fraggenescanrs_path, conda_bin, conda_sh: Should already be set properly.
 
 ~~~bash
-# Relative paths: 
+# Relative paths:
+protein_db_path="/home/gfilis/uniprot_sprot.fasta"
 kraken_db_path="ps_tools/kraken2/kraken2_databases/kraken2_8st_db"
 profiles_broad_path="pfam_database/Pfam-A.hmm"
 swissprot_path="swissprot_database/swissprot"
-metabinner_bin_path="ps_tools/MetaBinner"
+fraggenescanrs_path="ps_tools/fgsrs/FragGeneScanRs"
 
 # Full paths:
 conda_bin="/home/gfilis/anaconda3_2024_02_1"
 conda_sh="/home/gfilis/anaconda3_2024_02_1/etc/profile.d/conda.sh"
+metabinner_bin_path="/home/gfilis/anaconda3_2024_02_1/envs/metabinner_env/bin"
 comebin_bin_path="/home/gfilis/anaconda3_2024_02_1/envs/ps_comebin/bin/COMEBin"
 ~~~
 
