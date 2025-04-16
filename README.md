@@ -104,7 +104,7 @@ fraggenescanrs_path="ps_tools/fgsrs/FragGeneScanRs"
 # Full paths:
 conda_bin="/home/gfilis/anaconda3_2024_02_1"
 conda_sh="/home/gfilis/anaconda3_2024_02_1/etc/profile.d/conda.sh"
-metabinner_bin_path="/home/gfilis/anaconda3_2024_02_1/envs/metabinner_env/bin"
+metabinner_bin_path="/home/gfilis/anaconda3_2024_02_1/envs/ps_metabinner/bin"
 comebin_bin_path="/home/gfilis/anaconda3_2024_02_1/envs/ps_comebin/bin/COMEBin"
 ~~~
 
