@@ -105,7 +105,7 @@ sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
 
 <br>
 
-<p align="justify">Examples of running ProteoSeeker can be based on the template files ("par_DRR083188...") present in the "parameter_files" directory. To use these files you should change certain paths based on the specifications of your system. These paths are described below. It should not be necessary to change the relative paths when running ProteoSeeker from the main directory.</p>
+<p align="justify">Examples of running ProteoSeeker can be based on the template files ("par_DRR083188...") present in the "parameter_files" directory. To use these files you should edit certain paths based on the specifications of your system. These paths are described below. It should not be necessary to change the relative paths when running ProteoSeeker from the main directory.</p>
 
 <p align="justify">
    
