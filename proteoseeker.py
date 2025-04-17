@@ -38,7 +38,7 @@ import predicted_family_process
 import comebin_metabinner_process
 
 
-def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=False, adapters_path="adapters.fa", protein_db_path="", kraken_db_path="", profiles_path="", profiles_taxonomy_path="", profiles_broad_path="", swissprot_path="", motifs_path="motifs.txt", options_file_path="", output_path="", seek_mode=True, taxonomy_mode=False, seek_route=1, taxonomy_route=1, seek_family_code=None, taxonomy_family_code=None, seek_db_name="", taxonomy_db_name="", input_seek_protein_names_status=False, input_seek_protein_names=None, input_taxonomy_protein_names_status=False, input_taxonomy_protein_names=None, name_thr=0.5, paired_end=True, compressed=True, prefetch_size=20, adapters_status="pre", add_seek_info=True, add_taxonomy_info=True, skip_fastqc=False, bbduk_max_ram=4, clear_space=False, k_list=None, kraken_threshold="", kraken_memory_mapping=True, bracken_length=150, bracken_level="S", bracken_threshold=10, binning_tool=1, bin_ram_ammount=4, bin_num_contig_len=500, bin_num_kmer=4, comebin_batch_size=256, cd_hit_t=0.99, cd_hit_mem=4000, prs_source=1, genetic_code=11, val_type="--cut_ga ", second_dom_search=True, e_value_nodom_thr=1e-70, add_type="", add_info="", thread_num=4, pdf_threads=None, after_trimming=False, after_assembly=False, after_gene_pred=False, after_binning=False, after_mapping=False, after_db=False, after_tm=False, after_ap=False, up_to_sra=False, up_to_databases=False, up_to_trimming_com=False, up_to_trimming_uncom=False, up_to_alignment=False, sra_env="ps_sra_tools", fastqc_env="ps_fastqc", bbduk_env="ps_bbtools", megahit_env="ps_megahit", kraken_env="ps_kraken", bracken_env="ps_bracken", metabinner_env="ps_metabinner", comebin_env="ps_comebin", cdhit_env="ps_cd_hit", genepred_env="", hmmer_env="ps_hmmer", diamond_env="ps_diamond", taxonkit_env="ps_taxonkit", phobius_env="ps_phobius", bowtie_env="ps_bowtie", conda_bin="", conda_sh="", prefetch_path="", vdb_validate_path="", fastq_dump_path="", fastqc_path="", gzip_path="", cat_path="", bbduk_path="", megahit_path="", kraken_path="", bracken_path="", alpha_diversity_path="", metabinner_bin_path="", comebin_bin_path="", fraggenescanrs_path="", hmmscan_path="", hmmpress_path="", hmmfetch_path="", diamond_path="", cd_hit_path="", taxonkit_path="", phobius_path="", bowtie_build_path="", bowtie_path="", input_command=None):
+def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=False, adapters_path="adapters.fa", protein_db_path="", kraken_db_path="", profiles_path="", profiles_taxonomy_path="", profiles_broad_path="", swissprot_path="", motifs_path="motifs.txt", options_file_path="", output_path="", seek_mode=True, taxonomy_mode=False, seek_route=1, taxonomy_route=1, seek_family_code=None, taxonomy_family_code=None, seek_db_name="", taxonomy_db_name="", input_seek_protein_names_status=False, input_seek_protein_names=None, input_taxonomy_protein_names_status=False, input_taxonomy_protein_names=None, name_thr=0.5, paired_end=True, compressed=True, prefetch_size=20, adapters_status="pre", add_seek_info=True, add_taxonomy_info=True, skip_fastqc=False, bbduk_max_ram=4, clear_space=False, k_list=None, kraken_threshold="", kraken_memory_mapping=True, bracken_length=150, bracken_level="S", bracken_threshold=10, binning_tool=1, bin_ram_ammount=4, bin_num_contig_len=500, bin_num_kmer=4, comebin_batch_size=256, cd_hit_t=0.99, cd_hit_mem=4000, prs_source=1, genetic_code=11, val_type="--cut_ga ", second_dom_search=True, e_value_nodom_thr=1e-70, add_type="", add_info="", thread_num=4, pdf_threads=None, fastqc_par=None, bbduk_par=None, megahit_par=None, fraggenescanrs_par=None, cd_hit_par=None, hmmscan_par=None, diamond_blastp_par=None, kraken_par=None, bracken_par=None, metabinner_par=None, comebin_par=None, bowtie_par=None, after_preprocessing=False, after_assembly=False, after_gene_pred=False, after_binning=False, after_mapping=False, after_db=False, after_tm=False, after_ap=False, up_to_sra=False, up_to_databases=False, up_to_preprocessing_com=False, up_to_preprocessing_uncom=False, up_to_alignment=False, sra_env="ps_sra_tools", fastqc_env="ps_fastqc", bbduk_env="ps_bbtools", megahit_env="ps_megahit", kraken_env="ps_kraken", bracken_env="ps_bracken", metabinner_env="ps_metabinner", comebin_env="ps_comebin", cdhit_env="ps_cd_hit", genepred_env="", hmmer_env="ps_hmmer", diamond_env="ps_diamond", taxonkit_env="ps_taxonkit", phobius_env="ps_phobius", bowtie_env="ps_bowtie", conda_bin="", conda_sh="", prefetch_path="", vdb_validate_path="", fastq_dump_path="", fastqc_path="", gzip_path="", cat_path="", bbduk_path="", megahit_path="", kraken_path="", bracken_path="", alpha_diversity_path="", metabinner_bin_path="", comebin_bin_path="", fraggenescanrs_path="", hmmscan_path="", hmmpress_path="", hmmfetch_path="", diamond_path="", cd_hit_path="", taxonkit_path="", phobius_path="", bowtie_build_path="", bowtie_path="", input_command=None):
     # Start time
     start_time = time.time()
     
@@ -54,6 +54,7 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
         print("\nOptions file path: None")
     
     # Read the values for the options from a file, if its was specified.
+    # Each line is splited at the first occurrence of "=" because the value of an option in the "tool parameters" may contain more than one "=". 
     if options_file_path:
         if not os.path.exists(options_file_path):
             print("\nThe path to the options file is wrong. Exiting.")
@@ -65,7 +66,7 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
                 if line[0] == "#":
                     continue
                 if "=" in line:
-                    line_splited = line.split("=")
+                    line_splited = line.split("=", 1)
                     option_type = line_splited[0]
                     option_value = line_splited[1]
                     if option_value and option_value != "\"\"":
@@ -248,11 +249,36 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
                             thread_num = int(option_value)
                         if option_type == "filtering_threads":
                             pdf_threads = int(option_value)
+                        # Tool parameters
+                        if option_type == "fastqc_par":
+                            fastqc_par = option_value
+                        if option_type == "bbduk_par":
+                            bbduk_par = option_value
+                        if option_type == "megahit_par":
+                            megahit_par = option_value
+                        if option_type == "fraggenescanrs_par":
+                            fraggenescanrs_par = option_value
+                        if option_type == "cd_hit_par":
+                            cd_hit_par = option_value
+                        if option_type == "hmmscan_par":
+                            hmmscan_par = option_value
+                        if option_type == "diamond_blastp_par":
+                            diamond_blastp_par = option_value
+                        if option_type == "kraken_par":
+                            kraken_par = option_value
+                        if option_type == "bracken_par":
+                            bracken_par = option_value
+                        if option_type == "metabinner_par":
+                            metabinner_par = option_value
+                        if option_type == "comebin_par":
+                            comebin_par = option_value
+                        if option_type == "bowtie_par":
+                            bowtie_par = option_value
                         # Processes performed after
                         if option_type == "after_preprocessing":
-                            after_trimming = option_value
+                            after_preprocessing = option_value
                             arg_str = "-after_preprocessing"
-                            after_trimming = supportive_functions.check_i_value(after_trimming, arg_str)
+                            after_preprocessing = supportive_functions.check_i_value(after_preprocessing, arg_str)
                         if option_type == "after_assembly":
                             after_assembly = option_value
                             arg_str = "after_assembly"
@@ -445,7 +471,7 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
             output_path = "results_{}".format(output_path_suffix)
 
     print("\nOutput path: {}".format(output_path))
-    if (not os.path.exists(output_path)) and (after_ap or after_tm or after_trimming or after_assembly or after_gene_pred or after_binning or  after_mapping or after_db):
+    if (not os.path.exists(output_path)) and (after_ap or after_tm or after_preprocessing or after_assembly or after_gene_pred or after_binning or  after_mapping or after_db):
         print("\nThe output folder does not exist and the processes have been set to be continued based on an already existing analysis.")
         exit()
 
@@ -716,11 +742,17 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
     time_analyis_path = "{}/time_analysis.tsv".format(output_path)
 
     # Initialization of variables.
+    fpd_fasta_seek = ""
+    fpd_name_seek = ""
+    fpd_folder_seek = None
+    fpd_fasta_taxonomy = ""
+    fpd_name_taxonomy = ""
+    fpd_folder_taxonomy = None
     pr_names_dict = {}
     dict_contigs_bins = {}
     dict_prs_bins = {}
-    prs_with_enz_domains = []
-    prs_with_enz_domains_phylo = []
+    prs_with_doms_seek = []
+    prs_with_doms_taxonomy = []
     prs_blast_thr = []
     protein_ids_below_thr = []
     analysis_fam_names = []
@@ -784,7 +816,7 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
 
     # Initialize dictionaries for the different kinds of information.
     # Determine whether the output folder will be overwritten.
-    if (not after_trimming) and (not after_assembly) and (not after_gene_pred) and (not protein_input) and (not after_binning) and (not after_mapping) and (not after_db) and (not after_tm) and (not after_ap):
+    if (not after_preprocessing) and (not after_assembly) and (not after_gene_pred) and (not protein_input) and (not after_binning) and (not after_mapping) and (not after_db) and (not after_tm) and (not after_ap):
         # The output folder is created. If it already exists then it is deleted and recreated.
         if os.path.exists(output_path):
             shutil.rmtree(output_path)
@@ -928,24 +960,16 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
     # The pHMM database.
     profiles_path, analysis_fam_names, family_to_profile_seek_dict = profile_database_process.craete_phmm_db(seek_family_code, family_group_name, pr_domains_folder, fam_nums_file_name, fam_pfam_file_name, pfam_domains_names, hmmer_env, hmmfetch_path, hmmpress_path, profiles_broad_path, input_log_file, output_log_file, conda_sh_path)
 
-    # Initialize objects.
-    fpd_fasta_seek = ""
-    fpd_name = ""
-    fpd_folder = None
-    fpd_fasta_taxonomy = ""
-    fpd_name_taxonomy = ""
-    pfpd_gen_folder_phylo_name = None
-    
     # Determine the seek protein names for the seek mode and seek route 2 or 3.
     if seek_mode and (seek_route == 2 or seek_route == 3):
-        fpd_fasta, fpd_name, fpd_folder, pr_names_dict = family_process.find_fam_names(seek_family_code, family_group_name, protein_db_path, fpd_gen_folder, fam_nums_file_name, name_thr, input_seek_protein_names_status, input_seek_protein_names, pr_names_dict, conda_sh_path)
+        fpd_fasta_seek, fpd_name_seek, fpd_folder_seek, pr_names_dict = family_process.find_fam_names(seek_family_code, family_group_name, protein_db_path, fpd_gen_folder, fam_nums_file_name, name_thr, input_seek_protein_names_status, input_seek_protein_names, pr_names_dict, conda_sh_path)
     
     # The taxonomy pHMM database.
     profiles_taxonomy_path, analysis_fam_names_phylo, family_to_profile_phylo_dict = profile_database_process.craete_phmm_db(taxonomy_family_code, family_group_name_phylo, pr_domains_folder, fam_nums_file_name, fam_pfam_file_name, pfam_domains_names, hmmer_env, hmmfetch_path, hmmpress_path, profiles_broad_path, input_log_file, output_log_file, conda_sh_path)
-
+    
     # Determine the taxonomy protein names for the taxonomy mode and taxonomy route 2.
     if taxonomy_mode and taxonomy_route == 2:
-        fpd_fasta_phylo, fpd_name_phylo, pfpd_gen_folder_phylo_name, pr_names_dict = family_process.find_fam_names(taxonomy_family_code, family_group_name_phylo, protein_db_path, fpd_gen_folder, fam_nums_file_name, name_thr, input_taxonomy_protein_names_status, input_taxonomy_protein_names, pr_names_dict, conda_sh_path)
+        fpd_fasta_taxonomy, fpd_name_taxonomy, fpd_folder_taxonomy, pr_names_dict = family_process.find_fam_names(taxonomy_family_code, family_group_name_phylo, protein_db_path, fpd_gen_folder, fam_nums_file_name, name_thr, input_taxonomy_protein_names_status, input_taxonomy_protein_names, pr_names_dict, conda_sh_path)
     
     # Create the filtered protein database for the seek mode and seek route 2 or 3 or the taxonomy mode and taxonomy route 2.
     if (seek_mode and (seek_route == 2 or seek_route == 3)) or (taxonomy_mode and taxonomy_route == 2):
@@ -988,11 +1012,11 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
     
     # Quality control
     if (not contigs) and (not after_assembly) and (not after_gene_pred) and (not after_binning) and (not after_mapping) and (not after_db) and (not protein_input) and (not after_tm) and (not after_ap):
-        if not after_trimming:
+        if not after_preprocessing:
             # FastQC has no specific option for analyzing paired-end reads together. It analyzes them seperatly as it does with each single-end read.
             start_time_fastqc_initial = time.time()
             clear = True
-            fastqc_process.fastqc(fastqc_env, output_path_fastqc, file_paths, fastqc_path, clear, thread_num, input_log_file, output_log_file, fastqc_1_bash_script, fastqc_version_bt_path, fastqc_stdoe_bt_path, conda_sh_path)
+            fastqc_process.fastqc(fastqc_env, output_path_fastqc, file_paths, fastqc_path, clear, thread_num, input_log_file, output_log_file, fastqc_1_bash_script, fastqc_version_bt_path, fastqc_stdoe_bt_path, conda_sh_path, fastqc_par)
             label = "Process of initial fastqc:"
             elpased_time = supportive_functions.end_time_analysis(label, start_time_fastqc_initial, output_log_file)
             time_dict["fastqc_initial_time"] = elpased_time
@@ -1005,7 +1029,7 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
             
             # BBDuk.
             start_time_trimming = time.time()
-            bbduk_process.bbduk(bbduk_env, output_path_trimmed, file_paths, adapters_ap_path, paired_end, file_paths_p, bbduk_path, thread_num, bbduk_max_ram, output_path_summaries_errors, input_log_file, output_log_file, bbduk_bash_script, bbduk_version_path, bbduk_stdoe_path, conda_sh_path)
+            bbduk_process.bbduk(bbduk_env, output_path_trimmed, file_paths, adapters_ap_path, paired_end, file_paths_p, bbduk_path, thread_num, bbduk_max_ram, output_path_summaries_errors, input_log_file, output_log_file, bbduk_bash_script, bbduk_version_path, bbduk_stdoe_path, conda_sh_path, bbduk_par)
             label = "Process of trimming:"
             elpased_time = supportive_functions.end_time_analysis(label, start_time_trimming, output_log_file)
             time_dict["preprocessing_time"] = elpased_time
@@ -1013,7 +1037,7 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
             # Delete input files.
             supportive_functions.reduce_volume(clear_space, input_folder, output_path_trimmed, input_log_file, [1])
             # If chosen, the analysis stops here.
-            if up_to_trimming_com:
+            if up_to_preprocessing_com:
                 label = "Up to trimming (1):"
                 elpased_time = supportive_functions.end_time_analysis(label, start_time, output_log_file)
                 time_dict["tool_time"] = elpased_time
@@ -1030,7 +1054,7 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
             if not skip_fastqc:
                 start_time_fastqc_final = time.time()
                 clear = False
-                fastqc_process.fastqc(fastqc_env, output_path_fastqc, ca_file_paths, fastqc_path, clear, thread_num, input_log_file, output_log_file, fastqc_2_bash_script, fastqc_version_at_path, fastqc_stdoe_at_path, conda_sh_path)
+                fastqc_process.fastqc(fastqc_env, output_path_fastqc, ca_file_paths, fastqc_path, clear, thread_num, input_log_file, output_log_file, fastqc_2_bash_script, fastqc_version_at_path, fastqc_stdoe_at_path, conda_sh_path, fastqc_par)
                 label = "Process of final fastqc:"
                 elpased_time = supportive_functions.end_time_analysis(label, start_time_fastqc_final, output_log_file)
                 time_dict["fastqc_final_time"] = elpased_time
@@ -1050,7 +1074,7 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
         supportive_functions.reduce_volume(clear_space, input_folder, output_path_trimmed, input_log_file, [2])
         
         # If chosen, the analysis stops here.
-        if up_to_trimming_uncom:
+        if up_to_preprocessing_uncom:
             label = "Up to trimming (2):"
             elpased_time = supportive_functions.end_time_analysis(label, start_time, output_log_file)
             time_dict["tool_time"] = elpased_time
@@ -1058,7 +1082,7 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
             exit()
 
         start_time_assembly = time.time()
-        megahit_process.megahit(megahit_env, output_path_megahit, tr_ex_file_paths, paired_end, tr_ex_file_paths_p, megahit_path, k_list, thread_num, input_log_file, output_log_file, megahit_bash_script, megahit_version_path, megahit_stdoe_path, conda_sh_path)
+        megahit_process.megahit(megahit_env, output_path_megahit, tr_ex_file_paths, paired_end, tr_ex_file_paths_p, megahit_path, k_list, thread_num, input_log_file, output_log_file, megahit_bash_script, megahit_version_path, megahit_stdoe_path, conda_sh_path, megahit_par)
         label = "Process of read assembly:"
         elpased_time = supportive_functions.end_time_analysis(label, start_time_assembly, output_log_file)
         time_dict["assembly_time"] = elpased_time
@@ -1078,7 +1102,7 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
         if not after_gene_pred:
             # Gene scanning.
             start_time_genepred = time.time()
-            gene_process.gene_prediction(genepred_env, output_path_genepred, output_path_genepred_base, output_path_genepred_faa, output_fgs_protein_formatted_1, fullpath_contigs_formated, fraggenescanrs_path, thread_num, input_log_file, output_log_file, gene_bash_script, fraggenescanrs_version_path, fraggenescanrs_stdoe_path, conda_sh_path)
+            gene_process.gene_prediction(genepred_env, output_path_genepred, output_path_genepred_base, output_path_genepred_faa, output_fgs_protein_formatted_1, fullpath_contigs_formated, fraggenescanrs_path, thread_num, input_log_file, output_log_file, gene_bash_script, fraggenescanrs_version_path, fraggenescanrs_stdoe_path, conda_sh_path, fraggenescanrs_par)
             label = "Process of gene prediction:"
             elpased_time = supportive_functions.end_time_analysis(label, start_time_genepred, output_log_file)
             time_dict["gene_prediction_time"] = elpased_time
@@ -1093,7 +1117,7 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
 
         # Protein redundancy.
         start_time_cd_hit = time.time()
-        cd_hit_process.cd_hit(cdhit_env, output_path_cdhit, prs_source, output_fgs_protein_formatted_1, output_fgs_protein_formatted_2, cd_hit_results_path, cd_hit_results_fasta_path, cd_hit_t, cd_hit_path, cd_hit_mem, thread_num, input_log_file, output_log_file, cdhit_bash_script, cd_hit_version_path, cd_hit_stdoe_path, conda_sh_path)
+        cd_hit_process.cd_hit(cdhit_env, output_path_cdhit, prs_source, output_fgs_protein_formatted_1, output_fgs_protein_formatted_2, cd_hit_results_path, cd_hit_results_fasta_path, cd_hit_t, cd_hit_path, cd_hit_mem, thread_num, input_log_file, output_log_file, cdhit_bash_script, cd_hit_version_path, cd_hit_stdoe_path, conda_sh_path, cd_hit_par)
         label = "Process of cd-hit:"
         elpased_time = supportive_functions.end_time_analysis(label, start_time_cd_hit, output_log_file)
         time_dict["cd_hit_time"] = elpased_time
@@ -1106,9 +1130,7 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
             # Taxonmic analysis from kraken2.
             if taxonomy_mode and (taxonomy_route == 1):
                 start_time_kraken = time.time()
-                kraken_status = True
-                bracken_status = True
-                kraken_species_dict, bracken_species_thr_dict, read_to_species_dict, taxid_to_species_dict, time_dict = kraken_bracken_process.kraken(paired_end, tr_ex_file_paths_p, tr_ex_file_paths, output_path_kraken, kraken_db_path, kraken_results_path, kraken_report_path, kraken_threshold, kraken_species_path, kraken_species_thr_path, kraken_reads_path, kraken_taxname_path, conda_sh_path, kraken_env, kraken_path, kraken_bash_script, kraken_stde_path, kraken_version_path, kraken_status, kraken_memory_mapping, bracken_status, bracken_bash_script, bracken_path, bracken_env, bracken_output_path, bracken_report_path, bracken_length, bracken_level, bracken_threshold, bracken_stde_path, bracken_version_path, krakentools_bash_script, alpha_diversity_path, alpha_diversity_version_path, alpha_diversity_stdoe_path, thread_num, time_dict, bracken_filters_path, input_log_file, output_log_file)
+                kraken_species_dict, bracken_species_thr_dict, read_to_species_dict, taxid_to_species_dict, time_dict = kraken_bracken_process.kraken(paired_end, tr_ex_file_paths_p, tr_ex_file_paths, output_path_kraken, kraken_db_path, kraken_results_path, kraken_report_path, kraken_threshold, kraken_species_path, kraken_species_thr_path, kraken_reads_path, kraken_taxname_path, conda_sh_path, kraken_env, kraken_path, kraken_bash_script, kraken_stde_path, kraken_version_path, kraken_memory_mapping, bracken_bash_script, bracken_path, bracken_env, bracken_output_path, bracken_report_path, bracken_length, bracken_level, bracken_threshold, bracken_stde_path, bracken_version_path, krakentools_bash_script, alpha_diversity_path, alpha_diversity_version_path, alpha_diversity_stdoe_path, thread_num, time_dict, bracken_filters_path, input_log_file, output_log_file, kraken_par, bracken_par)
                 label = "Process of kraken2:"
                 elpased_time = supportive_functions.end_time_analysis(label, start_time_kraken, output_log_file)
                 time_dict["kraken_time"] = elpased_time
@@ -1116,7 +1138,7 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
             # If selected and if FastQC were given as input then run MetaBinner2
             if taxonomy_mode and (taxonomy_route == 2):
                 start_time_binning = time.time()
-                comebin_metabinner_process.binning(binning_tool, metabinner_env, comebin_env, contigs, protein_input, output_path_bin, metabinner_bin_path, comebin_bin_path, fullpath_contigs_formated, bin_bam_folder, enz_dir, output_path_conitgs, full_coverage_folder, fullpath_tr_fastq_files, full_bin_results_folder, full_coverage_profile_path, thread_num, input_log_file, output_log_file, metabinner_bash_script, comebin_bash_script, bin_ram_ammount, bin_num_contig_len, bin_num_kmer, bin_gen_coverage_stdoe_path, bin_gen_kmer_stdoe_path, bin_filter_tooshort_stdoe_path, binning_stdoe_path, comebin_batch_size, conda_sh_path)
+                comebin_metabinner_process.binning(binning_tool, metabinner_env, comebin_env, contigs, protein_input, output_path_bin, metabinner_bin_path, comebin_bin_path, fullpath_contigs_formated, bin_bam_folder, enz_dir, output_path_conitgs, full_coverage_folder, fullpath_tr_fastq_files, full_bin_results_folder, full_coverage_profile_path, thread_num, input_log_file, output_log_file, metabinner_bash_script, comebin_bash_script, bin_ram_ammount, bin_num_contig_len, bin_num_kmer, bin_gen_coverage_stdoe_path, bin_gen_kmer_stdoe_path, bin_filter_tooshort_stdoe_path, binning_stdoe_path, comebin_batch_size, conda_sh_path, comebin_par, metabinner_par)
                 label = "Process of binning:"
                 elpased_time = supportive_functions.end_time_analysis(label, start_time_binning, output_log_file)
                 time_dict["binning_time"] = elpased_time
@@ -1128,8 +1150,7 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
                     
             # Mapping reads to contigs.
             start_time_bowtie = time.time()
-            bowtie_status = True
-            reads_to_contigs_dict, contigs_to_reads_dict = bowtie_process.bowtie(output_path_bowtie, paired_end, tr_ex_file_paths, tr_ex_file_paths_p, conda_sh_path, bowtie_build_path, bowtie_build_version_path, bowtie_build_stdoe_path, bowtie_env, bowtie_bash_script, bowtie_path, bowtie_version_path, bowtie_stdoe_path, bowtie_single_unaligned_path, bowtie_paired_unaligned_con_path, bowtie_stats_path, mapped_reads_path, thread_num, output_final_contigs_formated, bowtie_contigs_basename, bowtie_status, input_log_file, output_log_file)
+            reads_to_contigs_dict, contigs_to_reads_dict = bowtie_process.bowtie(output_path_bowtie, paired_end, tr_ex_file_paths, tr_ex_file_paths_p, conda_sh_path, bowtie_build_path, bowtie_build_version_path, bowtie_build_stdoe_path, bowtie_env, bowtie_bash_script, bowtie_path, bowtie_version_path, bowtie_stdoe_path, bowtie_single_unaligned_path, bowtie_paired_unaligned_con_path, bowtie_stats_path, mapped_reads_path, thread_num, output_final_contigs_formated, bowtie_contigs_basename, input_log_file, output_log_file, bowtie_par)
             label = "Process of read mapping:"
             elpased_time = supportive_functions.end_time_analysis(label, start_time_bowtie, output_log_file)
             time_dict["bowtie_time"] = elpased_time
@@ -1143,19 +1164,19 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
         if not after_db:
             if (seek_route == 1 or seek_route == 3):
                 if seek_mode:
-                    # HMMER Specified for selected protein family.
+                    # HMMER specified for selected protein families.
                     start_time_hmmer_spec = time.time()
                     phylo_analysis = False
-                    prs_with_enz_domains = hmmer_process.hmmer_spec(hmmer_env, output_path_hmmer, hmmer_dmbl_results, hmmer_simple_results, hmmer_enz_domains_all_proteins, cd_hit_results_path, hmmscan_path, profiles_path, val_type, file_prs_seq_enz_domains_name, thread_num, input_log_file, output_log_file, hmmer_spec_bash_script, phylo_analysis, hmmscan_spec_version_path, hmmscan_spec_stdoe_path, conda_sh_path)
+                    prs_with_doms_seek = hmmer_process.hmmer_spec(hmmer_env, output_path_hmmer, hmmer_dmbl_results, hmmer_simple_results, hmmer_enz_domains_all_proteins, cd_hit_results_path, hmmscan_path, profiles_path, val_type, file_prs_seq_enz_domains_name, thread_num, input_log_file, output_log_file, hmmer_spec_bash_script, phylo_analysis, hmmscan_spec_version_path, hmmscan_spec_stdoe_path, conda_sh_path, hmmscan_par)
                     label = "Process of specified HMMER:"
                     elpased_time = supportive_functions.end_time_analysis(label, start_time_hmmer_spec, output_log_file)
                     time_dict["hmmer_spec_time"] = elpased_time
 
-                # HMMER specified for phylogenetic analysis.
+                # HMMER specified for taxonomic analysis.
                 if profiles_taxonomy_path:
                     start_time_hmmer_spec_phylo = time.time()
                     phylo_analysis = True
-                    prs_with_enz_domains_phylo = hmmer_process.hmmer_spec(hmmer_env, output_path_hmmer, hmmer_dmbl_results_phylo, hmmer_simple_results_phylo, hmmer_enz_domains_all_proteins_phylo, cd_hit_results_path, hmmscan_path, profiles_taxonomy_path, val_type, file_prs_seq_enz_domains_phylo_name, thread_num, input_log_file, output_log_file, hmmer_spec_phylo_bash_script, phylo_analysis, hmmscan_spec_phylo_version_path, hmmscan_spec_phylo_stdoe_path, conda_sh_path)
+                    prs_with_doms_taxonomy = hmmer_process.hmmer_spec(hmmer_env, output_path_hmmer, hmmer_dmbl_results_phylo, hmmer_simple_results_phylo, hmmer_enz_domains_all_proteins_phylo, cd_hit_results_path, hmmscan_path, profiles_taxonomy_path, val_type, file_prs_seq_enz_domains_phylo_name, thread_num, input_log_file, output_log_file, hmmer_spec_phylo_bash_script, phylo_analysis, hmmscan_spec_phylo_version_path, hmmscan_spec_phylo_stdoe_path, conda_sh_path, hmmscan_par)
                     label = "Process of specified taxonomy HMMER:"
                     elpased_time = supportive_functions.end_time_analysis(label, start_time_hmmer_spec_phylo, output_log_file)
                     time_dict["hmmer_spec_taxonomy_time"] = elpased_time
@@ -1163,7 +1184,7 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
             if (seek_route == 2 or seek_route == 3) and seek_mode:
                 # Blast proteins with no domains from the selected protein family.
                 start_time_nr_no_doms = time.time()
-                prs_blast_thr, protein_ids_below_thr = diamond_process.diamond_first_round_fpd(diamond_env, output_path_hmmer, output_path_blastp, prs_with_enz_domains, blastp_results_no_doms_nr_file, blastp_info_no_doms_nr_file, blastp_no_doms_below_threshold, blastp_info_no_doms_below_threshold, cd_hit_results_path, file_prs_seq_no_enzs_name, fpd_fasta, fpd_name, e_value_nodom_thr, thread_num, input_log_file, output_log_file, diamond_path, blastp_nodoms_script, diamond_blastp_nr1_stdoe_path, conda_sh_path)
+                prs_blast_thr, protein_ids_below_thr = diamond_process.diamond_first_round_fpd(diamond_env, output_path_hmmer, output_path_blastp, prs_with_doms_seek, blastp_results_no_doms_nr_file, blastp_info_no_doms_nr_file, blastp_no_doms_below_threshold, blastp_info_no_doms_below_threshold, cd_hit_results_path, file_prs_seq_no_enzs_name, fpd_fasta_seek, fpd_name_seek, e_value_nodom_thr, thread_num, input_log_file, output_log_file, diamond_path, blastp_nodoms_script, diamond_blastp_nr1_stdoe_path, conda_sh_path, diamond_blastp_par)
                 label = "Process of BLASTP against fnr for proteins without domains:"
                 elpased_time = supportive_functions.end_time_analysis(label, start_time_nr_no_doms, output_log_file)
                 time_dict["blastp_fpd_no_doms_time"] = elpased_time
@@ -1176,8 +1197,8 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
                 pr_doms_num = 0
                 prs_nr_num = 0
                 prs_nr_thr_num = 0
-                if prs_with_enz_domains:
-                    pr_doms_num = len(prs_with_enz_domains)
+                if prs_with_doms_seek:
+                    pr_doms_num = len(prs_with_doms_seek)
                 if prs_blast_thr:
                     prs_nr_num = len(prs_blast_thr)
                 if protein_ids_below_thr:
@@ -1202,7 +1223,7 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
                 # Combined proteins: SwissProt
                 start_time_nr_swiss_doms = time.time()
                 phylo_analysis = False
-                dict_sp = diamond_process.diamond_second_round_swissprot_fpd(diamond_env, output_path_blastp, blastp_results_swissprot_file, blastp_doms_nr_file, blastp_info_swissprot_file, blastp_doms_info_nr_file, file_prs_seq_enz_domains_name, proteins_combined_file, swissprot_path, fpd_fasta, fpd_name, thread_num, input_log_file, output_log_file, diamond_path, blast_swissprot_bash_script, blast_nr_bash_script, phylo_analysis, conda_sh_path, diamond_blastp_swissprot_stdoe_path, diamond_blastp_nr2_stdoe_path)
+                dict_sp = diamond_process.diamond_second_round_swissprot_fpd(diamond_env, output_path_blastp, blastp_results_swissprot_file, blastp_doms_nr_file, blastp_info_swissprot_file, blastp_doms_info_nr_file, file_prs_seq_enz_domains_name, proteins_combined_file, swissprot_path, fpd_fasta_seek, fpd_name_seek, thread_num, input_log_file, output_log_file, diamond_path, blast_swissprot_bash_script, blast_nr_bash_script, phylo_analysis, conda_sh_path, diamond_blastp_swissprot_stdoe_path, diamond_blastp_nr2_stdoe_path, diamond_blastp_par)
                 label = "Process of BLASTP against fnr and Swiss-Prot for proteins with domains:"
                 elpased_time = supportive_functions.end_time_analysis(label, start_time_nr_swiss_doms, output_log_file)
                 time_dict["blastp_fpd_swiss_doms_time"] = elpased_time
@@ -1211,7 +1232,7 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
             if profiles_taxonomy_path:
                 start_time_nr_doms_phyo = time.time()
                 phylo_analysis = True
-                dict_sp_phylo = diamond_process.diamond_second_round_swissprot_fpd(diamond_env, output_path_blastp, blastp_results_swissprot_phylo_file, blastp_doms_nr_phylo_file, blastp_info_swissprot_phylo_file, blastp_doms_info_nr_phylo_file, file_prs_seq_enz_domains_phylo_name, proteins_combined_file, swissprot_path, fpd_fasta_phylo, fpd_name_phylo, thread_num, input_log_file, output_log_file, diamond_path, blast_swissprot_phylo_bash_script, blast_nr_phylo_bash_script, phylo_analysis, conda_sh_path, diamond_blastp_swissprot_phylo_stdoe_path, diamond_blastp_nr2_phylo_stdoe_path)
+                dict_sp_phylo = diamond_process.diamond_second_round_swissprot_fpd(diamond_env, output_path_blastp, blastp_results_swissprot_phylo_file, blastp_doms_nr_phylo_file, blastp_info_swissprot_phylo_file, blastp_doms_info_nr_phylo_file, file_prs_seq_enz_domains_phylo_name, proteins_combined_file, swissprot_path, fpd_fasta_taxonomy, fpd_name_taxonomy, thread_num, input_log_file, output_log_file, diamond_path, blast_swissprot_phylo_bash_script, blast_nr_phylo_bash_script, phylo_analysis, conda_sh_path, diamond_blastp_swissprot_phylo_stdoe_path, diamond_blastp_nr2_phylo_stdoe_path, diamond_blastp_par)
                 label = "Process of BLASTP against fnr and Swiss-Prot for proteins with taxonomy domains:"
                 elpased_time = supportive_functions.end_time_analysis(label, start_time_nr_doms_phyo, output_log_file)
                 time_dict["blastp_fpd_swiss_taxonomy_time"] = elpased_time
@@ -1226,7 +1247,7 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
                 if taxonomy_route == 2:
                     # Taxonomy of bins
                     start_time_binpals = time.time()
-                    dict_prs_bins, dict_bins_prs_sorted, bins_prs_tax_dict, bin_tax_dict, bin_tax_max_dict, bin_group_tax_dict = bin_taxonomy_process.bin_tax_analysis(fpd_fasta_phylo, blastp_doms_info_nr_phylo_file, dict_contigs_bins, binning_results_path, output_path_genepred, output_path_genepred_faa, binphylo_path_prstax, binphylo_path_binstax, binphylo_path_binstax_max, binphylo_path_prsids, binphylo_path_binstax_names, binphylo_path_binstax_max_names, binphylo_freq_taxids_path, binphylo_maxfreq_taxids_path, cd_hit_results_fasta_path, taxonkit_env, taxonkit_path, tax_freq_bash_script, tax_maxfreq_bash_script, taxoknit_freq_version_path, taxoknit_freq_stdoe_path, taxoknit_maxfreq_version_path, taxoknit_maxfreq_stdoe_path, thread_num, conda_sh_path, freq_taxids_path, maxfreq_taxids_path, taxonkit_freq_line_bash_script, taxonkit_maxfreq_line_bash_script, taxonkit_freq_line_version_path, taxonkit_freq_line_stdoe_path, taxonkit_maxfreq_line_version_path, taxonkit_maxfreq_line_stdoe_path, freq_lineage_path, maxfreq_lineage_path, freq_lineage_form_path, maxfreq_lineage_form_path, csvtk_freq_version_path, csvtk_freq_stdoe_path, csvtk_maxfreq_version_path, csvtk_maxfreq_stdoe_path, family_to_profile_phylo_dict, hmmer_enz_domains_all_proteins_phylo, family_profile_path, input_log_file, output_log_file)
+                    dict_prs_bins, dict_bins_prs_sorted, bins_prs_tax_dict, bin_tax_dict, bin_tax_max_dict, bin_group_tax_dict = bin_taxonomy_process.bin_tax_analysis(fpd_fasta_taxonomy, blastp_doms_info_nr_phylo_file, dict_contigs_bins, binning_results_path, output_path_genepred, output_path_genepred_faa, binphylo_path_prstax, binphylo_path_binstax, binphylo_path_binstax_max, binphylo_path_prsids, binphylo_path_binstax_names, binphylo_path_binstax_max_names, binphylo_freq_taxids_path, binphylo_maxfreq_taxids_path, cd_hit_results_fasta_path, taxonkit_env, taxonkit_path, tax_freq_bash_script, tax_maxfreq_bash_script, taxoknit_freq_version_path, taxoknit_freq_stdoe_path, taxoknit_maxfreq_version_path, taxoknit_maxfreq_stdoe_path, thread_num, conda_sh_path, freq_taxids_path, maxfreq_taxids_path, taxonkit_freq_line_bash_script, taxonkit_maxfreq_line_bash_script, taxonkit_freq_line_version_path, taxonkit_freq_line_stdoe_path, taxonkit_maxfreq_line_version_path, taxonkit_maxfreq_line_stdoe_path, freq_lineage_path, maxfreq_lineage_path, freq_lineage_form_path, maxfreq_lineage_form_path, csvtk_freq_version_path, csvtk_freq_stdoe_path, csvtk_maxfreq_version_path, csvtk_maxfreq_stdoe_path, family_to_profile_phylo_dict, hmmer_enz_domains_all_proteins_phylo, family_profile_path, input_log_file, output_log_file)
                     label = "Process of bin analysis:"
                     elpased_time = supportive_functions.end_time_analysis(label, start_time_binpals, output_log_file)
                     time_dict["bin_analysis_cm_time"] = elpased_time
@@ -1248,9 +1269,9 @@ def proteoseek(input_folder=None, sra_code=False, contigs=False, protein_input=F
     if seek_mode:
         if not after_ap:
             if not after_tm:
-                # HMMER Broad.
+                # HMMER broad for Pfam
                 start_time_hmmer_broad = time.time()
-                prs_with_enz_domains, dict_hm = hmmer_process.hmmer_broad(hmmer_env, prs_with_enz_domains, hmmer_dmbl_results, hmmer_simple_results, hmmer_enz_domains_all_proteins, proteins_combined_file, comb_dmbl_results, comb_simple_results, comb_all_domains_proteins, profiles_broad_path, hmmscan_path, val_type, second_dom_search, thread_num, input_log_file, output_log_file, hmmer_broad_bash_script, hmmscan_broad_version_path, hmmscan_broad_stdoe_path, conda_sh_path)
+                prs_with_doms_seek, dict_hm = hmmer_process.hmmer_broad(hmmer_env, prs_with_doms_seek, hmmer_dmbl_results, hmmer_simple_results, hmmer_enz_domains_all_proteins, proteins_combined_file, comb_dmbl_results, comb_simple_results, comb_all_domains_proteins, profiles_broad_path, hmmscan_path, val_type, second_dom_search, thread_num, input_log_file, output_log_file, hmmer_broad_bash_script, hmmscan_broad_version_path, hmmscan_broad_stdoe_path, conda_sh_path, hmmscan_par)
                 label = "Process of broad HMMER:"
                 elpased_time = supportive_functions.end_time_analysis(label, start_time_hmmer_broad, output_log_file)
                 time_dict["hmmer_broad"] = elpased_time
@@ -1386,8 +1407,21 @@ if __name__ == "__main__":
     # Threads
     arg_thread_num = 4
     arg_pdf_threads = None
+    # Tool parameters
+    arg_fastqc_par = None
+    arg_bbduk_par = None
+    arg_megahit_par = None
+    arg_fraggenescanrs_par = None
+    arg_cd_hit_par = None
+    arg_hmmscan_par = None
+    arg_diamond_blastp_par = None
+    arg_kraken_par = None
+    arg_bracken_par = None
+    arg_metabinner_par = None
+    arg_comebin_par = None
+    arg_bowtie_par = None
     # Processes performed after
-    arg_after_trimming = False
+    arg_after_preprocessing = False
     arg_after_assembly = False
     arg_after_binning = False
     arg_after_mapping = False
@@ -1398,8 +1432,8 @@ if __name__ == "__main__":
     # Processes performed up to
     arg_up_to_sra = False
     arg_up_to_databases = False
-    arg_up_to_trimming_com = False
-    arg_up_to_trimming_uncom = False
+    arg_up_to_preprocessing_com = False
+    arg_up_to_preprocessing_uncom = False
     arg_up_to_alignment = False
     # Tool environments
     arg_sra_env = "ps_sra_tools"
@@ -1618,10 +1652,34 @@ if __name__ == "__main__":
                 arg_thread_num = int(sys.argv[i+1])
             elif sys.argv[i] == "-ft" or sys.argv[i] == "--filtering-threads":
                 arg_pdf_threads = int(sys.argv[i+1])
+            elif sys.argv[i] == "-fpar" or sys.argv[i] == "--fastqc-parameters":
+                arg_fastqc_par = sys.argv[i+1]
+            elif sys.argv[i] == "-bpar" or sys.argv[i] == "--bbduk-parameters":
+                arg_bbduk_par = sys.argv[i+1]
+            elif sys.argv[i] == "-mpar" or sys.argv[i] == "--megahit-parameters":
+                arg_megahit_par = sys.argv[i+1]
+            elif sys.argv[i] == "-rpar" or sys.argv[i] == "--fraggenescanrs-parameters":
+                arg_fraggenescanrs_par = sys.argv[i+1]
+            elif sys.argv[i] == "-cpar" or sys.argv[i] == "--cd-hit-parameters":
+                arg_cd_hit_par = sys.argv[i+1]
+            elif sys.argv[i] == "-hpar" or sys.argv[i] == "--hmmerscan-parameters":
+                arg_hmmscan_par = sys.argv[i+1]
+            elif sys.argv[i] == "-dpar" or sys.argv[i] == "--diamond-blastp-parameters":
+                arg_diamond_blastp_par = sys.argv[i+1]
+            elif sys.argv[i] == "-kpar" or sys.argv[i] == "--kraken-parameters":
+                arg_kraken_par = sys.argv[i+1]
+            elif sys.argv[i] == "-npar" or sys.argv[i] == "--bracken-parameters":
+                arg_bracken_par = sys.argv[i+1]
+            elif sys.argv[i] == "-epar" or sys.argv[i] == "--metabinner-parameters":
+                arg_metabinner_par = sys.argv[i+1]
+            elif sys.argv[i] == "-opar" or sys.argv[i] == "--comebin-parameters":
+                arg_comebin_par = sys.argv[i+1]
+            elif sys.argv[i] == "-wpar" or sys.argv[i] == "--bowtie-parameters":
+                arg_bowtie_par = sys.argv[i+1]
             elif sys.argv[i] == "-afp" or sys.argv[i] == "--after-preprocessing":
-                arg_after_trimming = sys.argv[i+1]
+                arg_after_preprocessing = sys.argv[i+1]
                 arg_str = "-afp"
-                arg_after_trimming = supportive_functions.check_i_value(arg_after_trimming, arg_str)
+                arg_after_preprocessing = supportive_functions.check_i_value(arg_after_preprocessing, arg_str)
             elif sys.argv[i] == "-afa" or sys.argv[i] == "--after-assembly":
                 arg_after_assembly = sys.argv[i + 1]
                 arg_str = "-afa"
@@ -1659,13 +1717,13 @@ if __name__ == "__main__":
                 arg_str = "-utd"
                 arg_up_to_databases = supportive_functions.check_i_value(arg_up_to_databases, arg_str)
             elif sys.argv[i] == "-utpc" or sys.argv[i] == "--up-to-preprocessing-com":
-                arg_up_to_trimming_com = sys.argv[i+1]
+                arg_up_to_preprocessing_com = sys.argv[i+1]
                 arg_str = "-uttc"
-                arg_up_to_trimming_com = supportive_functions.check_i_value(arg_up_to_trimming_com, arg_str)
+                arg_up_to_preprocessing_com = supportive_functions.check_i_value(arg_up_to_preprocessing_com, arg_str)
             elif sys.argv[i] == "-utpu" or sys.argv[i] == "--up-to-preprocessing-uncom":
-                arg_up_to_trimming_uncom = sys.argv[i+1]
+                arg_up_to_preprocessing_uncom = sys.argv[i+1]
                 arg_str = "-uttu"
-                arg_up_to_trimming_uncom = supportive_functions.check_i_value(arg_up_to_trimming_uncom, arg_str)
+                arg_up_to_preprocessing_uncom = supportive_functions.check_i_value(arg_up_to_preprocessing_uncom, arg_str)
             elif sys.argv[i] == "-uta" or sys.argv[i] == "--up-to-assembly":
                 arg_up_to_alignment = sys.argv[i+1]
                 arg_str = "-uta"
@@ -1784,5 +1842,5 @@ if __name__ == "__main__":
                 help_message_show.help_message()
                 exit()
             arg_input_command = "{} {} {}".format(arg_input_command, sys.argv[i], sys.argv[i+1])
-    proteoseek(arg_input_folder, arg_sra_code, arg_contigs, arg_protein_input, arg_adapters_path, arg_protein_db_path, arg_kraken_db_path, arg_profiles_path, arg_profiles_taxonomy_path, arg_profiles_broad_path, arg_swissprot_path, arg_motifs_path, arg_options_file_path, arg_output_path, arg_seek_mode, arg_taxonomy_mode, arg_seek_route, arg_taxonomy_route, arg_seek_family_code, arg_taxonomy_family_code, arg_seek_db_name, arg_taxonomy_db_name, arg_input_seek_protein_names_status, arg_input_seek_protein_names, arg_input_taxonomy_protein_names_status, arg_input_taxonomy_protein_names, arg_name_thr, arg_paired_end, arg_compressed, arg_prefetch_size, arg_adapters_status, arg_add_seek_info, arg_add_taxonomy_info, arg_skip_fastqc, arg_bbduk_max_ram, arg_clear_space, arg_k_list, arg_kraken_threshold, arg_kraken_memory_mapping, arg_bracken_length, arg_bracken_level, arg_bracken_threshold, arg_binning_tool, arg_bin_ram_ammount, arg_bin_num_contig_len, arg_bin_num_kmer, arg_comebin_batch_size, arg_cd_hit_t, arg_cd_hit_mem, arg_prs_source, arg_genetic_code, arg_val_type, arg_second_dom_search, arg_e_value_nodom_thr, arg_add_type, arg_add_info, arg_thread_num, arg_pdf_threads, arg_after_trimming, arg_after_assembly, arg_after_gene_pred, arg_after_binning, arg_after_mapping, arg_after_db, arg_after_tm, arg_after_ap, arg_up_to_sra, arg_up_to_databases, arg_up_to_trimming_com, arg_up_to_trimming_uncom, arg_up_to_alignment, arg_sra_env, arg_fastqc_env, arg_bbduk_env, arg_megahit_env, arg_kraken_env, arg_bracken_env, arg_metabinner_env, arg_comebin_env, arg_cdhit_env, arg_genepred_env, arg_hmmer_env, arg_diamond_env, arg_taxonkit_env, arg_phobius_env, arg_bowtie_env, arg_conda_bin, arg_conda_sh, arg_prefetch_path, arg_vdb_validate_path, arg_fastq_dump_path, arg_fastqc_path, arg_gzip_path, arg_cat_path, arg_bbduk_path, arg_megahit_path, arg_kraken_path, arg_bracken_path, arg_alpha_diversity_path, arg_metabinner_bin_path, arg_comebin_bin_path, arg_fraggenescanrs_path, arg_hmmscan_path, arg_hmmpress_path, arg_hmmfetch_path, arg_diamond_path, arg_cd_hit_path, arg_taxonkit_path, arg_phobius_path, arg_bowtie_build_path, arg_bowtie_path, arg_input_command)
+    proteoseek(arg_input_folder, arg_sra_code, arg_contigs, arg_protein_input, arg_adapters_path, arg_protein_db_path, arg_kraken_db_path, arg_profiles_path, arg_profiles_taxonomy_path, arg_profiles_broad_path, arg_swissprot_path, arg_motifs_path, arg_options_file_path, arg_output_path, arg_seek_mode, arg_taxonomy_mode, arg_seek_route, arg_taxonomy_route, arg_seek_family_code, arg_taxonomy_family_code, arg_seek_db_name, arg_taxonomy_db_name, arg_input_seek_protein_names_status, arg_input_seek_protein_names, arg_input_taxonomy_protein_names_status, arg_input_taxonomy_protein_names, arg_name_thr, arg_paired_end, arg_compressed, arg_prefetch_size, arg_adapters_status, arg_add_seek_info, arg_add_taxonomy_info, arg_skip_fastqc, arg_bbduk_max_ram, arg_clear_space, arg_k_list, arg_kraken_threshold, arg_kraken_memory_mapping, arg_bracken_length, arg_bracken_level, arg_bracken_threshold, arg_binning_tool, arg_bin_ram_ammount, arg_bin_num_contig_len, arg_bin_num_kmer, arg_comebin_batch_size, arg_cd_hit_t, arg_cd_hit_mem, arg_prs_source, arg_genetic_code, arg_val_type, arg_second_dom_search, arg_e_value_nodom_thr, arg_add_type, arg_add_info, arg_thread_num, arg_pdf_threads, arg_fastqc_par, arg_bbduk_par, arg_megahit_par, arg_fraggenescanrs_par, arg_cd_hit_par, arg_hmmscan_par, arg_diamond_blastp_par, arg_kraken_par, arg_bracken_par, arg_metabinner_par, arg_comebin_par, arg_bowtie_par, arg_after_preprocessing, arg_after_assembly, arg_after_gene_pred, arg_after_binning, arg_after_mapping, arg_after_db, arg_after_tm, arg_after_ap, arg_up_to_sra, arg_up_to_databases, arg_up_to_preprocessing_com, arg_up_to_preprocessing_uncom, arg_up_to_alignment, arg_sra_env, arg_fastqc_env, arg_bbduk_env, arg_megahit_env, arg_kraken_env, arg_bracken_env, arg_metabinner_env, arg_comebin_env, arg_cdhit_env, arg_genepred_env, arg_hmmer_env, arg_diamond_env, arg_taxonkit_env, arg_phobius_env, arg_bowtie_env, arg_conda_bin, arg_conda_sh, arg_prefetch_path, arg_vdb_validate_path, arg_fastq_dump_path, arg_fastqc_path, arg_gzip_path, arg_cat_path, arg_bbduk_path, arg_megahit_path, arg_kraken_path, arg_bracken_path, arg_alpha_diversity_path, arg_metabinner_bin_path, arg_comebin_bin_path, arg_fraggenescanrs_path, arg_hmmscan_path, arg_hmmpress_path, arg_hmmfetch_path, arg_diamond_path, arg_cd_hit_path, arg_taxonkit_path, arg_phobius_path, arg_bowtie_build_path, arg_bowtie_path, arg_input_command)
     
