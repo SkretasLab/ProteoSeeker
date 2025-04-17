@@ -115,6 +115,8 @@ conda activate ps_env
 python proteoseeker -pfp parameter_files/par_DRR083188.txt
 python proteoseeker -pfp parameter_files/par_DRR083188_sra.txt
 python proteoseeker -pfp parameter_files/par_DRR083188_run.txt
+python proteoseeker -pfp parameter_files/par_DRR083188_protein_database.txt
+python proteoseeker -pfp parameter_files/par_DRR083188_tool_params.txt
 conda deactivate
 ~~~
 
