@@ -113,7 +113,7 @@ sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
 - kraken_db_path: Can be left empty if not applying the taxonomy mode with the taxonomoy route 1 (Kraken taxonomy route).
 - metabinner_bin_path: Can be left empty if not applying binning tool 1 (MetaBinner) in the taxonomy route 2 of the taxonomy mode.
 - comebin_bin_path: Can be left empty if not applying binning tool 2 (COMEBin) in the taxonomy route 2 of the taxonomy mode.
-- profiles_broad_path, swissprot_path, fraggenescanrs_path, conda_bin, conda_sh: Should already be set properly.
+- profiles_broad_path, swissprot_path, fraggenescanrs_path, conda_bin, conda_sh: Should already be set properly automatically by the installation process.
 
 </p>
 
