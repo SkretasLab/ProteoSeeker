@@ -10,7 +10,7 @@ profiles_path=""
 profiles_taxonomy_path=""
 profiles_broad_path="pfam_database/Pfam-A.hmm"
 swissprot_path="swissprot_database/swissprot"
-motifs_path="motifs.txt"
+motifs_path="motifs.txt"s
 output_path="results/DRR083188_run_results"
 
 #---------Modes and Routes---------
@@ -56,7 +56,7 @@ bracken_level=""
 bracken_threshold=""
 
 #---------Binning---------
-binning_tool=""
+binning_tool="2"
 binning_max_ram=""
 bin_contig_len="1000"
 bin_kmer=""

@@ -11,7 +11,7 @@ profiles_taxonomy_path=""
 profiles_broad_path="pfam_database/Pfam-A.hmm"
 swissprot_path="swissprot_database/swissprot"
 motifs_path="motifs.txt"
-output_path="results/DRR083188_run_results"
+output_path="results/DRR083188_S3T2_results"
 
 #---------Modes and Routes---------
 seek_mode="True"
