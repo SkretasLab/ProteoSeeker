@@ -88,6 +88,7 @@ sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
 <p align="justify"> For detailed information regarding the use, options and parameter files of ProteoSeeker check its Wiki page.</p>
    
 <p align="justify">In general, the most basic options in a parameters file that control the main functionalities of ProteoSeeker are:
+
 - seek_mode=True/False
    The mode is applied when True and not applied when False.
 - taxonomy_mode=True/False
@@ -96,6 +97,7 @@ sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
    Seek route 1 is based on screening each protein by searching for at least one domain corresponding to a profile from the selected protein families. Seek route 2 is based on screening each protein against a filtered protein database by searching for at least one hit with an e-value higher than a specific threshold. The filtered protein database is based on filtering the provided protein database based on the protein names corresponding to the selected protein families.
 - taxonomy_route=1/2
    Taxonomy route 1 is the Kraken2 taxonomy route. Taxonomy route 2 is the COMEBin/MetaBinner taxonomy route.
+
 </p>
    
 <p align="justify">Examples of running ProteoSeeker can be based on the template files "par_DRR083188.txt", "par_DRR083188_sra.txt" and "par_DRR083188_run.txt" which are already present in the "parameter_files" directory. To use these files you should change certain paths based on the specifications of your system. These paths are described below. It should not be necessary to change the relative paths when running ProteoSeeker from the main directory.</p>
