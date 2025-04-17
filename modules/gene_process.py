@@ -85,6 +85,8 @@ def translation(sequence, genetic_code):
         11: translation_table_11,
         12: translation_table_12
     }
+
+    # Form the protein sequence.
     protein = ""
     for i in range(0, len(sequence), 3):
         # If the whole sequence is less than 3 nucleotides, no tranlation occurs.
@@ -107,24 +109,36 @@ def translation(sequence, genetic_code):
     return protein
 
 
-def gene_prediction(genepred_env, output_path_genepred, output_path_genepred_base, output_path_genepred_faa, output_fgs_protein_formatted_1, fullpath_contigs_formated, fraggenescanrs_path, thread_num, input_log_file, output_log_file, gene_bash_script, fraggenescanrs_version_path, fraggenescanrs_stdoe_path, conda_sh_path):
+def gene_prediction(genepred_env, output_path_genepred, output_path_genepred_base, output_path_genepred_faa, output_fgs_protein_formatted_1, fullpath_contigs_formated, fraggenescanrs_path, thread_num, input_log_file, output_log_file, gene_bash_script, fraggenescanrs_version_path, fraggenescanrs_stdoe_path, conda_sh_path, fraggenescanrs_par):
     print("\nPerofrming gene prediction...")
     if os.path.exists(output_path_genepred):
         shutil.rmtree(output_path_genepred)
     os.mkdir(output_path_genepred)
+    
     # In the output of FragGeneScanRs in the headers, the first two last two numbers, which are divided by an underscore, consist the starting and ending points of the gene on the contig which it was found to be located in.
     # E.g. Header: >k141_180_2_133_- : This means that the name of the contig is "k141_180", the starting nucleotide on the contig is 2 and ending nucleotide on the contig is 133.
     # FragGeneScanRs will either be run to the contigs or the reads after they have been filtered by the trimming tool.
     input_log_file.write("Gene prediction:\n")
     capture_status = True
     shell_status = True
+
+    # Tool parameters
+    if fraggenescanrs_par is None:
+        fraggenescanrs_par = " -w 1 -p {} --training-file complete ".format(thread_num)
+    else:
+        if fraggenescanrs_par[0] != " ":
+            fraggenescanrs_par = " {}".format(fraggenescanrs_par)
+        if fraggenescanrs_par[-1] != " ":
+            fraggenescanrs_par = "{} ".format(fraggenescanrs_par)
+
     # Run FragGeneScanRs
     if fraggenescanrs_path:
-        phrase_1 = "\"{}\" -w 1 -o \"{}\" -s \"{}\" -p {} --training-file complete &> \"{}\"".format(fraggenescanrs_path, output_path_genepred_base, fullpath_contigs_formated, thread_num, fraggenescanrs_stdoe_path)
+        phrase_1 = "\"{}\" -o \"{}\" -s \"{}\"{}&> \"{}\"".format(fraggenescanrs_path, output_path_genepred_base, fullpath_contigs_formated, fraggenescanrs_par, fraggenescanrs_stdoe_path)
         phrase_2 = "\"{}\" --version > \"{}\"".format(fraggenescanrs_path, fraggenescanrs_version_path)
     else:
-        phrase_1 = "FragGeneScanRs -w 1 -o \"{}\" -s \"{}\" -p {} --training-file complete &> \"{}\"".format(output_path_genepred_base, fullpath_contigs_formated, thread_num, fraggenescanrs_stdoe_path)
+        phrase_1 = "FragGeneScanRs -o \"{}\" -s \"{}\"{}&> \"{}\"".format(output_path_genepred_base, fullpath_contigs_formated, fraggenescanrs_par, fraggenescanrs_stdoe_path)
         phrase_2 = "FragGeneScanRs --version > \"{}\"".format(fraggenescanrs_version_path)
+    
     # Create the Bash script.
     # Four cases: 1: Conda environment and path needed for the script. 2: Conda environment and no path needed for the script. 3: No conda environment and path needed for the script. 4: No conda environment and no path needed for the script.
     new_file_bash = open(gene_bash_script, "w")
@@ -141,6 +155,7 @@ def gene_prediction(genepred_env, output_path_genepred, output_path_genepred_bas
         phrase = "conda deactivate"
         new_file_bash.write("{}\n".format(phrase))
     new_file_bash.close()
+
     # Making the Bash script executable.
     # Sending command to run.
     phrase_b1 = "chmod +x {}".format(gene_bash_script)
@@ -160,6 +175,7 @@ def gene_prediction(genepred_env, output_path_genepred, output_path_genepred_bas
     shell_status = True
     pr_status = False
     command_process.command_run(phrase_b1, phrase_b2, title_1, title_2, capture_status, shell_status, pr_status, input_log_file, output_log_file)
+
     # Check the output file.
     if os.path.getsize(output_path_genepred_faa) != 0:
         split_size = 70
@@ -192,6 +208,7 @@ def gene_annotation(output_path_genepred, output_path_genepred_ffn, output_fgs_p
                 protein_id = line[1:]
                 gene_sequence = gene_lines[i+1]
                 gene_sequences_dict[protein_id] = [gene_sequence]
+
     # Check for start and end codons for any gene sequence found.
     # For the next item after the gene sequence, if a start codon is present then 1 is placed, otherwise 0.
     # Similarly for the end codon.
@@ -211,6 +228,7 @@ def gene_annotation(output_path_genepred, output_path_genepred_ffn, output_fgs_p
             new_file.write("{}\t{}\t{}\t{}\n".format(key, gene_sequences_dict[key][0], gene_sequences_dict[key][1], gene_sequences_dict[key][2]))
             dict_genes[key] = [gene_sequences_dict[key][0], gene_sequences_dict[key][1], gene_sequences_dict[key][2]]
         new_file.close()
+
     # Translate gene sequences
     pr_dict = {}
     if gene_sequences_dict:
@@ -218,6 +236,7 @@ def gene_annotation(output_path_genepred, output_path_genepred_ffn, output_fgs_p
             gene_seq = gene_sequences_dict[key][0]
             put_protein = translation(gene_seq, genetic_code)
             pr_dict[key] = put_protein
+
     # If proteines have been encoded by any genes, they are written in a file.
     if pr_dict:
         split_size = 70
@@ -229,6 +248,7 @@ def gene_annotation(output_path_genepred, output_path_genepred_ffn, output_fgs_p
             for fasta_line in fasta_splited:
                 new_file_gc_formatted.write("{}\n".format(fasta_line))
         new_file_gc_formatted.close()
+
     # Compute the distance of the gene's edges from the edges of its contig(s).
     # For megahit the headers of the contigs contain their lengths.
     contig_len_dict = None
@@ -257,6 +277,7 @@ def gene_annotation(output_path_genepred, output_path_genepred_ffn, output_fgs_p
             else:
                 contig_seq = "{}{}".format(contig_seq, line)
         contig_len_dict[header_contig] = len(contig_seq)
+
     # Find the code of the contig in which the gene was found. If the code of the contig has been corresponded to its length, then compare the length of the gene with length of the
     # contig to find the ditance of the gene from the start and end of the contig.
     for key in pr_dict.keys():
@@ -274,6 +295,7 @@ def gene_annotation(output_path_genepred, output_path_genepred_ffn, output_fgs_p
             contig_gene_dist_dict[key] = [start_dist, end_dist]
         else:
             contig_gene_dist_dict[key] = ["-", "-"]
+
     # Write the information in a file.
     new_file = open(gene_contig_dist_path, "w")
     for key in contig_gene_dist_dict.keys():

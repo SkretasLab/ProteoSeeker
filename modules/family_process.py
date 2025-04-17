@@ -20,7 +20,7 @@ def find_fam_names(family_code, family_group_name, protein_db_path, fpd_gen_fold
         fpd_fasta = "{}/fpd_{}.fasta".format(fpd_folder, family_group_name)
         fpd_fasta_prefix = "{}/fpd_{}".format(fpd_folder, family_group_name)
     else:
-        print("\nThe path for the nr database has not been set or is wrong. Exiting.")
+        print("\nThe path for the protein database has not been set or is wrong. Exiting.")
         exit()
     fpd_name = "{}/fpd_{}_database".format(fpd_folder, family_group_name)
 
@@ -117,7 +117,7 @@ def find_fam_names(family_code, family_group_name, protein_db_path, fpd_gen_fold
                 if item not in pr_names:
                     pr_names.append(item)
     else:
-        print("\nThe path to the fpr database ({}) for the selected protein family(ies) already exists. Skipping creation of the fpr database.".format(fpd_folder))
+        print("\nThe path to the filtered protein database ({}) for the selected protein family(ies) already exists. Skipping creation of the filtered protein database.".format(fpd_folder))
 
     temp_list = [pr_names, fpd_fasta, fpd_folder, fpd_name, fpd_fasta_prefix]
     if pr_names_dict:
