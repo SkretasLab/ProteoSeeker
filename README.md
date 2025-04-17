@@ -87,13 +87,20 @@ sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
 # 2. Run ProteoSeeker
 <p align="justify">In general, the most basic options in a parameters file that control the main functionalities of ProteoSeeker are:
 
-- seek_mode=True/False
+- seek_mode=True or False
+  
    The mode is applied when True and not applied when False.
-- taxonomy_mode=True/False
+  
+- taxonomy_mode=True or False
+  
    The mode is applied when True and not applied when False.
-- seek_route=1/2/3
+
+- seek_route=1 or 2 or 3
+  
    Seek route 1 is based on screening each protein by searching for at least one domain corresponding to a profile from the selected protein families. Seek route 2 is based on screening each protein against a filtered protein database by searching for at least one hit with an e-value higher than a specific threshold. The filtered protein database is based on filtering the provided protein database based on the protein names corresponding to the selected protein families.
-- taxonomy_route=1/2
+  
+- taxonomy_route=1 or 2
+  
    Taxonomy route 1 is the Kraken2 taxonomy route. Taxonomy route 2 is the COMEBin/MetaBinner taxonomy route.
 
 </p>
