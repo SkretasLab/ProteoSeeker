@@ -8,7 +8,7 @@ INSTALLATION_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && 
 source "${INSTALLATION_DIR}/find_conda.sh"
 source $CONDA_SH_PATH
 
-# Installation enviroment for ProteoSeeker
+# Installation environment for ProteoSeeker.
 conda create -n ps_install -y
 conda activate ps_install
 conda install anaconda::git -y

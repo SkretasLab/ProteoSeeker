@@ -68,10 +68,10 @@ echo -e "\nInstalling Bowtie2..."
 "${INSTALLATION_DIR}/bowtie.sh" &> "${INSTALLATION_DIR}/output_errors/bowtie_stdoe.txt"
 echo "Installation completed."
 
-echo -e "\nCreating the Phobius enviroment..."
+echo -e "\nCreating the Phobius environment..."
 "${INSTALLATION_DIR}/phobius_install.sh" &> "${INSTALLATION_DIR}/output_errors/phobius_stdoe.txt"
 echo "Installation completed."
 
-echo -e "\nInstalling the ProteoSeeker base enviroment..."
+echo -e "\nInstalling the ProteoSeeker base environment..."
 "${INSTALLATION_DIR}/proteoseeker_env_install.sh" &> "${INSTALLATION_DIR}/output_errors/proteoseeker_env_stdoe.txt"
 echo "Installation completed."

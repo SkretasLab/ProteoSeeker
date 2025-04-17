@@ -12,19 +12,19 @@ KRAKEN2_DBS_DIR="${KRAKEN2_DIR}/kraken2_databases"
 KRAKEN2_8_ST_DB_DIR="${KRAKEN2_DBS_DIR}/kraken2_8st_db"
 KRAKEN2_8_ST_DB_FILE="${KRAKEN2_8_ST_DB_DIR}/k2_standard_08gb_20240605.tar.gz"
 
-# Create the ps_tools dir if needed.
+# Create the ps_tools directory if needed.
 if [ ! -d "${PS_TOOLS_DIR}" ]; then
     mkdir "${PS_TOOLS_DIR}"
 fi
-# Create the kraken2 dir if needed.
+# Create the Kraken2 directory if needed.
 if [ ! -d "${KRAKEN2_DIR}" ]; then
     mkdir "${KRAKEN2_DIR}"
 fi
-# Create the kraken_databases dir if needed.
+# Create the kraken_databases directory if needed.
 if [ ! -d "${KRAKEN2_DBS_DIR}" ]; then
     mkdir "${KRAKEN2_DBS_DIR}"
 fi
-# Create the kraken2_8st_db dir if needed.
+# Create the kraken2_8st_db directory if needed.
 if [ ! -d "${KRAKEN2_8_ST_DB_DIR}" ]; then
     mkdir "${KRAKEN2_8_ST_DB_DIR}"
 fi

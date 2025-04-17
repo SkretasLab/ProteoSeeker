@@ -30,7 +30,7 @@ else
 fi
 conda deactivate
 
-# Create the taxonomy_db_info dir if needed.
+# Create the taxonomy_db_info directory if needed.
 if [ ! -d "${TAXONOMY_DB_DIR}" ]; then
     mkdir "${TAXONOMY_DB_DIR}"
 fi

@@ -14,27 +14,27 @@ COMEBIN_FILE="${COMEBIN_GIT_DIR}/COMEBin/run_comebin.sh"
 source "${INSTALLATION_DIR}/find_conda.sh"
 source $CONDA_SH_PATH
 
-# COMEBin
+# Installing COMEBin with conda.
 conda create -n ps_comebin -y
 conda activate ps_comebin
 # If conda fails the following installation, this script wont exit. Hence, the subsequent installation will be attempted.
 (
     conda install -c conda-forge -c bioconda comebin=1.0.4 -y
 )
-# Check if COMEBin was installed. If not, try installation from its git repository.
-if [[ $(which run_comebin.sh) ]]; then
-    echo "COMEBin was installed successfully."
-fi
 conda deactivate
 
-# Trying by source.
+# Check if COMEBin was installed. If not, try installation from its git repository.
 conda activate ps_comebin
 if ! [[ $(which run_comebin.sh) ]]; then
     conda deactivate
-    echo "COMEBin was not installed successfully. Trying installation based on it git reporisory."
-    # Create the ps_tools dir if needed.
+    echo "COMEBin was not installed successfully. Trying installation based on it git repository."
+    # Create the ps_tools directory if needed.
     if [ ! -d "${PS_TOOLS_DIR}" ]; then
         mkdir "${PS_TOOLS_DIR}"
+    fi
+    # If the git directory has already been cloned delete it.
+    if [ -d "${COMEBIN_GIT_DIR}" ]; then
+        rm -ri "${COMEBIN_GIT_DIR}"
     fi
     # Download the head branch of the repository.
     # Download a specific branch.
@@ -54,4 +54,5 @@ if ! [[ $(which run_comebin.sh) ]]; then
     cd "${INSTALLATION_DIR}"
 else
     conda deactivate
+    echo "COMEBin was installed successfully."
 fi

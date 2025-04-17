@@ -21,16 +21,16 @@ MBINPATH=""
 source "${INSTALLATION_DIR}/find_conda.sh"
 source $CONDA_SH_PATH
 
-# MetaBinner enviroment
-SCMET_ENV_CHECK="${CONDA_INST_DIR}/envs/metabinner_env"
+# MetaBinner environment
 PSMET_ENV_CHECK="${CONDA_INST_DIR}/envs/ps_metabinner"
+SCMET_ENV_CHECK="${CONDA_INST_DIR}/envs/metabinner_env"
 
-# If when the enviroment is activated the shell script is found, then the enviroment was installed successfully. If not,
+# If when the environment is activated the shell script is found, then the environment was installed successfully. If not,
 # then the installation based on the git repository is checked.
 conda activate ps_comebin
 if [[ $(which run_comebin.sh) ]]; then
     CTBPATH=$(which run_comebin.sh)
-	CBINPATH="$(dirname "${CTBPATH}")" ; FILE="$(basename "${CTBPATH}")"
+	CBINPATH="$(dirname "${CTBPATH}")"
 	CBINPATH="${CBINPATH}/COMEBin"
 fi
 conda deactivate
@@ -45,32 +45,35 @@ else
 	conda deactivate
 fi
 
-# If the metabinner_env enviroment exists.
-if [ -d "${SCMET_ENV_CHECK}" ]; then
-	# If the metabinner Bash script exists in the git directory.
-	if [[ -f "${METABINNER_FILE}" ]]; then
-		MTBENV="metabinner_env"
-		MTBPATH="${METABINNER_FILE}"
-		MBINPATH="${METABINNER_GIT_DIR}"
+# If the ps_metabinner environment exists.
+if [ -d "${PSMET_ENV_CHECK}" ]; then
+	conda activate ps_metabinner
+	# If the MetaBinner Bash script exists in the ps_metabinner environment.
+	# The MTBENV remains empty because the parameters file should get an empty value for that environment as ProteoSeeker assumes it is "ps_metabinner" automatically.
+	if [[ $(which run_metabinner.sh) ]]; then
+		MTBPATH=$(which run_metabinner.sh)
+		MBINPATH="$(dirname "${MTBPATH}")"
+		conda deactivate
 	else
-		# If the metabinner Bash script does not exist in the git directory.
-		# Check if the ps_metabinner enviroment exists.
-		if [ -d "${PSMET_ENV_CHECK}" ]; then
-			# If the metabinner Bash script exists in the ps_metabinner enviroment.
-			if [[ $(which run_metabinner.sh) ]]; then
-			    MTBPATH=$(which run_metabinner.sh)
-				MBINPATH="$(dirname "${MTBPATH}")" ; FILE="$(basename "${MTBPATH}")"
+		conda deactivate
+		# If the metabinner_env environment exists.
+		if [ -d "${SCMET_ENV_CHECK}" ]; then
+			# If the MetaBinner Bash script exists in the git directory.
+			if [[ -f "${METABINNER_FILE}" ]]; then
+				MTBENV="metabinner_env"
+				MTBPATH="${METABINNER_FILE}"
+				MBINPATH="${METABINNER_GIT_DIR}"
 			fi
 		fi
 	fi
 else
-	# If the metabinner_env enviroment does not exist
-	# Check if the ps_metabinner enviroment exists.
-	if [ -d "${PSMET_ENV_CHECK}" ]; then
-		# If the metabinner Bash script exists in the ps_metabinner enviroment.
-		if [[ $(which run_metabinner.sh) ]]; then
-		  	MTBPATH=$(which run_metabinner.sh)
-			MBINPATH="$(dirname "${MTBPATH}")" ; FILE="$(basename "${MTBPATH}")"
+	# If the metabinner_env environment exists.
+	if [ -d "${SCMET_ENV_CHECK}" ]; then
+		# If the MetaBinner Bash script exists in the git directory.
+		if [[ -f "${METABINNER_FILE}" ]]; then
+			MTBENV="metabinner_env"
+			MTBPATH="${METABINNER_FILE}"
+			MBINPATH="${METABINNER_GIT_DIR}"
 		fi
 	fi
 fi

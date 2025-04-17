@@ -11,7 +11,7 @@ SWISSPROT_GZ_FILE="${SWISSPROT_DIR}/swissprot.gz"
 SWISSPROT_FILE="${SWISSPROT_DIR}/swissprot"
 SWISSPROT_DB_FILE="${SWISSPROT_DIR}/swissprot_db"
 
-# Create the swissprot_database dir if needed.
+# Create the swissprot_database directory if needed.
 if [ ! -d "${SWISSPROT_DIR}" ]; then
     mkdir "${SWISSPROT_DIR}"
 fi

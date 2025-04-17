@@ -14,7 +14,7 @@ BRACKEN_FILE="${BRACKEN_GIT_DIR}/bracken"
 source "${INSTALLATION_DIR}/find_conda.sh"
 source $CONDA_SH_PATH
 
-# Create the ps_tools dir if needed.
+# Create the ps_tools directory if needed.
 if [ ! -d "${PS_TOOLS_DIR}" ]; then
     mkdir "${PS_TOOLS_DIR}"
 fi

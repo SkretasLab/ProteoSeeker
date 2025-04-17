@@ -18,11 +18,11 @@ if [ $uni_selection = "y" ] || [ $uni_selection = "yes" ]; then
 
     # Collect user input for downloading and extracting the nr database.
     echo "Downloading Uniref90. The Uniref90 database is approximately 87.7 GBs in size (decompressed)."
-    # Create the uniref_db dir if needed.
+    # Create the uniref_db directory if needed.
     if [ ! -d "${UNIREF_DBS_DIR}" ]; then
         mkdir "${UNIREF_DBS_DIR}"
     fi
-    # Create the uniref_90_db dir if needed.
+    # Create the uniref_90_db directory if needed.
     if [ ! -d "${UNIREF_DB_90_DIR}" ]; then
         mkdir "${UNIREF_DB_90_DIR}"
     fi

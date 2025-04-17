@@ -47,16 +47,14 @@ conda deactivate
 conda activate ps_bbtools
 if ! [[ $(which bbduk.sh) ]]; then
     conda deactivate
-    # Create the ps_tools dir if needed.
+    # Create the ps_tools directory if needed.
     if [ ! -d "${PS_TOOLS_DIR}" ]; then
         mkdir "${PS_TOOLS_DIR}"
     fi
-    # Create the bbtools dir if needed.
+    # Create the bbtools directory if needed.
     if [ ! -d "${BBTOOLS_DIR}" ]; then
         mkdir "${BBTOOLS_DIR}"
     fi
-    # Download the latest version from sourceforge.
-    # wget -P "${BBTOOLS_DIR}" 'https://sourceforge.net/projects/bbmap/files/latest/download'
     # Download a specific version from sourceforge.
     wget -P "${BBTOOLS_DIR}" 'https://sourceforge.net/projects/bbmap/files/BBMap_39.01.tar.gz/download'
     # Rename.

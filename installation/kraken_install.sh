@@ -22,7 +22,7 @@ conda activate ps_kraken
 (
     conda install bioconda::kraken2=2.1.3 -y
 )
-# Check if kraken2 was installed. If not, try installation from its git repository.
+# Check if Kraken2 was installed. If not, try installation from its git repository.
 if [[ $(which kraken2) ]]; then
     echo "Kraken2 was installed successfully."
 fi
@@ -31,20 +31,20 @@ conda deactivate
 conda activate ps_kraken
 if ! [[ $(which kraken2) ]]; then
     conda deactivate
-    echo "Kraken2 was not installed successfully. Trying installing Kraken2 based on its git reporisory."
-    # Create the ps_tools dir if needed.
+    echo "Kraken2 was not installed successfully. Trying installing Kraken2 based on its git repository."
+    # Create the ps_tools directory if needed.
     if [ ! -d "${PS_TOOLS_DIR}" ]; then
         mkdir "${PS_TOOLS_DIR}"
     fi
-    # Create the kraken2 dir if needed.
+    # Create the Kraken2 directory if needed.
     if [ ! -d "${KRAKEN2_DIR}" ]; then
         mkdir "${KRAKEN2_DIR}"
     fi
-    # Create the kraken_tool dir if needed.
+    # Create the kraken_tool directory if needed.
     if [ ! -d "${KRAKEN2_TOOL_DIR}" ]; then
         mkdir "${KRAKEN2_TOOL_DIR}"
     fi
-    # Create the kraken2_sb dir if needed.
+    # Create the kraken2_sb directory if needed.
     if [ ! -d "${KRAKEN2_SB_DIR}" ]; then
         mkdir "${KRAKEN2_SB_DIR}"
     fi
@@ -55,7 +55,7 @@ if ! [[ $(which kraken2) ]]; then
     conda create -n ps_kraken -y
     conda activate ps_kraken
     "${KRAKEN2_TOOL_DIR}/install_kraken2.sh" "${KRAKEN2_SB_DIR}"
-    # Add the Kraken2 installation directory to the PATH and check for the kraken2 executable.
+    # Add the Kraken2 installation directory to the PATH and check for the Kraken2 executable.
     PATH=$PATH:${KRAKEN2_SB_DIR}
     if [[ $(which kraken2) ]]; then
         echo "kraken2 was installed successfully."

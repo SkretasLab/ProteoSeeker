@@ -7,7 +7,7 @@ INSTALLATION_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && 
 PS_DIR=$(dirname "${INSTALLATION_DIR}")
 PARAM_DIR="${PS_DIR}/parameter_files"
 # The name of the parameter file.
-PARAMETER_FILE="${PARAM_DIR}/par_seek_p.txt"
+PARAMETER_FILE="${PARAM_DIR}/par_seekT1_taxF_paired.txt"
 
 # Create the parameter files directory if needed.
 if [ ! -d "${PARAM_DIR}" ]; then
@@ -111,13 +111,28 @@ echo "e_value_nodom_thr=\"\"" >> "${PARAMETER_FILE}"
 echo "" >> "${PARAMETER_FILE}"
 
 echo "#---------Annotation---------" >> "${PARAMETER_FILE}"
-echo -e "add_type=\"organism\tbias\tnumber of organisms\tbiosample name\"" >> "${PARAMETER_FILE}"
-echo -e "add_info=\"synthetic metagenome\tno\t10\tSAMN16441671\"" >> "${PARAMETER_FILE}"
+echo -e "add_type=\"type 1\ttype 2\ttype 3\ttype 4\"" >> "${PARAMETER_FILE}"
+echo -e "add_info=\"info 1\tinfo 2\tinfo 3\tinfo 4\"" >> "${PARAMETER_FILE}"
 echo "" >> "${PARAMETER_FILE}"
 
 echo "#---------Threads---------" >> "${PARAMETER_FILE}"
 echo "thread_num=\"4\"" >> "${PARAMETER_FILE}"
 echo "filtering_threads=\"\"" >> "${PARAMETER_FILE}"
+echo "" >> "${PARAMETER_FILE}"
+
+echo "#---------Tool parameters---------" >> "${PARAMETER_FILE}"
+echo "fastqc_par=\"\"" >> "${PARAMETER_FILE}"
+echo "bbduk_par=\"\"" >> "${PARAMETER_FILE}"
+echo "megahit_par=\"\"" >> "${PARAMETER_FILE}"
+echo "fraggenescanrs_par=\"\"" >> "${PARAMETER_FILE}"
+echo "cd_hit_par=\"\"" >> "${PARAMETER_FILE}"
+echo "kraken_par=\"\"" >> "${PARAMETER_FILE}"
+echo "bracken_par=\"\"" >> "${PARAMETER_FILE}"
+echo "metabinner_par=\"\"" >> "${PARAMETER_FILE}"
+echo "comebin_par=\"\"" >> "${PARAMETER_FILE}"
+echo "bowtie_par=\"\"" >> "${PARAMETER_FILE}"
+echo "hmmscan_par=\"\"" >> "${PARAMETER_FILE}"
+echo "diamond_blastp_par=\"\"" >> "${PARAMETER_FILE}"
 echo "" >> "${PARAMETER_FILE}"
 
 echo "#---------Processes performed after---------" >> "${PARAMETER_FILE}"

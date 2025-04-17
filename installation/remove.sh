@@ -13,7 +13,7 @@ PFAM_DB_DIR="${PS_DIR}/pfam_database"
 SWISSPROT_DIR="${PS_DIR}/swissprot_database"
 UNIREF_DBS_DIR="${PS_DIR}/uniref_db"
 
-# An array of the installation enviroments.
+# An array of the installation environments.
 install_envs=("ps_bbtools" "ps_bowtie" "ps_cd_hit" "ps_comebin" "ps_diamond" "ps_env" "ps_fastqc" "ps_fraggenescan" "ps_hmmer" "ps_install" "ps_kraken" "ps_bracken" "ps_megahit" "metabinner_env" "ps_metabinner" "ps_phobius" "ps_samtools" "ps_sra_tools" "ps_taxonkit", "ps_result_analysis")
 
 # An array of the installation directories.
@@ -24,13 +24,13 @@ source "${INSTALLATION_DIR}/find_conda.sh"
 source $CONDA_SH_PATH
 
 # User input.
-read -p "Delete all installation enviroments for ProteoSeeker? Type y/yes to delete or n/no otherwise: " ENV_DEL_STATUS
+read -p "Delete all installation environments for ProteoSeeker? Type y/yes to delete or n/no otherwise: " ENV_DEL_STATUS
 if [ ${ENV_DEL_STATUS} = "y" ] || [ ${ENV_DEL_STATUS} = "yes" ]; then
-	echo "Deleting ProteoSeeker enviroments..."
-	# Check if each installation enviroment exists. If yes, delete it.
+	echo "Deleting ProteoSeeker environments..."
+	# Check if each installation environment exists. If yes, delete it.
 	for ITEM_ENV in "${install_envs[@]}"; do
 		if conda info --envs | grep -q "${ITEM_ENV}"; then
-			echo "Deleting ProteoSeeker enviroment ${ITEM_ENV}..."
+			echo "Deleting ProteoSeeker environment ${ITEM_ENV}..."
 			conda remove --name "${ITEM_ENV}" --all -y
 		fi
 	done

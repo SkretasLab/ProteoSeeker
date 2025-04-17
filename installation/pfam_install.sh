@@ -10,7 +10,7 @@ PFAM_DB_DIR="${PS_DIR}/pfam_database"
 PFAM_DB_GZ_FILE="${PFAM_DB_DIR}/Pfam-A.hmm.gz"
 PFAM_DB_FILE="${PFAM_DB_DIR}/Pfam-A.hmm"
 
-# Create the pfam_database dir if needed.
+# Create the pfam_database directory if needed.
 if [ ! -d "${PFAM_DB_DIR}" ]; then
   mkdir "${PFAM_DB_DIR}"
 fi

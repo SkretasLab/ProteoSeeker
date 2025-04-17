@@ -15,7 +15,7 @@ read -p "Select whether the nr protein database from NCBI will be downloaded and
 # Determine whether the nr installer will run or not.
 if [ $nr_selection = "y" ] || [ $nr_selection = "yes" ]; then
     echo "Selected y/yes."
-    # Create the nr_database dir if needed.
+    # Create the nr_database directory if needed.
     if [ ! -d "${NR_DB_DIR}" ]; then
         mkdir "${NR_DB_DIR}"
     fi
