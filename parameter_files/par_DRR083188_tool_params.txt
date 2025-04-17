@@ -56,7 +56,7 @@ bracken_level=""
 bracken_threshold=""
 
 #---------Binning---------
-binning_tool=""
+binning_tool="2"
 binning_max_ram=""
 bin_contig_len="1000"
 bin_kmer=""
@@ -85,8 +85,8 @@ filtering_threads=""
 
 #---------Tool parameters---------
 fastqc_par=""
-bbduk_par=""
-megahit_par=""
+bbduk_par="interleaved=f ktrim=r k=21 mink=11 hammingdistance=2 qtrim=rl trimq=20 minavgquality=20 minlength=40 tpe=t tbo=t threads=4 -Xmx4g"
+megahit_par="--no-mercy --no-local --presets=meta-sensitive"
 fraggenescanrs_par=""
 cd_hit_par=""
 kraken_par=""

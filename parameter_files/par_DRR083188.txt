@@ -56,7 +56,7 @@ bracken_level=""
 bracken_threshold=""
 
 #---------Binning---------
-binning_tool=""
+binning_tool="2"
 binning_max_ram=""
 bin_contig_len="1000"
 bin_kmer=""
