@@ -85,13 +85,28 @@ sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
 <p align="justify">For either case of installation process, in order to use the topology and signal peptide predictions provided by Phobius you must download Phobius from https://phobius.sbc.su.se/data.html. As described in section "3.4" to utilize Phobius when running ProteoSeeker through the command-line you should also provide the path to the Phobius directory in the parameter file or as a parameter through the corresponding option of "proteoseeker.py". The default path for the Phobius installation in a Docker container from the proteoseeker Docker image is already set to the phobius directory of the shared directory and you should download and copy the Phobius installation files in that directory as explained in section "3.3" below. In any other case, ProteoSeeker will run without performing topology and signal peptide predictions in its seek functionality.</p>
 
 # 2. Run ProteoSeeker
+<p align="justify"> For detailed information regarding the use, options and parameter files of ProteoSeeker check its Wiki page.</p>
+   
+<p align="justify">In general, the most basic options in a parameters file that control the main functionalities of ProteoSeeker are:
+- seek_mode=True/False
+   The mode is applied when True and not applied when False.
+- taxonomy_mode=True/False
+   The mode is applied when True and not applied when False.
+- seek_route=1/2/3
+   Seek route 1 is based on screening each protein by searching for at least one domain corresponding to a profile from the selected protein families. Seek route 2 is based on screening each protein against a filtered protein database by searching for at least one hit with an e-value higher than a specific threshold. The filtered protein database is based on filtering the provided protein database based on the protein names corresponding to the selected protein families.
+- taxonomy_route=1/2
+   Taxonomy route 1 is the Kraken2 taxonomy route. Taxonomy route 2 is the COMEBin/MetaBinner taxonomy route.
+</p>
+   
 <p align="justify">Examples of running ProteoSeeker can be based on the template files "par_DRR083188.txt", "par_DRR083188_sra.txt" and "par_DRR083188_run.txt" which are already present in the "parameter_files" directory. To use these files you should change certain paths based on the specifications of your system. These paths are described below. It should not be necessary to change the relative paths when running ProteoSeeker from the main directory.</p>
 
+<p align="justify">
 - protein_db_path: Can be left empty if not applying the seek mode with the seek routes (analysis types) 2 or 3 nor applying the taxonomy mode with the taxonomy route 2 (COMEBin/MetaBinner taxonomoy route).
 - kraken_db_path: Can be left empty if not applying the taxonomy mode with the taxonomoy route 1 (Kraken taxonomy route).
 - metabinner_bin_path: Can be left empty if not applying binning tool 1 (MetaBinner) in the taxonomy route 2 of the taxonomy mode.
 - comebin_bin_path: Can be left empty if not applying binning tool 2 (COMEBin) in the taxonomy route 2 of the taxonomy mode.
 - profiles_broad_path, swissprot_path, fraggenescanrs_path, conda_bin, conda_sh: Should already be set properly.
+</p>
 
 ~~~bash
 # Relative paths:
@@ -110,14 +125,16 @@ comebin_bin_path="/home/gfilis/anaconda3_2024_02_1/envs/ps_comebin/bin/COMEBin"
 
 <p align="justify">You can use these files by running ProteoSeeker from the main directory as shown below.</p>
 
-- par_DRR083188.txt: ProteoSeeker downloads and processes the SRA sample DRR083188. ProteoSeeker applies the seek mode and seek route 1 and the taxonomy mode and taxonomy route 1 (Kraken2).
+<p align="justify">
+- par_DRR083188_run.txt: ProteoSeeker downloads and processes the SRA sample DRR083188. ProteoSeeker applies the seek mode and seek route 1 and the taxonomy mode and taxonomy route 1 (Kraken2) on sample DRR083188.
 - par_DRR083188_sra.txt: ProteoSeeker downloads and processes the SRA sample DRR083188 (it does not apply any kind of analysis).
 - par_DRR083188_protein_database.txt: ProteoSeeker downloads and processes the SRA sample DRR083188. ProteoSeeker applies the seek mode and seek route 3 and the taxonomy mode and taxonomy route 2 (COMEBin/MetaBinner) on sample DRR083188.
 - par_DRR083188_tool_params.txt: ProteoSeeker downloads and processes the SRA sample DRR083188. ProteoSeeker applies the seek mode and seek route 1 and the taxonomy mode and taxonomy route 1 (Kraken2). Custom parameter values have been set for BBDuk and Megahit.
+</p>
 
 ~~~bash
 conda activate ps_env
-python proteoseeker -pfp parameter_files/par_DRR083188.txt
+python proteoseeker -pfp parameter_files/par_DRR083188_run.txt
 python proteoseeker -pfp parameter_files/par_DRR083188_sra.txt
 python proteoseeker -pfp parameter_files/par_DRR083188_protein_database.txt
 python proteoseeker -pfp parameter_files/par_DRR083188_tool_params.txt
