@@ -1,8 +1,11 @@
 ![ProteoSeeker Logo](images/ProteoSeeker_Logo.png)
 
-# 1. Installation
-## 1.1 Source code
-### 1.1.1 Prerequisites
+# 1. Overview
+<p align="justify">ProteoSeeker is a feature-rich metagenomic analysis tool for accessible and comprehensive metagenomic exploration. It allows for the identification of proteins originating from metagenomes. These proteins may be screened based on user-defined protein families or/and be subjected to taxonomic analysis.</p>
+
+# 2. Installation
+## 2.1 Source code
+### 2.1.1 Prerequisites
 #### Anaconda
 <p align="justify">To install ProteoSeeker from source code, conda, from Anaconda, must be installed and activated in your system. Instructions for the installation of Anaconda in Linux are provided through the following link:</p>
 
@@ -11,7 +14,7 @@ Anaconda for Linux: [https://www.anaconda.com/docs/getting-started/anaconda/inst
 #### git
 <p align="justify">Necessary to download the ProteoSeeker repository.</p>
 
-### 1.1.2 Installation process
+### 2.1.2 Installation process
 <p align="justify">Execute the commands below to perform the following installation steps. The installation process requires approximately <strong>20 GB</strong> of disk space and <strong>30 minutes</strong> to be completed.</p>
 
 ~~~bash
@@ -25,14 +28,14 @@ conda config --set channel_priority flexible
 ./install.sh
 ~~~
 
-### 1.1.3 Removing installation environments, files and directories
+### 2.1.3 Removing installation environments, files and directories
 <p align="justify">To remove the environments, all their files and the directories that were created during the installation of ProteoSeeker (by running the "./install.sh" script), run the Bash script below, in the installation directory from the installation directory. You can then delete the main directory of ProteoSeeker and all environments and files associated with installing ProteoSeeker will have been removed by your system. The Bash script below will also remove the environment ("ps_result_analysis") created by running the commands provided at section "4.1" and used to run the analysis of the taxonomy evaluation results.</p>
 
 ~~~bash
 ./remove.sh
 ~~~
 
-### 1.1.4 Parameter files
+### 2.1.4 Parameter files
 <p align="justify">You can create a set of "template" parameter files which can be used to run the seek or the taxonomy mode or both modes of ProteoSeeker by running the following script in the installation directory from the same directory. This set of files is generated in the "parameter_files" directory of ProteoSeeker.</p>
 
 ~~~bash
@@ -41,7 +44,7 @@ conda config --set channel_priority flexible
 
 <p align="justify">In addition, to facilitate further the process of running ProteoSeeker, two parameter files, "par_DRR083188_sra" and "par_DRR083188_run", are already present in the "parameter_files" directory. The latter files can easily be modified to run ProteoSeeker based on the specifications of your system and analysis.</p>
 
-### 1.1.5 COMEBin - GPU
+### 2.1.5 COMEBin - GPU
 <p align="justify">It should be noted that COMEBin can also be installed and run on a GPU. Instructions are available at: https://github.com/ziyewang/COMEBin and also below:</p>
 
 ~~~bash
@@ -62,7 +65,7 @@ conda deactivate
 
 <p align="justify">For example, the second option in our system has the following value: "/home/compteam/anaconda3/envs/ps_comebin_gpu/bin/COMEBin"</p>
 
-## 1.2 Docker
+## 2.2 Docker
 <p align="justify">To install ProteoSeeker from Docker Hub as a Docker image, Docker must be installed in your system. To install Docker in Ubuntu, follow the instructions provided by the link below. Then, download the image of ProteoSeeker from Docker Hub. There are two versions.</p>
 
 Docker engine for Ubuntu: https://docs.docker.com/engine/install/ubuntu/
@@ -81,10 +84,10 @@ The light_v1.0.0 version has a download size of  **7.66 GB** and decompressed ha
 sudo docker image pull skretaslab/proteoseeker:light_v1.0.0
 ~~~
 
-## 1.3 Phobius
+## 2.3 Phobius
 <p align="justify">For either case of installation process, in order to use the topology and signal peptide predictions provided by Phobius you must download Phobius from https://phobius.sbc.su.se/data.html. As described in section "3.4" to utilize Phobius when running ProteoSeeker through the command-line you should also provide the path to the Phobius directory in the parameter file or as a parameter through the corresponding option of "proteoseeker.py". The default path for the Phobius installation in a Docker container from the proteoseeker Docker image is already set to the phobius directory of the shared directory and you should download and copy the Phobius installation files in that directory as explained in section "3.3" below. In any other case, ProteoSeeker will run without performing topology and signal peptide predictions in its seek functionality.</p>
 
-# 2. Run ProteoSeeker
+# 3. Run ProteoSeeker
 <p align="justify">In general, the most basic options in a parameters file that control the main functionalities of ProteoSeeker are:</p>
 
 - seek_mode=True or False
