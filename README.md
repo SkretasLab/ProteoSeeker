@@ -163,7 +163,7 @@ conda deactivate
 <p align="justify">Extensive documentation on the functionality and usage of ProteoSeeker is available in its <a href="https://github.com/SkretasLab/ProteoSeeker/wiki">Wiki</a>.</p>
 
 # Publication
-<a href="https://doi.org/10.1002/advs.202414877">Wiki</a>
+<a href="https://doi.org/10.1002/advs.202414877">https://doi.org/10.1002/advs.202414877</a>
 
 # Citation
 G. Filis, D. Bezantakou, K. Rigkos, D. Noti, P. Saridis, D. Zarafeta, G. Skretas, ProteoSeeker: A Feature-Rich Metagenomic Analysis Tool for Accessible and Comprehensive Metagenomic Exploration. Adv. Sci. 2025, 2414877. https://doi.org/10.1002/advs.202414877
