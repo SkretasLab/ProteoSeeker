@@ -9,7 +9,7 @@
 #### Anaconda
 <p align="justify">To install ProteoSeeker from source code, conda, from Anaconda, must be installed and activated in your system. Instructions for the installation of Anaconda in Linux are provided through the following link:</p>
 
-Anaconda for Linux: [https://www.anaconda.com/docs/getting-started/anaconda/install](https://www.anaconda.com/docs/getting-started/anaconda/install)
+Anaconda for Linux: <a href="[https://doi.org/10.1002/advs.202414877](https://www.anaconda.com/docs/getting-started/anaconda/install)">Wiki</a>
 
 #### git
 <p align="justify">Necessary to download the ProteoSeeker repository.</p>
@@ -157,13 +157,13 @@ python proteoseeker -pfp parameter_files/par_DRR083188_tool_params.txt
 conda deactivate
 ~~~
 
-<p align="justify"> For detailed information regarding the use, options and parameter files of ProteoSeeker check its Wiki page.</p>
+<p align="justify">For detailed information regarding the use, options and parameter files of ProteoSeeker check its Wiki page.</p>
 
 # Wiki
-<p align="justify">Extensive documentation on the functionality and usage of ProteoSeeker is available in its [Wiki](https://github.com/SkretasLab/ProteoSeeker/wiki).</p>
+<p align="justify">Extensive documentation on the functionality and usage of ProteoSeeker is available in its <a href="https://github.com/SkretasLab/ProteoSeeker/wiki">Wiki</a>.</p>
 
 # Publication
-[https://doi.org/10.1002/advs.202414877](https://doi.org/10.1002/advs.202414877)
+<a href="https://doi.org/10.1002/advs.202414877">Wiki</a>
 
 # Citation
 G. Filis, D. Bezantakou, K. Rigkos, D. Noti, P. Saridis, D. Zarafeta, G. Skretas, ProteoSeeker: A Feature-Rich Metagenomic Analysis Tool for Accessible and Comprehensive Metagenomic Exploration. Adv. Sci. 2025, 2414877. https://doi.org/10.1002/advs.202414877
@@ -182,4 +182,4 @@ Feel free to send questions or bug reports by using one of the following email a
 5. Georgios Skretas: skretas@fleming.gr
 
 # License
-This project is licensed under the GPLv3 License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the GPLv3 License. See the <a href="LICENSE">LICENSE</a> file for details.
