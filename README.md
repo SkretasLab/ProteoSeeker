@@ -160,7 +160,7 @@ conda deactivate
 <p align="justify"> For detailed information regarding the use, options and parameter files of ProteoSeeker check its Wiki page.</p>
 
 # Wiki
-<p align="justify">Extensive documentation on the functionality and usage of ProteoSeeker is available in its [<ins>Wiki</ins>](https://github.com/SkretasLab/ProteoSeeker/wiki).</p>
+<p align="justify">Extensive documentation on the functionality and usage of ProteoSeeker is available in its [Wiki](https://github.com/SkretasLab/ProteoSeeker/wiki).</p>
 
 # Publication
 [https://doi.org/10.1002/advs.202414877](https://doi.org/10.1002/advs.202414877)
