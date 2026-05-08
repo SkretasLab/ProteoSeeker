@@ -9,7 +9,7 @@
 #### Anaconda
 <p align="justify">To install ProteoSeeker from source code, conda, from Anaconda, must be installed and activated in your system. Instructions for the installation of Anaconda in Linux are provided through the following link:</p>
 
-Anaconda for Linux: <a href="[https://doi.org/10.1002/advs.202414877](https://www.anaconda.com/docs/getting-started/anaconda/install)">Wiki</a>
+Anaconda for Linux: <a href="https://www.anaconda.com/docs/getting-started/anaconda/install">https://www.anaconda.com/docs/getting-started/anaconda/install</a>
 
 #### git
 <p align="justify">Necessary to download the ProteoSeeker repository.</p>
